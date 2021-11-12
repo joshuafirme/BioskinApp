@@ -28,6 +28,7 @@
 
 @include('admin.scripts')
 @include('admin.datatables-scripts')
+
 <script src="{{asset('js/product.js')}}"></script>
 
 </body>

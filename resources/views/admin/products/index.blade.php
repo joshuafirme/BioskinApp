@@ -51,10 +51,10 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Sub category</th>
-                                <th>Variations</th>
+                                <th>Variation</th>
                                 <th>Size</th>
                                 <th>Price</th>
-                                <th>Volume</th>
+                                <th>Volumes</th>
                                 <th>Packaging</th>
                                 <th>Closure</th>
                                 <th>Action</th>

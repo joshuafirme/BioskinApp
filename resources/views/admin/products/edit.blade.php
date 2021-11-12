@@ -1,7 +1,13 @@
-@extends('admin.maintenance.product.layout')
+@extends('admin.products.layout')
 
 @section('content')
 
+<style>
+  .choices__button {
+    background-image: url('https://img.icons8.com/ios/50/000000/delete-sign--v1.png') !important;
+   
+  }
+</style>
 @php
     $page_title = "Bioskin | Update product";
 @endphp
@@ -51,74 +57,155 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                                <label class="col-form-label">Description</label>
-                                <input type="text" class="form-control" name="description" value="{{ $product->description }}" required>
-                            </div>
+                               <div class="col-sm-12 col-md-6 mt-2">
+                          <label class="col-form-label">Category</label>
+                            <select class="form-control" name="category_id">
+                              @foreach ($categories as $item)
+                                  @php
+                                      $selected = $item->id == $product->category_id ? 'selected' : "";
+                                  @endphp
+                                  <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                              @endforeach
+                            </select>
+                        </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                              <label class="col-form-label">Quantity</label>
-                              <input type="text" class="form-control" name="qty" value="{{ $product->qty }}" required>
-                            </div>
+                        <div class="col-sm-12 col-md-6 mt-2">
+                          <label class="col-form-label">Sub Category</label>
+                            <select class="form-control" name="sub_category_id">
+                              @foreach ($subcategories as $item)
+                                @php
+                                if($item->id == $product->sub_category_id) {
+                                    $selected = $item->id == $product->sub_category_id ? 'selected' : "";
+                                }else {
+                                  continue;
+                                }
+                                @endphp
+                                <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                              @endforeach
+                            </select>
+                        </div>
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">SKU</label>
+                            <input type="text" class="form-control" name="sku" value="{{ $product->sku }}" required>
+                          </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                              <label class="col-form-label">Reorder point</label>
-                              <input type="text" class="form-control" name="reorder" value="{{ $product->reorder }}" required>
-                            </div>
-                            
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">    
-                              <label class="col-form-label">Unit</label>
-                              <select class="form-control" name="unit_id">
-                                  @foreach ($unit as $item)
-                                  <option {{ $selected = $product->unit_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
-                                  @endforeach
-                                  <option value="0">Not applicable</option>
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Product name</label>
+                            <input type="text" class="form-control" name="name" value="{{ $product->name }}" required>
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Features</label>
+                            <textarea type="text" class="form-control" name="features" rows="4">{{ $product->features }}</textarea>
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Description</label>
+                            <textarea type="text" class="form-control" name="description" rows="4">{{ $product->description }}</textarea>
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Ingredients</label>
+                            <textarea type="text" class="form-control" name="ingredients" rows="4">{{ $product->ingredients }}</textarea>
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
+                              <label for="choices-single-default">Variation</label>
+                              <select class="form-control" data-trigger  name="variation_id">
+                                <option value="0">Select variation</option>
+                                @foreach ($variations as $item)
+                                  @php
+                                      $selected = $item->id == $product->variation_id ? 'selected' : "";
+                                  @endphp
+                                  <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                               </select>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">    
-                              <label class="col-form-label">Category</label>
-                              <select class="form-control" name="category_id">
-                                  @foreach ($category as $item)
-                                  <option {{ $selected = $product->category_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
-                                  @endforeach
+                          <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
+                              <label for="choices-single-default">Size</label>
+                              <select class="form-control" data-trigger  name="size_id">
+                                @php
+                                    $selected = $item->id == $product->size_id ? 'selected' : "";
+                                @endphp
+                                @foreach ($sizes as $item)
+                                  <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                               </select>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">    
-                              <label class="col-form-label">Supplier</label>
-                              <select class="form-control" name="supplier_id" id="supplier_id">
-                                  @foreach ($supplier as $item)
-                                  <option {{ $selected = $product->supplier_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->supplier_name }}</option>
-                                  @endforeach
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
+                            @php
+                                $product->volumes = str_replace('"', '', $product->volumes);
+                            @endphp
+                            <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $product->volumes }}" placeholder="Enter volume">
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-2 packaging">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
+                              <select class="form-control" name="packaging_id">
+                                @php
+                                    $selected = $item->id == $product->packaging_id ? 'selected' : "";
+                                @endphp
+                                @foreach ($packaging as $item)
+                                    <option {{$selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                               </select>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                              <label class="col-form-label">Original Price</label>
-                              <input type="number" step=".01" class="form-control" name="orig_price" id="orig_price" value="{{ $product->orig_price }}">
-                            </div>
+                          <div class="col-sm-12 col-md-6 mt-sm-2 packaging">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Closure</label>
+                              <select class="form-control" name="cap_id">
+                                @foreach ($closures as $item)
+                                @php
+                                $selected = "";
+                                if($item->id == $product->cap_id) {
+                                    $selected = 'selected';
+                                }else {
+                                  continue;
+                                }
+                                @endphp
+                                <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                              @endforeach
+                              </select>
+                          </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                                <div class="form-group">
-                                    <label class="col-form-label">Update Image</label>
-                                    <div class="input-group">
-                                      <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="image">
-                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                      </div>
+                          <div class="col-sm-12 col-md-6 mt-sm-2">
+                            <label class="col-form-label">Price</label>
+                            <input type="number" step="any" class="form-control" name="price" value="{{ $product->price }}" required>
+                          </div>
+
+                          <div class="col-sm-12 mt-3">
+                              
+                          <div class="form-check">
+                            @php
+                                $checked = $product->rebranding == 1 ? "checked" : "";
+                            @endphp
+                            <input type="checkbox" class="form-check-input" name="rebranding" id="rebranding" {{ $checked }} value="{{ $product->rebranding }}">
+                            <label class="form-check-label" for="exampleCheck1">Rebranding</label>
+                          </div>
+                          </div>
+
+                          <div class="col-sm-12 col-md-12 mt-2">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Upload images</label>
+                            <input type="file" class="form-control-file" name="images[]" placeholder="address" multiple accept=".jpg,.jpeg,.png">
+                          </div>
+
+                            @foreach ($images as $item)
+                                <div class="row mt-2">
+                                  <div class="col-sm-12 col-md-3 col-lg-6 m-1 image-container">
+                                    <div class="card" style="width: 18rem;">
+                                      <input type="hidden" name="image_id" value="{{ $item->id }}">
+                                      <img src="{{ asset('images/'.$item->image) }}" class="card-img-top" style="height: 300px;background-size:cover; background-position:center;'"  alt="product image">
+                                      <a class="btn btn-sm btn-danger btn-delete-image" data-id="{{$item->id}}">Delete Photo</a>
                                     </div>
+                                    
                                   </div>
-                            </div>
-
-                            <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
-                              @if ($product->image)
-                                <img src="{{asset('images/'.$product->image)}}" width="350" height="350" class="img-thumbnail" alt="">
-                              @else
-                                <img src="{{asset('images/no-image.png')}}" width="350" height="350" class="img-thumbnail" alt="">
-                              @endif
-                            </div>
-    
+                                </div>
+                              
+                            @endforeach
+                          
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>
                                 <a href="{{ route('product.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>

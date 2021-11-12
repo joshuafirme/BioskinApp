@@ -101,6 +101,7 @@
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Variation</label>
                               <select class="form-control" data-trigger  name="variation_id">
+                                <option value="0">Select variation</option>
                                 @foreach ($variations as $item)
                                   <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -118,13 +119,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2">
                             <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
-                              <select class="form-control choices-multiple" name="volumes[]" placeholder="Add multiple volumes"
-                                multiple>
-                                <option value="100" selected>100 pieces</option>
-                                <option value="200">200 pieces</option>
-                                <option value="300">300 pieces</option>
-                                <option value="400">400 pieces</option>
-                              </select>
+                            <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="" placeholder="Enter volume">
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
@@ -139,9 +134,6 @@
                           <div class="col-sm-12 col-md-6 mt-sm-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Closure</label>
                               <select class="form-control" name="cap_id">
-                                <option value="Fliptop Cap White 60ml" selected>Fliptop Cap White 60ml</option>
-                                <option value="Fliptop Cap Black 100ml">Fliptop Cap Black 100ml</option>
-                                <option value="Own Packaging">Own Packaging</option>
                               </select>
                           </div>
 
@@ -160,7 +152,7 @@
 
                           <div class="col-sm-12 col-md-12 mt-2">
                             <label class="col-form-label" for="choices-multiple-remove-button">Choose multiple images</label>
-                            <input required type="file" class="form-control-file" name="images[]" placeholder="address" multiple accept=".jpg,.jpeg,.png">
+                            <input type="file" class="form-control-file" name="images[]" placeholder="address" multiple accept=".jpg,.jpeg,.png">
                           </div>
                           
 

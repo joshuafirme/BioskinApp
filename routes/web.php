@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomePageController@index');
 
 Route::resource('/product', 'ProductController');
+Route::get('/read-product', 'ProductController@readAllProduct');
+Route::post('/delete-image/{id}', 'ProductController@deleteImage');
 Route::resource('/category', 'CategoryController');
 Route::resource('/subcategory', 'SubcategoryController');
 Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
