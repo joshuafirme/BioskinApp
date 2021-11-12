@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::resource('/category', 'CategoryController');
 Route::get('/', 'HomePageController@index');
+
+Route::resource('/product', 'ProductController');
+Route::resource('/category', 'CategoryController');
+Route::resource('/subcategory', 'SubcategoryController');
+Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
+Route::resource('/packaging', 'PackagingController');
+Route::resource('/closures', 'ClosuresController');
+Route::get('/read-closures/{packaging_id}', 'ClosuresController@readClosuresByPackaging');
+Route::resource('/size', 'SizeController');
+Route::resource('/variation', 'VariationController');
