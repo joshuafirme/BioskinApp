@@ -114,6 +114,7 @@
                                 @foreach ($sizes as $item)
                                   <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
+                                <option value="0">Set</option>
                               </select>
                           </div>
 

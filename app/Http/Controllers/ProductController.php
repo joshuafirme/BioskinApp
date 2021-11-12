@@ -38,7 +38,6 @@ class ProductController extends Controller
                 {
                     $button = ' <a class="btn btn-sm" data-id="'. $product->id .'" href="'. route('product.edit',$product->id) .'"><i class="fa fa-edit"></i></a>';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<a class="btn btn-sm btn-archive-product" data-id="'. $product->id .'"><i  style="color:#DC3545;" class="fa fa-trash"></i></a>';
                     return $button;
                 })
                 ->addColumn('variation', function($product){ return $product->variation_id == 0 ? "None" : $product->variation; })
