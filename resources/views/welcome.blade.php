@@ -34,10 +34,13 @@
 
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
 
-
-        <!-- CATEGORIES -->
-
-        
+      @foreach ($categories as $item)
+        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/#a1b19e1a') }}">
+          <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
+            data-name="{{ $item->name }}" >
+            {{ $item->name }}</div> 
+          </a>
+      @endforeach
 
     </div>   
 
