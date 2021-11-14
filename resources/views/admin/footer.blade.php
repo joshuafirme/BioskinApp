@@ -11,7 +11,7 @@
     <main class="d-flex align-items-center py-3 py-md-0">
       <div class="container">
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2021 Val Construction Supply</strong> All rights reserved.
+        <strong>Copyright &copy; 2021 Bioskin</strong> All rights reserved.
       </div>
     </main>
   </footer>

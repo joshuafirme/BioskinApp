@@ -46,7 +46,7 @@ class ProductController extends Controller
                     $volumes = explode(",",$product->volumes);
                     $html = "";
                     foreach ($volumes as $data) {
-                        $html .= '<span class="badge badge-success m-1">'.$data.'</span>';
+                        $html .= '<span class="badge badge-primary m-1">'.$data.'</span>';
                     }
                     return $html;
                 })
