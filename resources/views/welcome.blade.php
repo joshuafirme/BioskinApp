@@ -14,7 +14,37 @@
       border: #06513D;
     }
 
-    .btn-outline-success {
+    .card-img-top {
+      object-fit: contain !important;
+    }
+    .card-first-imgs .card-img-top{
+      background-color: #EBEBEB;
+    }
+    .card-first-imgs .card{
+      background-color: #EBEBEB;
+    }
+    .bs-dr-bgn{
+      object-fit: contain;
+    }
+    .wording-container h1{
+      display: inline-block; font-size: 2.4vw; vertical-align: middle; margin-top: 20%;
+    }
+    .wording-container h3{
+      display: inline-block; font-size: 1.5vw; vertical-align: middle; margin-top: 20px;
+    }
+    .wording-2{
+      font-size: 1.5vw; margin-top: 20px;
+    }
+    @media screen and (max-width: 750px) {
+      .wording-container h1{
+        font-size: 25px;
+        line-height: 30px;
+        margin-top: 0;
+      }
+      .wording-container h3, .wording-2{
+        font-size: 15px;
+        line-height: 20px;
+      }
     }
   </style>
 
@@ -56,10 +86,53 @@
       <span class="m-3">Plant-based & cruelty-free</span>|<span class="m-3">Over 10 years of manufacturing experience</span>
     </p>
 
-    <div class="row justify-content-center">
-
+    <div class="row m-5 card-first-imgs">
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card m-2">
+          <img class="card-img-top mt-5 mb-5" src="{{ asset('images/iso.png') }}" height="330px" alt="Card image cap">
+          
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card m-2">
+          <img class="card-img-top mt-5 mb-5" src="{{ asset('images/fda.png') }}" height="330px" alt="Card image cap">
+          
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card m-2">
+          <img class="card-img-top mt-5 mb-5" src="{{ asset('images/crueltyfree.png') }}" height="330px" alt="Card image cap">
+          
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card m-2">
+          <img class="card-img-top mt-5 mb-5" src="{{ asset('images/peta.png') }}" height="330px" alt="Card image cap">
+          
+        </div>
+      </div>
     </div>
 
+    <div class="row m-5">
+      <div class="col-sm-12 col-md-6">
+        <div class="m-5">
+          <img class="bs-dr-bgn img-fluid" src="{{ asset('images/bs_dr_bgn.png') }}" alt="Card image cap">
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div class="text-center wording-container">
+          <h1 class="text-muted">Mindanao-based skincare and cosmetics toll manufacturer.</h1>
+          <h3 class="text-muted">Enjoy high quality products for low minimums and affordable prices. Contact us now!</h3>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <h3 class="text-muted text-center wording-2">Enjoy promos and discounts when you sign up here. You can now add vouchers to your checkouts for a much enjoyable shopping!</h3>
+      </div>
+    </div>
+
+  </div>
+    
         <div class="loader-container">
           <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>

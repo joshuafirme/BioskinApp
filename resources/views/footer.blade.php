@@ -10,7 +10,7 @@
   <footer class="main-footer">
     <main class="d-flex align-items-center py-3 py-md-0">
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2021 Bioskin</strong> All rights reserved.
+        <strong>Copyright &copy; 2021 Bioskin</strong> <span class="ml-1">All rights reserved.</span>
 
     </main>
   </footer>
