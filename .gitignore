@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/images/product
+/public/images/carousel
 /public/storage
 /storage/*.key
 /vendor

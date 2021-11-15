@@ -28,3 +28,4 @@ Route::resource('/closures', 'ClosuresController');
 Route::get('/read-closures/{packaging_id}', 'ClosuresController@readClosuresByPackaging');
 Route::resource('/size', 'SizeController');
 Route::resource('/variation', 'VariationController');
+Route::resource('/carousel', 'CarouselController');

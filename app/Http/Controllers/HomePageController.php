@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Carousel;
 
 class HomePageController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
-
-        return view('welcome', compact('categories'));
+        $carousel = Carousel::orderBy('order')->get();
+        return view('welcome', compact('categories', 'carousel'));
     }
 }

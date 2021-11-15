@@ -9,14 +9,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ isset($page_title) ? $page_title : "Val Construction Supply" }}</title>
-  <link rel="stylesheet" href="{{asset('css/customer.css?v='.rand())}}">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- Theme style -->
   <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+  <link rel="stylesheet" href="{{asset('css/custom.css?v='.rand())}}">
+  <link rel="icon" href="{{ asset('/images/logo.png') }}" type="image/x-icon"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+
   <style>
     .content-wrapper {
       background-color: #FFF;

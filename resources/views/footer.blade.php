@@ -21,13 +21,40 @@
 
 <!-- jQuery -->
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+
+
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 
-<script src="{{asset('js/homepage.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var column_count = 3;
+    var height = 380;
+    if(jQuery(document).width() < 780){
+        column_count = 1;
+    }
 
+    else if(jQuery(document).width() < 1200){
+        column_count = 2;
+        height = 330;
+    }
+
+    var splide = new Splide( '#secondary-slider', {
+              perPage    : column_count,
+              height     : height+'px',
+              cover      : true,
+              gap: 25,
+              rewind: true,
+              cover: true,
+              pagination: true,
+} );
+
+splide.mount();
+  });
+</script>
 @if(strpos($page_title,"Login") != "")
   <script src="{{asset('js/login.js')}}"></script>
 @endif

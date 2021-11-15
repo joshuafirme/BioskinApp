@@ -9,12 +9,24 @@
   <!-- /.navbar -->
 
   <style>
+    .carousel-container{
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+    .swiper-button-next,.swiper-button-prev{
+        border: 0px !important;
+        background: transparent;
+        background-image:none !important;
+        outline:none;
+        color: #444444;
+    }
     .btn-success {
       background-color: #06513D;
       border: #06513D;
     }
 
-    .card-img-top {
+    .card-img-top, .carousel-img {
       object-fit: contain !important;
     }
     .card-first-imgs .card-img-top{
@@ -128,6 +140,17 @@
 
       <div class="col-sm-12">
         <h3 class="text-muted text-center wording-2">Enjoy promos and discounts when you sign up here. You can now add vouchers to your checkouts for a much enjoyable shopping!</h3>
+      </div>
+    </div>
+    <div class="splide" id="secondary-slider" style="width:88%; margin: 0 auto;">
+      <div class="splide__track">
+        <ul class="splide__list">
+          @foreach ($carousel as $item)
+          <div class="splide__slide row min-ht ml-2">
+            <img src="{{ asset('images/'.$item->image)}}" class="carousel-img" alt="">
+          </div>
+          @endforeach
+        </ul>
       </div>
     </div>
 
