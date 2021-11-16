@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Closures;
 use App\Models\Packaging;
+use App\Models\Category;
 
 class ClosuresController extends Controller
 {
@@ -15,9 +16,8 @@ class ClosuresController extends Controller
      */
     public function index()
     {
-        $closures = Closures::select('closures.name as name', 'closures.*', 'packaging.name as packaging')
-        ->leftJoin('packaging', 'packaging.id', '=', 'closures.packaging_id')
-        ->paginate(10);
+        $closures = new Closures;
+        $closures = $closures->readAll();
         return view('admin.closures.index', compact('closures'));
     }
 
@@ -34,8 +34,8 @@ class ClosuresController extends Controller
      */
     public function create()
     {
-        $packaging = Packaging::all();
-        return view('admin.closures.create',compact('packaging'));
+        $categories = Category::all();
+        return view('admin.closures.create', compact('categories'));
     }
 
     /**
@@ -47,10 +47,29 @@ class ClosuresController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:closures',
+            'sku' => 'required|unique:packaging',
         ]);
 
-        closures::create($request->all());
+        $images=array();
+
+        if($files=$request->file('images')){
+            foreach($files as $file){
+                $folder_to_save = 'product';
+                $image_name = uniqid() . "." . $file->extension();
+                $file->move(public_path('images/' . $folder_to_save), $image_name);
+                $images[] = $folder_to_save . "/" . $image_name;
+            }
+        }
+
+        Closures::create($request->all());
+
+        foreach ($images as $key => $data) {
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => $request['sku'],
+                'image' => $data
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Closures was created.');

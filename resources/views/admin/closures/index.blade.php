@@ -46,15 +46,31 @@
                 <div class="card-body">
                     <table class="table table-hover" id="closures-table">
                         <tr>
+                            <th class="py-2 text-left">SKU</th>
                             <th class="py-2 text-left">Closure Name</th>
-                            <th class="py-2 text-left">Packaging</th>
+                            <th class="py-2 text-left">Category</th>
+                            <th class="py-2 text-left">Subcategory</th>
+                            <th class="py-2 text-left">Volumes</th>
+                            <th class="py-2 text-left">Size</th>
+                            <th class="py-2 text-left">Price</th>
                             <th class="py-2 text-left">Action</th>
                         </tr>
                         @foreach ($closures as $data)
                         <tr id="record-id-{{ $data->id }}">
+                            <td>{{ $data->sku }}</td>
                             <td>{{ $data->name }}</td>
-                            <td>{{ $data->packaging }}</td>
-                            
+                            <td>{{ $data->category }}</td>
+                            <td>{{ $data->subcategory }}</td>
+                            <td>
+                            @php
+                              $volumes = explode(",",$data->volumes);
+                            @endphp
+                            @foreach ($volumes as $volume) 
+                                <span class="badge badge-primary m-1">{{$volume}}</span>
+                            @endforeach
+                            </td>
+                            <td>{{ $data->size }}</td>
+                            <td>{{ $data->price }}</td>
                             <td>
                                 <form action="{{ route('closures.destroy',$data->id) }}" method="POST">                      
                                     <a class="btn" href="{{ route('closures.edit',$data->id) }}"><i class="fas fa-edit"></i></a>

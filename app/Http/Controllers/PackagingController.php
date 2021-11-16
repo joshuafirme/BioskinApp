@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Packaging;
-
+use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\Size;
+use DB;
 class PackagingController extends Controller
 {
     /**
@@ -14,7 +17,8 @@ class PackagingController extends Controller
      */
     public function index()
     {
-        $packaging = Packaging::paginate(10);
+        $packaging = new Packaging;
+        $packaging = $packaging->readAll();
         return view('admin.packaging.index', compact('packaging'));
     }
 
@@ -25,7 +29,9 @@ class PackagingController extends Controller
      */
     public function create()
     {
-        return view('admin.packaging.create');
+        $categories = Category::all();
+        $sizes = Size::all();
+        return view('admin.packaging.create', compact('categories', 'sizes'));
     }
 
     /**
@@ -37,15 +43,31 @@ class PackagingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:packaging',
+            'sku' => 'required|unique:packaging',
         ]);
+
+        $images=array();
+
+        if($files=$request->file('images')){
+            foreach($files as $file){
+                $folder_to_save = 'product';
+                $image_name = uniqid() . "." . $file->extension();
+                $file->move(public_path('images/' . $folder_to_save), $image_name);
+                $images[] = $folder_to_save . "/" . $image_name;
+            }
+        }
 
         Packaging::create($request->all());
+        foreach ($images as $key => $data) {
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => $request['sku'],
+                'image' => $data
+            ]);
+        }
 
         return redirect()->back()
-            ->with('success', 'Packaging was created.'); $request->validate([
-            'name' => 'required|unique:packaging',
-        ]);
+            ->with('success', 'Packaging was created.'); 
     }
 
     /**
@@ -67,7 +89,11 @@ class PackagingController extends Controller
      */
     public function edit(Packaging $packaging)
     {
-        return view('admin.packaging.edit', compact('packaging'));
+        $categories = Category::all();
+        $subcategories = Subcategory::all();
+        $images = DB::table('product_images')->where('sku',$packaging->sku)->get();
+
+        return view('admin.packaging.edit', compact('packaging', 'categories', 'subcategories', 'images'));
     }
 
     /**
@@ -77,16 +103,31 @@ class PackagingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Packaging $packaging)
     {
-        $request->validate([
-            'name' => 'required:packaging',
-        ]);
+        $images=array();
+        
+        if($files=$request->file('images')){
+            foreach($files as $file){
+                $folder_to_save = 'product';
+                $image_name = uniqid() . "." . $file->extension();
+                $file->move(public_path('images/' . $folder_to_save), $image_name);
+                $images[] = $folder_to_save . "/" . $image_name;
+            }
+        }
 
-        Packaging::where('id', $id)->update(['name' => $request->input('name')]);
+        $packaging->update($request->all());
+
+        foreach ($images as $key => $data) {
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => $packaging->sku,
+                'image' => $data
+            ]);
+        }
 
         return redirect()->back()
-            ->with('success', 'Packaging name was updated.');
+            ->with('success', 'Packaging was updated.');
     }
 
     /**

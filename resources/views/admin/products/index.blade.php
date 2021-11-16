@@ -56,7 +56,7 @@
                                 <th>Price</th>
                                 <th>Volumes</th>
                                 <th>Packaging</th>
-                                <th>Closure</th>
+                                <th>Closures</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

@@ -144,31 +144,28 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
-                              <select class="form-control" name="packaging_id">
+                            <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
+                            multiple>
+                            @foreach ($packaging as $item)
                                 @php
-                                    $selected = $item->id == $product->packaging_id ? 'selected' : "";
+                                    $selected = in_array($item->id, $selected_packaging_arr) ? "selected" : "";
                                 @endphp
-                                @foreach ($packaging as $item)
-                                    <option {{$selected }} value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                              </select>
+                              <option {{$selected}} value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
+                            @endforeach
+                          </select>
                           </div>
 
-                          <div class="col-sm-12 col-md-6 mt-sm-2 packaging">
-                            <label class="col-form-label" for="choices-multiple-remove-button">Closure</label>
-                              <select class="form-control" name="cap_id">
-                                @foreach ($closures as $item)
+                          <div class="col-sm-12 col-md-6 mt-2 packaging">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
+                            <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
+                            multiple>
+                            @foreach ($packaging as $item)
                                 @php
-                                $selected = "";
-                                if($item->id == $product->cap_id) {
-                                    $selected = 'selected';
-                                }else {
-                                  continue;
-                                }
+                                    $selected = in_array($item->id, $selected_packaging_arr) ? "selected" : "";
                                 @endphp
-                                <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
-                              @endforeach
-                              </select>
+                              <option {{$selected}} value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
+                            @endforeach
+                          </select>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-sm-2">

@@ -15,8 +15,14 @@ class CreateClosuresTable extends Migration
     {
         Schema::create('closures', function (Blueprint $table) {
             $table->id();
+            $table->string('sku')->unique();
             $table->string('name');
-            $table->integer('packaging_id');
+            $table->decimal('price');
+            $table->text('description')->nullable();
+            $table->integer('category_id');
+            $table->integer('sub_category_id');
+            $table->string('size');
+            $table->string('volumes')->nullable();
             $table->timestamps();
         });
     }

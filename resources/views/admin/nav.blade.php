@@ -85,12 +85,12 @@
                   <p>Closures</p>
                 </a>
               </li>
-              <li class="nav-item">
+            <!--  <li class="nav-item">
                 <a href="{{ url('/size') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Size</p>
                 </a>
-              </li>
+              </li>-->
               <li class="nav-item">
                 <a href="{{ url('/variation') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

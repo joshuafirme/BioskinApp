@@ -52,10 +52,6 @@
                         @method('PUT')
                         <div class="row">
                             
-                            <div class="col-sm-12 col-md-6">
-                                <label class="col-form-label">Subcategory Name</label>
-                                <input type="text" class="form-control" name="name"  id="name" value="{{ $subcategory->name }}"  required>
-                            </div>
 
                             <div class="col-sm-12 col-md-6">
                                 <label class="col-form-label">Category</label>
@@ -67,6 +63,10 @@
                                         <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label class="col-form-label">Subcategory Name</label>
+                                <input type="text" class="form-control" name="name"  id="name" value="{{ $subcategory->name }}"  required>
                             </div>
 
                         <!--    <div class="col-sm-12 col-md-6 mt-2">    

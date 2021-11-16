@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function choices() {
+        var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+            removeItemButton: true,
+          });
         var textRemove = new Choices(document.getElementById('choices-text-remove-button'), {
             delimiter: ',',
             editItems: true,

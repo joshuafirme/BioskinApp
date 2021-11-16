@@ -2,13 +2,6 @@
 
 @section('content')
 
-<style>
-  .choices__button {
-    background-image: url('https://img.icons8.com/ios/50/000000/delete-sign--v1.png') !important;
-   
-  }
-</style>
-
 @php
     $page_title = "Bioskin | Create product";
 @endphp
@@ -63,6 +56,10 @@
                           <label class="col-form-label">Category</label>
                             <select class="form-control" name="category_id">
                               @foreach ($categories as $item)
+                                @php
+                                    if($item->name == 'Packaging')
+                                    continue;
+                                @endphp
                                   <option value="{{ $item->id }}">{{ $item->name }}</option>
                               @endforeach
                             </select>
@@ -110,12 +107,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Size</label>
-                              <select class="form-control" data-trigger  name="size_id">
-                                @foreach ($sizes as $item)
-                                  <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                                <option value="0">Set</option>
-                              </select>
+                              <input type="text" class="form-control" name="size" required>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
@@ -125,19 +117,24 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
-                              <select class="form-control" name="packaging_id">
-                                @foreach ($packaging as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                              </select>
+                            <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
+                            multiple>
+                            <option  value="0">Set</option>
+                            @foreach ($packaging as $item)
+                              <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
+                            @endforeach
+                          </select>
                           </div>
 
-                          <div class="col-sm-12 col-md-6 mt-sm-2 packaging">
-                            <label class="col-form-label" for="choices-multiple-remove-button">Closure</label>
-                              <select class="form-control" name="cap_id">
-                              </select>
+                          <div class="col-sm-12 col-md-6 mt-2 packaging">
+                            <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
+                            <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select closures"
+                            multiple>
+                            @foreach ($closures as $item)
+                            <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
+                            @endforeach
+                          </select>
                           </div>
-
                           <div class="col-sm-12 col-md-6 mt-sm-2">
                             <label class="col-form-label">Price</label>
                             <input type="number" step="any" class="form-control" name="price" required>

@@ -50,10 +50,19 @@ class ProductController extends Controller
                     }
                     return $html;
                 })
-                ->rawColumns(['action','volumes'])
+                ->addColumn('packaging', function($product){
+                    $packaging = json_decode($product->packaging, true);
+                    $html = "";
+                    foreach ($packaging as $data) {
+                        $html .= '<span class="badge badge-primary m-1">'.$data.'</span>';
+                    }
+                    return $html;
+                })
+                ->rawColumns(['action','volumes', 'packaging'])
                 ->make(true);
         }
     }
+
 
     public function create()
     {
@@ -61,7 +70,8 @@ class ProductController extends Controller
         $packaging = Packaging::all();
         $sizes = Size::all();
         $variations = Variation::all();
-        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations'));
+        $closures = Closures::all();
+        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations', 'closures'));
     }
 
     /**
@@ -89,7 +99,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required:product',
+            'sku' => 'required|unique:product',
         ]);
 
         $images=array();
@@ -101,15 +111,22 @@ class ProductController extends Controller
                 $images[] = $folder_to_save . "/" . $image_name;
             }
         }
-
+       // return $request->all();
         Product::create($request->all());
         
-        $last_id = DB::getPdo()->lastInsertId();
         foreach ($images as $key => $data) {
             DB::table('product_images')
             ->insert([ 
-                'product_id' => $last_id,
+                'sku' => $request['sku'],
                 'image' => $data
+            ]);
+        }
+
+        foreach ($request->packaging as $data) {
+            DB::table('product_packaging')
+            ->insert([ 
+                'sku' => $request['sku'],
+                'packaging_id' => $data
             ]);
         }
 
@@ -136,15 +153,21 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $request->validate([
+            'sku' => 'required|unique:packaging',
+        ]);
         $categories = Category::all();
+        $selected_packaging_arr = $product->packaging;
+
         $packaging = Packaging::all();
+
         $sizes = Size::all();
         $variations = Variation::all();
         $subcategories = Subcategory::all();
         $closures = Closures::all();
-        $images = DB::table('product_images')->where('product_id',$product->id)->get();
+        $images = DB::table('product_images')->where('sku',$product->id)->get();
 
-        return view('admin.products.edit', compact('product', 'categories', 'subcategories', 'packaging', 'closures', 'sizes', 'variations', 'images'));
+        return view('admin.products.edit', compact('product', 'categories', 'subcategories', 'selected_packaging_arr', 'packaging', 'closures', 'sizes', 'variations', 'images'));
     }
 
     /**
