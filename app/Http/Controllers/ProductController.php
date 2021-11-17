@@ -42,9 +42,9 @@ class ProductController extends Controller
                 })
                 ->addColumn('variation', function($product){ return $product->variation_id == 0 ? "None" : $product->variation; })
                 ->addColumn('volumes', function($product){
+                    $html = "";
                     $product->volumes = str_replace('"', '', $product->volumes);
                     $volumes = explode(",",$product->volumes);
-                    $html = "";
                     foreach ($volumes as $data) {
                         $html .= '<span class="badge badge-primary m-1">'.$data.'</span>';
                     }
@@ -52,17 +52,21 @@ class ProductController extends Controller
                 })
                 ->addColumn('packaging', function($product){
                     $html = "";
-                    $packaging_ids = json_decode($product->packaging);
-                    foreach ($this->readPackaging($packaging_ids) as $data) {
-                        $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
+                    if ($product->packaging) {
+                        $packaging_ids = json_decode($product->packaging);
+                        foreach ($this->readPackaging($packaging_ids) as $data) {
+                            $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
+                        }
                     }
                     return $html;
                 })
                 ->addColumn('closures', function($product){
                     $html = "";
-                    $closures_ids = json_decode($product->closures);
-                    foreach ($this->readClosures($closures_ids) as $data) {
-                        $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
+                    if ($product->closures) {
+                        $closures_ids = json_decode($product->closures);
+                        foreach ($this->readClosures($closures_ids) as $data) {
+                            $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
+                        }
                     }
                     return $html;
                 })
@@ -119,7 +123,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'sku' => 'required|unique:product',
+            'sku' => 'required|unique:products',
         ]);
 
         $images=array();
@@ -134,20 +138,24 @@ class ProductController extends Controller
        // return $request->all();
         Product::create($request->all());
         
-        foreach ($images as $key => $data) {
-            DB::table('product_images')
-            ->insert([ 
-                'sku' => $request['sku'],
-                'image' => $data
-            ]);
+        if ($images) {
+            foreach ($images as $key => $data) {
+                DB::table('product_images')
+                ->insert([ 
+                    'sku' => $request['sku'],
+                    'image' => $data
+                ]);
+            }
         }
 
-        foreach ($request->packaging as $data) {
-            DB::table('product_packaging')
-            ->insert([ 
-                'sku' => $request['sku'],
-                'packaging_id' => $data
-            ]);
+        if ($request->packaging) {
+            foreach ($request->packaging as $data) {
+                DB::table('product_packaging')
+                ->insert([ 
+                    'sku' => $request['sku'],
+                    'packaging_id' => $data
+                ]);
+            }
         }
 
         return redirect()->back()
