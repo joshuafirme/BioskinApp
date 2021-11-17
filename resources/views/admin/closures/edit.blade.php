@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $page_title = "Bioskin | Create closure";
+    $page_title = "Bioskin | Update closure";
 @endphp
 
 <div class="content-header"></div>
@@ -47,26 +47,79 @@
           <div class="col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('closures.update',$closure->id) }}" method="POST">
+                    <form action="{{ route('closures.update',$closure->id) }}" method="POST"  enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
-                                <label class="col-form-label">Closure Name</label>
-                                <input type="text" class="form-control" name="name"  id="name" value="{{ $closure->name }}" required>
+                                <label class="col-form-label">SKU</label>
+                                <input type="text" class="form-control" name="sku" value="{{ $closure->sku }}" required>
                             </div>
 
                             <div class="col-sm-12 col-md-6">
-                                <label class="col-form-label">Packaging</label>
-                                <select class="form-control" name="packaging_id">
-                                    @foreach ($packaging as $item)
-                                    @php
-                                        $selected = $item->id == $closure->packaging_id ? 'selected' : "";
-                                    @endphp
-                                <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label class="col-form-label">Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ $closure->name }}"  id="name" required>
                             </div>
+
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label">Category</label>
+                                  <select class="form-control" name="category_id">
+                                    @foreach ($categories as $item)
+                                    @php
+                                        $selected = $item->id == $closure->category_id ? 'selected' : "";
+                                    @endphp
+                                    <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                                  </select>
+                              </div>
+
+                              <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label">Sub Category</label>
+                                  <select class="form-control" name="sub_category_id">
+                                    @foreach ($subcategories as $item)
+                                    @php
+                                    if($item->id == $closure->sub_category_id) {
+                                        $selected = $item->id == $closure->sub_category_id ? 'selected' : "";
+                                    }else {
+                                      continue;
+                                    }
+                                    @endphp
+                                    <option {{ $selected }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                  @endforeach
+                                  </select>
+                              </div>
+    
+                              <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
+                                <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $closure->volumes }}" placeholder="Enter volume">
+                              </div>
+
+                              <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
+                                <label for="choices-single-default">Size</label>
+                                <input type="text" class="form-control" name="size" value="{{ $closure->size }}" required>
+                            </div>
+    
+                              <div class="col-sm-12 col-md-6 mt-sm-2">
+                                <label class="col-form-label">Price</label>
+                                <input type="number" step="any" class="form-control" name="price" value="{{ $closure->price }}" required>
+                              </div>
+    
+                              <div class="col-sm-12 col-md-12 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Add multiple images</label>
+                                <input type="file" class="form-control-file" name="images[]" placeholder="address" multiple accept=".jpg,.jpeg,.png">
+                              </div>
+                              @foreach ($images as $item)
+                              <div class="row mt-2">
+                                <div class="col-sm-12 col-md-3 col-lg-6 m-1 image-container">
+                                  <div class="card" style="width: 18rem;">
+                                    <input type="hidden" name="image_id" value="{{ $item->id }}">
+                                    <img src="{{ asset('images/'.$item->image) }}" class="card-img-top" style="height: 300px;background-size:cover; background-position:center;'"  alt="product image">
+                                    <a class="btn btn-sm btn-danger btn-delete-image" data-id="{{$item->id}}">Delete Photo</a>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                              @endforeach
     
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>

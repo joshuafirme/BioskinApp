@@ -51,16 +51,36 @@ class ProductController extends Controller
                     return $html;
                 })
                 ->addColumn('packaging', function($product){
-                    $packaging = json_decode($product->packaging, true);
                     $html = "";
-                    foreach ($packaging as $data) {
-                        $html .= '<span class="badge badge-primary m-1">'.$data.'</span>';
+                    $packaging_ids = json_decode($product->packaging);
+                    foreach ($this->readPackaging($packaging_ids) as $data) {
+                        $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
                     }
                     return $html;
                 })
-                ->rawColumns(['action','volumes', 'packaging'])
+                ->addColumn('closures', function($product){
+                    $html = "";
+                    $closures_ids = json_decode($product->closures);
+                    foreach ($this->readClosures($closures_ids) as $data) {
+                        $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
+                    }
+                    return $html;
+                })
+                ->rawColumns(['action','volumes', 'packaging', 'closures'])
                 ->make(true);
         }
+    }
+
+    public function readPackaging($packaging_ids) {
+        return DB::table('packaging')
+                ->select('name', 'size')
+                ->whereIn('id', $packaging_ids)->get();
+    }
+
+    public function readClosures($closures_ids) {
+        return DB::table('closures')
+                ->select('name', 'size')
+                ->whereIn('id', $closures_ids)->get();
     }
 
 
@@ -153,21 +173,20 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $request->validate([
-            'sku' => 'required|unique:packaging',
-        ]);
         $categories = Category::all();
-        $selected_packaging_arr = $product->packaging;
-
         $packaging = Packaging::all();
-
         $sizes = Size::all();
         $variations = Variation::all();
         $subcategories = Subcategory::all();
         $closures = Closures::all();
+        
+        $selected_packaging_arr = $product->packaging;
+        $selected_closures_arr = $product->closures;
+
         $images = DB::table('product_images')->where('sku',$product->id)->get();
 
-        return view('admin.products.edit', compact('product', 'categories', 'subcategories', 'selected_packaging_arr', 'packaging', 'closures', 'sizes', 'variations', 'images'));
+        return view('admin.products.edit', 
+        compact('product', 'categories', 'subcategories', 'selected_packaging_arr','selected_closures_arr', 'packaging', 'closures', 'sizes', 'variations', 'images'));
     }
 
     /**
@@ -179,6 +198,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $request->validate([
+            'sku' => 'required|unique:packaging',
+        ]);
         $images=array();
 
         if($files=$request->file('images')){
@@ -195,7 +217,7 @@ class ProductController extends Controller
         foreach ($images as $key => $data) {
             DB::table('product_images')
             ->insert([ 
-                'product_id' => $product->id,
+                'sku' => $product->id,
                 'image' => $data
             ]);
         }

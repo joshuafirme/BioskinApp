@@ -109,6 +109,11 @@
                             <textarea type="text" class="form-control" name="ingredients" rows="4">{{ $product->ingredients }}</textarea>
                           </div>
 
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Drections and Precautions</label>
+                            <textarea type="text" class="form-control" name="directions_and_precautions" rows="4">{{ $product->directions_and_precautions }}</textarea>
+                          </div>
+
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Variation</label>
                               <select class="form-control" data-trigger  name="variation_id">
@@ -124,14 +129,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Size</label>
-                              <select class="form-control" data-trigger  name="size_id">
-                                @php
-                                    $selected = $item->id == $product->size_id ? 'selected' : "";
-                                @endphp
-                                @foreach ($sizes as $item)
-                                  <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                              </select>
+                              <input type="text" class="form-control" name="size" value="{{ $product->size }}" required>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
@@ -148,7 +146,7 @@
                             multiple>
                             @foreach ($packaging as $item)
                                 @php
-                                    $selected = in_array($item->id, $selected_packaging_arr) ? "selected" : "";
+                                    $selected = $selected_packaging_arr && in_array($item->id, $selected_packaging_arr) ? "selected" : "";
                                 @endphp
                               <option {{$selected}} value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach
@@ -157,11 +155,11 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
-                            <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
+                            <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
-                            @foreach ($packaging as $item)
+                            @foreach ($closures as $item)
                                 @php
-                                    $selected = in_array($item->id, $selected_packaging_arr) ? "selected" : "";
+                                    $selected = $selected_closures_arr && in_array($item->id, $selected_closures_arr) ? "selected" : "";
                                 @endphp
                               <option {{$selected}} value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach

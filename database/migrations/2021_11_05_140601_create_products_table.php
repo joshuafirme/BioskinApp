@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->integer('variation_id')->nullable();
             $table->string('size')->nullable();
             $table->json('volumes')->nullable();
-            $table->json('packaging')->default(0);
+            $table->json('packaging')->nullable();
             $table->json('closures')->nullable();
             $table->tinyInteger('rebranding')->default(0);
             $table->timestamps();

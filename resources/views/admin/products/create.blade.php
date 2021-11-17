@@ -94,6 +94,11 @@
                             <label class="col-form-label">Ingredients</label>
                             <textarea type="text" class="form-control" name="ingredients" rows="4"></textarea>
                           </div>
+                          
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Drections and Precautions</label>
+                            <textarea type="text" class="form-control" name="directions_and_precautions" rows="4"></textarea>
+                          </div>
 
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Variation</label>

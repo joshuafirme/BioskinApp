@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Closures;
 use App\Models\Packaging;
 use App\Models\Category;
-
+use App\Models\Subcategory;
+use DB;
 class ClosuresController extends Controller
 {
     /**
@@ -94,8 +95,11 @@ class ClosuresController extends Controller
      */
     public function edit(Closures $closure)
     {
-        $packaging = Packaging::all();
-        return view('admin.closures.edit', compact('closure', 'packaging'));
+        $categories = Category::all();
+        $subcategories = Subcategory::all();
+        $images = DB::table('product_images')->where('sku',$closure->sku)->get();
+
+        return view('admin.closures.edit', compact('closure', 'categories', 'subcategories', 'images'));
     }
 
     /**
@@ -105,16 +109,28 @@ class ClosuresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Closures $closure)
     {
-        $request->validate([
-            'name' => 'required:closures',
-        ]);
+        $images=array();
+        
+        if($files=$request->file('images')){
+            foreach($files as $file){
+                $folder_to_save = 'product';
+                $image_name = uniqid() . "." . $file->extension();
+                $file->move(public_path('images/' . $folder_to_save), $image_name);
+                $images[] = $folder_to_save . "/" . $image_name;
+            }
+        }
 
-        Closures::where('id', $id)->update([
-            'name' => $request->input('name'),
-            'packaging_id' => $request->input('packaging_id')
-        ]);
+        $closure->update($request->all());
+
+        foreach ($images as $key => $data) {
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => $closure->sku,
+                'image' => $data
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Closures was updated.');

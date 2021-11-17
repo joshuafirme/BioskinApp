@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {data: 'price', name: 'price'},
                 {data: 'volumes',name: 'volumes'},
                 {data: 'packaging',name: 'packaging'}, 
-                {data: 'closure',name: 'closure'},    
+                {data: 'closures',name: 'closures'},    
                 {data: 'action', name: 'action',orderable: false},
            ]
           });
