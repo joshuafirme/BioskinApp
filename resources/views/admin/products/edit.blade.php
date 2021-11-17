@@ -111,7 +111,17 @@
 
                           <div class="col-sm-12 col-md-6 mt-2">
                             <label class="col-form-label">Drections and Precautions</label>
-                            <textarea type="text" class="form-control" name="directions_and_precautions" rows="4">{{ $product->directions_and_precautions }}</textarea>
+                            <textarea type="text" class="form-control" name="directions_and_precautions" rows="4">{{ $product->directions_and_precautions  }}</textarea>
+                          </div>
+
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Variation Code</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <a class="btn btn-outline-secondary" id="btn-generate-varation-code" type="button">Generate</a>
+                              </div>
+                              <input type="text" name="variation_code" value="{{ $product->variation_code  }}" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                            </div>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">

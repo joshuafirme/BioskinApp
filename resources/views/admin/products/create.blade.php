@@ -100,6 +100,17 @@
                             <textarea type="text" class="form-control" name="directions_and_precautions" rows="4"></textarea>
                           </div>
 
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Variation Code</label>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <a class="btn btn-outline-secondary" id="btn-generate-varation-code">Generate</a>
+                              </div>
+                              <input type="text" name="variation_code" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                            </div>
+                          </div>
+                          
+
                           <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                               <label for="choices-single-default">Variation</label>
                               <select class="form-control" data-trigger  name="variation_id">
@@ -124,7 +135,6 @@
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
                             <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
-                            <option  value="0">Set</option>
                             @foreach ($packaging as $item)
                               <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach
@@ -135,7 +145,7 @@
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select closures"
                             multiple>
-                            @foreach ($closures as $item)
+                            @foreach ($packaging as $item)
                             <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach
                           </select>

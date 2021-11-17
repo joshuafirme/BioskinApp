@@ -152,6 +152,17 @@ $(document).on('click', '.btn-delete-image', function(){
     });
   }); 
 
+
+  $(document).on('click', '#btn-generate-varation-code', function(){ 
+    $('[name=variation_code]').val(generateRandom());
+  }); 
+
+function generateRandom() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+}
+
 function initComponents()
 { 
     var category_id = $('select[name=category_id]').val();

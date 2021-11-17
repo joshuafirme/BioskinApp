@@ -3,13 +3,13 @@
 @section('content')
 
 @php
-    $page_title = "Bioskin | Create packaging";
+    $page_title = "Bioskin | Create Packaging/Closures";
 @endphp
 
 <div class="content-header"></div>
 
     <div class="page-header mb-3">
-        <h3 class="mt-2" id="page-title">Create Packaging</h3>
+        <h3 class="mt-2" id="page-title">Create Packaging/Closures</h3>
         <hr>
         <a href="{{ route('packaging.index') }}" class="btn btn-secondary btn-sm"><span class='fas fa-arrow-left'></span></a>
     </div>
