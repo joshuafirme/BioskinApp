@@ -11,6 +11,7 @@ use App\Models\Size;
 use App\Models\Variation;
 use DB;
 use App\Models\Closures;
+use App\Models\ProductPrice;
 
 class ProductController extends Controller
 {
@@ -38,13 +39,15 @@ class ProductController extends Controller
                 {
                     $button = ' <a class="btn btn-sm" data-id="'. $product->id .'" href="'. route('product.edit',$product->id) .'"><i class="fa fa-edit"></i></a>';
                     $button .= '&nbsp;&nbsp;';
+                    $button .= '<a data-id="'. $product->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;
                 })
                 ->addColumn('variation', function($product){ return $product->variation_id == 0 ? "None" : $product->variation; })
                 ->addColumn('volumes', function($product){
                     $html = "";
-                    $product->volumes = str_replace('"', '', $product->volumes);
-                    $volumes = explode(",",$product->volumes);
+                    $p = new ProductPrice;
+                    $volumes = $p->readVolumes($product->sku);
+                    $volumes = explode(",",$volumes);
                     foreach ($volumes as $data) {
                         $html .= '<span class="badge badge-primary m-1">'.$data.'</span>';
                     }
@@ -158,6 +161,20 @@ class ProductController extends Controller
             }
         }
 
+        if ($request['volumes'] != null) {
+            $volumes = explode(",",$request['volumes']);
+            
+            foreach ($volumes as $key => $data) {
+         
+                DB::table('product_price')
+                ->insert([ 
+                    'sku' => $request['sku'],
+                    'volume' => $data,
+                    'price' => $request['prices'][$key]
+                ]);
+            }
+        }
+
         return redirect()->back()
         ->with('success', 'Product was created.'); 
     }
@@ -179,7 +196,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Product $product, ProductPrice $p)
     {
         $categories = Category::all();
         $packaging = Packaging::all();
@@ -192,9 +209,10 @@ class ProductController extends Controller
         $selected_closures_arr = $product->closures;
 
         $images = DB::table('product_images')->where('sku',$product->id)->get();
+        $volumes = $p->readVolumes($product->sku);
 
         return view('admin.products.edit', 
-        compact('product', 'categories', 'subcategories', 'selected_packaging_arr','selected_closures_arr', 'packaging', 'closures', 'sizes', 'variations', 'images'));
+        compact('product', 'categories', 'subcategories', 'selected_packaging_arr','selected_closures_arr', 'packaging', 'closures', 'sizes', 'variations', 'images', 'volumes'));
     }
 
     /**
@@ -230,8 +248,34 @@ class ProductController extends Controller
             ]);
         }
 
+        if ($request['volumes'] != null) {
+            $volumes = explode(",",$request['volumes']);
+
+            foreach ($volumes as $key => $volume) {
+                if ($this->isVolumeExists($request['sku'], $volume)) {}
+                else {
+                    DB::table('product_price')
+                    ->insert([ 
+                        'sku' => $request['sku'],
+                        'volume' => $volume,
+                        'price' => $request['prices'][$key]
+                    ]);
+                   
+                }
+            }
+
+            
+        }
+
         return redirect()->back()
         ->with('success', 'Product was updated.'); 
+    }
+
+    public function isVolumeExists($sku, $volume) {
+        $res = DB::table('product_price')
+                    ->where('sku', $sku)
+                    ->where('volume', $volume)->get();
+        return count($res) > 0 ? true : false;
     }
 
     /**
@@ -240,8 +284,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function archive($id)
     {
-        //
+        //Product::where('id', $id)->update(['status' => 0]);
+        Product::where('id', $id)->delete();
+        return response()->json([
+            'status' =>  'success',
+            'message' => 'Data was archived.'
+        ], 200);
     }
 }

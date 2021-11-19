@@ -7,6 +7,7 @@ use App\Models\Packaging;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Size;
+use App\Models\ProductPrice;
 use DB;
 class PackagingController extends Controller
 {
@@ -15,11 +16,11 @@ class PackagingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProductPrice $product_volume)
     {
         $packaging = new Packaging;
         $packaging = $packaging->readAll();
-        return view('admin.packaging.index', compact('packaging'));
+        return view('admin.packaging.index', compact('packaging', 'product_volume'));
     }
 
     /**
@@ -43,7 +44,6 @@ class PackagingController extends Controller
     public function store(Request $request)
     {
         $images=array();
-
         if($files=$request->file('images')){
             foreach($files as $file){
                 $folder_to_save = 'product';
@@ -52,7 +52,7 @@ class PackagingController extends Controller
                 $images[] = $folder_to_save . "/" . $image_name;
             }
         }
-
+        
         Packaging::create($request->all());
         foreach ($images as $key => $data) {
             DB::table('product_images')
@@ -62,8 +62,35 @@ class PackagingController extends Controller
             ]);
         }
 
+        foreach ($images as $key => $data) {
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => $request['sku'],
+                'image' => $data
+            ]);
+        }
+   
+        if ($request['volumes'] != null) {
+            $volumes = explode(",",$request['volumes']);
+            
+            foreach ($volumes as $key => $data) {
+         
+                DB::table('product_price')
+                ->insert([ 
+                    'sku' => $request['sku'],
+                    'volume' => $data,
+                    'price' => $request['prices'][$key]
+                ]);
+            }
+        }
         return redirect()->back()
             ->with('success', 'Packaging was created.'); 
+    }
+
+    public function readPricePerVolume($sku)
+    {
+        $product_price = new ProductPrice;
+        return $product_price->readPricePerVolume($sku);
     }
 
     /**
@@ -83,13 +110,19 @@ class PackagingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Packaging $packaging)
+    public function edit(Packaging $packaging, ProductPrice $product_price)
     {
         $categories = Category::all();
         $subcategories = Subcategory::all();
         $images = DB::table('product_images')->where('sku',$packaging->sku)->get();
 
-        return view('admin.packaging.edit', compact('packaging', 'categories', 'subcategories', 'images'));
+        $volumes = $product_price->readVolumes($packaging->sku);
+        return view('admin.packaging.edit', compact('packaging', 'categories', 'subcategories', 'images', 'volumes'));
+    }
+
+    public function removePricePerVolume(ProductPrice $p) 
+    {
+        return $p->removePricePerVolume(request()->sku, request()->volume);
     }
 
     /**
@@ -100,7 +133,25 @@ class PackagingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Packaging $packaging)
-    {
+    { 
+        if ($request['volumes'] != null) {
+            $volumes = explode(",",$request['volumes']);
+
+            foreach ($volumes as $key => $volume) {
+                if ($this->isVolumeExists($request['sku'], $volume)) {}
+                else {
+                    DB::table('product_price')
+                    ->insert([ 
+                        'sku' => $request['sku'],
+                        'volume' => $volume,
+                        'price' => $request['prices'][$key]
+                    ]);
+                   
+                }
+            }
+
+            
+        }
         $images=array();
         
         if($files=$request->file('images')){
@@ -124,6 +175,13 @@ class PackagingController extends Controller
 
         return redirect()->back()
             ->with('success', 'Packaging was updated.');
+    }
+
+    public function isVolumeExists($sku, $volume) {
+        $res = DB::table('product_price')
+                    ->where('sku', $sku)
+                    ->where('volume', $volume)->get();
+        return count($res) > 0 ? true : false;
     }
 
     /**

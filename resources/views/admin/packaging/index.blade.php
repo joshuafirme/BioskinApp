@@ -63,11 +63,14 @@
                             <td>{{ $data->subcategory }}</td>
                             <td>
                             @php
-                              $volumes = explode(",",$data->volumes);
+                              $volumes = $product_volume->readVolumes($data->sku);
+                              $volumes = explode(",",$volumes);
                             @endphp
-                            @foreach ($volumes as $volume) 
-                                <span class="badge badge-primary m-1">{{$volume}}</span>
-                            @endforeach
+                            @if(count($volumes) > 0) 
+                                @foreach ($volumes as $volume) 
+                                    <span class="badge badge-primary m-1">{{$volume}}</span>
+                                @endforeach
+                            @endif
                             </td>
                             <td>{{ $data->size }}</td>
                             <td>{{ $data->price }}</td>

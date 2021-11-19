@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomePageController@index');
 
 Route::resource('/product', 'ProductController');
+Route::post('/product/archive/{id}', 'ProductController@archive');
 Route::get('/read-product', 'ProductController@readAllProduct');
 Route::post('/delete-image/{id}', 'ProductController@deleteImage');
 Route::resource('/category', 'CategoryController');
@@ -29,3 +30,6 @@ Route::get('/read-closures/{packaging_id}', 'ClosuresController@readClosuresByPa
 Route::resource('/size', 'SizeController');
 Route::resource('/variation', 'VariationController');
 Route::resource('/carousel', 'CarouselController');
+
+Route::get('/read-price-per-volume/{sku}', 'PackagingController@readPricePerVolume');
+Route::post('/remove-price-per-volume', 'PackagingController@removePricePerVolume');

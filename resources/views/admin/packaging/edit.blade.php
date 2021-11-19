@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $page_title = "Bioskin | Create packaging";
+    $page_title = "Bioskin | Update packaging";
 @endphp
 
 <div class="content-header"></div>
@@ -91,7 +91,7 @@
     
                               <div class="col-sm-12 col-md-6 mt-2">
                                 <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
-                                <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $packaging->volumes }}" placeholder="Enter volume">
+                                <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $volumes }}" placeholder="Enter volume">
                               </div>
 
                               <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
@@ -100,8 +100,13 @@
                             </div>
     
                               <div class="col-sm-12 col-md-6 mt-sm-2">
-                                <label class="col-form-label">Price</label>
+                                <label class="col-form-label">Retail Price</label>
                                 <input type="number" step="any" class="form-control" name="price" value="{{ $packaging->price }}" required>
+                              </div>
+
+                              <div class="col-md-12">
+                                <div class="row price-container"> 
+                                </div>
                               </div>
     
                               <div class="col-sm-12 col-md-12 mt-2">

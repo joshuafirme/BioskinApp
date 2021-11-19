@@ -125,10 +125,20 @@
                               <label for="choices-single-default">Size</label>
                               <input type="text" class="form-control" name="size" required>
                           </div>
+                          
+                          <div class="col-sm-12 col-md-6 mt-sm-2">
+                            <label class="col-form-label">Retail Price</label>
+                            <input type="number" step="any" class="form-control" name="price" required>
+                          </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
                             <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
                             <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="" placeholder="Enter volume">
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="row price-container"> 
+                            </div>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
@@ -149,10 +159,6 @@
                             <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach
                           </select>
-                          </div>
-                          <div class="col-sm-12 col-md-6 mt-sm-2">
-                            <label class="col-form-label">Price</label>
-                            <input type="number" step="any" class="form-control" name="price" required>
                           </div>
 
                           <div class="col-sm-12 mt-3">
