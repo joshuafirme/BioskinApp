@@ -47,9 +47,6 @@ class ClosuresController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'sku' => 'required|unique:packaging',
-        ]);
 
         $images=array();
 
