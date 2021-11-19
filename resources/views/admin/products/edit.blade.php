@@ -167,7 +167,7 @@
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
-                            @foreach ($closures as $item)
+                            @foreach ($packaging as $item)
                                 @php
                                     $selected = $selected_closures_arr && in_array($item->id, $selected_closures_arr) ? "selected" : "";
                                 @endphp

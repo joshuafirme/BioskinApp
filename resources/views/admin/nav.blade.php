@@ -79,13 +79,13 @@
                   <p>Packaging</p>
                 </a>
               </li>
-              <li class="nav-item">
+            <!--  <li class="nav-item">
                 <a href="{{ url('/closures') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Closures</p>
                 </a>
               </li>
-            <!--  <li class="nav-item">
+              <li class="nav-item">
                 <a href="{{ url('/size') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Size</p>

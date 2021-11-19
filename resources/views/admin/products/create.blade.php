@@ -145,7 +145,7 @@
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select closures"
                             multiple>
-                            @foreach ($closures as $item)
+                            @foreach ($packaging as $item)
                             <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
                             @endforeach
                           </select>
