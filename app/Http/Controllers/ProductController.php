@@ -252,7 +252,14 @@ class ProductController extends Controller
             $volumes = explode(",",$request['volumes']);
 
             foreach ($volumes as $key => $volume) {
-                if ($this->isVolumeExists($request['sku'], $volume)) {}
+                if ($this->isVolumeExists($request['sku'], $volume)) {
+                    DB::table('product_price')
+                    ->where('sku', $request['sku'])
+                    ->where('volume', $volume)
+                    ->update([ 
+                        'price' => $request['prices'][$key]
+                    ]);
+                }
                 else {
                     DB::table('product_price')
                     ->insert([ 
