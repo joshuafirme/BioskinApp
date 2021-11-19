@@ -68,14 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           });
     }
-    
     function populatePriceDOM(data){
         $.each(data, function(i, v){  
-            var price_html = '<div class="col-sm-12 col-md-3 col-lg-2 mt-sm-2 price-input-'+data[i].volume+'">';
+            var price_html = "";
+            price_html += '<div class="col-sm-12 col-md-3 col-lg-2 mt-sm-2 price-input-'+data[i].volume+'">';
             price_html += '<label class="col-form-label price-label-'+data.volume+'">Price for '+data[i].volume+' volume</label>';
             price_html += '<input class="form-control choices-text-remove-button" name="prices[]" type="number" step="any" value="'+data[i].price+'" required></div>' ; 
-
         $('.price-container').append(price_html);
+        $('.loader-container').remove();
         });
     }
     function choices() {

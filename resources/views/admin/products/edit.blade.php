@@ -154,6 +154,9 @@
 
                           <div class="col-md-12">
                             <div class="row price-container"> 
+                              <div class="loader-container mt-2">
+                                <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                              </div>
                             </div>
                           </div>
 

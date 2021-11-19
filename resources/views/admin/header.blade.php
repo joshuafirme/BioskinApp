@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('plugins/choices.min.css?version=3.0.3')}}">
+    <link rel="stylesheet" href="{{asset('css/custom.css?v='.time())}}">
     <script src="{{asset('plugins/choices.min.js?version=3.0.3')}}"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
