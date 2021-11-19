@@ -88,11 +88,6 @@
                                   @endforeach
                                   </select>
                               </div>
-    
-                              <div class="col-sm-12 col-md-6 mt-2">
-                                <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
-                                <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $volumes }}" placeholder="Enter volume">
-                              </div>
 
                               <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                                 <label for="choices-single-default">Size</label>
@@ -102,6 +97,11 @@
                               <div class="col-sm-12 col-md-6 mt-sm-2">
                                 <label class="col-form-label">Retail Price</label>
                                 <input type="number" step="any" class="form-control" name="price" value="{{ $packaging->price }}" required>
+                              </div>
+    
+                              <div class="col-sm-12 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
+                                <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $volumes }}" placeholder="Enter volume">
                               </div>
 
                               <div class="col-md-12">

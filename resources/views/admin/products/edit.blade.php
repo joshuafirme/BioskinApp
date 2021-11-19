@@ -147,7 +147,7 @@
                             <input type="number" step="any" class="form-control" name="price" value="{{ $product->price }}" required>
                           </div>
 
-                          <div class="col-sm-12 col-md-12 mt-2">
+                          <div class="col-sm-12 mt-2">
                             <label class="col-form-label" for="choices-multiple-remove-button">Volumes</label>
                             <input class="form-control" name="volumes" id="choices-text-remove-button" type="text" value="{{ $volumes }}" placeholder="Enter volume">
                           </div>
