@@ -14,6 +14,15 @@
       -moz-box-shadow: none;
       box-shadow: none;
     }
+    .second-row .card{
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+    .second-row img{
+      object-fit: contain !important;
+      height: 330px;
+    }
     .swiper-button-next,.swiper-button-prev{
         border: 0px !important;
         background: transparent;
@@ -62,6 +71,88 @@
     .fa-check{
       color:#3BC265; 
     }
+
+    .bs4-order-tracking {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: #878788;
+    padding-left: 0px;
+    margin-top: 30px
+}
+
+.bs4-order-tracking li {
+    list-style-type: none;
+    font-size: 13px;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: #878788;
+    text-align: center
+}
+
+.bs4-order-tracking li:first-child:before {
+    margin-left: 15px !important;
+    padding-left: 11px !important;
+    text-align: left !important
+}
+
+.bs4-order-tracking li:last-child:before {
+    margin-right: 5px !important;
+    padding-right: 11px !important;
+    text-align: right !important
+}
+
+.bs4-order-tracking li>div {
+    color: #fff;
+    width: 29px;
+    text-align: center;
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: #878788;
+    border-radius: 50%;
+    margin: auto
+}
+
+.bs4-order-tracking li:after {
+    content: '';
+    width: 150%;
+    height: 2px;
+    background: #878788;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 15px;
+    z-index: -1
+}
+
+.bs4-order-tracking li:first-child:after {
+    left: 50%
+}
+
+.bs4-order-tracking li:last-child:after {
+    left: 0% !important;
+    width: 0% !important
+}
+
+.bs4-order-tracking li.active {
+    font-weight: bold;
+}
+
+.bs4-order-tracking li.active>div {
+    background: #3BC265
+}
+
+.bs4-order-tracking li.active:after {
+    background: #3BC265;
+}
+
+.card-timeline {
+    background-color: #fff;
+    z-index: 0;
+    box-shadow: none;
+}
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -153,6 +244,71 @@
         <h3 class="text-muted text-center wording-2">Build an ethical, natural, and professional skincare brand with us
         </h3>
       </div>
+      <div class="col-md-12  col-lg-4" style="padding:0;">
+          <div class="card card-timeline">
+            <ul class="bs4-order-tracking">
+                <li class="step active"></li>
+                <li class="step active">
+                    <div><i class="fas fa-flask"></i></div> Formulation
+                </li>
+                <li class="step active">
+                    <div><i class="fas fa-check-circle"></i></div> Stability Testing
+                </li>
+                <li class="step active">
+                    <div><i class="fas fa-cube"></i></div> Packaging Solutions
+                </li>
+                <li class="step active"></li> 
+                <li class="step active"></li>
+              
+            </ul>
+            
+        </div>
+      </div>
+      <div class="col-md-12  col-lg-4" style=" padding:0;">
+        <div class="card card-timeline">
+          <ul class="bs4-order-tracking">
+              <li class="step active"></li>
+              <li class="step active">
+                <div><i class="fas fa-bread-slice"></i></div> Compounding
+              </li>
+              <li class="step active">
+                  <div><i class="fas fa-burn"></i></div> Filling
+              </li>
+              <li class="step active">
+                  <div><i class="fas fa-tags"></i></div> Labelling
+              </li>
+              <li class="step active">
+                <div><i class="fas fa-flag-checkered"></i></div> Finish Goods
+            </li>
+              <li class="step active"></li>
+          </ul>
+      </div>
+    </div>
+    <div class="col-md-12  col-lg-4" style=" padding:0;">
+      <div class="card card-timeline">
+        <ul class="bs4-order-tracking third-order-tracking">
+          <li class="step active"></li> 
+            <li class="step active">
+              <div><i></i></div>&#8203;
+            </li>
+            <li class="step active">
+                <div><i class="fas fa-warehouse"></i></div> Warehousing
+            </li>
+            <li class="step active">
+              <div><i class="fas fa-truck-moving"></i></div> Shipping
+          </li>
+            <li class="step active"></li> 
+            <li class="step active"></li>
+        </ul>
+        
+    </div>
+  </div>
+    </div>
+    
+    <div class="row m-5 second-row justify-content-center">
+      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/fomulation.png') }}" alt=""></div></div>
+      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/finish_goods.png') }}" alt=""></div></div>
+      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/shipping.png') }}" alt=""></div></div>
     </div>
 
     <div class="row m-5">
