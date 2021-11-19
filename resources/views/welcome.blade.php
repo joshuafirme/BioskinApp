@@ -239,7 +239,7 @@
       </div>
     </div>
 
-    <div class="row m-5">
+    <div class="row ml-5 mr-5 mt-4">
       <div class="col-sm-12">
         <h3 class="text-muted text-center wording-2">Build an ethical, natural, and professional skincare brand with us
         </h3>
@@ -305,10 +305,10 @@
   </div>
     </div>
     
-    <div class="row m-5 second-row justify-content-center">
-      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/fomulation.png') }}" alt=""></div></div>
-      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/finish_goods.png') }}" alt=""></div></div>
-      <div class="card"><div class="col-sm-12 col-md-4"><img src="{{ asset('images/shipping.png') }}" alt=""></div></div>
+    <div class="row second-row justify-content-center">
+      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/fomulation.png') }}" alt=""></div></div>
+      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/finish_goods.png') }}" alt=""></div></div>
+      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/shipping.png') }}" alt=""></div></div>
     </div>
 
     <div class="row m-5">
