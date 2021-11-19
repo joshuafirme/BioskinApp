@@ -58,6 +58,10 @@
         line-height: 20px;
       }
     }
+
+    .fa-check{
+      color:#3BC265; 
+    }
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -98,30 +102,56 @@
       <span class="m-3">Plant-based & cruelty-free</span>|<span class="m-3">Over 10 years of manufacturing experience</span>
     </p>
 
-    <div class="row m-5 card-first-imgs">
+    <div class="row ml-5 mr-5 card-first-imgs">
       <div class="col-sm-12 col-md-6 col-lg-3">
         <div class="card m-2">
           <img class="card-img-top mt-5 mb-5" src="{{ asset('images/iso.png') }}" height="330px" alt="Card image cap">
-          
+        </div>
+        <div class="p-3">
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Client confidence and assurance</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Business growth opportunities</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Continuous quality management system implementation</span> </div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Consistent internal operations</span> </div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Continuous improvement efforts</span> </div>
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-3">
         <div class="card m-2">
           <img class="card-img-top mt-5 mb-5" src="{{ asset('images/fda.png') }}" height="330px" alt="Card image cap">
-          
+        </div>
+        <div class="p-3">
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Safety</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Quality</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Purity</span> </div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Efficacy</span> </div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Protect and promote general public health</span> </div>
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-3">
         <div class="card m-2">
           <img class="card-img-top mt-5 mb-5" src="{{ asset('images/crueltyfree.png') }}" height="330px" alt="Card image cap">
-          
+        </div>
+        <div class="p-3">
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Not tested on animals</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">No animal derived ingredients</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Plant-based</span> </div>
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-3">
         <div class="card m-2">
           <img class="card-img-top mt-5 mb-5" src="{{ asset('images/peta.png') }}" height="330px" alt="Card image cap">
-          
         </div>
+        <div class="p-3">
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">People for the Ethical Treatment of Animals (PETA) Member</span></div>
+          <div class="m-1"><i class="fa fa-check"></i> <span class="text-bold text-muted">Establishes and defends animal rights</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-5">
+      <div class="col-sm-12">
+        <h3 class="text-muted text-center wording-2">Build an ethical, natural, and professional skincare brand with us
+        </h3>
       </div>
     </div>
 

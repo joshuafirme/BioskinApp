@@ -13,15 +13,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- Theme style -->
-  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="{{asset('css/custom.css?v='.rand())}}">
   <link rel="icon" href="{{ asset('/images/logo.png') }}" type="image/x-icon"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
   <style>
     .content-wrapper {
       background-color: #FFF;
+    }
+    body,.wordings{
+      font-family: 'Lato', sans-serif !important;
     }
   </style>
 </head>
