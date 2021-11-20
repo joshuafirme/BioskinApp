@@ -81,23 +81,23 @@
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
-                            <label class="col-form-label">Features</label>
-                            <textarea type="text" class="form-control" name="features" rows="4"></textarea>
+                            <label class="col-form-label">Description</label>
+                            <textarea type="text" class="form-control" name="description" rows="4"></textarea>
+                          </div>
+                          
+                          <div class="col-sm-12 col-md-6 mt-2">
+                            <label class="col-form-label">Directions</label>
+                            <textarea type="text" class="form-control" name="directions" rows="4"></textarea>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
-                            <label class="col-form-label">Description</label>
-                            <textarea type="text" class="form-control" name="description" rows="4"></textarea>
+                            <label class="col-form-label">Precautions</label>
+                            <textarea type="text" class="form-control" name="precautions" rows="4"></textarea>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
                             <label class="col-form-label">Ingredients</label>
                             <textarea type="text" class="form-control" name="ingredients" rows="4"></textarea>
-                          </div>
-                          
-                          <div class="col-sm-12 col-md-6 mt-2">
-                            <label class="col-form-label">Drections and Precautions</label>
-                            <textarea type="text" class="form-control" name="directions_and_precautions" rows="4"></textarea>
                           </div>
 
                           <div class="col-sm-12 col-md-6 mt-2">
