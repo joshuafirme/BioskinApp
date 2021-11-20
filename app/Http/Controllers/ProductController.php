@@ -67,7 +67,7 @@ class ProductController extends Controller
                     $html = "";
                     if ($product->closures) {
                         $closures_ids = json_decode($product->closures);
-                        foreach ($this->readClosures($closures_ids) as $data) {
+                        foreach ($this->readPackaging($closures_ids) as $data) {
                             $html .= '<span class="badge badge-primary m-1">'. $data->name .' '. $data->size . '</span>';
                         }
                     }
