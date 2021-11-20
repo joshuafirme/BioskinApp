@@ -341,10 +341,6 @@
     </div>
 
   </div>
-    
-        <div class="loader-container">
-          <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      </div>
         <div class="row" id="product-container" style="min-height: 700px;"></div>
         
   </div>
