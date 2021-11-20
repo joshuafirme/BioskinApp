@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
             price_html += '<label class="col-form-label price-label-'+data.volume+'">Price for '+data[i].volume+' volume</label>';
             price_html += '<input class="form-control choices-text-remove-button" name="prices[]" type="number" step="any" value="'+data[i].price+'" required></div>' ; 
         $('.price-container').append(price_html);
-        $('.loader-container').remove();
         });
+        $('.loader-container').remove();
     }
     function choices() {
         if ($('#choices-multiple-remove-button').length > 0) {
