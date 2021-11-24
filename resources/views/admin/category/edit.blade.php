@@ -60,7 +60,11 @@
                                 <label class="col-form-label">Image</label>
                                 <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png" required>
                             </div>
-    
+
+                            <div class="col-sm-12 mt-4">
+                                <img src="{{ asset('images/'.$category->image) }}" style="height: 300px;background-size:cover; background-position:center;'"  alt="product image">
+                            </div>
+
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>
                                 <a href="{{ route('category.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>
