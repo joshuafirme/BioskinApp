@@ -17,7 +17,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('/') }}" class="nav-link">
+              <a href="{{ url('/shop') }}" class="nav-link">
                 Shop
               </a>
             </li>

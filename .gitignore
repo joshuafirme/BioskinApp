@@ -2,6 +2,7 @@
 /public/hot
 /public/images/product
 /public/images/carousel
+/public/images/categories
 /public/storage
 /storage/*.key
 /vendor

@@ -31,22 +31,33 @@
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    var column_count = 3;
+    var column_count = 4;
     var height = 380;
-    if(jQuery(document).width() < 780){
+    if(jQuery(document).width() < 480){
         column_count = 1;
+        height = 260; console.log('1')
     }
-
-    else if(jQuery(document).width() < 1200){
+    else if(jQuery(document).width() < 680){
+        column_count = 1;
+        height = 460; 
+    }
+    else if(jQuery(document).width() < 780){
+        column_count = 1;
+        height = 450;
+    }
+    else if(jQuery(document).width() < 1280){
         column_count = 2;
+        height = 300;
+    }
+    else if(jQuery(document).width() < 1600){
+        column_count = 3;
         height = 330;
     }
 
     var splide = new Splide( '#secondary-slider', {
               perPage    : column_count,
-              height     : height+'px',
               cover      : true,
-              gap: 25,
+              gap: 10,
               rewind: true,
               cover: true,
               pagination: true,

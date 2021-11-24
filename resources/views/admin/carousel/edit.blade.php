@@ -1,17 +1,17 @@
-@extends('admin.category.layout')
+@extends('admin.carousel.layout')
 
 @section('content')
 
 @php
-    $page_title = "Bioskin | Create Category";
+    $page_title = "Bioskin | Create carousel";
 @endphp
 
 <div class="content-header"></div>
 
     <div class="page-header mb-3">
-        <h3 class="mt-2" id="page-title">Update Category</h3>
+        <h3 class="mt-2" id="page-title">Update carousel</h3>
         <hr>
-        <a href="{{ route('category.index') }}" class="btn btn-secondary btn-sm"><span class='fas fa-arrow-left'></span></a>
+        <a href="{{ route('carousel.index') }}" class="btn btn-secondary btn-sm"><span class='fas fa-arrow-left'></span></a>
     </div>
 
         @if(count($errors)>0)
@@ -47,26 +47,22 @@
           <div class="col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('category.update',$category->id) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <form action="{{ route('carousel.update',$carousel->id) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <div class="col-sm-12 col-md-6 mt-2">
-                                <label class="col-form-label">Category Name</label>
-                                <input type="text" class="form-control" name="name"  id="name" value="{{ $category->name }}"  required>
+                            <div class="col-sm-12 col-md-6">
+                                <label class="col-form-label">Image</label>
+                                <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png" required>
                             </div>
-
-                        <!--    <div class="col-sm-12 col-md-6 mt-2">    
-                              <label class="col-form-label">Status</label>
-                              <select class="form-control" name="status" id="status">
-                                  <option selected value="1" // $category->status == 1 ? 'selected' : '' }}>Active</option>
-                                  <option value="0" // $category->status == 0 ? 'selected' : '' }}>Inactive</option>
-                              </select>
-                            </div>-->
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label">Order #</label>
+                                <input type="number" min="1" class="form-control" name="order" value="{{ $order }}" required>
+                            </div>
     
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>
-                                <a href="{{ route('category.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>
+                                <a href="{{ route('carousel.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>
                               </div>
                               
                 

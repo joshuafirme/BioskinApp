@@ -43,6 +43,22 @@ class ProductController extends Controller
                     return $button;
                 })
                 ->addColumn('variation', function($product){ return $product->variation_id == 0 ? "None" : $product->variation; })
+                ->addColumn('category', function($product){
+                    $html = "";
+                    $categories = $this->readCategories($product->category_id);
+                    foreach ($categories as $data) {
+                        $html .= '<span class="badge badge-primary m-1">'.$data->name.'</span>';
+                    }
+                    return $html;
+                })
+                ->addColumn('subcategory', function($product){
+                    $html = "";
+                    $sub_categories = $this->readSubCategories($product->sub_category_id);
+                    foreach ($sub_categories as $data) {
+                        $html .= '<span class="badge badge-primary m-1">'.$data->name.'</span>';
+                    }
+                    return $html;
+                })
                 ->addColumn('volumes', function($product){
                     $html = "";
                     $p = new ProductPrice;
@@ -73,11 +89,20 @@ class ProductController extends Controller
                     }
                     return $html;
                 })
-                ->rawColumns(['action','volumes', 'packaging', 'closures'])
+                ->rawColumns(['action','volumes', 'packaging', 'closures', 'category', 'subcategory'])
                 ->make(true);
         }
     }
-
+    public function readCategories($ids) {
+        $ids = explode(', ', $ids);
+        return DB::table('category')
+                ->whereIn('id', $ids)->get('name');
+    }
+    public function readSubCategories($ids) {
+        $ids = explode(', ', $ids);
+        return DB::table('subcategory')
+                ->whereIn('id', $ids)->get('name');
+    }
     public function readPackaging($packaging_ids) {
         return DB::table('packaging')
                 ->select('name', 'size')
@@ -98,7 +123,8 @@ class ProductController extends Controller
         $sizes = Size::all();
         $variations = Variation::all();
         $closures = Closures::all();
-        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations', 'closures'));
+        $subcategories = Subcategory::all();
+        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations', 'closures', 'subcategories'));
     }
 
     /**
@@ -128,6 +154,9 @@ class ProductController extends Controller
         $request->validate([
             'sku' => 'required|unique:products',
         ]);
+
+        $request['category_id'] = implode(", ",$request->category_id);
+        $request['sub_category_id'] = implode(", ",$request->sub_category_id);
 
         $images=array();
         if($files=$request->file('images')){
@@ -205,6 +234,8 @@ class ProductController extends Controller
         $subcategories = Subcategory::all();
         $closures = Closures::all();
         
+        $selected_category_arr = explode(", ", $product->category_id);
+        $selected_subcategory_arr = explode(", ", $product->sub_category_id);
         $selected_packaging_arr = $product->packaging;
         $selected_closures_arr = $product->closures;
 
@@ -212,7 +243,7 @@ class ProductController extends Controller
         $volumes = $p->readVolumes($product->sku);
 
         return view('admin.products.edit', 
-        compact('product', 'categories', 'subcategories', 'selected_packaging_arr','selected_closures_arr', 'packaging', 'closures', 'sizes', 'variations', 'images', 'volumes'));
+        compact('product', 'categories', 'subcategories','selected_subcategory_arr', 'selected_category_arr', 'selected_packaging_arr','selected_closures_arr', 'packaging', 'closures', 'sizes', 'variations', 'images', 'volumes'));
     }
 
     /**
@@ -227,6 +258,10 @@ class ProductController extends Controller
         $request->validate([
             'sku' => 'required|unique:packaging',
         ]);
+ 
+        $request['category_id'] = implode(", ",$request->category_id);
+        $request['sub_category_id'] = implode(", ",$request->sub_category_id);
+
         $images=array();
 
         if($files=$request->file('images')){

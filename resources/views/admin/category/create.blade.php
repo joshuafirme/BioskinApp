@@ -47,7 +47,7 @@
           <div class="col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('category.store') }}" method="POST">
+                    <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12 col-md-6">

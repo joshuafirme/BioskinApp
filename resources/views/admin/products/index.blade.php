@@ -44,7 +44,7 @@
           <div class="col-md-12 col-lg-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-bordered table-striped table-hover tbl-product">
+                    <table class="table table-bordered table-hover tbl-product">
                         <thead>
                             <tr>
                                 <th>SKU</th>

@@ -41,12 +41,8 @@ class Product extends Model
     {
         return DB::table('products as P')
             ->select("P.*", 'P.id as id',
-                    'C.name as category',
-                    'S.name as subcategory',
                     'V.name as variation',
                     )
-            ->leftJoin('subcategory as S', 'S.id', '=', 'P.sub_category_id')
-            ->leftJoin('category as C', 'C.id', '=', 'P.category_id')
             ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
             ->get();
     }

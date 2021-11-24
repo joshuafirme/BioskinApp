@@ -52,23 +52,28 @@
                       @csrf
                       <div class="row">
 
-                        <div class="col-sm-12 col-md-6 mt-2">
-                          <label class="col-form-label">Category</label>
-                            <select class="form-control" name="category_id">
-                              @foreach ($categories as $item)
-                                @php
-                                    if($item->name == 'Packaging')
-                                    continue;
-                                @endphp
-                                  <option value="{{ $item->id }}">{{ $item->name }}</option>
-                              @endforeach
-                            </select>
+                        <div class="col-sm-12 col-md-6 mt-2 packaging">
+                          <label class="col-form-label" for="choices-multiple-remove-button">Category</label>
+                          <select class="form-control" name="category_id[]" id="choices-multiple-remove-button" placeholder="Select category" required
+                          multiple>
+                          @foreach ($categories as $item)
+                          @php
+                              if($item->name == 'Packaging')
+                              continue;
+                          @endphp
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                        </select>
                         </div>
 
-                        <div class="col-sm-12 col-md-6 mt-2">
-                          <label class="col-form-label">Sub Category</label>
-                            <select class="form-control" name="sub_category_id">
-                            </select>
+                        <div class="col-sm-12 col-md-6 mt-2 packaging">
+                          <label class="col-form-label" for="choices-multiple-remove-button">Subcategory</label>
+                          <select class="form-control" name="sub_category_id[]" id="choices-multiple-remove-button" placeholder="Select subcategory" required
+                          multiple>
+                          @foreach ($subcategories as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                        </select>
                         </div>
                           <div class="col-sm-12 col-md-6 mt-2">
                             <label class="col-form-label">SKU</label>

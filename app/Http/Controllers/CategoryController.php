@@ -42,7 +42,16 @@ class CategoryController extends Controller
             'name' => 'required|unique:category',
         ]);
 
-        Category::create($request->all());
+        $input = $request->all();
+
+        if($request->hasFile('image')){    
+            $folder_to_save = 'categories';
+            $image_name = uniqid() . "." . $request->image->extension();
+            $request->image->move(public_path('images/' . $folder_to_save), $image_name);
+            $input['image'] = $folder_to_save . "/" . $image_name;
+        }
+
+        Category::create($input);
 
         return redirect()->back()
             ->with('success', 'category was created.');
@@ -83,9 +92,19 @@ class CategoryController extends Controller
             'name' => 'required:category',
         ]);
 
+        $input = $request->all();
+
+        if($request->hasFile('image')){    
+            $folder_to_save = 'categories';
+            $image_name = uniqid() . "." . $request->image->extension();
+            $request->image->move(public_path('images/' . $folder_to_save), $image_name);
+            $input['image'] = $folder_to_save . "/" . $image_name;
+        }
+
         Category::where('id', $id)->update([
             'name' => $request->input('name'),
-            'status' => 1
+            'status' => 1,
+            'image' => $input['image']
         ]);
 
         return redirect()->back()

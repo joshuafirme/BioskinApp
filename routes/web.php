@@ -33,3 +33,5 @@ Route::resource('/carousel', 'CarouselController');
 
 Route::get('/read-price-per-volume/{sku}', 'PackagingController@readPricePerVolume');
 Route::post('/remove-price-per-volume', 'PackagingController@removePricePerVolume');
+
+Route::get('/shop', 'ShopController@index');
