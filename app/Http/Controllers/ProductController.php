@@ -239,7 +239,7 @@ class ProductController extends Controller
         $selected_packaging_arr = $product->packaging;
         $selected_closures_arr = $product->closures;
 
-        $images = DB::table('product_images')->where('sku',$product->id)->get();
+        $images = DB::table('product_images')->where('sku',$product->sku)->get();
         $volumes = $p->readVolumes($product->sku);
 
         return view('admin.products.edit', 
@@ -278,7 +278,7 @@ class ProductController extends Controller
         foreach ($images as $key => $data) {
             DB::table('product_images')
             ->insert([ 
-                'sku' => $product->id,
+                'sku' => $product->sku,
                 'image' => $data
             ]);
         }

@@ -35,3 +35,4 @@ Route::get('/read-price-per-volume/{sku}', 'PackagingController@readPricePerVolu
 Route::post('/remove-price-per-volume', 'PackagingController@removePricePerVolume');
 
 Route::get('/shop', 'ShopController@index');
+Route::get('/shop/category', 'ShopController@readProductByCategory');
