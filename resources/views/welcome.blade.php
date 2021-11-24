@@ -25,7 +25,7 @@
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
 
       @foreach ($categories as $item)
-        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/#a1b19e1a') }}">
+        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
@@ -158,10 +158,10 @@
   </div>
     </div>
     
-    <div class="row second-row justify-content-center">
-      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/fomulation.png') }}" alt=""></div></div>
-      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/finish_goods.png') }}" alt=""></div></div>
-      <div class="card"><div class="col-sm-12 col-lg-4"><img src="{{ asset('images/shipping.png') }}" alt=""></div></div>
+    <div class="row second-row justify-content-center m-5">
+      <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/fomulation.png') }}");' ></div></div>
+      <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/finish_goods.png') }}");' ></div></div>
+      <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/shipping.png') }}");' ></div></div>
     </div>
 
     <div class="row m-5">

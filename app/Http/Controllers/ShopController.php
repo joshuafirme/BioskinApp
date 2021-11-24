@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Carousel;
 use App\Models\Product;
+use DB;
 class ShopController extends Controller
 {
     public function index()
@@ -15,12 +16,24 @@ class ShopController extends Controller
         return view('shop', compact('categories', 'carousel'));
     }
 
-    public function readProductByCategory()
+    public function categoryProduct($id)
     {
-        $categories = Category::all();
         $p = new Product;
-        $products = $p->readAllProduct();
-        
-        return view('shop-category', compact('categories', 'products'));
+        $categories = Category::all();
+        return view('shop-category', compact('categories'));
+    }
+
+    public function readAllProduct()
+    {
+        $p = new Product;
+        return $products = $p->readAllProduct();
+    }
+
+    public function readImage($sku) {
+        return DB::table('product_images')->where('sku',$sku)->value('image');
+    }
+
+    public function readAllCategory() {
+        return Category::all();
     }
 }

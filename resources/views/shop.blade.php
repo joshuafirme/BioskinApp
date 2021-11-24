@@ -25,7 +25,7 @@
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
 
       @foreach ($categories as $item)
-        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/#a1b19e1a') }}">
+        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
@@ -59,9 +59,9 @@
                   <div class="splide__track">
                     <ul class="splide__list">
                       @foreach ($categories as $item)
-                      <div class="splide__slide row min-ht ml-2">
+                      <div class="splide__slide row min-ht ml-sm-0">
                           <div class="card shadow-none category-container" style="width: 100%;">
-                              <img src="{{ asset('images/'.$item->image)}}" class="category-img" alt="">
+                            <div class="responsive-img" style='background-image:url("{{ asset('images/'.$item->image) }}");' ></div>
                               <div class="card-body mx-auto">
                                 <p class="card-title text-muted">{{ $item->name }}</p>
                               </div>

@@ -23,15 +23,6 @@
     <!-- /.content-header -->
 
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
-
-      @foreach ($categories as $item)
-        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/#a1b19e1a') }}">
-          <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
-            data-name="{{ $item->name }}" >
-            {{ $item->name }}</div> 
-          </a>
-      @endforeach
-
     </div> 
 
     <div class="row m-4">
@@ -48,27 +39,17 @@
               </ul>
         </div>
         <div class="col-sm-12 col-md-10">
-            <h4 class="text-center mt-4 text-dark mt-5">
-                Shop Now!
-              </h4>
+            <h4 class="text-center mt-4 text-dark mt-5 category-name"></h4>
               <h5 class="text-center text-dark">
-                  Offers a natural skin care and cosmetics products for clients who want to create their own brand name with the finished goods available for retail/wholesale.  
+                Everything new, now and need to know in beauty and skincare is here. 
+                From all new formulas to latest skincare and cosmetics is yours to shop
+                
               </h5>
+              <div class="row mt-5" id="product-container">
+              </div>
           
-              <div class="row mt-5">
-                    @foreach ($products as $item)
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                          <div class="card shadow-none category-container" style="width: 100%;">
-                            @php
-                                $image = \DB::table('product_images')->where('sku',$item->sku)->value('image');
-                            @endphp
-                              <img src="{{ asset('images/'.$image)}}" class="category-img" alt="">
-                              <div class="card-body mx-auto">
-                                <p class="card-title text-muted">{{ $item->name }}</p>
-                              </div>
-                            </div>
-                      </div>
-                    @endforeach
+              <div class="row justify-content-center mt-5">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
               </div>
         </div>
     </div>
@@ -80,3 +61,4 @@
   <!-- /.content-wrapper -->
 
 @include('footer')
+<script src="{{asset('js/customer/product.js')}}"></script>
