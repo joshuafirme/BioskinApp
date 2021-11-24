@@ -29,17 +29,18 @@
         <div class="col-sm-12 col-md-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                  <li class="breadcrumb-item"><a href="/">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
+                  <li class="breadcrumb-item active" aria-current="page"></li>
                 </ol>
               </nav>
               <ul class="bg-white" style="list-style-type: none;">
-                <li class=""><a href="#">Home</a></li>
-                <li class=" active" aria-current="page">Shop</li>
+                <li class="">Choose from shop</li>
+                <li class="active" aria-current="page"></li>
               </ul>
         </div>
         <div class="col-sm-12 col-md-10">
-            <h4 class="text-center mt-4 text-dark mt-5 category-name"></h4>
+            <h4 class="text-center mt-4 text-dark mt-5 selected-category-name"></h4>
               <h5 class="text-center text-dark">
                 Everything new, now and need to know in beauty and skincare is here. 
                 From all new formulas to latest skincare and cosmetics is yours to shop

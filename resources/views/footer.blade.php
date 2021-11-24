@@ -65,6 +65,27 @@ splide.mount();
   <script src="{{asset('js/login.js')}}"></script>
 @endif
 
+<button onclick="topFunction()" id="btn-scroll-up" title="Go to top"><i class="fa fa-angle-up"></i></button>
+
+<script>
+    var mybutton = document.getElementById("btn-scroll-up");
+  
+
+  window.onscroll = function() {scrollFunction()};
+  
+  function scrollFunction() {
+    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+  
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
 
 </body>
 </html>

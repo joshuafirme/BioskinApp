@@ -38,13 +38,15 @@
         <div class="col-sm-12 col-md-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="/">Home</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Shop</li>
                 </ol>
               </nav>
               <ul class="bg-white" style="list-style-type: none;">
-                <li class=""><a href="#">Home</a></li>
-                <li class=" active" aria-current="page">Shop</li>
+                <li class="">Choose from shop</li>
+                @foreach ($categories as $item)
+                      <li class=""><a href="{{ url('/shop/category/'.$item->id) }}">{{ $item->name }}</a></li>
+                @endforeach
               </ul>
         </div>
         <div class="col-sm-12 col-md-10">

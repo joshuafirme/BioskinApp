@@ -2,9 +2,9 @@ function getItems (data) {
 
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
-        html += '<div class="card shadow-none category-container p-5" style="width: 100%;">';
+        html += '<div class="card shadow-none category-container p-5">';
     
-        html += '<div class="responsive-img" id="data-image-'+data.sku+'"></div>';
+        html += '<div class="responsive-img product-image" id="data-image-'+data.sku+'"></div>';
         html += '<div class="product-details">';
 
         html += '<div class="m-2">';
@@ -39,15 +39,23 @@ function readProductsByCategory(category_id) {
         success:function(data){
           
                 data_storage = data;
+                let data_count = 0;
+                var html = "";   
                 for (var i = 0; i < data.length; i++) {
-                    var html = "";   
                     if (data[i].category_id.indexOf(category_id) != -1) {
                         html += getItems(data[i]);
+                        data_count++
                     }
-                    $('#product-container').append(html);
 
                     readImage(data[i].sku);
                 }
+
+                if (data_count == 0) {
+                    html += '<div class="col-12 mt-5 d-flex justify-content-center">';
+                    html +='<p class="text-muted">No products found.</p>';
+                    html += '</div>';
+                }
+                $('#product-container').append(html);
                 console.log(data_storage)
                 $('.lds-ellipsis').css('display', 'none');
                 
@@ -61,12 +69,17 @@ function readImage(sku) {
         url: '/read-image/'+sku,
         type: 'GET',
         success:function(data){  
-            $('#data-image-'+sku).css('background-image', 'url("/images/'+data+'")')
+            if (data) {
+                $('#data-image-'+sku).css('background-image', 'url("/images/'+data+'")');
+            }
+            else {
+                $('#data-image-'+sku).css('background-image', 'url("https://via.placeholder.com/450x450.png?text=No%20image%20available")');
+            }
         }
     });
 }
 
-function readCategory() {
+function readAllCategory() {
     $.ajax({
         url: '/shop/read-all-category',
         type: 'GET',
@@ -74,7 +87,7 @@ function readCategory() {
             var html = '';   
             for (var i = 0; i < data.length; i++) {
                 html += '<a class="col-xs-6 col-sm-4 col-md-1 text-center">';
-                html += '<div class="text-bold text-muted category-name"  data-id="'+data[i].id+'">'+data[i].name+'</div>';
+                html += '<div class="text-bold text-muted category-name" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</div>';
                 html += '</a>'
             }
             $('.category-container').append(html);
@@ -83,12 +96,28 @@ function readCategory() {
 }
 
 
-
+function readCategoryName(category_id) {
+    $.ajax({
+        url: '/category/read-one/'+category_id,
+        type: 'GET',
+        success:function(data){ 
+            $('.selected-category-name').text(data);
+            $('[aria-current=page]').text(data);
+        }
+    });
+}
 
 $(document).on('click', '.category-name', async function(){ 
+
     var category_id = $(this).attr('data-id');
+    var category_name = $(this).attr('data-name');
     $('#product-container').html("");
     $('.lds-ellipsis').css('display', 'block');
+    $('.selected-category-name').text(category_name);
+
+    window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
+
+    readCategoryName(category_id);
     readProductsByCategory(category_id); 
 });
 
@@ -96,7 +125,8 @@ function renderConponents() {
     let url = window.location.href;
     let index = url.indexOf('category/');
     let category_id = url.substring(index+9);
-    readCategory();
+    readAllCategory();
+    readCategoryName(category_id);
     readProductsByCategory(category_id); 
 }
                              

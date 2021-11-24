@@ -20,6 +20,11 @@ class CategoryController extends Controller
         return view('admin.category.index', compact('category'));
     }
 
+    public function readCategoryName($id)
+    {
+        return Category::where('id', $id)->value('name');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
