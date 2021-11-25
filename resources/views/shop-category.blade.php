@@ -35,11 +35,11 @@
                 </ol>
               </nav>
              <div class="card shadow-none" style="background-color: #F2F2F2;">
-              <ul style="list-style-type: none;">
+              <ul style="list-style-type: none;" class=" mt-3">
                 <li class="">Choose from shop</li>
+                <li aria-current="page"></li>
               </ul>
               <ul class=" subcategory-container" style="list-style-type: none;">
-                <li aria-current="page"></li>
               </ul>
              </div>
         </div>

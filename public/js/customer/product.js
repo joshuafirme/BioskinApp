@@ -31,25 +31,26 @@ async function getItems (data) {
 }
            
 var data_storage;
-async function readProductsByCategory(category_id) { 
+async function readProducts(category_id, object = 'category') { 
     $.ajax({
         url: '/shop/read-all-product',
         type: 'GET',
         success:async function(data){
-          
                 data_storage = data;
                 let data_count = 0;
                 var html = "";  
-                var len = data.length; 
+                console.log(object)
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].category_id.indexOf(category_id) != -1) {
+                    let ids = object == 'category' ? data[i].category_id : data[i].sub_category_id;
+                    ids = ids.split(", ");
+                    if (ids.includes(category_id)) {
                         html += await getItems(data[i]);
                         data_count++
                     }
 
                     readImage(data[i].sku);
                 }
-                
+                console.log(data_count)
 
                 if (data_count == 0) {
                     html += '<div class="col-12 mt-5 d-flex justify-content-center">';
@@ -66,6 +67,7 @@ async function readProductsByCategory(category_id) {
     });
    
 }
+
 async function readImage(sku) {
     $.ajax({
         url: '/read-image/'+sku,
@@ -134,7 +136,7 @@ async function readCategoryName(category_id) {
 }
 
 $(document).on('click', '.subcategory-name', async function(){ 
-
+    let object = 'sub_category';
     var subcategory_id = $(this).attr('data-id');
     var subcategory_name = $(this).attr('data-name');
     var category_id = $(this).attr('data-category-id');
@@ -146,13 +148,13 @@ $(document).on('click', '.subcategory-name', async function(){
     $('.selected-category-name').text(subcategory_name);
 
     window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
-
+   
     await readSubcategory(category_id);
-   // readProductsByCategory(category_id); 
+    await readProducts(subcategory_id, object); 
 });
 
 $(document).on('click', '.category-name', async function(){ 
-
+    let object = 'category';
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
     $('#product-container').html("");
@@ -162,7 +164,7 @@ $(document).on('click', '.category-name', async function(){
     $('[aria-current=page]').text(category_name);
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
-    await readProductsByCategory(category_id); 
+    await readProducts(category_id); 
     await readSubcategory(category_id);
 });
 
@@ -173,7 +175,7 @@ async function renderConponents() {
     await readAllCategory();
     await readSubcategory(category_id);
     await readCategoryName(category_id);
-    await readProductsByCategory(category_id);
+    await readProducts(category_id, 'category');
 }
                              
 renderConponents();

@@ -27,6 +27,11 @@ class SubcategoryController extends Controller
         return $subcategory->readSubcategoryByCategory($category_id);
     }
 
+    public function readCategoryName($category_id) {
+        $subcategory = new Subcategory;
+        return $subcategory->readCategoryName($category_id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -129,7 +129,7 @@ html{
     height: 340px !important;
     object-fit: fit;
   }
-  .category-container .product-image{
+  .product-image{
     cursor: pointer;
   }
   .category-container .category-name{
