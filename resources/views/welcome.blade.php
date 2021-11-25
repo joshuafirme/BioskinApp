@@ -185,8 +185,8 @@
       <div class="splide__track">
         <ul class="splide__list">
           @foreach ($carousel as $item)
-          <div class="splide__slide row min-ht ml-2">
-            <img src="{{ asset('images/'.$item->image)}}" class="carousel-img" alt="">
+          <div class="splide__slide row min-ht">
+            <div class="responsive-img" style='background-image:url("{{ asset('images/'.$item->image)}}");' ></div>
           </div>
           @endforeach
         </ul>
