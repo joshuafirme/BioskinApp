@@ -1,4 +1,4 @@
-function getItems (data) {
+async function getItems (data) {
 
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
@@ -31,11 +31,11 @@ function getItems (data) {
 }
            
 var data_storage;
-function readProductsByCategory(category_id) { 
+async function readProductsByCategory(category_id) { 
     $.ajax({
         url: '/shop/read-all-product',
         type: 'GET',
-        success:function(data){
+        success:async function(data){
           
                 data_storage = data;
                 let data_count = 0;
@@ -43,7 +43,7 @@ function readProductsByCategory(category_id) {
                 var len = data.length; 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].category_id.indexOf(category_id) != -1) {
-                        html += getItems(data[i]);
+                        html += await getItems(data[i]);
                         data_count++
                     }
 
@@ -66,7 +66,7 @@ function readProductsByCategory(category_id) {
     });
    
 }
-function readImage(sku) {
+async function readImage(sku) {
     $.ajax({
         url: '/read-image/'+sku,
         type: 'GET',
@@ -91,7 +91,7 @@ function readImage(sku) {
     });
 }
 
-function readAllCategory() {
+async function readAllCategory() {
     $.ajax({
         url: '/shop/read-all-category',
         type: 'GET',
@@ -107,14 +107,14 @@ function readAllCategory() {
     });
 }
 
-function readSubcategory(category_id) {
+async function readSubcategory(category_id) {
     $.ajax({
         url: '/read-subcategory/'+category_id,
         type: 'GET',
         success:function(data){ 
             var html = '';   
             for (var i = 0; i < data.length; i++) {
-                html += '<li class=""><a href="" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
+                html += '<li class=""><a class="subcategory-name" href="#" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
                 html += '</a>'
             }
             $('.subcategory-container').append(html);
@@ -122,41 +122,47 @@ function readSubcategory(category_id) {
     });
 }
 
+$(document).on('click', '.subcategory-name', async function(){ 
 
-function readCategoryName(category_id) {
-    $.ajax({
-        url: '/category/read-one/'+category_id,
-        type: 'GET',
-        success:function(data){ 
-            $('.selected-category-name').text(data);
-            $('[aria-current=page]').text(data);
-        }
-    });
-}
+    var subcategory_id = $(this).attr('data-id');
+    var subcategory_name = $(this).attr('data-name');
+    var category_id = $(this).attr('data-category-id');
+    var category_name = $(this).attr('data-category');
+    $('#product-container').html("");
+    $('.subcategory-container').html("");
+    $('.lds-ellipsis').css('display', 'block');
+
+    $('.selected-category-name').text(subcategory_name);
+
+    window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
+
+    await readSubcategory(category_id);
+   // readProductsByCategory(category_id); 
+});
 
 $(document).on('click', '.category-name', async function(){ 
 
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
     $('#product-container').html("");
+    $('.subcategory-container').html("");
     $('.lds-ellipsis').css('display', 'block');
     $('.selected-category-name').text(category_name);
 
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
-    readCategoryName(category_id);
-    readSubcategory(category_id);
-    readProductsByCategory(category_id); 
+    await readCategoryName(category_id);
+    await readSubcategory(category_id);
+    await readProductsByCategory(category_id); 
 });
 
-function renderConponents() {
+async function renderConponents() {
     let url = window.location.href;
     let index = url.indexOf('category/');
     let category_id = url.substring(index+9);
-    readAllCategory();
-    readCategoryName(category_id);
-    readSubcategory(category_id);
-    readProductsByCategory(category_id); 
+    await readAllCategory();
+    await readSubcategory(category_id);
+    await readProductsByCategory(category_id); 
 }
                              
 renderConponents();
