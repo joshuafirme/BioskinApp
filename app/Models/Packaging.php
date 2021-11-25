@@ -32,5 +32,17 @@ class Packaging extends Model
             ->leftJoin('category as C', 'C.id', '=', 'P.category_id')
             ->paginate(10);
     }
+
+    public function readAllPackaging()
+    {
+        return DB::table('packaging as P')
+            ->select("P.*",
+                    'C.name as category',
+                    'S.name as subcategory',
+                    )
+            ->leftJoin('subcategory as S', 'S.id', '=', 'P.sub_category_id')
+            ->leftJoin('category as C', 'C.id', '=', 'P.category_id')
+            ->get();
+    }
     
 }

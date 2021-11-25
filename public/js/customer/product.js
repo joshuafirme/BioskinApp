@@ -68,6 +68,38 @@ async function readProducts(category_id, object = 'category') {
    
 }
 
+async function readPackaging(category_id, object = 'category') { 
+    $.ajax({
+        url: '/shop/read-all-packaging',
+        type: 'GET',
+        success:async function(data){
+                data_storage = data;
+                let data_count = 0;
+                var html = "";  
+           
+                for (var i = 0; i < data.length; i++) {
+                    html += await getItems(data[i]);
+                    data_count++
+                    readImage(data[i].sku);
+                }
+                console.log(data_count)
+
+                if (data_count == 0) {
+                    html += '<div class="col-12 mt-5 d-flex justify-content-center">';
+                    html +='<p class="text-muted">No products found.</p>';
+                    html += '</div>';
+                }
+                $('#product-container').append(html);
+                
+                $('.lds-ellipsis').css('display', 'none');
+
+                
+
+        }
+    });
+   
+}
+
 async function readImage(sku) {
     $.ajax({
         url: '/read-image/'+sku,
@@ -131,6 +163,7 @@ async function readCategoryName(category_id) {
         success:function(data){ 
             $('.selected-category-name').text(data);
             $('[aria-current=page]').text(data);
+            localStorage.setItem('selected-category', data);
         }
     });
 }
@@ -163,7 +196,12 @@ $(document).on('click', '.category-name', async function(){
     $('[aria-current=page]').text(category_name);
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
-    await readProducts(category_id); 
+    if (category_name.toLowerCase().indexOf("pack") != -1) {
+        await readPackaging(category_id);
+    }
+    else {
+        await readProducts(category_id); 
+    }
     await readSubcategory(category_id);
 });
 
@@ -171,10 +209,19 @@ async function renderConponents() {
     let url = window.location.href;
     let index = url.indexOf('category/');
     let category_id = url.substring(index+9);
+    await readCategoryName(category_id);
     await readAllCategory();
     await readSubcategory(category_id);
-    await readCategoryName(category_id);
-    await readProducts(category_id, 'category');
+
+    let category_name = localStorage.getItem('selected-category');
+
+    if(category_name.toLowerCase().indexOf("pack") != -1) {
+        await readPackaging(category_id);
+    }
+    else {
+        await readProducts(category_id, 'category');
+    }
+
 }
                              
 renderConponents();
