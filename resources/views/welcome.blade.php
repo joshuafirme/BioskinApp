@@ -98,7 +98,7 @@
         </h3>
       </div>
       <div class="col-md-12  col-lg-4" style="padding:0;">
-          <div class="card card-timeline">
+          <div class="card card-timeline shadow-none">
             <ul class="bs4-order-tracking">
                 <li class="step active"></li>
                 <li class="step active">
@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="col-md-12  col-lg-4" style=" padding:0;">
-        <div class="card card-timeline">
+        <div class="card card-timeline shadow-none">
           <ul class="bs4-order-tracking">
               <li class="step active"></li>
               <li class="step active">
@@ -138,7 +138,7 @@
       </div>
     </div>
     <div class="col-md-12  col-lg-4" style=" padding:0;">
-      <div class="card card-timeline">
+      <div class="card card-timeline shadow-none">
         <ul class="bs4-order-tracking third-order-tracking">
           <li class="step active"></li> 
             <li class="step active">
