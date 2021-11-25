@@ -142,14 +142,13 @@ $(document).on('click', '.subcategory-name', async function(){
     var category_id = $(this).attr('data-category-id');
     var category_name = $(this).attr('data-category');
     $('#product-container').html("");
-    $('.subcategory-container').html("");
     $('.lds-ellipsis').css('display', 'block');
 
     $('.selected-category-name').text(subcategory_name);
 
     window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
    
-    await readSubcategory(category_id);
+  //  await readSubcategory(category_id);
     await readProducts(subcategory_id, object); 
 });
 
