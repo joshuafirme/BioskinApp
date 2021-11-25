@@ -8,6 +8,12 @@ html{
 .btn-success:hover {
   background-color:#3BC265 !important; color:#FFF !important; border-color: #3BC265 !important;
 }
+.btn-outline-secondary {
+  color:#343A40 !important;
+}
+.btn-outline-secondary:hover {
+  color:#FFF !important;
+}
 .responsive-img{
   background-size:cover; 
   background-position:center; 
