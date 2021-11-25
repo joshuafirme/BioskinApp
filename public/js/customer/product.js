@@ -122,6 +122,17 @@ async function readSubcategory(category_id) {
     });
 }
 
+async function readCategoryName(category_id) {
+    $.ajax({
+        url: '/category/read-one/'+category_id,
+        type: 'GET',
+        success:function(data){ 
+            $('.selected-category-name').text(data);
+            $('[aria-current=page]').text(data);
+        }
+    });
+}
+
 $(document).on('click', '.subcategory-name', async function(){ 
 
     var subcategory_id = $(this).attr('data-id');
@@ -161,7 +172,8 @@ async function renderConponents() {
     let category_id = url.substring(index+9);
     await readAllCategory();
     await readSubcategory(category_id);
-    await readProductsByCategory(category_id); 
+    await readCategoryName(category_id);
+    await readProductsByCategory(category_id);
 }
                              
 renderConponents();

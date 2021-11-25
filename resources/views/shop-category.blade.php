@@ -26,7 +26,7 @@
     </div> 
 
     <div class="row m-4">
-        <div class="col-sm-12 col-md-2">
+        <div class="col-md-12 col-lg-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -34,14 +34,16 @@
                   <li class="breadcrumb-item active" aria-current="page"></li>
                 </ol>
               </nav>
-              <ul class="bg-white" style="list-style-type: none;">
+             <div class="card shadow-none" style="background-color: #F2F2F2;">
+              <ul style="list-style-type: none;">
                 <li class="">Choose from shop</li>
-                <li class="active" aria-current="page"></li>
-                <ul class="bg-white subcategory-container" style="list-style-type: none;">
-                </ul>
               </ul>
+              <ul class=" subcategory-container" style="list-style-type: none;">
+                <li aria-current="page"></li>
+              </ul>
+             </div>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div class="col-md-12 col-lg-10">
             <h4 class="text-center mt-4 text-dark mt-5 selected-category-name"></h4>
               <h5 class="text-center text-dark">
                 Everything new, now and need to know in beauty and skincare is here. 
