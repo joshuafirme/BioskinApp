@@ -3,8 +3,7 @@ function getItems (data) {
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
         html += '<div class="card shadow-none category-container p-5">';
-    
-        html += '<div class="responsive-img product-image" id="data-image-'+data.sku+'"></div>';
+        html += '<div class="loading responsive-img product-image" id="data-image-'+data.sku+'"></div>';
         html += '<div class="product-details">';
 
         html += '<div class="m-2">';
@@ -40,7 +39,8 @@ function readProductsByCategory(category_id) {
           
                 data_storage = data;
                 let data_count = 0;
-                var html = "";   
+                var html = "";  
+                var len = data.length; 
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].category_id.indexOf(category_id) != -1) {
                         html += getItems(data[i]);
@@ -49,6 +49,7 @@ function readProductsByCategory(category_id) {
 
                     readImage(data[i].sku);
                 }
+                
 
                 if (data_count == 0) {
                     html += '<div class="col-12 mt-5 d-flex justify-content-center">';
@@ -56,8 +57,9 @@ function readProductsByCategory(category_id) {
                     html += '</div>';
                 }
                 $('#product-container').append(html);
-                console.log(data_storage)
+                
                 $('.lds-ellipsis').css('display', 'none');
+
                 
 
         }
@@ -68,12 +70,22 @@ function readImage(sku) {
     $.ajax({
         url: '/read-image/'+sku,
         type: 'GET',
-        success:function(data){  
+        success:function(data){ 
             if (data) {
-                $('#data-image-'+sku).css('background-image', 'url("/images/'+data+'")');
+                var src = '/images/'+data;
+                $('<img/>').attr('src', src).on('load', function() {
+                    $(this).remove(); 
+                    $('#data-image-'+sku).removeClass('loading');
+                    $('#data-image-'+sku).css('background-image', 'url("'+src+'")');
+                
+                });
             }
             else {
-                $('#data-image-'+sku).css('background-image', 'url("https://via.placeholder.com/450x450.png?text=No%20image%20available")');
+                $('<img/>').attr('src', 'https://via.placeholder.com/450x450.png?text=No%20image%20available').on('load', function() {
+                    $(this).remove(); 
+                    $('#data-image-'+sku).removeClass('loading');
+                    $('#data-image-'+sku).css('background-image', 'url("https://via.placeholder.com/450x450.png?text=No%20image%20available")');
+                });
             }
         }
     });

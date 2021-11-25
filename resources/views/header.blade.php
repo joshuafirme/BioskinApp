@@ -10,11 +10,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ isset($page_title) ? $page_title : "Val Construction Supply" }}</title>
   <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{asset('css/custom.css?v='.strtotime("now"))}}">
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="{{asset('css/custom.css?v='.rand())}}">
   <link rel="icon" href="{{ asset('/images/logo.png') }}" type="image/x-icon"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
