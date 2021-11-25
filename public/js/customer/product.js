@@ -20,7 +20,7 @@ function getItems (data) {
         html +=        '<img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/>';
         html +=     '</div>';
         html +=     '<div class="col-12">';
-        html +=         '<button class="btn btn-secondary btn-block m-1">Rebrand now!</button>';
+        html +=         '<button class="btn btn-outline-secondary btn-block m-1">Rebrand now!</button>';
         html +=     '</div>';
         html +=  '</div>';
         html +=   '</div>';
