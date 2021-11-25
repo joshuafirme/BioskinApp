@@ -31,6 +31,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+    if ($('#secondary-slider').length > 0) {
     var column_count = 4;
     var height = 380;
     if(jQuery(document).width() < 480){
@@ -57,8 +59,9 @@
               cover: true,
               pagination: true,
 } );
-
 splide.mount();
+    }
+
   });
 </script>
 @if(strpos($page_title,"Login") != "")

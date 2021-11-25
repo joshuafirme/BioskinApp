@@ -148,11 +148,11 @@ $(document).on('click', '.category-name', async function(){
     $('.subcategory-container').html("");
     $('.lds-ellipsis').css('display', 'block');
     $('.selected-category-name').text(category_name);
-
+    $('[aria-current=page]').text(category_name);
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
-    await readSubcategory(category_id);
     await readProductsByCategory(category_id); 
+    await readSubcategory(category_id);
 });
 
 async function renderConponents() {
