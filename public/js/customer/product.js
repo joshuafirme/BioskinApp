@@ -107,6 +107,21 @@ function readAllCategory() {
     });
 }
 
+function readSubcategory(category_id) {
+    $.ajax({
+        url: '/read-subcategory/'+category_id,
+        type: 'GET',
+        success:function(data){ 
+            var html = '';   
+            for (var i = 0; i < data.length; i++) {
+                html += '<li class=""><a href="" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
+                html += '</a>'
+            }
+            $('.subcategory-container').append(html);
+        }
+    });
+}
+
 
 function readCategoryName(category_id) {
     $.ajax({
@@ -130,6 +145,7 @@ $(document).on('click', '.category-name', async function(){
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
     readCategoryName(category_id);
+    readSubcategory(category_id);
     readProductsByCategory(category_id); 
 });
 
@@ -139,6 +155,7 @@ function renderConponents() {
     let category_id = url.substring(index+9);
     readAllCategory();
     readCategoryName(category_id);
+    readSubcategory(category_id);
     readProductsByCategory(category_id); 
 }
                              

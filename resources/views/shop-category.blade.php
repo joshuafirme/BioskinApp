@@ -37,6 +37,8 @@
               <ul class="bg-white" style="list-style-type: none;">
                 <li class="">Choose from shop</li>
                 <li class="active" aria-current="page"></li>
+                <ul class="bg-white subcategory-container" style="list-style-type: none;">
+                </ul>
               </ul>
         </div>
         <div class="col-sm-12 col-md-10">
