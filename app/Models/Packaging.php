@@ -35,14 +35,13 @@ class Packaging extends Model
 
     public function readAllPackaging()
     {
-        return DB::table('packaging as P')
-            ->select("P.*",
-                    'C.name as category',
-                    'S.name as subcategory',
-                    )
-            ->leftJoin('subcategory as S', 'S.id', '=', 'P.sub_category_id')
-            ->leftJoin('category as C', 'C.id', '=', 'P.category_id')
-            ->get();
+        return DB::table('packaging as P')->get();
     }
     
+
+    public function readPackagingBySubcategory($subcategory_id) {
+          return DB::table('packaging as P')
+            ->where('sub_category_id', $subcategory_id)
+            ->get();
+    }
 }

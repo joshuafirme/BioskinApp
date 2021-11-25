@@ -50,6 +50,11 @@ class ShopController extends Controller
         return  $p->readAllPackaging();
     }
 
+    public function readPackagingBySubcategory($subcategory_id) {
+        $p = new Packaging;
+        return  $p->readPackagingBySubcategory($subcategory_id);
+    }
+
     public function readImage($sku) {
         return DB::table('product_images')->where('sku',$sku)->value('image');
     }

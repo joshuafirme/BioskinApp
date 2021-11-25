@@ -42,4 +42,5 @@ Route::get('/read-image/{sku}', 'ShopController@readImage');
 Route::get('/shop/read-all-product', 'ShopController@readAllProduct');
 Route::get('/shop/read-all-category', 'ShopController@readAllCategory');
 Route::get('/shop/read-all-packaging', 'ShopController@readAllPackaging');
+Route::get('/shop/read-packaging/{subcategory_id}', 'ShopController@readPackagingBySubcategory');
 Route::get('/shop/{sku}', 'ShopController@readOneProduct');
