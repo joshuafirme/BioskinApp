@@ -151,7 +151,6 @@ $(document).on('click', '.category-name', async function(){
 
     window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
 
-    await readCategoryName(category_id);
     await readSubcategory(category_id);
     await readProductsByCategory(category_id); 
 });
