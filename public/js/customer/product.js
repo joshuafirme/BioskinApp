@@ -226,7 +226,7 @@ async function renderConponents() {
     const read_subcategory = await readSubcategory(category_id);
 
     var category_name = localStorage.getItem('selected-category');
-    while (!category_name || category_name == "") {
+    if (!category_name || category_name == "") {
         await readAllCategory();
         category_name = localStorage.getItem('selected-category');
         console.log('getting category name...')
