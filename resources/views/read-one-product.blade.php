@@ -18,8 +18,12 @@
       #more-precaution-text {display: none;}
       #more-ingredient-text {display: none;}
 
-      .splide-other-img {
+      #read-one-slider .splide-other-img{
+
         border-radius:15px;
+        cursor: pointer;
+      }
+      .splide-other-img:not(:first-child) {
         opacity: 0.6;
       }
   </style>
