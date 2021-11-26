@@ -22,14 +22,15 @@
         var btnText = $(this);
         $('#detail-hide-'+object).css('height', 'auto');
         if (dots.style.display === "none") {
-        dots.style.display = "inline";
-        btnText.text("+"); 
-        moreText.style.display = "none";
-        $('#detail-hide-'+object).css('height', '50px');
-        } else {
-        dots.style.display = "none";
-        btnText.text("-"); 
-        moreText.style.display = "inline";
+            dots.style.display = "inline";
+            btnText.text("+"); 
+            moreText.style.display = "none";
+            $('#detail-hide-'+object).css('height', '50px');
+        } 
+        else {
+            dots.style.display = "none";
+            btnText.text("-"); 
+            moreText.style.display = "inline";
         }
     });
 
@@ -39,7 +40,7 @@
 
         $('.splide-other-img').css('opacity', '0.6');
         $('[data-id='+data_id+']').css('opacity', '1.0');
-        $('#main-image').css('background-image', 'url("/'+src+'")');
+        document.getElementById('main-image').style.backgroundImage='url(/'+src+')';
     });
 
     

@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="col-sm-10 col-lg-4">
-            <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}"); height:700px' ></div>
+            <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             <div class="row product-buttons mt-5">
                 <div class="col-10">
                     <button class="btn btn-success btn-block m-1">Buy now</button>
