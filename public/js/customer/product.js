@@ -149,7 +149,7 @@ async function readSubcategory(category_id) {
         success:function(data){ 
             var html = '';   
             for (var i = 0; i < data.length; i++) {
-                html += '<li class=""><a class="subcategory-name" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
+                html += '<li class=""><a style="cursor:pointer;" class="subcategory-name" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
                 html += '</a>'
             }
             $('.subcategory-container').append(html);
@@ -226,6 +226,9 @@ async function renderConponents() {
     const read_subcategory = await readSubcategory(category_id);
 
     var category_name = localStorage.getItem('selected-category');
+    if (!category_name || category_name == "") {
+        category_name = $('[aria-current=page]').text(data);
+    }
     console.log(category_name+ " cat")
     setTimeout(async function(){
         if(category_name.toLowerCase().indexOf("pack") != -1) {
