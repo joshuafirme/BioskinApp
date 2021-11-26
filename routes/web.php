@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomePageController@index');
+Route::get('/', function(){
+    return view('index');
+});
+
+Route::get('/home', 'HomePageController@index');
 
 Route::resource('/product', 'ProductController');
 Route::post('/product/archive/{id}', 'ProductController@archive');

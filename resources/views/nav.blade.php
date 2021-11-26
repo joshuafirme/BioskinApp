@@ -3,7 +3,7 @@
 
 <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
 
-      <a href="{{ url('/') }}" class="navbar-brand">
+      <a href="{{ url('/home') }}" class="navbar-brand">
         <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" style="object-fit: cover;" width="180px" height="auto">
       </a>
 

@@ -17,6 +17,11 @@
       #more-direction-text {display: none;}
       #more-precaution-text {display: none;}
       #more-ingredient-text {display: none;}
+
+      .splide-other-img {
+        border-radius:15px;
+        opacity: 0.6;
+      }
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -66,8 +71,8 @@
             <div class="splide__track">
               <ul class="splide__list">
                 @foreach ($images as $item)
-                <div class="splide__slide row min-ht" style="border-radius:15px;">
-                  <img class="img-fluid" src="{{ asset('images/'.$item->image) }}" style='width:100%; ' >
+                <div class="splide__slide row min-ht splide-other-img" data-id="{{ $item->id }}" data-src="{{ 'images/'.$item->image }}">
+                  <img class="img-fluid" src="{{ asset('images/'.$item->image) }}">
                 </div>
                 @endforeach
               </ul>
@@ -75,7 +80,7 @@
           </div>
         </div>
         <div class="col-sm-10 col-lg-4">
-            <div class="responsive-img mt-5" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
+            <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             <div class="row product-buttons mt-5">
                 <div class="col-10">
                     <button class="btn btn-success btn-block m-1">Buy now</button>

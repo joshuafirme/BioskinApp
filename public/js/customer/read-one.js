@@ -32,4 +32,15 @@
         moreText.style.display = "inline";
         }
     });
+
+    $(document).on('click', '.splide-other-img', async function(){ 
+        let src = $(this).attr('data-src');
+        let data_id = $(this).attr('data-id');
+
+        $('.splide-other-img').css('opacity', '0.6');
+        $('[data-id='+data_id+']').css('opacity', '1.0');
+        $('#main-image').css('background-image', 'url("/'+src+'")');
+    });
+
+    
 });

@@ -71,42 +71,46 @@ class ShopController extends Controller
     public function readOneProduct($sku)
     {
         $product = Product::where('sku', $sku)->first(); 
- 
-        $p = new ProductPrice;
-
-        $categories = Category::all();
-        $packaging = Packaging::all();
-        $sizes = Size::all();
-        $variation = Variation::all();
-        $subcategories = Subcategory::all();
-        $closures = Closures::all();
-        
-        $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
-        $selected_subcategory_arr = isset($product->sub_category_id) ? explode(", ", $product->sub_category_id) : [];
-        $selected_packaging_arr = isset($product->packaging) ? $product->packaging : [];
-        $selected_closures_arr = isset($product->closures) ? $product->closures : [];
-
-        $images = DB::table('product_images')->where('sku', $sku)->get();
-        $volumes = $p->readVolumes($sku);
-
-        $selected_image = $this->readImage($sku);
+        if (isset($product)) {
+            $p = new ProductPrice;
     
-        return view('read-one-product', 
-                compact(
-                    'product', 
-                    'categories', 
-                    'subcategories',
-                    'selected_subcategory_arr', 
-                    'selected_category_arr', 
-                    'selected_packaging_arr',
-                    'selected_closures_arr', 
-                    'packaging', 
-                    'closures', 
-                    'sizes', 
-                    'variation', 
-                    'images', 
-                    'volumes',
-                    'selected_image'
-                ));
+            $categories = Category::all();
+            $packaging = Packaging::all();
+            $sizes = Size::all();
+            $variation = Variation::all();
+            $subcategories = Subcategory::all();
+            $closures = Closures::all();
+            
+            $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
+            $selected_subcategory_arr = isset($product->sub_category_id) ? explode(", ", $product->sub_category_id) : [];
+            $selected_packaging_arr = isset($product->packaging) ? $product->packaging : [];
+            $selected_closures_arr = isset($product->closures) ? $product->closures : [];
+    
+            $images = DB::table('product_images')->where('sku', $sku)->get();
+            $volumes = $p->readVolumes($sku);
+    
+            $selected_image = $this->readImage($sku);
+        
+            return view('read-one-product', 
+                    compact(
+                        'product', 
+                        'categories', 
+                        'subcategories',
+                        'selected_subcategory_arr', 
+                        'selected_category_arr', 
+                        'selected_packaging_arr',
+                        'selected_closures_arr', 
+                        'packaging', 
+                        'closures', 
+                        'sizes', 
+                        'variation', 
+                        'images', 
+                        'volumes',
+                        'selected_image'
+                    ));
+        }
+        else {
+            abort(404);
+        }
     }
 }
