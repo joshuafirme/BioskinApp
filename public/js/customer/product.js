@@ -221,9 +221,9 @@ async function renderConponents() {
 
     let category_id = url.substring(index+9);
 
+    const read_subcategory = await readSubcategory(category_id);
     const read_category = await readCategoryName(category_id);
     const read_all_cat = await readAllCategory();
-    const read_subcategory = await readSubcategory(category_id);
 
     var category_name = localStorage.getItem('selected-category');
     if (!category_name || category_name == "") {
