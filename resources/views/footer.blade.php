@@ -33,33 +33,33 @@
   document.addEventListener('DOMContentLoaded', function() {
 
     if ($('#secondary-slider').length > 0) {
-    var column_count = 4;
-    var height = 380;
-    if(jQuery(document).width() < 480){
-        column_count = 1;
-    }
-    else if(jQuery(document).width() < 680){
-        column_count = 1;
-    }
-    else if(jQuery(document).width() < 780){
-        column_count = 1;
-    }
-    else if(jQuery(document).width() < 1280){
-        column_count = 2;
-    }
-    else if(jQuery(document).width() < 1600){
-        column_count = 3;
-    }
+      var column_count = 4;
+      var height = 380;
+      if(jQuery(document).width() < 480){
+          column_count = 1;
+      }
+      else if(jQuery(document).width() < 680){
+          column_count = 1;
+      }
+      else if(jQuery(document).width() < 780){
+          column_count = 1;
+      }
+      else if(jQuery(document).width() < 1280){
+          column_count = 2;
+      }
+      else if(jQuery(document).width() < 1600){
+          column_count = 3;
+      }
 
-    var splide = new Splide( '#secondary-slider', {
-              perPage    : column_count,
-              cover      : true,
-              gap: 10,
-              rewind: true,
-              cover: true,
-              pagination: true,
-} );
-splide.mount();
+      var splide = new Splide( '#secondary-slider', {
+                perPage    : column_count,
+                cover      : true,
+                gap: 20,
+                rewind: true,
+                cover: true,
+                pagination: true,
+      });
+      splide.mount();
     }
 
   });

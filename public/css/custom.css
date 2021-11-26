@@ -19,6 +19,7 @@ html{
   background-position:center; 
   width:100%; 
   min-height: 290px;
+  height: 420px !important;
   border-radius: 10px;
   background-color: #EBEBEB;
 }
@@ -135,25 +136,22 @@ html{
   .category-container .category-name{
     cursor: pointer;
   }
-  @media screen and (max-width: 1200px) {
-    .category-img{
+
+  @media screen and (max-width: 1301px) {
+    .responsive-img{
       height: 340px !important;
-      object-fit: fit;
     }
   }
-  @media screen and (max-width: 900px) {
-    .category-img{
-      height: 310px !important;
-      object-fit: fit;
-    }
+
+  @media screen and (max-width: 1201px) {
+
   }
-  @media screen and (max-width: 850px) {
-    .category-img{
-      height: 460px !important;
-      object-fit: fit;
-    }
+  @media screen and (max-width: 1025px) {
   }
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 769px) {
+    .responsive-img{
+      height: 450px !important;
+    }
     .wording-container h1{
       font-size: 25px;
       line-height: 30px;
@@ -162,10 +160,6 @@ html{
     .wording-container h3, .wording-2{
       font-size: 15px;
       line-height: 20px;
-    }
-    .category-img{
-      height: 420px !important;
-      object-fit: fit;
     }
   }
 

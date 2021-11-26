@@ -3,7 +3,7 @@ async function getItems (data) {
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
         html += '<div class="card shadow-none p-5">';
-        html += '<div class="loading responsive-img product-image" id="data-image-'+data.sku+'"></div>';
+        html += '<a href="/shop/'+ data.sku +'"><div class="loading responsive-img product-image" id="data-image-'+data.sku+'"></div></a>';
         html += '<div class="product-details">';
 
         html += '<div class="m-2">';
