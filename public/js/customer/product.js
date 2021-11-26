@@ -143,6 +143,7 @@ async function readImage(sku) {
                     $(this).remove(); 
                     $('#data-image-'+sku).removeClass('loading');
                     $('#data-image-'+sku).css('background-image', 'url("'+src+'")');
+                    document.getElementById('data-image-'+sku).style.backgroundImage='url(/'+src+')';
                 
                 });
             }
@@ -150,7 +151,7 @@ async function readImage(sku) {
                 $('<img/>').attr('src', 'https://via.placeholder.com/450x450.png?text=No%20image%20available').on('load', function() {
                     $(this).remove(); 
                     $('#data-image-'+sku).removeClass('loading');
-                    $('#data-image-'+sku).css('background-image', 'url("https://via.placeholder.com/450x450.png?text=No%20image%20available")');
+                    document.getElementById('data-image-'+sku).style.backgroundImage='url("https://via.placeholder.com/450x450.png?text=No%20image%20available")';
                 });
             }
         }
