@@ -217,12 +217,12 @@ async function on_Click(category_id) {
                     ids = ids.split(", ");
                     if (ids.includes(category_id)) {
                         html += await getItems(data_storage[i]);
+                        data_count++;
                     }
-                    data_count++;
                     readImage(data_storage[i].sku);  console.log(data_storage[i])
                 }
             }
-            if (data_storage.length >= last_key) {
+            if (data_count+1 >= last_key) {
                 enable_button = true;
             }
             console.log(enable_button+ " btn")
