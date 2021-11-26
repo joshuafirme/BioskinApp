@@ -14,7 +14,7 @@
     </noscript>
 
 <link href="https://demo.templateflip.com/coming-soon-bootstrap-template/css/bootstrap.min.css?ver=1.2.0" rel="stylesheet">
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://demo.templateflip.com/coming-soon-bootstrap-template/css/main.css?ver=1.2.0" rel="stylesheet">
 </head>
 <body id="top"><div class="site-wrapper">
@@ -24,10 +24,10 @@
 <div class="inner">
 <h3 class="masthead-brand">Coming Soon</h3>
 <nav class="nav nav-masthead">
-<a class="nav-link nav-social" href="https://www.facebook.com/BioskinTechLabInc" title="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-<a class="nav-link nav-social" href="https://twitter.com/bioskinph" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-<a class="nav-link nav-social" href="https://www.tiktok.com/@bioskinphilippines" title="Titok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
-<a class="nav-link nav-social" href="https://shopee.ph/bioskinphilippines" title="Shopee"><i class="fas fa-store"></i></a>
+<a class="nav-link nav-social" target="_blank" href="https://www.facebook.com/BioskinTechLabInc" title="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+<a class="nav-link nav-social" target="_blank" href="https://www.instagram.com/bioskinphilippines/" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+<a class="nav-link nav-social" target="_blank" href="https://www.tiktok.com/@bioskinphilippines" title="Tiktok"><i class="fab fa-tiktok"></i></a>
+<a class="nav-link nav-social" target="_blank" href="https://shopee.ph/bioskinphilippines" title="Shopee"><i class="fas fa-store"></i></a>
 </nav>
 </div>
 </div>
