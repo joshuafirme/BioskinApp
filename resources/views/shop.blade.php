@@ -57,7 +57,7 @@
                   Offers a natural skin care and cosmetics products for clients who want to create their own brand name with the finished goods available for retail/wholesale.  
               </h5>
           
-              <div class="splide mt-5" id="secondary-slider" style="width:100%; margin: 0 auto;">
+              <div class="splide mt-5 landing" id="secondary-slider" style="width:100%; margin: 0 auto;">
                   <div class="splide__track">
                     <ul class="splide__list">
                       @foreach ($categories as $item)
