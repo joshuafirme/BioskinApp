@@ -46,7 +46,13 @@ class ShopController extends Controller
     public function readAllProduct()
     {
         $p = new Product;
-        return $p->readAllProduct();
+        if (Cache::get('products-cache')) {
+            $data = Cache::get('products-cache');
+        }else {
+            Cache::put('products-cache', $p->readAllProduct());
+            $data = $p->readAllProduct();
+        }
+        return $data;
     }
 
     public function readAllPackaging()
