@@ -181,6 +181,9 @@ $(document).on('click', '.subcategory-name', async function(){
     window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
 
     var category_name = localStorage.getItem('selected-category');
+    if (!category_name || category_name == "") {
+        category_name = $('[aria-current=page]').text(data);
+    }
     console.log(category_name)
     if (category_name.toLowerCase().indexOf("pack") != -1) {
         await readPackaging(subcategory_id, object); 
@@ -231,7 +234,7 @@ async function renderConponents() {
         else {
             await readProducts(category_id, 'category');
         }
-    },500);
+    },800);
 
 }
                              
