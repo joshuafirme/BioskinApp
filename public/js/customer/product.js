@@ -55,7 +55,7 @@ async function readProducts(category_id, object = 'category') {
                         readImage(data_storage[i].sku);
                     } 
                 }
-                if(data_count >= last_key){
+                if(data_storage.length >= last_key){
                     enable_button = true;
                 }
 
