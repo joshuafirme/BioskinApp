@@ -38,6 +38,7 @@
         
 
         <a href="{{ route('packaging.create') }}" class="btn btn-primary btn-sm"><span class='fa fa-plus'></span> Create packaging</a>
+        <a href="{{ route('delete-packaging-cache') }}" class="btn btn-secondary btn-sm"> Delete Cache</a>
 
         <div class="row">
 

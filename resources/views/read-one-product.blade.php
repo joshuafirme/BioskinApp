@@ -74,10 +74,10 @@
              </div>
         </div>
         <div class="col-sm-2 col-lg-1 mt-5">
-          <div class="splide" id="read-one-slider" style="width:88%; margin: 0 auto;">
+          <div class="splide" id="read-one-slider">
             <div class="splide__track">
               <ul class="splide__list">
-                @foreach (Cache::get('product-images') as $item)
+                @foreach ($images as $item)
                 <div class="splide__slide row min-ht splide-other-img" data-id="{{ $item->id }}" data-src="{{ 'images/'.$item->image }}">
                   <img class="img-fluid" src="{{ asset('images/'.$item->image) }}">
                 </div>

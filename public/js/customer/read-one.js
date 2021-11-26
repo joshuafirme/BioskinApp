@@ -3,10 +3,10 @@
     if ($('#read-one-slider').length > 0) {
 
         var splide = new Splide( '#read-one-slider', {
-                  perPage    : 5,
+                  perPage    : 4,
                   cover      : true,
                   gap: 10,
-                  height     : 600,
+                  height     : 750,
                   cover: true,
                   arrows: false,
                   direction   : 'ttb',

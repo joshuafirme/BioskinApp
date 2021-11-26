@@ -9,6 +9,7 @@ use App\Models\Subcategory;
 use App\Models\Size;
 use App\Models\ProductPrice;
 use DB;
+use Cache;
 class PackagingController extends Controller
 {
     /**
@@ -211,5 +212,11 @@ class PackagingController extends Controller
             'status' =>  'error',
             'message' => 'Deleting packaging failed.'
         ], 200);
+    }
+
+    
+    public function deletePackagingCache() {
+        Cache::forget('packaging-cache');
+        return redirect()->back()->with('success', 'Cache was deleted');
     }
 }

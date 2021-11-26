@@ -22,6 +22,7 @@ Route::get('/', function(){
 Route::get('/home', 'HomePageController@index');
 
 Route::resource('/product', 'ProductController');
+Route::get('/delete-product-cache', 'ProductController@deleteProductCache')->name('delete-product-cache');
 Route::post('/product/archive/{id}', 'ProductController@archive');
 Route::get('/read-product', 'ProductController@readAllProduct');
 Route::post('/delete-image/{id}', 'ProductController@deleteImage');
@@ -30,6 +31,7 @@ Route::get('/category/read-one/{id}', 'CategoryController@readCategoryName');
 Route::resource('/subcategory', 'SubcategoryController');
 Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
 Route::resource('/packaging', 'PackagingController');
+Route::get('/delete-packaging-cache', 'PackagingController@deletePackagingCache')->name('delete-packaging-cache');
 Route::resource('/closures', 'ClosuresController');
 Route::get('/read-closures/{packaging_id}', 'ClosuresController@readClosuresByPackaging');
 Route::resource('/size', 'SizeController');

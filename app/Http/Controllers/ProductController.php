@@ -10,6 +10,7 @@ use App\Models\Packaging;
 use App\Models\Size;
 use App\Models\Variation;
 use DB;
+use Cache;
 use App\Models\Closures;
 use App\Models\ProductPrice;
 
@@ -25,6 +26,11 @@ class ProductController extends Controller
         $product = new Product;
         $product = $product->readAllProduct();
         return view('admin.products.index');
+    }
+
+    public function deleteProductCache() {
+        Cache::forget('products-cache');
+        return redirect()->back()->with('success', 'Cache was deleted');
     }
 
     public function readAllProduct() {

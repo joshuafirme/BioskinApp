@@ -38,7 +38,7 @@
         
 
         <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm"><span class='fa fa-plus'></span> Create product</a>
-
+        <a href="{{ route('delete-product-cache') }}" class="btn btn-secondary btn-sm"> Delete Cache</a>
         <div class="row">
 
           <div class="col-md-12 col-lg-12 mt-3">

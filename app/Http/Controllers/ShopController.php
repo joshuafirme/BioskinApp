@@ -59,7 +59,7 @@ class ShopController extends Controller
     {
         $p = new Packaging;
         if (Cache::get('packaging-cache')) {
-            $data = Cache::get('products-cache');
+            $data = Cache::get('packaging-cache');
         }else {
             Cache::put('packaging-cache', $p->readAllPackaging());
             $data = $p->readAllPackaging();
