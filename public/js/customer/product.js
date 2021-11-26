@@ -226,8 +226,10 @@ async function renderConponents() {
     const read_subcategory = await readSubcategory(category_id);
 
     var category_name = localStorage.getItem('selected-category');
-    if (!category_name || category_name == "") {
-        category_name = $('[aria-current=page]').text(data);
+    while (!category_name || category_name == "") {
+        await readAllCategory();
+        category_name = localStorage.getItem('selected-category');
+        console.log('getting category name...')
     }
     console.log(category_name+ " cat")
     setTimeout(async function(){
