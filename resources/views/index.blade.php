@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coming Soon Bootstrap Template - Coming Soon</title>
+<title>Bioskin Philippines</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&amp;display=swap" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&amp;display=swap" media="print" onload="this.media='all'" />
@@ -25,7 +25,8 @@
 <h3 class="masthead-brand">Coming Soon</h3>
 <nav class="nav nav-masthead">
 <a class="nav-link nav-social" href="https://www.facebook.com/BioskinTechLabInc" title="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-<a class="nav-link nav-social" href="https://twitter.com/bioskinph" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+<a class="nav-link nav-social" href="https://twitter.com/bioskinph" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+<a class="nav-link nav-social" href="https://www.tiktok.com/@bioskinphilippines" title="Titok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
 <a class="nav-link nav-social" href="https://shopee.ph/bioskinphilippines" title="Shopee"><i class="fas fa-store"></i></a>
 </nav>
 </div>
