@@ -223,7 +223,7 @@ async function on_Click(category_id) {
                 }
             }
     
-            if (data_count >= last_key) {
+            if (data_count > last_key) {
                 enable_button = true;
             }
     
