@@ -80,16 +80,23 @@ class ShopController extends Controller
         return Category::all();
     }
 
+    public function readImages($sku) {
+        return DB::table('product_images')->select('id', 'image')->where('sku',$sku)->get();
+    }
+
     public function readOneProduct($sku)
     {
         $product = Product::where('sku', $sku)->first(); 
         if (isset($product)) {
             $p = new ProductPrice;
-    
             $categories = Category::all();
             $packaging = Packaging::all();
             $sizes = Size::all();
-            $variation = Variation::all();
+            $variation = Product::where('variation_code', $product->variation_code)
+                        ->select('products.sku','V.name as variation')
+                        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
+                        ->get();
+      
             $subcategories = Subcategory::all();
             $closures = Closures::all();
             
@@ -99,8 +106,6 @@ class ShopController extends Controller
             $selected_closures_arr = isset($product->closures) ? $product->closures : [];
     
             $images = DB::table('product_images')->where('sku', $sku)->get();
-            // cache images data
-            Cache::put('product-images', $images);
 
             $volumes = $p->readVolumes($sku);
     
@@ -123,6 +128,20 @@ class ShopController extends Controller
                         'volumes',
                         'selected_image'
                     ));
+        }
+        else {
+            abort(404);
+        }
+    }
+
+    public function readProductInfoAjax($sku)
+    {
+        $product = Product::where('sku', $sku)->first(); 
+        if (isset($product)) {
+            $p = new ProductPrice;
+            
+            return $product;
+            
         }
         else {
             abort(404);

@@ -108,7 +108,16 @@
                 <hr>
                 <div> 
                   <div class="text-bold">Choose variation</div>
-                  <button class="btn btn-light">None</button>
+                  @if ($variation)
+                  @foreach ($variation as $item)
+                    @php
+                        $active = $item->sku == $product->sku ? "active" : "";
+                    @endphp
+                    <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
+                  @endforeach
+                  @else
+                  <button class="btn btn-light btn-variation">None</button>
+                  @endif
                 </div>
                 <hr>
                 <div class="p-details mt-2">

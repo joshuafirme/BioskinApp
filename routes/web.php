@@ -50,3 +50,5 @@ Route::get('/shop/read-all-category', 'ShopController@readAllCategory');
 Route::get('/shop/read-all-packaging', 'ShopController@readAllPackaging');
 Route::get('/shop/read-packaging/{subcategory_id}', 'ShopController@readPackagingBySubcategory');
 Route::get('/shop/{sku}', 'ShopController@readOneProduct');
+Route::get('/shop/read-one/{sku}', 'ShopController@readProductInfoAjax');
+Route::get('/shop/read-images/{sku}', 'ShopController@readImages');
