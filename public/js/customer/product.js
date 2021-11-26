@@ -149,7 +149,7 @@ async function readSubcategory(category_id) {
         success:function(data){ 
             var html = '';   
             for (var i = 0; i < data.length; i++) {
-                html += '<li class=""><a class="subcategory-name" href="#" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
+                html += '<li class=""><a class="subcategory-name" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
                 html += '</a>'
             }
             $('.subcategory-container').append(html);
@@ -176,14 +176,16 @@ $(document).on('click', '.subcategory-name', async function(){
     $('#product-container').html("");
     $('.lds-ellipsis').css('display', 'block');
 
-    $('.selected-category-name').text(subcategory_name);
+    //$('.selected-category-name').text(subcategory_name);
 
     window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
 
     var category_name = localStorage.getItem('selected-category');
-
+    console.log(category_name)
     if (category_name.toLowerCase().indexOf("pack") != -1) {
-        await readPackaging(subcategory_id, object);
+        await readPackaging(subcategory_id, object); 
+        console.log('read pack')
+        console.log(object)
     }
     else {
         await readProducts(subcategory_id, object); 
@@ -221,7 +223,7 @@ async function renderConponents() {
     const read_subcategory = await readSubcategory(category_id);
 
     var category_name = localStorage.getItem('selected-category');
-
+    console.log(category_name+ " cat")
     setTimeout(async function(){
         if(category_name.toLowerCase().indexOf("pack") != -1) {
             await readPackaging(category_id);
