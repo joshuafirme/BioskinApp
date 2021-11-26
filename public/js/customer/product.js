@@ -72,7 +72,7 @@ async function readProducts(category_id, object = 'category') {
                         readImage(data_storage[i].sku);
                     } 
                 }
-                if(data_storage.length >= last_key){
+                if(data_storage.length > last_key){
                     enable_button = true;
                 }
 
@@ -240,7 +240,7 @@ async function on_Click(category_id) {
             }
             
             console.log(data_storage.length+ " "+last_key)
-            if (data_storage.length >= last_key) {
+            if (data_storage.length > last_key) {
                 enable_button = true;
             }
             if (enable_button) {
