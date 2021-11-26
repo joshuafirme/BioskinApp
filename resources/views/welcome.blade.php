@@ -158,7 +158,7 @@
   </div>
     </div>
     
-    <div class="row second-row justify-content-center m-5">
+    <div class="row second-row justify-content-center m-5 landing">
       <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/fomulation.png') }}");' ></div></div>
       <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/finish_goods.png') }}");' ></div></div>
       <div class="col-sm-12 col-lg-4 mt-3"><div class="responsive-img" style='background-image:url("{{ asset('images/shipping.png') }}");' ></div></div>
@@ -181,7 +181,7 @@
         <h3 class="text-muted text-center wording-2">Enjoy promos and discounts when you sign up here. You can now add vouchers to your checkouts for a much enjoyable shopping!</h3>
       </div>
     </div>
-    <div class="splide" id="secondary-slider" style="width:88%; margin: 0 auto;">
+    <div class="splide landing" id="secondary-slider" style="width:88%; margin: 0 auto;">
       <div class="splide__track">
         <ul class="splide__list">
           @foreach ($carousel as $item)

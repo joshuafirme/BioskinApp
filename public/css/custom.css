@@ -24,6 +24,16 @@ html{
   background-color: #EBEBEB;
 }
 
+.landing .responsive-img{
+  background-size:cover; 
+  background-position:center; 
+  width:100%; 
+  min-height: 290px;
+  height: 400px !important;
+  border-radius: 10px;
+  background-color: #EBEBEB;
+}
+
 .lds-ellipsis {
   display: inline-block;
   position: relative;
