@@ -217,13 +217,13 @@ async function on_Click(category_id) {
                     ids = ids.split(", ");
                     if (ids.includes(category_id)) {
                         html += await getItems(data_storage[i]);
+                        data_count++;
                     }
                     readImage(data_storage[i].sku);
-                    data_count++;
                 }
             }
-    
-            if (data_count > last_key) {
+            console.log(data_count+" count")
+            if (data_count >= last_key) {
                 enable_button = true;
             }
     
@@ -233,6 +233,8 @@ async function on_Click(category_id) {
                 html += '</div>';
             }
             $('#product-container').append(html);
+                
+            $('.lds-ellipsis').css('display', 'none');
             
             
         },300)
