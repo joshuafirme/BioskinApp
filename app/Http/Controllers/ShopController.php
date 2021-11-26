@@ -87,6 +87,9 @@ class ShopController extends Controller
             $selected_closures_arr = isset($product->closures) ? $product->closures : [];
     
             $images = DB::table('product_images')->where('sku', $sku)->get();
+            // cache images data
+            Cache::put('product-images', $images);
+
             $volumes = $p->readVolumes($sku);
     
             $selected_image = $this->readImage($sku);

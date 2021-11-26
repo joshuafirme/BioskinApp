@@ -26,6 +26,9 @@
       .splide-other-img:not(:first-child) {
         opacity: 0.6;
       }
+      .product-information .btn-show-hide{
+        margin-top: -10px;
+      }
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -74,7 +77,7 @@
           <div class="splide" id="read-one-slider" style="width:88%; margin: 0 auto;">
             <div class="splide__track">
               <ul class="splide__list">
-                @foreach ($images as $item)
+                @foreach (Cache::get('product-images') as $item)
                 <div class="splide__slide row min-ht splide-other-img" data-id="{{ $item->id }}" data-src="{{ 'images/'.$item->image }}">
                   <img class="img-fluid" src="{{ asset('images/'.$item->image) }}">
                 </div>
@@ -98,7 +101,7 @@
             </div>
         </div>
         <div class="col-md-12 col-lg-5">
-            <div class="ml-3 mt-4">
+            <div class="ml-3 mt-4 product-information">
                 <h4 class="text-dark text-bold">{{ $product->name }}</h4>
                 <div>{{ $product->size }}</div>
                 <div>{{ $product->price }}</div>
