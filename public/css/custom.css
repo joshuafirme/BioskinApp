@@ -182,7 +182,11 @@ html{
       line-height: 20px;
     }
   }
-
+  @media screen and (max-width: 380px) {
+    .responsive-img{
+      height: 190px !important;
+    }
+  }
   .fa-check{
     color:#3BC265; 
   }

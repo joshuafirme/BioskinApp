@@ -268,15 +268,13 @@ async function on_Click(category_id) {
     
         window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
     
-        var category_name = localStorage.getItem('selected-category');
-        if (!category_name || category_name == "") {
-            category_name = $('[aria-current=page]').text(data);
-        }
+        var category_name =  category_name = $('[aria-current=page]').text();
+
         console.log(category_name)
+        console.log(object)
         if (category_name.toLowerCase().indexOf("pack") != -1) {
             await readPackaging(subcategory_id, object); 
             console.log('read pack')
-            console.log(object)
         }
         else {
             await readProducts(subcategory_id, object); 
