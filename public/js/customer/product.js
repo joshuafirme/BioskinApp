@@ -29,6 +29,25 @@ async function getItems (data) {
 
     return html;
 }
+
+async function filterByCategory(data,object,category_id) { 
+
+    var seen = {};
+    var out = [];
+    var len = data.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = data[i];
+         let ids = object == 'category' ? data[i].category_id : data[i].sub_category_id;
+         ids = ids.split(", ");
+         if (ids.includes(category_id)) {
+            seen[item.id] = 1;
+            out[j++] = item;
+         }
+    }
+    return out;
+}
+
 var data_storage;
 var last_key = 0;        
 async function readProducts(category_id, object = 'category') { 
@@ -36,7 +55,9 @@ async function readProducts(category_id, object = 'category') {
         url: '/shop/read-all-product',
         type: 'GET',
         success:async function(data){
-                data_storage = data;
+
+                data_storage = await filterByCategory(data,object,category_id);
+                 
                 let data_count = 0;
                 var html = "";  
 
@@ -46,16 +67,12 @@ async function readProducts(category_id, object = 'category') {
                 last_key = 3;
                 for (var i = 0; i < last_key; i++) {
                     if (typeof data_storage[i] != 'undefined') {
-                        let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
-                        ids = ids.split(", ");
-                        if (ids.includes(category_id)) {
-                            html += await getItems(data_storage[i]);
-                            data_count++
-                        }
+                        html += await getItems(data_storage[i]);
+                        data_count++
                         readImage(data_storage[i].sku);
                     } 
                 }
-                if(data_count >= last_key){
+                if(data_storage.length >= last_key){
                     enable_button = true;
                 }
 
@@ -209,7 +226,6 @@ async function on_Click(category_id) {
             var html = "";
             var enable_button = false;
             var old_last_key = last_key;
-            let data_count = 0;
             last_key = old_last_key + 3;
             for (var i = old_last_key; i < last_key; i++) {
                 if (typeof data_storage[i] != 'undefined') {
@@ -219,12 +235,12 @@ async function on_Click(category_id) {
                         html += await getItems(data_storage[i]);
                     }
                     readImage(data_storage[i].sku);  console.log(data_storage[i])
-                    data_count++;
+            
                 }
             }
             
-            console.log(data_count+ " "+last_key)
-            if (data_count >= last_key) {
+            console.log(data_storage.length+ " "+last_key)
+            if (data_storage.length >= last_key) {
                 enable_button = true;
             }
             if (enable_button) {
