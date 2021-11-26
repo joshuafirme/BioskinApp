@@ -19,7 +19,7 @@ html{
   background-position:center; 
   width:100%; 
   min-height: 290px;
-  height: 420px !important;
+  height: 420px;
   border-radius: 10px;
   background-color: #EBEBEB;
 }
@@ -146,19 +146,27 @@ html{
   .category-container .category-name{
     cursor: pointer;
   }
-
-  @media screen and (min-width: 1301px) {
+  @media screen and (min-width: 1402px) {
     .responsive-img{
-      height: 600px !important;
+      height:500px !important;
+    }
+  }
+  @media screen and (max-width: 1401px) {
+    .responsive-img{
+      height:430px !important;
+    }
+  }
+
+  @media screen and (max-width: 1301px) {
+    .responsive-img{
+      height:370px !important;
     }
   }
 
   @media screen and (max-width: 1201px) {
     .responsive-img{
-      height: 750px !important;
+      height: 160px !important;
     }
-  }
-  @media screen and (max-width: 1025px) {
   }
   @media screen and (max-width: 769px) {
     .responsive-img{
