@@ -233,8 +233,8 @@ async function on_Click(category_id) {
                     ids = ids.split(", ");
                     if (ids.includes(category_id)) {
                         html += await getItems(data_storage[i]);
+                        readImage(data_storage[i].sku);
                     }
-                    readImage(data_storage[i].sku);  console.log(data_storage[i])
             
                 }
             }
