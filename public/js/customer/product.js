@@ -29,8 +29,8 @@ async function getItems (data) {
 
     return html;
 }
-           
 var data_storage;
+var last_key = 0;        
 async function readProducts(category_id, object = 'category') { 
     $.ajax({
         url: '/shop/read-all-product',
@@ -39,16 +39,30 @@ async function readProducts(category_id, object = 'category') {
                 data_storage = data;
                 let data_count = 0;
                 var html = "";  
-                console.log(object)
-                for (var i = 0; i < data.length; i++) {
-                    let ids = object == 'category' ? data[i].category_id : data[i].sub_category_id;
-                    ids = ids.split(", ");
-                    if (ids.includes(category_id)) {
-                        html += await getItems(data[i]);
-                        data_count++
-                    }
 
-                    readImage(data[i].sku);
+                console.log(object)
+
+                var enable_button = false;
+                last_key = 3;
+                for (var i = 0; i < last_key; i++) {
+                    if (typeof data_storage[i] != 'undefined') {
+                        let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
+                        ids = ids.split(", ");
+                        if (ids.includes(category_id)) {
+                            html += await getItems(data_storage[i]);
+                            data_count++
+                        }
+                        readImage(data_storage[i].sku);
+                    } 
+                }
+                if(data_count >= last_key){
+                    enable_button = true;
+                }
+
+                if (enable_button) {
+                    html += '<div class="col-12 load-more-container">';
+                        html +='<button class="btn btn-sm btn-outline-success btn-load-more" data-type="all">Load more</button>';
+                    html += '</div>';
                 }
                 console.log(data_count)
 
@@ -185,51 +199,92 @@ async function readCategoryName(category_id) {
     });
 }
 
-$(document).on('click', '.subcategory-name', async function(){ 
-    let object = 'sub_category';
-    var subcategory_id = $(this).attr('data-id');
-    var subcategory_name = $(this).attr('data-name');
-    $('#product-container').html("");
-    $('.lds-ellipsis').css('display', 'block');
-
-    //$('.selected-category-name').text(subcategory_name);
-
-    window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
-
-    var category_name = localStorage.getItem('selected-category');
-    if (!category_name || category_name == "") {
-        category_name = $('[aria-current=page]').text(data);
-    }
-    console.log(category_name)
-    if (category_name.toLowerCase().indexOf("pack") != -1) {
-        await readPackaging(subcategory_id, object); 
-        console.log('read pack')
-        console.log(object)
-    }
-    else {
-        await readProducts(subcategory_id, object); 
-    }
-});
-
-$(document).on('click', '.category-name', async function(){ 
-    var category_id = $(this).attr('data-id');
-    var category_name = $(this).attr('data-name');
-    $('#product-container').html("");
-    $('.subcategory-container').html("");
-    $('.lds-ellipsis').css('display', 'block');
-    $('.selected-category-name').text(category_name);
-    $('[aria-current=page]').text(category_name);
-
-    window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
-
-    if (category_name.toLowerCase().indexOf("pack") != -1) {
-        await readPackaging(category_id);
-    }
-    else {
-        await readProducts(category_id); 
-    }
-    await readSubcategory(category_id);
-});
+async function on_Click(category_id) {
+    $(document).on('click', '.btn-load-more', async function(){
+        $(this).html('<i class="fas fa-spinner fa-spin"></i>');
+        setTimeout(async function() {
+            $('.btn-load-more').hide();
+            console.log(data_storage)
+            var object = 'category';
+            var html = "";
+            var enable_button = false;
+            var old_last_key = last_key;
+            let data_count = 0;
+            last_key = old_last_key + 3;
+            for (var i = old_last_key; i < last_key; i++) {
+                if (typeof data_storage[i] != 'undefined') {
+                    let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
+                    ids = ids.split(", ");
+                    if (ids.includes(category_id)) {
+                        html += await getItems(data_storage[i]);
+                    }
+                    readImage(data_storage[i].sku);
+                    data_count++;
+                }
+            }
+    
+            if (data_count >= last_key+1) {
+                enable_button = true;
+            }
+    
+            if (enable_button) {
+                html += '<div class="col-12 load-more-container">';
+                    html +='<button class="btn btn-sm btn-outline-success btn-load-more">Load more</button>';
+                html += '</div>';
+            }
+            $('#product-container').append(html);
+            
+            
+        },300)
+        
+    });
+    
+    $(document).on('click', '.subcategory-name', async function(){ 
+        let object = 'sub_category';
+        var subcategory_id = $(this).attr('data-id');
+        var subcategory_name = $(this).attr('data-name');
+        $('#product-container').html("");
+        $('.lds-ellipsis').css('display', 'block');
+    
+        //$('.selected-category-name').text(subcategory_name);
+    
+        window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
+    
+        var category_name = localStorage.getItem('selected-category');
+        if (!category_name || category_name == "") {
+            category_name = $('[aria-current=page]').text(data);
+        }
+        console.log(category_name)
+        if (category_name.toLowerCase().indexOf("pack") != -1) {
+            await readPackaging(subcategory_id, object); 
+            console.log('read pack')
+            console.log(object)
+        }
+        else {
+            await readProducts(subcategory_id, object); 
+        }
+    });
+    
+    $(document).on('click', '.category-name', async function(){ 
+        var category_id = $(this).attr('data-id');
+        var category_name = $(this).attr('data-name');
+        $('#product-container').html("");
+        $('.subcategory-container').html("");
+        $('.lds-ellipsis').css('display', 'block');
+        $('.selected-category-name').text(category_name);
+        $('[aria-current=page]').text(category_name);
+    
+        window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
+    
+        if (category_name.toLowerCase().indexOf("pack") != -1) {
+            await readPackaging(category_id);
+        }
+        else {
+            await readProducts(category_id); 
+        }
+        await readSubcategory(category_id);
+    });
+}
 
 async function renderConponents() {
     let url = window.location.href;
@@ -240,6 +295,7 @@ async function renderConponents() {
     const read_subcategory = await readSubcategory(category_id);
     const read_category = await readCategoryName(category_id);
     const read_all_cat = await readAllCategory();
+    const on_click = await on_Click(category_id);
 
    
 
