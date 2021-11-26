@@ -217,15 +217,16 @@ async function on_Click(category_id) {
                     ids = ids.split(", ");
                     if (ids.includes(category_id)) {
                         html += await getItems(data_storage[i]);
-                        data_count++;
                     }
                     readImage(data_storage[i].sku);  console.log(data_storage[i])
+                    data_count++;
                 }
             }
-            if (data_count+1 >= last_key) {
+            
+            console.log(data_count+ " "+last_key)
+            if (data_count >= last_key) {
                 enable_button = true;
             }
-            console.log(enable_button+ " btn")
             if (enable_button) {
                 html += '<div class="col-12 load-more-container">';
                     html +='<button class="btn btn-sm btn-outline-success btn-load-more">Load more</button>';
