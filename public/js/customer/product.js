@@ -167,9 +167,9 @@ async function readCategoryName(category_id) {
             localStorage.setItem('selected-category', data);
 
             var category_name = localStorage.getItem('selected-category');
-            if (!category_name || category_name == "") {
+            if (!data || data == "") {
                 await readSubcategory();
-                category_name = localStorage.getItem('selected-category');
+                category_name = data;
                 console.log('getting category name...')
             }
             console.log(category_name+ " cat")
