@@ -161,10 +161,26 @@ async function readCategoryName(category_id) {
     $.ajax({
         url: '/category/read-one/'+category_id,
         type: 'GET',
-        success:function(data){ 
+        success:async function(data){ 
             $('.selected-category-name').text(data);
             $('[aria-current=page]').text(data);
             localStorage.setItem('selected-category', data);
+
+            var category_name = localStorage.getItem('selected-category');
+            if (!category_name || category_name == "") {
+                await readSubcategory();
+                category_name = localStorage.getItem('selected-category');
+                console.log('getting category name...')
+            }
+            console.log(category_name+ " cat")
+            setTimeout(async function(){
+                if(category_name.toLowerCase().indexOf("pack") != -1) {
+                    await readPackaging(category_id);
+                }
+                else {
+                    await readProducts(category_id, 'category');
+                }
+            },800);
         }
     });
 }
@@ -225,21 +241,7 @@ async function renderConponents() {
     const read_category = await readCategoryName(category_id);
     const read_all_cat = await readAllCategory();
 
-    var category_name = localStorage.getItem('selected-category');
-    if (!category_name || category_name == "") {
-        await readSubcategory();
-        category_name = localStorage.getItem('selected-category');
-        console.log('getting category name...')
-    }
-    console.log(category_name+ " cat")
-    setTimeout(async function(){
-        if(category_name.toLowerCase().indexOf("pack") != -1) {
-            await readPackaging(category_id);
-        }
-        else {
-            await readProducts(category_id, 'category');
-        }
-    },800);
+   
 
 }
                              
