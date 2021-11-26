@@ -48,7 +48,7 @@ class ShopController extends Controller
         $p = new Product;
         if (Cache::get('products-cache')) {
             $data = Cache::get('products-cache');
-        }else {
+        }else {    
             Cache::put('products-cache', $p->readAllProduct());
             $data = $p->readAllProduct();
         }
@@ -58,7 +58,13 @@ class ShopController extends Controller
     public function readAllPackaging()
     {
         $p = new Packaging;
-        return  $p->readAllPackaging();
+        if (Cache::get('packaging-cache')) {
+            $data = Cache::get('products-cache');
+        }else {
+            Cache::put('packaging-cache', $p->readAllPackaging());
+            $data = $p->readAllPackaging();
+        }
+        return  $data;
     }
 
     public function readPackagingBySubcategory($subcategory_id) {
