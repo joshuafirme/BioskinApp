@@ -118,14 +118,16 @@
                 <div> 
                   <div class="text-bold">Choose variation</div>
                   @if ($variation)
-                  @foreach ($variation as $item)
+                  @foreach ($variation as $key => $item)
                     @php
                         $active = $item->sku == $product->sku ? "active" : "";
                     @endphp
                     @if (count($variation) > 0 && $item->variation != null)
                       <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
                     @else 
+                      @if ($key == count($variation))
                       <button class="btn btn-light">None</button>
+                      @endif 
                     @endif
                   @endforeach
                   @else
