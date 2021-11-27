@@ -9,6 +9,7 @@
   <!-- /.navbar -->
 
   <style>
+
       .p-details{
           background-color: #F2F2F2;
           padding: 15px;

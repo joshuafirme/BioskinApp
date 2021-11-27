@@ -2,6 +2,11 @@ html{
     overflow-x: hidden !important;
 }
 
+
+a{
+  color: #1C2877 !important;
+}
+
 .btn-success {
   background-color:#EFF6EC !important; color:#343A40 !important;
 }
