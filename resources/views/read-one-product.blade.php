@@ -125,7 +125,7 @@
                     @if (count($variation) > 0 && $item->variation != null)
                       <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
                     @else 
-                      @if ($key == count($variation))
+                      @if ($key == count($variation) -1)
                       <button class="btn btn-light">None</button>
                       @endif 
                     @endif
