@@ -124,8 +124,6 @@
                     @endphp
                     @if ($item->variation != null)
                       <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
-                    @else 
-                      <button class="btn btn-light">None</button>
                     @endif
                   @endforeach
                   @else
