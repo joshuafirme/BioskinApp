@@ -160,11 +160,17 @@ class ShopController extends Controller
                 $packaging_ids = $product->packaging;
                 $packagings = $packaging->readPackaging($packaging_ids);
             }
+            else {
+                $packagings= [];
+            }
 
             
             if ($product->closures) {
                 $closure_ids = $product->closures;
                 $closures = $packaging->readPackaging($closure_ids);
+            }
+            else {
+                $closures = [];
             }
 
             $variation = Product::where('variation_code', $product->variation_code)
