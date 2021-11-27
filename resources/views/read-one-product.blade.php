@@ -122,7 +122,7 @@
                     @php
                         $active = $item->sku == $product->sku ? "active" : "";
                     @endphp
-                    @if (count($item) > 0 && $item->variation != null)
+                    @if (count($variation) > 0 && $item->variation != null)
                       <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
                     @else 
                       <button class="btn btn-light">None</button>
