@@ -47,11 +47,7 @@
         </div>
         <div class="col-md-12 col-lg-10">
             <h4 class="text-center mt-4 text-dark mt-5 selected-category-name"></h4>
-              <h5 class="text-center text-dark">
-                Everything new, now and need to know in beauty and skincare is here. 
-                From all new formulas to latest skincare and cosmetics is yours to shop
-                
-              </h5>
+              <h5 class="text-center text-dark" id="wording-text"></h5>
               <div class="row mt-5" id="product-container">
               </div>
           

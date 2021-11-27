@@ -63,7 +63,8 @@
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
                   <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{ $category_name }}</li>
+                  <li class="breadcrumb-item"><a href="{{url('/shop/category/'.$category_id )}}">{{ $category_name }}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
                 </ol>
               </nav>
              <div class="card shadow-none" style="background-color: #F2F2F2;">

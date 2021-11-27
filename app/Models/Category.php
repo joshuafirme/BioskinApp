@@ -10,7 +10,9 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'status'
+        'wording',
+        'status',
+        'image',
     ];
 
     public function getCategoryName($category_id) {

@@ -55,13 +55,15 @@
                                 <input type="text" class="form-control" name="name"  id="name" required>
                             </div>
 
-                           <!-- <div class="col-sm-12 col-md-6 mb-2">    
-                              <label class="col-form-label">Status</label>
-                              <select class="form-control" name="status" id="status">
-                                  <option selected value="1">Active</option>
-                                  <option value="0">Inactive</option>
-                              </select>
-                            </div>-->
+                            <div class="col-sm-12 col-md-6">
+                                <label class="col-form-label">Image</label>
+                                <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png" required>
+                            </div>
+
+                            <div class="col-sm-12 mt-2">
+                                <label class="col-form-label">Wording</label>
+                                <textarea rows="3" type="text" class="form-control" name="wording" required></textarea>
+                            </div>
     
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save</button>

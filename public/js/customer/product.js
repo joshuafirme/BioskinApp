@@ -1,6 +1,6 @@
 async function getItems (data) {
     let category_name = $('#category-name-hidden').val();
-    console.log(category_name)
+
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
         html += '<div class="card shadow-none p-5">';
@@ -67,7 +67,7 @@ async function readProducts(category_id, object = 'category') {
                 var enable_button = false;
                 last_key = 6;
                 for (var i = 0; i < last_key; i++) {   
-                    if (typeof data_storage[i] != 'undefined') { console.log(data_storage[i])
+                    if (typeof data_storage[i] != 'undefined') { 
                         html += await getItems(data_storage[i]);
                         data_count++
                     } 
@@ -118,7 +118,7 @@ async function readPackaging(subcategory_id, object = 'category') {
                     data_count++
                     readImage(data[i].sku);
                 }
-                console.log(data_count)
+              
 
                 if (data_count == 0) {
                     html += '<div class="col-12 mt-5 d-flex justify-content-center">';
@@ -168,8 +168,10 @@ async function readAllCategory() {
         success:function(data){ 
             var html = '';   
             for (var i = 0; i < data.length; i++) {
+                let wording = data[i].wording ? data[i].wording : "";
                 html += '<a class="col-xs-6 col-sm-4 col-md-1 text-center">';
-                html += '<div class="text-bold text-muted category-name" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</div>';
+                html += '<div class="text-bold text-muted category-name" data-name="'+data[i].name+'" ';
+                html += 'data-wording="'+ wording +'" data-id="'+data[i].id+'">'+data[i].name+'</div>';
                 html += '</a>'
             }
             $('.category-container').append(html);
@@ -196,20 +198,22 @@ async function readCategoryName(category_id, object = 'category', subcategory_id
     $.ajax({
         url: '/category/read-one/'+category_id,
         type: 'GET',
-        success:async function(data){ 
-            $('.selected-category-name').text(data);
-            $('[aria-current=page]').text(data);
-            localStorage.setItem('selected-category', data);
+        success:async function(data){  
+            console.log('===============')
+            console.log(data.name)
+            $('.selected-category-name').text(data.name);
+            $('#wording-text').text(data.wording);
+            $('[aria-current=page]').text(data.name);
+            localStorage.setItem('selected-category', data.name);
 
             var category_name = localStorage.getItem('selected-category');
             
             $('#category-name-hidden').val(category_name);
-            if (!data || data == "") {
+            if (!data.name || data.name == "") {
                 await readSubcategory();
-                category_name = data;
-                console.log('getting category name...')
+                category_name = data.name;
             }
-            console.log(category_name+ " cat")
+
             setTimeout(async function(){
                 if(category_name.toLowerCase().indexOf("pack") != -1) {
                     await readPackaging(category_id);
@@ -243,7 +247,7 @@ async function on_Click(category_id) {
         $(this).html('<i class="fas fa-spinner fa-spin"></i>');
         setTimeout(async function() {
             $('.btn-load-more').hide();
-            console.log(data_storage)
+
             var object = 'category';
             var html = "";
             var enable_button = false;
@@ -302,8 +306,6 @@ async function on_Click(category_id) {
     
         var category_name =  category_name = $('[aria-current=page]:first').text();
 
-        console.log(category_name)
-        console.log(object)
         $('#category-name-hidden').val(category_name);
         if (category_name.toLowerCase().indexOf("pack") != -1) {
             await readPackaging(subcategory_id, object); 
@@ -317,12 +319,14 @@ async function on_Click(category_id) {
     $(document).on('click', '.category-name', async function(){ 
         var category_id = $(this).attr('data-id');
         var category_name = $(this).attr('data-name');
+        var wording = $(this).attr('data-wording');
         $('#product-container').html("");
         $('.subcategory-container').html("");
         $('.lds-ellipsis').css('display', 'block');
         $('.selected-category-name').text(category_name);
         $('#category-name-hidden').val(category_name)
         $('[aria-current=page]').text(category_name);
+        $('#wording-text').text(wording);
     
         window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
     

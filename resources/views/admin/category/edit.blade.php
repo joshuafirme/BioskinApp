@@ -58,7 +58,12 @@
 
                             <div class="col-sm-12 col-md-6">
                                 <label class="col-form-label">Image</label>
-                                <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png" required>
+                                <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png">
+                            </div>
+
+                            <div class="col-sm-12 mt-2">
+                                <label class="col-form-label">Wording</label>
+                                <textarea rows="3" type="text" class="form-control" name="wording">{{ $category->wording }}</textarea>
                             </div>
 
                             <div class="col-sm-12 mt-4">

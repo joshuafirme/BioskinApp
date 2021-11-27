@@ -27,7 +27,7 @@ Route::post('/product/archive/{id}', 'ProductController@archive');
 Route::get('/read-product', 'ProductController@readAllProduct');
 Route::post('/delete-image/{id}', 'ProductController@deleteImage');
 Route::resource('/category', 'CategoryController');
-Route::get('/category/read-one/{id}', 'CategoryController@readCategoryName');
+Route::get('/category/read-one/{id}', 'CategoryController@readCategory');
 Route::resource('/subcategory', 'SubcategoryController');
 Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
 Route::resource('/packaging', 'PackagingController');
@@ -42,6 +42,7 @@ Route::get('/read-price-per-volume/{sku}', 'PackagingController@readPricePerVolu
 Route::post('/remove-price-per-volume', 'PackagingController@removePricePerVolume');
 
 Route::get('/read-category-id/{subcategory_id}', 'ShopController@readCategoryID');
+
 Route::get('/shop', 'ShopController@index');
 Route::get('/shop/category/{id}', 'ShopController@categoryProduct');
 Route::get('/shop/subcategory/{id}', 'ShopController@categoryProduct');
