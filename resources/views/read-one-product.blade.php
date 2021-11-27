@@ -14,9 +14,9 @@
           padding: 15px;
           border-radius: 15px;
       }
-      #more-direction-text {display: none;}
-      #more-precaution-text {display: none;}
-      #more-ingredient-text {display: none;}
+      #direction-text {display: none;}
+      #precaution-text {display: none;}
+      #ingredient-text {display: none;}
 
       #read-one-slider .splide-other-img{
 
@@ -45,6 +45,8 @@
     </div>
     <!-- /.content-header -->
 
+    <input type="hidden" id="category-value" value="{{ $category_name }}">
+    <input type="hidden" id="category-id-value" value="{{ $category_id }}">
     <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
         @foreach ($categories as $item)
         <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
@@ -70,6 +72,9 @@
                 <li aria-current="page"></li>
               </ul>
               <ul class="subcategory-container" style="list-style-type: none;">
+                @foreach ($subcategories as $item)
+                  <li class=""><a style="cursor:pointer;" href="{{ url('/shop/subcategory/'.$item->id) }}" class="subcategory-name">{{ $item->name }}</a></li>
+                @endforeach
               </ul>
              </div>
         </div>
@@ -87,7 +92,11 @@
           </div>
         </div>
         <div class="col-sm-10 col-lg-4">
-            <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
+            @if (isset($selected_image)) 
+             <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
+            @else 
+             <div class="responsive-img mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
+            @endif
             <div class="row product-buttons mt-5">
                 <div class="col-10">
                     <button class="btn btn-success btn-block m-1">Buy now</button>
@@ -113,28 +122,32 @@
                     @php
                         $active = $item->sku == $product->sku ? "active" : "";
                     @endphp
-                    <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
+                    @if ($item->variation != null)
+                      <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
+                    @else 
+                      <button class="btn btn-light">None</button>
+                    @endif
                   @endforeach
                   @else
-                  <button class="btn btn-light btn-variation">None</button>
+                  <button class="btn btn-light">None</button>
                   @endif
                 </div>
                 <hr>
                 <div class="p-details mt-2">
                     <div class="text-bold">Description</div>
-                    {{ $product->description }}
+                    <span id="description-text">{{ $product->description }}</span>
                 </div>
                 <div class="p-details mt-2" id="detail-hide-direction" style="height:53px;">
                   <div class="text-bold">Directions <span class="btn float-right btn-show-hide" object="direction">+</span></div>
-                  <span id="dots-btn-direction">&#8203;</span><span id="more-direction-text">{{ $product->directions }}</span>
+                  <span id="dots-btn-direction">&#8203;</span><span id="direction-text">{{ $product->directions }}</span>
               </div>
                 <div class="p-details mt-2" id="detail-hide-precaution" style="height:53px;">
                     <div class="text-bold">Precautions <span class="btn float-right btn-show-hide" object="precaution">+</span></div>
-                    <span id="dots-btn-precaution">&#8203;</span><span id="more-precaution-text">{{ $product->precautions }}</span>
+                    <span id="dots-btn-precaution">&#8203;</span><span id="precaution-text">{{ $product->precautions }}</span>
                 </div>
                 <div class="p-details mt-2" id="detail-hide-ingredient" style="height:53px;">
                     <div class="text-bold">Ingredients <span class="btn float-right btn-show-hide" object="ingredient">+</span></div>
-                    <span id="dots-btn-ingredient">&#8203;</span><span id="more-ingredient-text">{{ $product->ingredients }}</span>
+                    <span id="dots-btn-ingredient">&#8203;</span><span id="ingredient-text">{{ $product->ingredients }}</span>
                 </div>
                 
             </div>

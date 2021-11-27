@@ -25,6 +25,8 @@
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
     </div> 
 
+    <input type="hidden" id="category-name-hidden">
+
     <div class="row m-4">
         <div class="col-md-12 col-lg-2">
             <nav aria-label="breadcrumb">

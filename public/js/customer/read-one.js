@@ -16,13 +16,22 @@
         }
     }
 
-    async function readProductInfo(sku) {
+    async function readProductInfo(sku, category_name) {
         $.ajax({
-            url: '/shop/read-one/'+sku,
+            url: '/shop/read-one/'+sku+'/'+category_name,
             type: 'GET',
             success:async function(data){
-               
+
+                if (data) {
                     await readImages(sku);
+                    $('#description-text').text(data.description);
+                    $('#direction-text').text(data.directions);
+                    $('#precaution-text').text(data.precaution);
+                    $('#ingredient-text').text(data.ingredient);
+                }
+                else {
+                    alert('error loading product info');
+                }
             }
         });
     }
@@ -32,7 +41,7 @@
             url: '/shop/read-images/'+sku,
             type: 'GET',
             success:async function(data){ 
-                console.log(data)
+              
                 $('#read-one-slider .splide__list').html();
 
                 if (data) {
@@ -66,7 +75,7 @@
         $(document).on('click', '.btn-show-hide', async function(){ 
             var object = $(this).attr('object');
             var dots = document.getElementById("dots-btn-"+object);
-            var moreText = document.getElementById("more-"+object+"-text");
+            var moreText = document.getElementById(object+"-text");
             var btnText = $(this);
             $('#detail-hide-'+object).css('height', 'auto');
             if (dots.style.display === "none") {
@@ -85,18 +94,23 @@
         $(document).on('click', '.splide-other-img', async function(){ 
             let src = $(this).attr('data-src');
             let data_id = $(this).attr('data-id');
-            console.log(src)
+    
             $('.splide-other-img').css('opacity', '0.6');
             $('[data-id='+data_id+']').css('opacity', '1.0');
+
             document.getElementById('main-image').style.backgroundImage='url(/'+src+')';
         });
     
         $(document).on('click', '.btn-variation', async function(){ 
             let $this = $(this);
+            let category_name = $('#category-value').val();
+            let category_id = $('#category-id-value').val();
             let sku = $this.attr('data-sku');
             
-            await readProductInfo(sku);
+            await readProductInfo(sku, category_name);
 
+            window.history.pushState(window.location.href, 'Title', '/shop/'+sku+"/"+category_name);
+            
             $('.btn-variation').removeClass('active');
             $this.addClass('active');
         });

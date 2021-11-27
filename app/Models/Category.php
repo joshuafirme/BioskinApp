@@ -21,4 +21,13 @@ class Category extends Model
             return "";
         }
     }
+
+    public function getCategoryIDByName($category_name) {
+        if ($category_name != "") {
+            return $this::where('name', $category_name)->value('id');
+        }
+        else {
+            return "";
+        }
+    }
 }

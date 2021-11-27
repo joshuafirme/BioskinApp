@@ -18,19 +18,6 @@ class ShopController extends Controller
 {
     public function index(Product $p)
     {   
-        $path = "/data";
-        $path_file = public_path() . $path."/cache.json";
-
-        $data = [];
-
-        foreach ($p->readAllProduct() as $item) {
-            $data = [
-                'name' => $item->name,
-            ];
-        }
-            Cache::put('products', $data);
-
-
         $categories = Category::all();
         $carousel = Carousel::orderBy('order')->get();
         return view('shop', compact('categories', 'carousel'));
@@ -41,6 +28,13 @@ class ShopController extends Controller
         $p = new Product;
         $categories = Category::all();
         return view('shop-category', compact('categories'));
+    }
+
+    public function subcategoryProduct($id)
+    {
+        $p = new Product;
+        $categories = Category::all();
+        return view('shop-subcategory', compact('categories'));
     }
 
     public function readAllProduct()
@@ -80,13 +74,25 @@ class ShopController extends Controller
         return Category::all();
     }
 
+    public function readCategoryID($subcategory_id) {
+        return Subcategory::where('id', $subcategory_id)->value('category_id');
+    }
+
     public function readImages($sku) {
         return DB::table('product_images')->select('id', 'image')->where('sku',$sku)->get();
     }
 
-    public function readOneProduct($sku)
+
+    public function readOneProduct($sku, $category_name)
     {
         $product = Product::where('sku', $sku)->first(); 
+
+        $c = new Category;
+        $s = new Subcategory;
+
+        $category_id = $c->getCategoryIDByName($category_name);
+        $subcategories = $s->readSubcategoryByCategory($category_id);
+
         if (isset($product)) {
             $p = new ProductPrice;
             $categories = Category::all();
@@ -97,7 +103,6 @@ class ShopController extends Controller
                         ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
                         ->get();
       
-            $subcategories = Subcategory::all();
             $closures = Closures::all();
             
             $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
@@ -110,7 +115,7 @@ class ShopController extends Controller
             $volumes = $p->readVolumes($sku);
     
             $selected_image = $this->readImage($sku);
-        
+            
             return view('read-one-product', 
                     compact(
                         'product', 
@@ -126,7 +131,9 @@ class ShopController extends Controller
                         'variation', 
                         'images', 
                         'volumes',
-                        'selected_image'
+                        'selected_image',
+                        'category_name',
+                        'category_id'
                     ));
         }
         else {
@@ -134,7 +141,7 @@ class ShopController extends Controller
         }
     }
 
-    public function readProductInfoAjax($sku)
+    public function readProductInfoAjax($sku, $category_name)
     {
         $product = Product::where('sku', $sku)->first(); 
         if (isset($product)) {

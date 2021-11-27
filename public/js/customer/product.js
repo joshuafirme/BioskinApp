@@ -1,9 +1,10 @@
 async function getItems (data) {
-
+    let category_name = $('#category-name-hidden').val();
+    console.log(category_name)
     var html = '';
         html += '<div class="col-sm-12 col-md-6 col-lg-4">';
         html += '<div class="card shadow-none p-5">';
-        html += '<a href="/shop/'+ data.sku +'"><div class="loading responsive-img product-image" id="data-image-'+data.sku+'"></div></a>';
+        html += '<a href="/shop/'+ data.sku +'/'+category_name+'"><div class="loading responsive-img product-image" id="data-image-'+data.sku+'"></div></a>';
         html += '<div class="product-details">';
 
         html += '<div class="m-2">';
@@ -32,7 +33,7 @@ async function getItems (data) {
 
 async function filterByCategory(data,object,category_id) { 
 
-    var seen = {};
+    var seen = {}; 
     var out = [];
     var len = data.length;
     var j = 0;
@@ -40,7 +41,7 @@ async function filterByCategory(data,object,category_id) {
          var item = data[i];
          let ids = object == 'category' ? data[i].category_id : data[i].sub_category_id;
          ids = ids.split(", ");
-         if (ids.includes(category_id)) {
+         if (ids.includes(category_id)) { 
             seen[item.id] = 1;
             out[j++] = item;
          }
@@ -57,7 +58,7 @@ async function readProducts(category_id, object = 'category') {
         success:async function(data){
 
                 data_storage = await filterByCategory(data,object,category_id);
-                 
+            
                 let data_count = 0;
                 var html = "";  
 
@@ -65,13 +66,13 @@ async function readProducts(category_id, object = 'category') {
 
                 var enable_button = false;
                 last_key = 3;
-                for (var i = 0; i < last_key; i++) {
-                    if (typeof data_storage[i] != 'undefined') {
+                for (var i = 0; i < last_key; i++) {   
+                    if (typeof data_storage[i] != 'undefined') { console.log(data_storage[i])
                         html += await getItems(data_storage[i]);
                         data_count++
                     } 
                 }
-                if(data_storage.length > last_key){
+                if(data_storage.length >= last_key){
                     enable_button = true;
                 }
 
@@ -80,7 +81,7 @@ async function readProducts(category_id, object = 'category') {
                         html +='<button class="btn btn-sm btn-outline-success btn-load-more" data-type="all">Load more</button>';
                     html += '</div>';
                 }
-                console.log(data_count)
+            
 
                 if (data_count == 0) {
                     html += '<div class="col-12 mt-5 d-flex justify-content-center">';
@@ -184,14 +185,14 @@ async function readSubcategory(category_id) {
             var html = '';   
             for (var i = 0; i < data.length; i++) {
                 html += '<li class=""><a style="cursor:pointer;" class="subcategory-name" data-category-id="'+data[i].cat_id+'" data-category="'+data[i].subcategory+'" data-name="'+data[i].name+'" data-id="'+data[i].id+'">'+data[i].name+'</a></li>';
-                html += '</a>'
+     
             }
             $('.subcategory-container').append(html);
         }
     });
 }
 
-async function readCategoryName(category_id) {
+async function readCategoryName(category_id, object = 'category', subcategory_id) {
     $.ajax({
         url: '/category/read-one/'+category_id,
         type: 'GET',
@@ -201,6 +202,8 @@ async function readCategoryName(category_id) {
             localStorage.setItem('selected-category', data);
 
             var category_name = localStorage.getItem('selected-category');
+            
+            $('#category-name-hidden').val(category_name);
             if (!data || data == "") {
                 await readSubcategory();
                 category_name = data;
@@ -212,12 +215,28 @@ async function readCategoryName(category_id) {
                     await readPackaging(category_id);
                 }
                 else {
-                    await readProducts(category_id, 'category');
+                    if (object.indexOf('sub_category') != -1) {
+                        category_id = subcategory_id;
+                    }
+                    await readProducts(category_id, object);
                 }
             },800);
         }
     });
 }
+async function readCategoryID(subcategory_id) {
+    $.ajax({
+        url: '/read-category-id/'+subcategory_id,
+        type: 'GET',
+        success:async function(category_id){  
+            let object = 'sub_category';
+            const read_subcategory = await readSubcategory(category_id);
+            const read_category    = await readCategoryName(category_id, object, subcategory_id);
+        
+        }
+    });
+}
+
 
 async function on_Click(category_id) {
     $(document).on('click', '.btn-load-more', async function(){
@@ -241,7 +260,6 @@ async function on_Click(category_id) {
                 }
             }
             
-            console.log(data_storage.length+ " "+last_key)
             if (data_storage.length > last_key) {
                 enable_button = true;
             }
@@ -275,21 +293,22 @@ async function on_Click(category_id) {
         $('#product-container').html("");
         $('.lds-ellipsis').css('display', 'block');
     
-        //$('.selected-category-name').text(subcategory_name);
+        $('.selected-category-name').text(subcategory_name);
     
         window.history.pushState(window.location.href, 'Title', '/shop/subcategory/'+subcategory_id);
     
-        var category_name =  category_name = $('[aria-current=page]').text();
+        var category_name =  category_name = $('[aria-current=page]:first').text();
 
         console.log(category_name)
         console.log(object)
+        $('#category-name-hidden').val(category_name);
         if (category_name.toLowerCase().indexOf("pack") != -1) {
             await readPackaging(subcategory_id, object); 
             console.log('read pack')
         }
         else {
             await readProducts(subcategory_id, object); 
-        }
+        }     
     });
     
     $(document).on('click', '.category-name', async function(){ 
@@ -299,6 +318,7 @@ async function on_Click(category_id) {
         $('.subcategory-container').html("");
         $('.lds-ellipsis').css('display', 'block');
         $('.selected-category-name').text(category_name);
+        $('#category-name-hidden').val(category_name)
         $('[aria-current=page]').text(category_name);
     
         window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
@@ -318,11 +338,17 @@ async function renderConponents() {
     let index = url.indexOf('category/');
 
     let category_id = url.substring(index+9);
-
-    const read_subcategory = await readSubcategory(category_id);
-    const read_category = await readCategoryName(category_id);
-    const read_all_cat = await readAllCategory();
-    const on_click = await on_Click(category_id);
+    if (url.indexOf('subcategory/') != -1) {
+        console.log(category_id+ ' subcat id')
+        await readCategoryID(category_id);
+    }
+    else {
+        console.log(category_id+ ' cat id')
+        const read_subcategory = await readSubcategory(category_id);
+        const read_category    = await readCategoryName(category_id);
+    }
+        const read_all_cat     = await readAllCategory();
+        const on_click         = await on_Click(category_id);
 
    
 
