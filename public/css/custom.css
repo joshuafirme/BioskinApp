@@ -36,6 +36,18 @@ html{
   width:100%; 
   min-height: 290px;
   height: 420px;
+  border-radius: 3px;
+  background-color: #FFF;
+  border: 1px solid #F2F2F2;
+}
+
+.rebrand-img{
+  background-size: contain; 
+  background-position:center; 
+  background-repeat: no-repeat;
+  width:100%; 
+  min-height: 290px;
+  height: 320px;
   border-radius: 10px;
   background-color: #FFF;
   border: 1px solid #F2F2F2;
@@ -168,7 +180,7 @@ html{
       height:500px !important;
     }
     #main-image{
-      height:750px !important;
+      height:550px !important;
     }
   }
   @media screen and (max-width: 1401px) {

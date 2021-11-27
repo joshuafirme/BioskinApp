@@ -158,7 +158,13 @@ class ShopController extends Controller
 
             if ($product->packaging) {
                 $packaging_ids = $product->packaging;
-                $packaging = $packaging->readPackaging($packaging_ids);
+                $packagings = $packaging->readPackaging($packaging_ids);
+            }
+
+            
+            if ($product->closures) {
+                $closure_ids = $product->closures;
+                $closures = $packaging->readPackaging($closure_ids);
             }
 
             $variation = Product::where('variation_code', $product->variation_code)
@@ -166,7 +172,6 @@ class ShopController extends Controller
                         ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
                         ->get();
  
-            $closures = Closures::all();
             
             $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
             $selected_subcategory_arr = isset($product->sub_category_id) ? explode(", ", $product->sub_category_id) : [];
@@ -190,7 +195,7 @@ class ShopController extends Controller
                         'selected_category_arr', 
                         'selected_packaging_arr',
                         'selected_closures_arr', 
-                        'packaging', 
+                        'packagings', 
                         'closures', 
                         'sizes', 
                         'variation', 

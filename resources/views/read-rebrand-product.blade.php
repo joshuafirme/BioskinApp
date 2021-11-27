@@ -16,6 +16,10 @@
       border-radius: 0 !important;
     }
 
+    .nav-pills{
+      border-bottom: 1px solid #EBEBEB !important;
+    }
+
     .nav-link:hover{
       color: #424C8E !important;
     }
@@ -74,7 +78,9 @@
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
                   <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{ $category_name }}</li>
+                  <li class="breadcrumb-item"><a href="{{url('/shop')}}">{{ $category_name }}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+                  <li class="breadcrumb-item active" aria-current="page">Rebranding</li>
                 </ol>
               </nav>
              <div class="card shadow-none" style="background-color: #F2F2F2;">
@@ -108,7 +114,7 @@
             @else 
              <div class=" mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
             @endif
-            <div class="row product-buttons mt-5">
+            <div class="row product-buttons mt-2">
                 <div class="col-10">
                     <button class="btn btn-success btn-block m-1">Buy now</button>
                 </div>
@@ -117,7 +123,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-lg-4">
+        <div class="col-md-12 col-lg-3">
             <div class="ml-3 mt-4 product-customization">
                 <h4 class="text-dark text-bold">Product Customization</h4>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -157,24 +163,37 @@
                   </div>
                   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
-                      @foreach ($packaging as $key => $pack)
+                      @foreach ($packagings as $key => $pack)
                       @php
                           $packaging_image = \DB::table('product_images')->where('sku', $pack->sku)->value('image');
                 
                       @endphp
-                      <div class="col-sm-12 col-md-6">
+                      <div class="col-6 col-md-6">
                         <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $product->sku }}">{{ $pack->name }} {{ $pack->size }}</button>
-                        <div class=" mt-5 responsive-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
+                        <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
                       </div>
                       @endforeach
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="pills-ca" role="tabpanel" aria-labelledby="pills-cap-tab">..asdsa.</div>
+                  <div class="tab-pane fade" id="pills-cap" role="tabpanel" aria-labelledby="pills-cap-tab">
+                    <div class="row">
+                      @foreach ($closures as $key => $closure)
+                      @php
+                          $closure_image = \DB::table('product_images')->where('sku', $closure->sku)->value('image');
+                
+                      @endphp
+                      <div class="col-6">
+                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $product->sku }}">{{ $closure->name }} {{ $closure->size }}</button>
+                        <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$closure_image) }}");' ></div>
+                      </div>
+                      @endforeach
+                    </div>
+                  </div>
                 </div>
                 
             </div>
         </div>
-        <div class="col-md-12 col-lg-2"></div>
+        <div class="col-md-12 col-lg-3"></div>
     </div>
         
 
