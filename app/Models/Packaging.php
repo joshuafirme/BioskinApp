@@ -38,6 +38,10 @@ class Packaging extends Model
         return DB::table('packaging as P')->get();
     }
     
+    public function readPackaging($packaging_ids) {
+        return DB::table('packaging')
+                ->whereIn('id', $packaging_ids)->get();
+    }
 
     public function readPackagingBySubcategory($subcategory_id) {
           return DB::table('packaging as P')

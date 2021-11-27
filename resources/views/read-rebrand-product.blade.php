@@ -9,6 +9,17 @@
   <!-- /.navbar -->
 
   <style>
+    .nav-item .active{
+      background: #FFF !important;
+      color: #424C8E !important;
+      border-bottom: 2px solid #424C8E !important;
+      border-radius: 0 !important;
+    }
+
+    .nav-link:hover{
+      color: #424C8E !important;
+    }
+
       .p-details{
           background-color: #F2F2F2;
           padding: 15px;
@@ -58,7 +69,7 @@
     </div> 
 
     <div class="row m-4">
-        <div class="col-md-12 col-lg-2">
+        <div class="col-md-12 col-lg-2 breadcrumb-container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -91,7 +102,7 @@
             </div>
           </div>
         </div>
-        <div class="col-9 col-sm-9 col-lg-4">
+        <div class="col-9 col-sm-9 col-lg-3">
             @if (isset($selected_image)) 
              <div class=" mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             @else 
@@ -104,58 +115,64 @@
                 <div class="col-2">
                     <a class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>
                 </div>
-                @if ($product->rebranding == 1)
-                <div class="col-12">
-                    <button class="btn btn-outline-secondary btn-block m-1">Rebrand now!</button>
-                </div>
-                @endif
             </div>
         </div>
-        <div class="col-md-12 col-lg-5">
-            <div class="ml-3 mt-4 product-information">
-                <h4 class="text-dark text-bold">{{ $product->name }}</h4>
-                <div>{{ $product->size }}</div>
-                <div>{{ $product->price }}</div>
-                <hr>
-                <div> 
-                  <div class="text-bold">Choose variation</div>
-                  @if ($variation)
-                  @foreach ($variation as $key => $item)
-                    @php
-                        $active = $item->sku == $product->sku ? "active" : "";
-                    @endphp
-                    @if (count($variation) > 0 && $item->variation != null)
-                      <button class="btn btn-light btn-variation {{$active}}" data-sku="{{ $item->sku }}">{{ $item->variation }}</button>
-                    @else 
-                      @if ($key == count($variation) -1)
-                      <button class="btn btn-light">None</button>
-                      @endif 
-                    @endif
-                  @endforeach
-                  @else
-                  <button class="btn btn-light">None</button>
-                  @endif
-                </div>
-                <hr>
-                <div class="p-details mt-2">
-                    <div class="text-bold">Description</div>
-                    <span id="description-text">{{ $product->description }}</span>
-                </div>
-                <div class="p-details mt-2" id="detail-hide-direction" style="height:53px;">
-                  <div class="text-bold">Directions <span class="btn float-right btn-show-hide" object="direction">+</span></div>
-                  <span id="dots-btn-direction">&#8203;</span><span id="direction-text">{{ $product->directions }}</span>
-              </div>
-                <div class="p-details mt-2" id="detail-hide-precaution" style="height:53px;">
-                    <div class="text-bold">Precautions <span class="btn float-right btn-show-hide" object="precaution">+</span></div>
-                    <span id="dots-btn-precaution">&#8203;</span><span id="precaution-text">{{ $product->precautions }}</span>
-                </div>
-                <div class="p-details mt-2" id="detail-hide-ingredient" style="height:53px;">
-                    <div class="text-bold">Ingredients <span class="btn float-right btn-show-hide" object="ingredient">+</span></div>
-                    <span id="dots-btn-ingredient">&#8203;</span><span id="ingredient-text">{{ $product->ingredients }}</span>
+        <div class="col-md-12 col-lg-4">
+            <div class="ml-3 mt-4 product-customization">
+                <h4 class="text-dark text-bold">Product Customization</h4>
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Volume</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Size</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Packaging</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-cap-tab" data-toggle="pill" href="#pills-cap" role="tab" aria-controls="pills-cap" aria-selected="false">Cap</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row">
+                      @foreach ($volumes as $key => $item)
+                      <div class="col-sm-12 col-md-6">
+                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}">{{ $item }}</button>
+                      </div>
+                      @endforeach
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="row">
+                      @foreach ($sizes as $key => $item)
+                      <div class="col-sm-12 col-md-6">
+                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}">{{ $item->size }}</button>
+                      </div>
+                      @endforeach
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <div class="row">
+                      @foreach ($packaging as $key => $pack)
+                      @php
+                          $packaging_image = \DB::table('product_images')->where('sku', $pack->sku)->value('image');
+                
+                      @endphp
+                      <div class="col-sm-12 col-md-6">
+                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $product->sku }}">{{ $pack->name }} {{ $pack->size }}</button>
+                        <div class=" mt-5 responsive-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
+                      </div>
+                      @endforeach
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-ca" role="tabpanel" aria-labelledby="pills-cap-tab">..asdsa.</div>
                 </div>
                 
             </div>
         </div>
+        <div class="col-md-12 col-lg-2"></div>
     </div>
         
 

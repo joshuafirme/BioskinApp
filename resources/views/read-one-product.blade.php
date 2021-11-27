@@ -59,7 +59,7 @@
     </div> 
 
     <div class="row m-4">
-        <div class="col-md-12 col-lg-2">
+        <div class="col-md-12 col-lg-2 breadcrumb-container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -108,7 +108,7 @@
                 </div>
                 @if ($product->rebranding == 1)
                 <div class="col-12">
-                    <button class="btn btn-outline-secondary btn-block m-1">Rebrand now!</button>
+                    <a href="{{ url('/rebrand/'.$product->sku.'/'.$category_name) }}" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>
                 </div>
                 @endif
             </div>
@@ -117,7 +117,7 @@
             <div class="ml-3 mt-4 product-information">
                 <h4 class="text-dark text-bold">{{ $product->name }}</h4>
                 <div>{{ $product->size }}</div>
-                <div>{{ $product->price }}</div>
+                <div>₱{{ $product->price }}</div>
                 <hr>
                 <div> 
                   <div class="text-bold">Choose variation</div>
