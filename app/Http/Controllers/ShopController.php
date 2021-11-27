@@ -102,7 +102,7 @@ class ShopController extends Controller
                         ->select('products.sku','V.name as variation')
                         ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
                         ->get();
-            return $variation;
+ 
             $closures = Closures::all();
             
             $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
