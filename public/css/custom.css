@@ -14,7 +14,7 @@ html{
 .btn-outline-secondary:hover {
   color:#FFF !important;
 }
-.responsive-img{
+.responsive-img, #main-image{
   background-size: cover; 
   background-position:center; 
   background-repeat: no-repeat;
@@ -151,16 +151,25 @@ html{
     .responsive-img{
       height:500px !important;
     }
+    #main-image{
+      height:750px !important;
+    }
   }
   @media screen and (max-width: 1401px) {
     .responsive-img{
       height:430px !important;
+    }
+    #main-image{
+      height:600px !important;
     }
   }
 
   @media screen and (max-width: 1301px) {
     .responsive-img{
       height:370px !important;
+    }
+    #main-image{
+      height:500px !important;
     }
   }
 
@@ -173,10 +182,16 @@ html{
     .responsive-img{
       height: 620px !important;
     }
+    #main-image{
+      height:750px !important;
+    }
   }
   @media screen and (max-width: 769px) {
     .responsive-img{
       height: 550px !important;
+    }
+    #main-image{
+      height:550px !important;
     }
     .wording-container h1{
       font-size: 25px;
@@ -190,6 +205,9 @@ html{
   }
   @media screen and (max-width: 480px) {
     .responsive-img{
+      height:400px !important;
+    }
+    #main-image{
       height:400px !important;
     }
   }

@@ -63,13 +63,13 @@
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
                   <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
-                  <li class="breadcrumb-item active" aria-current="page"></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ $category_name }}</li>
                 </ol>
               </nav>
              <div class="card shadow-none" style="background-color: #F2F2F2;">
               <ul style="list-style-type: none;" class=" mt-3">
                 <li class="">Choose from shop</li>
-                <li aria-current="page"></li>
+                <li aria-current="page">{{ $category_name }}</li>
               </ul>
               <ul class="subcategory-container" style="list-style-type: none;">
                 @foreach ($subcategories as $item)
@@ -93,9 +93,9 @@
         </div>
         <div class="col-9 col-sm-9 col-lg-4">
             @if (isset($selected_image)) 
-             <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
+             <div class=" mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             @else 
-             <div class="responsive-img mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
+             <div class=" mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
             @endif
             <div class="row product-buttons mt-5">
                 <div class="col-10">
