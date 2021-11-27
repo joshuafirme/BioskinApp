@@ -20,9 +20,11 @@ async function getItems (data) {
         html +=    '<div class="col-2">';
         html +=        '<a class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
         html +=     '</div>';
-        html +=     '<div class="col-12">';
-        html +=         '<a href="/rebrand/'+ data.sku +'/'+category_name+'" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>';
-        html +=     '</div>';
+        if (data.rebranding == 1) {
+            html +=     '<div class="col-12">';
+            html +=         '<a href="/rebrand/'+ data.sku +'/'+category_name+'" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>';
+            html +=     '</div>';
+        }
         html +=  '</div>';
         html +=   '</div>';
         html +=   '</div>';
