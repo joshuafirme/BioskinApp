@@ -65,14 +65,14 @@ async function readProducts(category_id, object = 'category') {
                 console.log(object)
 
                 var enable_button = false;
-                last_key = 3;
+                last_key = 6;
                 for (var i = 0; i < last_key; i++) {   
                     if (typeof data_storage[i] != 'undefined') { console.log(data_storage[i])
                         html += await getItems(data_storage[i]);
                         data_count++
                     } 
                 }
-                if(data_storage.length >= last_key){
+                if(data_storage.length > last_key){
                     enable_button = true;
                 }
 
@@ -248,7 +248,7 @@ async function on_Click(category_id) {
             var html = "";
             var enable_button = false;
             var old_last_key = last_key;
-            last_key = old_last_key + 3;
+            last_key = old_last_key + 6;
             for (var i = old_last_key; i < last_key; i++) {
                 if (typeof data_storage[i] != 'undefined') {
                     let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
@@ -269,16 +269,19 @@ async function on_Click(category_id) {
                 html += '</div>';
             }
             $('#product-container').append(html);
+
             for (var i = old_last_key; i < last_key; i++) {
                 if (typeof data_storage[i] != 'undefined') {
                     let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
                     ids = ids.split(", ");
                     if (ids.includes(category_id)) {
-                        readImage(data_storage[i].sku);
+                        await readImage(data_storage[i].sku);
                     }
             
                 }
             }
+
+            
             $('.lds-ellipsis').css('display', 'none');
             
             
