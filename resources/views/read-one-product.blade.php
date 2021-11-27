@@ -78,7 +78,7 @@
               </ul>
              </div>
         </div>
-        <div class="col-sm-2 col-lg-1 mt-5">
+        <div class="col-3 col-sm-3 col-lg-1 mt-5">
           <div class="splide" id="read-one-slider">
             <div class="splide__track">
               <ul class="splide__list">
@@ -91,7 +91,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-10 col-lg-4">
+        <div class="col-9 col-sm-9 col-lg-4">
             @if (isset($selected_image)) 
              <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             @else 

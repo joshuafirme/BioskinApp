@@ -1,13 +1,17 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     async function initSplide() {
+        let height = 750;
+        if ($(document).width() < 580 ) {
+                height = 590;
+        }
         if ($('#read-one-slider').length > 0) {
 
             var splide = new Splide( '#read-one-slider', {
                       perPage    : 4,
                       cover      : true,
                       gap: 10,
-                      height     : 750,
+                      height     : height,
                       cover: true,
                       arrows: false,
                       direction   : 'ttb',

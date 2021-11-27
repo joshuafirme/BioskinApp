@@ -166,12 +166,17 @@ html{
 
   @media screen and (max-width: 1201px) {
     .responsive-img{
-      height: 160px !important;
+      height: 330px !important;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    .responsive-img{
+      height: 620px !important;
     }
   }
   @media screen and (max-width: 769px) {
     .responsive-img{
-      height: 450px !important;
+      height: 550px !important;
     }
     .wording-container h1{
       font-size: 25px;
@@ -183,9 +188,9 @@ html{
       line-height: 20px;
     }
   }
-  @media screen and (max-width: 380px) {
+  @media screen and (max-width: 480px) {
     .responsive-img{
-      height: 190px !important;
+      height:400px !important;
     }
   }
   .fa-check{
