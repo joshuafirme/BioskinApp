@@ -161,10 +161,14 @@ class ShopController extends Controller
                 $packaging = $packaging->readPackaging($packaging_ids);
             }
 
-            $variation = Product::where('variation_code', $product->variation_code)
-                        ->select('products.sku','V.name as variation')
-                        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
-                        ->get();
+            if($product->variation_code != "") {
+                $variation = Product::where('variation_code', $product->variation_code)
+                            ->select('products.sku','V.name as variation')
+                            ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
+                            ->get();
+                            
+                $sizes = Product::where('variation_code', $product->variation_code)->get('size');
+            }
  
             $closures = Closures::all();
             
@@ -177,7 +181,6 @@ class ShopController extends Controller
 
             $volumes = $p->readVolumes($sku);
             $volumes = explode(',', $volumes);
-            $sizes = Product::where('variation_code', $product->variation_code)->get('size');
       
             $selected_image = $this->readImage($sku);
             
