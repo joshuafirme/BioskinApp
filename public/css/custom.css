@@ -28,6 +28,12 @@ html{
   background-color: #EBEBEB;
   cursor: pointer;
 }
+#main-image{
+  background-size: contain; 
+  border-radius: 3px !important;
+  background-color: #FFF !important;
+  border: 1px solid #E2E6EA !important;
+}
 
 .rebrand-img{
   background-size: contain; 
