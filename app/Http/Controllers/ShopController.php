@@ -141,9 +141,9 @@ class ShopController extends Controller
         }
     }
 
-    public function readRebrandProduct($sku, $category_name)
+    public function readRebrandProduct($sku, $category_name, Product $__product)
     {
-        $product = Product::where('sku', $sku)->first(); 
+        $product = $__product::where('sku', $sku)->first(); 
 
         $c = new Category;
         $s = new Subcategory;
@@ -163,7 +163,6 @@ class ShopController extends Controller
             else {
                 $packagings= [];
             }
-
             
             if ($product->closures) {
                 $closure_ids = $product->closures;
@@ -173,22 +172,24 @@ class ShopController extends Controller
                 $closures = [];
             }
 
-            $variation = Product::where('variation_code', $product->variation_code)
-                        ->select('products.sku','V.name as variation')
-                        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
-                        ->get();
- 
-            
-            $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
-            $selected_subcategory_arr = isset($product->sub_category_id) ? explode(", ", $product->sub_category_id) : [];
-            $selected_packaging_arr = isset($product->packaging) ? $product->packaging : [];
-            $selected_closures_arr = isset($product->closures) ? $product->closures : [];
+            $variation = $__product->readVariations($product->variation_code);
+            if ($product->variation_code != "") {
+                $sizes = $__product::where('variation_code', $product->variation_code)->get('size');
+            }
+            else {
+                $sizes = [];
+            }
     
             $images = DB::table('product_images')->where('sku', $sku)->get();
 
             $volumes = $p->readVolumes($sku);
-            $volumes = explode(',', $volumes);
-            $sizes = Product::where('variation_code', $product->variation_code)->get('size');
+
+            if ($volumes) {
+                $volumes = explode(',', $volumes);
+            }
+            else{
+                $volumes = [];
+            }
       
             $selected_image = $this->readImage($sku);
             
@@ -196,11 +197,7 @@ class ShopController extends Controller
                     compact(
                         'product', 
                         'categories', 
-                        'subcategories',
-                        'selected_subcategory_arr', 
-                        'selected_category_arr', 
-                        'selected_packaging_arr',
-                        'selected_closures_arr', 
+                        'subcategories', 
                         'packagings', 
                         'closures', 
                         'sizes', 

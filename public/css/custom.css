@@ -28,6 +28,7 @@ html{
   height: 420px;
   border-radius: 10px;
   background-color: #EBEBEB;
+  cursor: pointer;
 }
 #main-image{
   background-size: contain; 

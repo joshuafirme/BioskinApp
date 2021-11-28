@@ -52,4 +52,11 @@ class Product extends Model
         return $this->belongsTo(Packaging::class);
     }
 
+    public function readVariations($variation_code) {
+        return Product::where('variation_code', $variation_code)
+                        ->select('products.sku','V.name as variation')
+                        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
+                        ->get();
+    }
+
 }

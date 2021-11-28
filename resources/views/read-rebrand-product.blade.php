@@ -152,13 +152,11 @@
                   </div>
                   <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="row">
-                      @if ($product->variation_code != "")
                       @foreach ($sizes as $key => $item)
                       <div class="col-sm-12 col-md-6">
                         <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}">{{ $item->size }}</button>
                       </div>
                       @endforeach
-                      @endif
                     </div>
                   </div>
                   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">

@@ -35,7 +35,7 @@
     </div> 
 
     <div class="row m-4">
-        <div class="col-sm-12 col-md-2">
+        <div class="col-sm-12 col-md-2 breadcrumb-container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white">
                   <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -63,7 +63,7 @@
                       @foreach ($categories as $item)
                       <div class="splide__slide row min-ht ml-sm-0">
                           <div class="card shadow-none category-container" style="width: 100%;">
-                            <div class="responsive-img" style='background-image:url("{{ asset('images/'.$item->image) }}");' ></div>
+                            <a href="{{ url('/shop/category/'. $item->id) }}"><div class="responsive-img" style='background-image:url("{{ asset('images/'.$item->image) }}");' ></div></a>
                               <div class="card-body mx-auto">
                                 <p class="card-title text-muted">{{ $item->name }}</p>
                               </div>
