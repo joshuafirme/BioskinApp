@@ -96,6 +96,7 @@ async function readProducts(category_id, object = 'category') {
                         readImage(data_storage[i].sku);
                     } 
                 }
+                makeResponvie();
                 $('.lds-ellipsis').css('display', 'none');
 
                 
@@ -341,6 +342,15 @@ async function on_Click(category_id) {
         await readSubcategory(category_id);
     });
 }
+
+function makeResponvie() {
+    let w = $('.responsive-img').width();
+    $('.responsive-img').height(w); console.log('res')
+}
+
+$(window).resize(function () {
+    makeResponvie();
+});
 
 async function renderConponents() {
     let url = window.location.href;

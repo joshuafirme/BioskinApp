@@ -115,10 +115,20 @@
         $('.'+object).removeClass('active');
         $this.addClass('active');
     }
+    
+    function makeResponvie() {
+        let w = $('.responsive-img').width();
+        $('.responsive-img').height(w);  console.log(w)
+    }
+
+    $(window).resize(function () {
+        makeResponvie();
+    });
 
     async function render() {
         await initSplide();
         await on_Click();
+        makeResponvie();
     }
 
     render();

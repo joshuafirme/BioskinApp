@@ -24,22 +24,9 @@ html{
   background-position:center; 
   background-repeat: no-repeat;
   width:100%; 
-  min-height: 290px;
-  height: 420px;
   border-radius: 10px;
   background-color: #EBEBEB;
   cursor: pointer;
-}
-#main-image{
-  background-size: contain; 
-  background-position:center; 
-  background-repeat: no-repeat;
-  width:100%; 
-  min-height: 290px;
-  height: 420px;
-  border-radius: 3px;
-  background-color: #FFF;
-  border: 1px solid #F2F2F2;
 }
 
 .rebrand-img{
@@ -176,52 +163,8 @@ html{
   .category-container .category-name{
     cursor: pointer;
   }
-  @media screen and (min-width: 1402px) {
-    .responsive-img{
-      height:500px !important;
-    }
-    #main-image{
-      height:550px !important;
-    }
-  }
-  @media screen and (max-width: 1401px) {
-    .responsive-img{
-      height:430px !important;
-    }
-    #main-image{
-      height:600px !important;
-    }
-  }
-
-  @media screen and (max-width: 1301px) {
-    .responsive-img{
-      height:370px !important;
-    }
-    #main-image{
-      height:500px !important;
-    }
-  }
-
-  @media screen and (max-width: 1201px) {
-    .responsive-img{
-      height: 330px !important;
-    }
-  }
-  @media screen and (max-width: 991px) {
-    .responsive-img{
-      height: 620px !important;
-    }
-    #main-image{
-      height:750px !important;
-    }
-  }
+  
   @media screen and (max-width: 769px) {
-    .responsive-img{
-      height: 550px !important;
-    }
-    #main-image{
-      height:550px !important;
-    }
     .wording-container h1{
       font-size: 25px;
       line-height: 30px;
@@ -233,12 +176,6 @@ html{
     }
   }
   @media screen and (max-width: 480px) {
-    .responsive-img{
-      height:400px !important;
-    }
-    #main-image{
-      height:400px !important;
-    }
   }
   .fa-check{
     color:#3BC265; 
