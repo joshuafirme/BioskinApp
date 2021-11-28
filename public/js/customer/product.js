@@ -132,7 +132,7 @@ async function readPackaging(subcategory_id, object = 'category') {
                 
                 $('.lds-ellipsis').css('display', 'none');
 
-                
+                makeResponvie();
 
         }
     });

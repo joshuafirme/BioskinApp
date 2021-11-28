@@ -83,9 +83,15 @@ class ShopController extends Controller
     }
 
 
-    public function readOneProduct($sku, $category_name)
+    public function readOneProduct($sku, $category_name, Product $__product)
     {
-        $product = Product::where('sku', $sku)->first(); 
+        if (strpos(strtolower($category_name), 'pack') !== false ||
+            strpos(strtolower($category_name), 'close') !== false) {
+            $product = Packaging::where('sku', $sku)->first(); 
+        }
+        else {
+            $product = Product::where('sku', $sku)->first(); 
+        }
 
         $c = new Category;
         $s = new Subcategory;
@@ -96,49 +102,34 @@ class ShopController extends Controller
         if (isset($product)) {
             $p = new ProductPrice;
             $categories = Category::all();
-            $packaging = Packaging::all();
-            $sizes = Size::all();
-            $variation = Product::where('variation_code', $product->variation_code)
-                        ->select('products.sku','V.name as variation')
-                        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
-                        ->get();
- 
-            $closures = Closures::all();
-            
-            $selected_category_arr = isset($product->category_id) ? explode(", ", $product->category_id) : [];
-            $selected_subcategory_arr = isset($product->sub_category_id) ? explode(", ", $product->sub_category_id) : [];
-            $selected_packaging_arr = isset($product->packaging) ? $product->packaging : [];
-            $selected_closures_arr = isset($product->closures) ? $product->closures : [];
-    
-            $images = DB::table('product_images')->where('sku', $sku)->get();
 
-            $volumes = $p->readVolumes($sku);
-    
-            $selected_image = $this->readImage($sku);
+            $variation = $__product->readVariations($product->variation_code);
+            $variation = $variation ? $variation : [];
+
+            $images = $this->readImages($sku);
+
             
-            return view('read-one-product', 
-                    compact(
-                        'product', 
-                        'categories', 
-                        'subcategories',
-                        'selected_subcategory_arr', 
-                        'selected_category_arr', 
-                        'selected_packaging_arr',
-                        'selected_closures_arr', 
-                        'packaging', 
-                        'closures', 
-                        'sizes', 
-                        'variation', 
-                        'images', 
-                        'volumes',
-                        'selected_image',
-                        'category_name',
-                        'category_id'
-                    ));
         }
         else {
             abort(404);
         }
+
+        
+        $volumes = $p->readVolumes($sku);
+        $selected_image = $this->readImage($sku);
+
+        return view('read-one-product', 
+                compact(
+                    'product', 
+                    'categories', 
+                    'subcategories',
+                    'variation', 
+                    'images', 
+                    'volumes',
+                    'selected_image',
+                    'category_name',
+                    'category_id'
+                ));
     }
 
     public function readRebrandProduct($sku, $category_name, Product $__product)
