@@ -119,9 +119,9 @@
         </div>
         <div class="col-9 col-sm-9 col-lg-3">
             @if (isset($selected_image)) 
-             <div class=" mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
+             <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             @else 
-             <div class=" mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
+             <div class="responsive-img mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
             @endif
             <div class="row product-buttons mt-2">
                 <div class="col-10">
