@@ -291,6 +291,7 @@ async function on_Click(category_id) {
             
             $('.lds-ellipsis').css('display', 'none');
             
+            makeResponvie();
             
         },300)
         
@@ -345,7 +346,7 @@ async function on_Click(category_id) {
 
 function makeResponvie() {
     let w = $('.responsive-img').width();
-    $('.responsive-img').height(w); console.log('res')
+    $('.responsive-img').height(w); 
 }
 
 $(window).resize(function () {
