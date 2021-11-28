@@ -182,14 +182,10 @@ class ShopController extends Controller
     
             $images = DB::table('product_images')->where('sku', $sku)->get();
 
-            $volumes = $p->readVolumes($sku);
-
-            if ($volumes) {
-                $volumes = explode(',', $volumes);
-            }
-            else{
-                $volumes = [];
-            }
+            //$volumes = $p->readVolumes($sku); 
+       
+            $volumes = $p->readPricePerVolume($sku);  
+            $volumes = count($volumes) > 0 ? $volumes : [];
       
             $selected_image = $this->readImage($sku);
             

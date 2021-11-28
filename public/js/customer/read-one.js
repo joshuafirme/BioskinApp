@@ -76,24 +76,6 @@
 
       
     async function on_Click(){
-        $(document).on('click', '.btn-show-hide', async function(){ 
-            var object = $(this).attr('object');
-            var dots = document.getElementById("dots-btn-"+object);
-            var moreText = document.getElementById(object+"-text");
-            var btnText = $(this);
-            $('#detail-hide-'+object).css('height', 'auto');
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btnText.text("+"); 
-                moreText.style.display = "none";
-                $('#detail-hide-'+object).css('height', '50px');
-            } 
-            else {
-                dots.style.display = "none";
-                btnText.text("-"); 
-                moreText.style.display = "inline";
-            }
-        });
     
         $(document).on('click', '.splide-other-img', async function(){ 
             let src = $(this).attr('data-src');
@@ -105,19 +87,33 @@
             document.getElementById('main-image').style.backgroundImage='url(/'+src+')';
         });
     
-        $(document).on('click', '.btn-variation', async function(){ 
+        $(document).on('click', '.btn-volume', async function(){ 
             let $this = $(this);
-            let category_name = $('#category-value').val();
-            let category_id = $('#category-id-value').val();
-            let sku = $this.attr('data-sku');
-            
-            await readProductInfo(sku, category_name);
-
-            window.history.pushState(window.location.href, 'Title', '/shop/'+sku+"/"+category_name);
-            
-            $('.btn-variation').removeClass('active');
-            $this.addClass('active');
+            let price = $this.attr('data-price');
+            $('#volume-price').text(price);
+            setActive('btn-volume', $this);
         });
+        $(document).on('click', '.btn-size', async function(){ 
+            let $this = $(this);
+            setActive('btn-size', $this);
+        });
+        $(document).on('click', '.btn-packaging', async function(){ 
+            let $this = $(this);
+            let price = $this.attr('data-price');
+            $('#packaging-price').text(price);
+            setActive('btn-packaging', $this);
+        });
+        $(document).on('click', '.btn-closure', async function(){ 
+            let $this = $(this);
+            let price = $this.attr('data-price');
+            $('#closure-price').text(price);
+            setActive('btn-closure', $this);
+        });
+    }
+
+    function setActive(object, $this) {
+        $('.'+object).removeClass('active');
+        $this.addClass('active');
     }
 
     async function render() {

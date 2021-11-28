@@ -9,6 +9,15 @@
   <!-- /.navbar -->
 
   <style>
+    .item-value{
+     background:  #E2E6EA;
+     padding: 6px;
+     border-radius: 5px;
+     margin-top: 10px;
+    }
+    .attr-container .active {
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, #D9D9D9 0px 0px 0px 3px !important;       
+    }
     .nav-item .active{
       background: #FFF !important;
       color: #424C8E !important;
@@ -141,57 +150,81 @@
                   </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="tab-pane fade show active  attr-container" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="row">
                       @foreach ($volumes as $key => $item)
                       <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}">{{ $item }}</button>
+                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}" data-price="{{ $item->price }}">{{ $item->volume }}</button>
                       </div>
                       @endforeach
                     </div>
+                    <h5 class="mt-4">Price </h5>
+                    <span class="item-value" id="volume-price">0.00</span>
                   </div>
-                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                  <div class="tab-pane fade attr-container" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="row">
+                      @if (count($sizes) > 0)
                       @foreach ($sizes as $key => $item)
                       <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}">{{ $item->size }}</button>
+                        <button class="btn btn-light btn-size btn-block m-1" data-sku="{{ $product->sku }}">{{ $item->size }}</button>
                       </div>
                       @endforeach
+                      @else
+                        <button class="btn btn-light btn-size btn-block m-1" data-sku="{{ $product->sku }}">None</button>
+                      @endif
                     </div>
+                    <h5 class="mt-4">Price </h5>
+                    <span class="item-value" id="size-price">0.00</span>
                   </div>
-                  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                  <div class="tab-pane fade attr-container" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
+                      @if(count($packagings)>0)
                       @foreach ($packagings as $key => $pack)
                       @php
                           $packaging_image = \DB::table('product_images')->where('sku', $pack->sku)->value('image');
                 
                       @endphp
                       <div class="col-6 col-md-6">
-                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $product->sku }}">{{ $pack->name }} {{ $pack->size }}</button>
+                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ $pack->price}}">{{ $pack->name }} {{ $pack->size }}</button>
                         <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
                       </div>
                       @endforeach
+                      @else
+                        <button class="btn btn-light btn-block m-1" data-sku="{{ $product->sku }}">None</button>
+                      @endif
                     </div>
+                    <h5 class="mt-4">Price </h5>
+                    <span class="item-value" id="packaging-price">0.00</span>
                   </div>
-                  <div class="tab-pane fade" id="pills-cap" role="tabpanel" aria-labelledby="pills-cap-tab">
+                  <div class="tab-pane fade attr-container" id="pills-cap" role="tabpanel" aria-labelledby="pills-cap-tab">
                     <div class="row">
+                      @if(count($closures)>0)
                       @foreach ($closures as $key => $closure)
                       @php
                           $closure_image = \DB::table('product_images')->where('sku', $closure->sku)->value('image');
                 
                       @endphp
                       <div class="col-6">
-                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $product->sku }}">{{ $closure->name }} {{ $closure->size }}</button>
+                        <button class="btn btn-light btn-closure btn-block m-1" data-price="{{ $closure->price}}" data-sku="{{ $closure->sku }}">{{ $closure->name }} {{ $closure->size }}</button>
                         <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$closure_image) }}");' ></div>
                       </div>
                       @endforeach
+                      @else
+                        <button class="btn btn-light btn-closure btn-block m-1" data-sku="{{ $product->sku }}">None</button>
+                      @endif
                     </div>
+                    <h5 class="mt-4">Price </h5>
+                    <span class="item-value" id="closure-price">0.00</span>
                   </div>
                 </div>
                 
             </div>
         </div>
-        <div class="col-md-12 col-lg-3"></div>
+        <div class="col-md-12 col-lg-3">
+          <div class="ml-3 mt-4 product-customization">
+            <h4 class="text-dark text-bold">Summary of order</h4>
+          </div>
+        </div>
     </div>
         
 
