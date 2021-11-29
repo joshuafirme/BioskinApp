@@ -53,6 +53,12 @@
       .product-information .btn-show-hide{
         margin-top: -10px;
       }
+
+      .summary-container{
+        background-color: #F2F2F2;
+        padding: 15px;
+        border: 2px solid #E2E6EA !important;
+      }
   </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -91,7 +97,7 @@
         </ol>
       </nav>
     </div>
-    <div class="row ml-3">
+    <div class="row ml-3 mr-3">
         <div class="col-md-12 col-lg-2 breadcrumb-container">
            
              <div class="card shadow-none" style="background-color: #F2F2F2;">
@@ -134,51 +140,51 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-lg-3">
+        <div class="col-md-12 col-lg-4">
             <div class="ml-3 mt-4 product-customization">
                 <h4 class="text-dark text-bold">Product Customization</h4>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Volume</a>
+                    <a class="nav-link active" id="pills-sizes-tab" data-toggle="pill" href="#pills-sizes" role="tab" aria-controls="pills-sizes" aria-selected="true">Size</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Size</a>
+                    <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes" aria-selected="false">Volume</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Packaging</a>
+                    <a class="nav-link" id="pills-packaging-tab" data-toggle="pill" href="#pills-packaging" role="tab" aria-controls="pills-packaging" aria-selected="false">Packaging</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="pills-cap-tab" data-toggle="pill" href="#pills-cap" role="tab" aria-controls="pills-cap" aria-selected="false">Cap</a>
                   </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active  attr-container" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="tab-pane fade show active  attr-container" id="pills-sizes" role="tabpanel" aria-labelledby="pills-sizes-tab">
                     <div class="row">
+                      @if (count($sizes) > 0)
+                      @foreach ($sizes as $key => $item)
+                      <div class="col-sm-12 col-md-6">
+                        <button class="btn btn-light btn-size btn-block m-1" data-price="{{ $item->price }}" data-size="{{ $item->size }}" data-sku="{{ $item->sku }}">{{ $item->size }}</button>
+                      </div>
+                      @endforeach
+                      @else
+                        <button class="btn btn-light btn-size btn-block m-1">None</button>
+                      @endif
+                    </div>
+                     <!--<h5 class="mt-4">Price </h5>
+                     <span class="item-value" id="size-price">0.00</span>-->
+                  </div>
+                  <div class="tab-pane fade attr-container" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
+                    <div class="row" id="volumes-container">
                       @foreach ($volumes as $key => $item)
                       <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}" data-price="{{ $item->price }}">{{ $item->volume }}</button>
+                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}" data-volume="{{ $item->volume }}" data-price="{{ $item->price }}">{{ $item->volume }}</button>
                       </div>
                       @endforeach
                     </div>
                     <h5 class="mt-4">Price </h5>
                     <span class="item-value" id="volume-price">0.00</span>
                   </div>
-                  <div class="tab-pane fade attr-container" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <div class="row">
-                      @if (count($sizes) > 0)
-                      @foreach ($sizes as $key => $item)
-                      <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-size btn-block m-1" data-sku="{{ $product->sku }}">{{ $item->size }}</button>
-                      </div>
-                      @endforeach
-                      @else
-                        <button class="btn btn-light btn-size btn-block m-1" data-sku="{{ $product->sku }}">None</button>
-                      @endif
-                    </div>
-                    <h5 class="mt-4">Price </h5>
-                    <span class="item-value" id="size-price">0.00</span>
-                  </div>
-                  <div class="tab-pane fade attr-container" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                  <div class="tab-pane fade attr-container" id="pills-packaging" role="tabpanel" aria-labelledby="pills-packaging-tab">
                     <div class="row">
                       @if(count($packagings)>0)
                       @foreach ($packagings as $key => $pack)
@@ -222,9 +228,20 @@
                 
             </div>
         </div>
-        <div class="col-md-12 col-lg-3">
+        <div class="col-md-12 col-lg-2">
           <div class="ml-3 mt-4 product-customization">
-            <h4 class="text-dark text-bold">Summary of order</h4>
+            <h4 class="text-dark text-bold">Summary of Order</h4>
+
+            <div class="summary-container">
+              <div class="text-bold text-center">Size</div>
+              <div class="text-center"><span id="custom-size"></span></div>
+            </div>
+
+            <div class="summary-container mt-2">
+              <div class="text-bold text-center">Volume</div>
+              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
+              <div>₱<span id="volume-total-price"> 0</span></div>
+            </div>
           </div>
         </div>
     </div>

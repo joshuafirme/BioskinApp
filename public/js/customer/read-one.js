@@ -20,18 +20,20 @@
         }
     }
 
-    async function readProductInfo(sku, category_name) {
+    async function readProductInfo(sku, category_name) {      
         $.ajax({
             url: '/shop/read-one/'+sku+'/'+category_name,
             type: 'GET',
             success:async function(data){
-
+         
                 if (data) {
                     await readImages(sku);
                     $('#description-text').text(data.description);
                     $('#direction-text').text(data.directions);
                     $('#precaution-text').text(data.precaution);
                     $('#ingredient-text').text(data.ingredient);
+                    $('#price-value').text(data.price);
+                    $('#size-value').text(data.size);
                 }
                 else {
                     alert('error loading product info');
@@ -74,6 +76,26 @@
         });
     }
 
+    function readProductVolume(sku) {
+        $.ajax({
+            url: '/read-volumes/'+sku,
+            type: 'GET',
+            success:function(data){
+                let html = ''; 
+                if (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<div class="col-sm-12 col-md-6">';
+                            html += '<button class="btn btn-light btn-volume btn-block m-1" data-sku="'+data[i].sku+'" data-volume="'+data[i].volume+'" data-price="'+data[i].price+'">'+data[i].volume+'</button>';
+                        html += '</div>';
+                    }
+                }
+
+                $('#volumes-container').html(html);
+            }
+        });
+    }
+    
+
       
     async function on_Click(){
         $(document).on('click', '.btn-show-hide', async function(){ 
@@ -108,11 +130,34 @@
         $(document).on('click', '.btn-volume', async function(){ 
             let $this = $(this);
             let price = $this.attr('data-price');
+            let volume = $this.attr('data-volume');
             $('#volume-price').text(price);
+
             setActive('btn-volume', $this);
+
+            $('#custom-volume').text(volume);
+            $('#custom-price').text(price);
+            // compute total
+            let total = parseFloat(price) * parseInt(volume);
+            $('#volume-total-price').text(formatNumber(total));
         });
         $(document).on('click', '.btn-size', async function(){ 
             let $this = $(this);
+            let category_name = $('#category-value').val();
+            let sku = $this.attr('data-sku');
+            let price = $this.attr('data-price');
+            let size = $this.attr('data-size');
+
+            clearSelectedVolumeInfo();
+
+            $('#size-price').text(price);
+
+            $('#custom-size').text(size);
+      
+            await readProductInfo(sku, category_name);
+            await readProductVolume(sku);
+
+            window.history.pushState(window.location.href, 'Title', '/rebrand/'+sku+"/"+category_name);
             setActive('btn-size', $this);
         });
         $(document).on('click', '.btn-packaging', async function(){ 
@@ -143,6 +188,12 @@
         });
     }
 
+    function clearSelectedVolumeInfo() {
+        $('#custom-volume').text('-');
+        $('#custom-price').text('-');
+        $('#volume-total-price').text('-');
+    }
+
     function setActive(object, $this) {
         $('.'+object).removeClass('active');
         $this.addClass('active');
@@ -156,6 +207,10 @@
     $(window).resize(function () {
         makeResponvie();
     });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      }
 
     async function render() {
         await initSplide();

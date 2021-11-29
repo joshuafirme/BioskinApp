@@ -56,3 +56,5 @@ Route::get('/shop/{sku}/{category_name}', 'ShopController@readOneProduct');
 Route::get('/shop/read-one/{sku}/{category_name}', 'ShopController@readProductInfoAjax');
 
 Route::get('/rebrand/{sku}/{category_name}', 'ShopController@readRebrandProduct');
+
+Route::get('/read-volumes/{sku}', 'ShopController@readVolumes');

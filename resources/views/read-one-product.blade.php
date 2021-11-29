@@ -118,8 +118,8 @@
         <div class="col-md-12 col-lg-5">
             <div class="ml-3 mt-4 product-information">
                 <h4 class="text-dark text-bold">{{ $product->name }}</h4>
-                <div>{{ $product->size }}</div>
-                <div>₱{{ $product->price }}</div>
+                <div id="size-value">{{ $product->size }}</div>
+                <div id="price-value">₱{{ $product->price }}</div>
                 <hr>
                 <div> 
                   <div class="text-bold">Choose variation</div>

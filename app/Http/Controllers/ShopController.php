@@ -82,6 +82,10 @@ class ShopController extends Controller
         return DB::table('product_images')->select('id', 'image')->where('sku',$sku)->get();
     }
 
+    public function readVolumes($sku, ProductPrice $p) {
+        return  $p->readPricePerVolume($sku);
+    }
+
 
     public function readOneProduct($sku, $category_name, Product $__product)
     {
@@ -165,7 +169,7 @@ class ShopController extends Controller
 
             $variation = $__product->readVariations($product->variation_code);
             if ($product->variation_code != "") {
-                $sizes = $__product::where('variation_code', $product->variation_code)->get('size');
+                $sizes = $__product::where('variation_code', $product->variation_code)->get();
             }
             else {
                 $sizes = [];
