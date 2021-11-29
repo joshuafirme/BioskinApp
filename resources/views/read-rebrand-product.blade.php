@@ -167,7 +167,7 @@
                       </div>
                       @endforeach
                       @else
-                        <button class="btn btn-light btn-size btn-block m-1"
+                        <button class="btn btn-light btn-size m-1"
                         data-price="{{ $product->price }}" data-size="{{ $product->size }}" data-sku="{{ $product->sku }}">{{ $product->size }}</button>
                       @endif
                     </div>
