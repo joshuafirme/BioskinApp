@@ -246,19 +246,16 @@
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Packaging</div>
-              <div class="text-center"><span id="custom-packaging">-</span> pieces * <span id="custom-packaging-price">-</span></div>
               <div>₱<span id="volume-total-price"> 0</span></div>
             </div>
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Cap</div>
-              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
               <div>₱<span id="volume-total-price"> 0</span></div>
             </div>
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Total</div>
-              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
               <div>₱<span id="volume-total-price"> 0</span></div>
             </div>
           </div>
