@@ -167,7 +167,8 @@
                       </div>
                       @endforeach
                       @else
-                        <button class="btn btn-light btn-size btn-block m-1">None</button>
+                        <button class="btn btn-light btn-size btn-block m-1"
+                        data-price="{{ $product->price }}" data-size="{{ $product->size }}" data-sku="{{ $product->sku }}">{{ $product->size }}</button>
                       @endif
                     </div>
                      <!--<h5 class="mt-4">Price </h5>
@@ -239,6 +240,24 @@
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Volume</div>
+              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
+              <div>₱<span id="volume-total-price"> 0</span></div>
+            </div>
+
+            <div class="summary-container mt-2">
+              <div class="text-bold text-center">Packaging</div>
+              <div class="text-center"><span id="custom-packaging">-</span> pieces * <span id="custom-packaging-price">-</span></div>
+              <div>₱<span id="volume-total-price"> 0</span></div>
+            </div>
+
+            <div class="summary-container mt-2">
+              <div class="text-bold text-center">Cap</div>
+              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
+              <div>₱<span id="volume-total-price"> 0</span></div>
+            </div>
+
+            <div class="summary-container mt-2">
+              <div class="text-bold text-center">Total</div>
               <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
               <div>₱<span id="volume-total-price"> 0</span></div>
             </div>
