@@ -20,12 +20,13 @@ html{
   color:#FFF !important;
 }
 .responsive-img{
-  background-size: cover; 
+  background-size: auto 100%;
   background-position:center; 
   background-repeat: no-repeat;
   width:100%; 
+  border: 1px solid #E2E6EA !important;
   border-radius: 10px;
-  background-color: #EBEBEB;
+  background-color: #FFF;
   cursor: pointer;
 }
 #main-image{
