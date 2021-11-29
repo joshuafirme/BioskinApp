@@ -26,16 +26,17 @@
     </div> 
 
     <input type="hidden" id="category-name-hidden">
-
-    <div class="row m-4">
+    <div class="breadcrumb-container ml-3 mt-2">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
+          <li class="breadcrumb-item active" aria-current="page"></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row ml-3">
         <div class="col-md-12 col-lg-2 breadcrumb-container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-white">
-                  <li class="breadcrumb-item"><a href="/">Home</a></li>
-                  <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
-                  <li class="breadcrumb-item active" aria-current="page"></li>
-                </ol>
-              </nav>
              <div class="card shadow-none" style="background-color: #F2F2F2;">
               <ul style="list-style-type: none;" class=" mt-3">
                 <li class="">Choose from shop</li>
