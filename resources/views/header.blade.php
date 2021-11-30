@@ -28,7 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     background-color: #E2E6EA !important;
     min-height: 100vh; 
 }
-    .content-wrapper {
+    .content-wrapper, .wrapper {
       background-color: #FFF;
     }
   </style>

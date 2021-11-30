@@ -22,7 +22,9 @@
               </div>
               <h4 class="login-card-description">Welcome to Bioskin!</h4>
               <p>Sign into your account</p>
-              <form action="" method="POST">
+              <form action="{{ action('UserController@doLogin') }}" method="POST">
+                @csrf
+                @include('includes.alerts')
                   <div class="row">
                     <div class="input-group col-12 mt-3">
                         <div class="input-group-prepend">
@@ -38,10 +40,10 @@
                                 <i class="fa fa-lock text-muted"></i>
                             </span>
                         </div>
-                        <input type="text" name="password" placeholder="Password" class="form-control bg-white border-left-0 border-md" required>
+                        <input type="password" name="password" placeholder="Password" class="form-control bg-white border-left-0 border-md" required>
                     </div>
                   </div>
-                  <button name="login" id="login" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
+                  <button type="submit" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
                 </form>
                 <a href="#!" class="forgot-password-link">Forgot password?</a>
                 <p class="login-card-footer-text">Don't have an account? <a href="{{ url('/signup') }}" class="text-reset">Register here</a></p>

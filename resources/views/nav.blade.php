@@ -11,22 +11,25 @@
         <div class="collapse navbar-collapse order-3">
           <!-- Left navbar links -->
           <ul class="navbar-nav">
+            @if(Auth::check() && Auth::user()->access_rights == 1)
             <li class="nav-item">
               <a href="{{ url('/product') }}" class="nav-link">
                 Admin
               </a>
             </li>
+            @endif
             <li class="nav-item">
               <a href="{{ url('/shop') }}" class="nav-link">
                 Shop
               </a>
             </li>
+            @if(Auth::check())
             <li class="nav-item">
               <a href="{{ url('/') }}" class="nav-link">
                 Account
               </a>
             </li>
-          
+            @endif
             <li class="nav-item">
               <a href="{{ url('/') }}" class="nav-link">
                 <img src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/000000/external-shopping-cart-shopping-those-icons-lineal-color-those-icons.png"/>
@@ -56,10 +59,10 @@
           </li>
           @if (Auth::check())
             <li class="nav-item dropdown">
-              <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->name }}</a>
+              <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->firstname }}</a>
               <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <li><a href="{{url('/')}}" class="dropdown-item">My account</a></li>
-                <li><a href="{{url('/admin/logout')}}" class="dropdown-item">Logout</a></li>
+                <li><a href="{{url('/logout')}}" class="dropdown-item">Logout</a></li>
             </li>
           @else 
             <li class="nav-item">

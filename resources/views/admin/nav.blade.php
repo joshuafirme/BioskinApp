@@ -13,9 +13,9 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Josh</a>
+        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->firstname }}</a>
         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-          <li><a href="{{url('/admin/logout')}}" class="dropdown-item">Logout </a></li>
+          <li><a href="{{url('/logout')}}" class="dropdown-item">Logout </a></li>
       </li>
     </ul>
   </nav>
@@ -54,7 +54,12 @@
       
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
+              <li class="nav-item">
+                <a href="{{ url('/users') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Management</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ url('/product') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

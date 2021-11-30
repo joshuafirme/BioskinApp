@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
+use Auth;
+use Session;
 class UserController extends Controller
 {
     /**
@@ -14,7 +16,51 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.user.index');
+    }
+
+    public function readUsers() {
+        
+        $user = User::all();
+        
+        if(request()->ajax())
+        { 
+            return datatables()->of($user)
+                ->addColumn('action', function($user)
+                {
+                    $button = '<a class="btn btn-sm" data-id="'. $user->id .'" href="'. route('users.edit',$user->id) .'"><i class="fa fa-edit"></i></a>';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<a data-id="'. $user->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
+                    return $button;
+                })
+                ->addColumn('access_rights', function($user){
+                    $html = "";
+                    if($user->access_rights == 1) {
+                        $html = "Admin";
+                    }
+                    elseif($user->access_rights == 2) {
+                        $html = "Customer";
+                    }
+                    return $html;
+                })
+                ->rawColumns(['action','access_rights'])
+                ->make(true);
+        }
+    }
+
+    public function doLogin(Request $data) {
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) 
+        {
+            return redirect()->intended('/shop');  
+        }
+        else {
+            return redirect()->back()->with('danger', 'Invalid username or password.');  
+        }
+    }
+    public function logout() {
+        Auth::logout();
+        Session::flush();
+        return redirect()->intended('/shop');
     }
 
     public function doSignup(Request $request) {
@@ -24,6 +70,8 @@ class UserController extends Controller
 
         $phone_no = $request->phone_no;
         $request['phone_no'] = $phone_no[0] == '0' ? substr($phone_no, 1) : $phone_no;
+        // customer access
+        $request['access_rights'] = 2;
 
         if ($this->isEmailExists($request->input('email'))) {
             $alert = 'danger';
@@ -80,7 +128,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -91,7 +139,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::create($request->all());
+        return redirect()->back()
+        ->with('success', 'User was updated.');
     }
 
     /**
@@ -111,9 +161,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('admin.user.edit', compact('user'));
     }
 
     /**
@@ -125,8 +175,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        if ($request->input('password')) {
+            User::where('id', $id)
+            ->update([
+                'password' => \Hash::make($request->input('password'))
+            ]);
+        }
+
+        User::where('id', $id)->update($request->except('password','_token','_method'));
+        return redirect()->back()
+        ->with('success', 'User was updated.');
+}
 
     /**
      * Remove the specified resource from storage.
