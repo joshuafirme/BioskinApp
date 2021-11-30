@@ -169,10 +169,12 @@ async function readAllCategory() {
         url: '/shop/read-all-category',
         type: 'GET',
         success:function(data){ 
-            var html = '';   
+            var html = '';  
+            let col_count = 1;
+            col_count = data.length > 9 ? '2' : '1';
             for (var i = 0; i < data.length; i++) {
                 let wording = data[i].wording ? data[i].wording : "";
-                html += '<a class="col-xs-6 col-sm-4 col-md-1 text-center">';
+                html += '<a class="col-xs-6 col-sm-4 col-md-'+col_count+' text-center">';
                 html += '<div class="text-bold text-muted category-name" data-name="'+data[i].name+'" ';
                 html += 'data-wording="'+ wording +'" data-id="'+data[i].id+'">'+data[i].name+'</div>';
                 html += '</a>'
