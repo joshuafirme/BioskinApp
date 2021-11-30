@@ -2,6 +2,11 @@ html{
     overflow-x: hidden !important;
 }
 
+body{
+  
+  font-family: "Karla", sans-serif !important;
+}
+
 
 .breadcrumb-container a{
   color: #1C2877 !important;

@@ -47,9 +47,9 @@
              </div>
         </div>
         <div class="col-md-12 col-lg-10">
-            <h4 class="text-center mt-4 text-dark mt-5 selected-category-name"></h4>
-              <h5 class="text-center text-dark" id="wording-text"></h5>
-              <div class="row mt-5" id="product-container">
+            <h4 class="text-center text-dark selected-category-name"></h4>
+              <div class="wording-container"></div>
+              <div class="row" id="product-container">
               </div>
           
               <div class="row justify-content-center mt-5">
