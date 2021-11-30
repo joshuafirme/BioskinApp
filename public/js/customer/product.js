@@ -205,7 +205,7 @@ async function readCategoryName(category_id, object = 'category', subcategory_id
             console.log('===============')
             console.log(data.name)
             $('.selected-category-name').text(data.name);
-            if (data.wording != "" || data.wording != null) {
+            if (data.wording != "" || data.wording != 'null') {
                 $('.wording-container').html('<h5 class="text-center text-dark" id="wording-text">'+data.wording+'</h5>');
             }
             
@@ -333,7 +333,7 @@ async function on_Click(category_id) {
         $('.selected-category-name').text(category_name);
         $('#category-name-hidden').val(category_name)
         $('[aria-current=page]').text(category_name);
-        if (wording != "" || wording != null) {
+        if (wording != "" || wording != 'null') {
             $('.wording-container').html('<h5 class="text-center text-dark" id="wording-text">'+wording+'</h5>');
         }
     
