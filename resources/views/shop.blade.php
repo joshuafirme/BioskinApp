@@ -1,5 +1,5 @@
 @php
-  $page_title =  "Bioskin";
+  $page_title =  "Shop | Bioskin";
 @endphp
 
 @include('header')
@@ -23,9 +23,12 @@
     <!-- /.content-header -->
 
     <div class="row pl-3 pr-3 pt-1 pb-1 category-container justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
-
-      @foreach ($categories as $item)
-        <a class="col-xs-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
+      @php
+      $col_count = 1;
+      $col_count = count($categories) > 9 ? '2' : '1';
+      @endphp
+   @foreach ($categories as $item)
+   <a class="col-6 col-sm-4 col-md-{{$col_count}} text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 

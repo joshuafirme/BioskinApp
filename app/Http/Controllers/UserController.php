@@ -20,6 +20,10 @@ class UserController extends Controller
         return view('login');
     }
 
+    public function signup_view(){
+        return view('signup');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -10,30 +10,38 @@
 
   <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
     <div class="container">
-      <div class="card login-card">
+      <div class="card login-card" style="margin-top: 100px;">
         <div class="row no-gutters mb-3">
-          <div class="col-md-5">
-            <img src="{{ asset('images/bs_dr_bgn.png')  }}" alt="login" class="login-card-img m-4">
-            <p class="text-white font-weight-medium text-center flex-grow align-self-end footer-link text-small">
-              Free <a href="https://www.bootstrapdash.com/" target="_blank" class="text-white">Bootstrap dashboard templates</a> from Bootstrapdash
-            </p>
+          <div class="col-md-5" style="margin-top:-50px;">
+            <img src="{{ asset('images/bs_dr_bgn.png')  }}" alt="login" class="login-card-img m-4 d-none d-md-block">
           </div>
           <div class="col-md-7">
             <div class="card-body">
               <div class="brand-wrapper">
-                <!--<img src="{{ asset('images/logo.png')  }}" alt="logo" class="logo">-->
+                <img src="{{ asset('images/logo.png')  }}" alt="logo" class="logo d-block d-md-none">
               </div>
-              <p class="login-card-description">Sign into your account</p>
+              <h4 class="login-card-description">Welcome to Bioskin!</h4>
+              <p>Sign into your account</p>
               <form action="#!">
-                  <div class="form-group">
-                    <label for="email" class="sr-only">Email</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
+                  <div class="row">
+                    <div class="input-group col-12 mt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-user text-muted"></i>
+                            </span>
+                        </div>
+                        <input type="text" name="email" placeholder="Email" class="form-control bg-white border-left-0 border-md" required>
+                    </div>
+                    <div class="input-group col-12 mt-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-lock text-muted"></i>
+                            </span>
+                        </div>
+                        <input type="text" name="password" placeholder="Password" class="form-control bg-white border-left-0 border-md" required>
+                    </div>
                   </div>
-                  <div class="form-group mb-4">
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="***********">
-                  </div>
-                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
+                  <button name="login" id="login" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
                 </form>
                 <a href="#!" class="forgot-password-link">Forgot password?</a>
                 <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
@@ -51,4 +59,14 @@
 
 @include('footer')
 
+<script>
+      $(function () {
+    $('input, select').on('focus', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#80bdff');
+    });
+    $('input, select').on('blur', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
+    });
+});
+</script>
 

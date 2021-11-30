@@ -60,3 +60,4 @@ Route::get('/rebrand/{sku}/{category_name}', 'ShopController@readRebrandProduct'
 Route::get('/read-volumes/{sku}', 'ShopController@readVolumes');
 
 Route::get('/login', 'UserController@login_view');
+Route::get('/signup', 'UserController@signup_view');

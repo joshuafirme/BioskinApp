@@ -1,5 +1,5 @@
 @php
-  $page_title =  "Bioskin";
+  $page_title =  "Shop | Bioskin";
 @endphp
 
 @include('header')

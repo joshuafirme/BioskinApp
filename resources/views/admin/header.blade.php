@@ -35,11 +35,16 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="{{ asset('/images/logo.png') }}" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
     <style>
       .choices__button {
     background-image: url('https://img.icons8.com/ios/50/000000/delete-sign--v1.png') !important;
    
   }
+  body{
+  
+  font-family: "Karla", sans-serif !important;
+}
 #product-container::-webkit-scrollbar {
     width: 7px;
 }
