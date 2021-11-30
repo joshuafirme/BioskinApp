@@ -61,3 +61,4 @@ Route::get('/read-volumes/{sku}', 'ShopController@readVolumes');
 
 Route::get('/login', 'UserController@login_view');
 Route::get('/signup', 'UserController@signup_view');
+Route::post('/do-signup', 'UserController@doSignup');

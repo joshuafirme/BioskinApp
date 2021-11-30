@@ -22,7 +22,7 @@
               </div>
               <h4 class="login-card-description">Welcome to Bioskin!</h4>
               <p>Sign into your account</p>
-              <form action="#!">
+              <form action="" method="POST">
                   <div class="row">
                     <div class="input-group col-12 mt-3">
                         <div class="input-group-prepend">
@@ -44,7 +44,7 @@
                   <button name="login" id="login" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
                 </form>
                 <a href="#!" class="forgot-password-link">Forgot password?</a>
-                <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
+                <p class="login-card-footer-text">Don't have an account? <a href="{{ url('/signup') }}" class="text-reset">Register here</a></p>
                 <nav class="login-card-footer-nav">
                   <a href="#!">Terms of use.</a>
                   <a href="#!">Privacy policy</a>

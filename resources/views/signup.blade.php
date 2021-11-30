@@ -45,10 +45,11 @@
                 <div class="col-md-7 col-lg-6 ml-auto">
                     
                   <h4 class="login-card-description">Create your account</h4>
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{{ action('UserController@doSignup') }}" method="POST">
                       @csrf
+                      @include('includes.alerts')
                         <div class="row">
-          
+
                             <!-- First Name -->
                             <div class="input-group col-lg-6 mb-4">
                                 <div class="input-group-prepend">
@@ -56,7 +57,7 @@
                                         <i class="fa fa-user text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="firstName" type="text" name="firstname" placeholder="First Name" class="form-control bg-white border-left-0 border-md" required>
+                                <input type="text" name="firstname" placeholder="First Name" class="form-control bg-white border-left-0 border-md" required>
                             </div>
           
                             <!-- Last Name -->
@@ -66,7 +67,7 @@
                                         <i class="fa fa-user text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="lastName" type="text" name="lastname" placeholder="Last Name" class="form-control bg-white border-left-0 border-md" required>
+                                <input type="text" name="lastname" placeholder="Last Name" class="form-control bg-white border-left-0 border-md" required>
                             </div>
 
                              <!-- Middle Name -->
@@ -76,7 +77,7 @@
                                         <i class="fa fa-user text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="lastName" type="text" name="lastname" placeholder="Middle Name" class="form-control bg-white border-left-0 border-md" required>
+                                <input type="text" name="middlename" placeholder="Middle Name" class="form-control bg-white border-left-0 border-md" required>
                             </div>
 
                              <!-- Username -->
@@ -86,7 +87,7 @@
                                         <i class="fa fa-user text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="lastName" type="text" name="lastname" placeholder="User Name" class="form-control bg-white border-left-0 border-md" required>
+                                <input type="text" name="username" placeholder="User Name" class="form-control bg-white border-left-0 border-md" required>
                             </div>
           
                             <!-- Email Address -->
@@ -106,7 +107,7 @@
                                         <i class="fa fa-phone-square text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="phoneNumber" type="tel" name="phone" placeholder="Phone Number" class="form-control bg-white border-md border-left-0 pl-3" required>
+                                <input id="phoneNumber" type="tel" name="phone_no" placeholder="Phone Number" class="form-control bg-white border-md border-left-0 pl-3" required>
                             </div>
           
                             <!-- Password -->
@@ -126,9 +127,8 @@
                                         <i class="fa fa-lock text-muted"></i>
                                     </span>
                                 </div>
-                                <input id="passwordConfirmation" type="password" name="passwordConfirmation" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md">
+                                <input id="passwordConfirmation" type="password" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md">
                             </div>
-          
                           
                               <!-- Submit Button -->
                               <div class="form-group col-lg-12 mx-auto mb-0">
@@ -185,9 +185,16 @@
         $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
     });
   
-    
+    $('[name="phone_no"]').on('keyup', function(evt) {
+        forceNumeric($(this));
+    });
+
+    function forceNumeric(v){
+        var $input = v;
+        $input.val($input.val().replace(/[^\d]+/g,''));
+    }
   
-  $('#passwordConfirmation').on('blur', function () { console.log('test')
+  $('#passwordConfirmation').on('blur', function () { 
     var password = $('#password').val();
     var confirm_password = $(this).val();
     if(confirm_password.replace(/ /g,'').length >= 6){

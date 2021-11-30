@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +18,15 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'lastname',
+        'middlename',
+        'firstname',
         'email',
         'password',
+        'username',
+        'phone_no',
+        'access_rights',
+        'status',
     ];
 
     /**
