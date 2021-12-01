@@ -30,10 +30,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/product/archive/{id}', 'ProductController@archive');
         Route::get('/read-product', 'ProductController@readAllProduct');
         Route::post('/delete-image/{id}', 'ProductController@deleteImage');
-        Route::resource('/category', 'CategoryController');
-        Route::get('/category/read-one/{id}', 'CategoryController@readCategory');
-        Route::resource('/subcategory', 'SubcategoryController');
-        Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
         Route::resource('/packaging', 'PackagingController');
         Route::get('/delete-packaging-cache', 'PackagingController@deletePackagingCache')->name('delete-packaging-cache');
         Route::resource('/closures', 'ClosuresController');
@@ -43,6 +39,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('/carousel', 'CarouselController');
     });
 });
+Route::resource('/category', 'CategoryController');
+Route::get('/category/read-one/{id}', 'CategoryController@readCategory');
+Route::resource('/subcategory', 'SubcategoryController');
+Route::get('/read-subcategory/{category_id}', 'SubcategoryController@readSubcategoryByCategory');
 Route::get('/read-price-per-volume/{sku}', 'PackagingController@readPricePerVolume');
 Route::post('/remove-price-per-volume', 'PackagingController@removePricePerVolume');
 
