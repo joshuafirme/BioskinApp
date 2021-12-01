@@ -82,9 +82,9 @@
                               <div class="col-sm-12 col-md-6 mt-2">    
                                 <label class="col-form-label">Access rights</label>
                                 @php
-                                    $disabled = $user->access_rights == 1 ? "disabled" : "";
+                                   // $disabled = $user->access_rights == 1 ? "disabled" : "";
                                 @endphp
-                                <select class="form-control" name="access_rights" id="access_rights" {{ $disabled }}>
+                                <select class="form-control" name="access_rights" id="access_rights">
                                     <option value="1" {{ $user->access_rights == 1 ? 'selected' : '' }}>Admin</option>
                                     <option value="2" {{ $user->access_rights == 2 ? 'selected' : '' }}>Customer</option>
                                 </select>

@@ -135,7 +135,7 @@
 
             setActive('btn-volume', $this);
 
-            $('#custom-volume').text(volume);
+            $('.custom-volume').text(volume);
             $('#custom-price').text(price);
             // compute total
             let total = parseFloat(price) * parseInt(volume);
@@ -163,14 +163,29 @@
         $(document).on('click', '.btn-packaging', async function(){ 
             let $this = $(this);
             let price = $this.attr('data-price');
+            let packaging_name = $this.attr('data-name');
+            $('#custom-packaging').text(packaging_name);
             $('#packaging-price').text(price);
+            $('#custom-packaging-price').text(price);
             setActive('btn-packaging', $this);
+
+            let volume = $('.custom-volume:first').text();
+            // compute total
+            let total = parseFloat(price) * parseInt(volume);
+            $('#packaging-total-price').text(formatNumber(total));
         });
         $(document).on('click', '.btn-closure', async function(){ 
             let $this = $(this);
             let price = $this.attr('data-price');
+            let name = $this.attr('data-name');
+            $('#custom-closure').text(name);
             $('#closure-price').text(price);
+            $('#custom-closure-price').text(price);
             setActive('btn-closure', $this);
+            let volume = $('.custom-volume:first').text();
+            // compute total
+            let total = parseFloat(price) * parseInt(volume);
+            $('#closure-total-price').text(formatNumber(total));
         });
 
         $(document).on('click', '.btn-variation', async function(){ 
@@ -189,7 +204,7 @@
     }
 
     function clearSelectedVolumeInfo() {
-        $('#custom-volume').text('-');
+        $('.custom-volume').text('-');
         $('#custom-price').text('-');
         $('#volume-total-price').text('-');
     }

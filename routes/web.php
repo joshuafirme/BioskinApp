@@ -21,9 +21,9 @@ Route::get('/', function(){
 
 Route::get('/home', 'HomePageController@index');
 
-Route::resource('/users', 'UserController');
 Route::middleware('auth')->group(function () {
     Route::middleware('access_rights:1:3:4')->group(function () {
+        Route::resource('/users', 'UserController');
         Route::get('/read-users', 'UserController@readUsers');
         Route::resource('/product', 'ProductController');
         Route::get('/delete-product-cache', 'ProductController@deleteProductCache')->name('delete-product-cache');

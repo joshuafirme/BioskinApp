@@ -198,7 +198,9 @@
                 
                       @endphp
                       <div class="col-6 col-md-6">
-                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ $pack->price}}">{{ $pack->name }} {{ $pack->size }}</button>
+                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ $pack->price}}" data-name="{{ $pack->name }} {{ $pack->size }}">
+                          {{ $pack->name }} {{ $pack->size }}
+                        </button>
                         <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
                       </div>
                       @endforeach
@@ -215,10 +217,11 @@
                       @foreach ($closures as $key => $closure)
                       @php
                           $closure_image = \DB::table('product_images')->where('sku', $closure->sku)->value('image');
-                
                       @endphp
                       <div class="col-6">
-                        <button class="btn btn-light btn-closure btn-block m-1" data-price="{{ $closure->price}}" data-sku="{{ $closure->sku }}">{{ $closure->name }} {{ $closure->size }}</button>
+                        <button class="btn btn-light btn-closure btn-block m-1" data-price="{{ $closure->price}}" data-sku="{{ $closure->sku }}" data-name="{{ $closure->name }} {{ $closure->size }}">
+                          {{ $closure->name }} {{ $closure->size }}
+                        </button>
                         <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$closure_image) }}");' ></div>
                       </div>
                       @endforeach
@@ -244,18 +247,22 @@
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Volume</div>
-              <div class="text-center"><span id="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
+              <div class="text-center"><span class="custom-volume">-</span> pieces * <span id="custom-price">-</span></div>
               <div>₱<span id="volume-total-price"> 0</span></div>
             </div>
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Packaging</div>
-              <div>₱<span id="volume-total-price"> 0</span></div>
+              <div class="text-center"><span id="custom-packaging">-</span></div>
+              <div class="text-center"><span class="custom-volume">-</span> pieces * <span id="custom-packaging-price">-</span></div>
+              <div>₱<span id="packaging-total-price"> 0</span></div>
             </div>
 
             <div class="summary-container mt-2">
               <div class="text-bold text-center">Cap</div>
-              <div>₱<span id="volume-total-price"> 0</span></div>
+              <div class="text-center"><span id="custom-closure">-</span></div>
+              <div class="text-center"><span class="custom-volume">-</span> pieces * <span id="custom-closure-price">-</span></div>
+              <div>₱<span id="closure-total-price"> 0</span></div>
             </div>
 
             <div class="summary-container mt-2">
