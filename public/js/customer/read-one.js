@@ -207,8 +207,12 @@
       
             await readProductInfo(sku, category_name);
             await readProductVolume(sku);
-            await readPackaging(packaging_ids, 'packaging');
-            await readPackaging(closure_ids, 'closure');
+            if (packaging_ids) {
+                await readPackaging(packaging_ids, 'packaging');
+            }
+            if (closure_ids) {
+                await readPackaging(closure_ids, 'closure');
+            }
 
             window.history.pushState(window.location.href, 'Title', '/rebrand/'+sku+"/"+category_name);
             setActive('btn-size', $this);
