@@ -76,7 +76,56 @@
         });
     }
 
-    function readProductVolume(sku) {
+    async function readPackaging(ids, object) {
+        
+        $.ajax({
+            url: '/read-packaging/'+ids,
+            type: 'GET',
+            success:function(data){ console.log(data)
+                let html = ''; 
+                if (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<div class="col-sm-12 col-md-6">';
+                            html += '<button class="btn btn-light btn-'+object+' btn-block m-1" data-sku="'+data[i].sku+'" data-name="'+data[i].name+'" data-price="'+data[i].price+'">'+data[i].name+ ' '+ data[i].size+'</button>';
+                            
+                        html += '<div class="m-1 rebrand-img" id="data-image-'+data[i].sku+'"></div>'; 
+                        html += '</div>';
+                    }
+                }
+                $('.'+object+'-container').html(html);
+
+                for (var i = 0; i < data.length; i++) {
+                    readImage(data[i].sku);
+                }
+                
+            }
+        });
+        
+    }
+    async function readImage(sku) {
+        $.ajax({
+            url: '/read-image/'+sku,
+            type: 'GET',
+            success:function(data){ 
+                if (data) {
+                    var src = '/images/'+data;
+                    $('<img/>').attr('src', src).on('load', function() {
+                        $(this).remove(); 
+                        document.getElementById('data-image-'+sku).style.backgroundImage='url('+src+')';
+                    
+                    });
+                }
+                else {
+                    $('<img/>').attr('src', 'https://via.placeholder.com/450x450.png?text=No%20image%20available').on('load', function() {
+                        $(this).remove(); 
+                        document.getElementById('data-image-'+sku).style.backgroundImage='url("https://via.placeholder.com/450x450.png?text=No%20image%20available")';
+                    });
+                }
+            }
+        });
+    }
+
+    async function readProductVolume(sku) {
         $.ajax({
             url: '/read-volumes/'+sku,
             type: 'GET',
@@ -147,8 +196,10 @@
             let sku = $this.attr('data-sku');
             let price = $this.attr('data-price');
             let size = $this.attr('data-size');
-
-            clearSelectedVolumeInfo();
+            let packaging_ids = $this.attr('data-packaging-ids');
+            let closure_ids = $this.attr('data-closure-ids');
+  
+            clearSelectedAttrbutes();
 
             $('#size-price').text(price);
 
@@ -156,6 +207,8 @@
       
             await readProductInfo(sku, category_name);
             await readProductVolume(sku);
+            await readPackaging(packaging_ids, 'packaging');
+            await readPackaging(closure_ids, 'closure');
 
             window.history.pushState(window.location.href, 'Title', '/rebrand/'+sku+"/"+category_name);
             setActive('btn-size', $this);
@@ -225,10 +278,16 @@
      
     }
 
-    function clearSelectedVolumeInfo() {
+    function clearSelectedAttrbutes() {
         $('.custom-volume').text('-');
         $('#custom-price').text('-');
         $('#volume-total-price').text('-');
+
+        $('#custom-packaging-price').text('-');
+        $('#packaging-total-price').text('-');
+
+        $('#custom-closure-price').text('-');
+        $('#closure-total-price').text('-');
     }
 
     function setActive(object, $this) {

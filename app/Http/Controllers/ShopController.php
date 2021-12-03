@@ -161,7 +161,7 @@ class ShopController extends Controller
             
             if ($product->closures) {
                 $closure_ids = $product->closures;
-                $closures = $packaging->readPackaging($closure_ids);
+                $closures = $packaging->readPackaging($closure_ids); 
             }
             else {
                 $closures = [];
@@ -202,6 +202,14 @@ class ShopController extends Controller
         }
         else {
             abort(404);
+        }
+    }
+
+    public function readPackaging($ids) {
+        if (isset($ids)) {
+            $ids = explode(",",$ids);
+            $packaging = new Packaging;
+            return $packaging->readPackaging($ids);
         }
     }
 

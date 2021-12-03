@@ -168,9 +168,12 @@
                       @foreach ($sizes as $key => $item)
                       @php
                           $active = $item->size == $product->size ? 'active' : '';
+                          $packaging_ids = isset($item->packaging) ? implode(",", $item->packaging) : "";
+                          $closure_ids = isset($item->closures) ? implode(",", $item->closures) : "";
                       @endphp
                       <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-size btn-block m-1 {{$active}}" data-price="{{ $item->price }}" data-size="{{ $item->size }}" data-sku="{{ $item->sku }}">{{ $item->size }}</button>
+                        <button class="btn btn-light btn-size btn-block m-1 {{$active}}" data-price="{{ $item->price }}" data-size="{{ $item->size }}" 
+                          data-sku="{{ $item->sku }}" data-packaging-ids="{{ $packaging_ids }}" data-closure-ids="{{ $closure_ids }}">{{ $item->size }}</button>
                       </div>
                       @endforeach
                       @else
@@ -202,7 +205,7 @@
                     <span class="item-value" id="volume-price">0.00</span>
                   </div>
                   <div class="tab-pane fade attr-container" id="pills-packaging" role="tabpanel" aria-labelledby="pills-packaging-tab">
-                    <div class="row">
+                    <div class="row packaging-container">
                       @if(count($packagings)>0)
                       @foreach ($packagings as $key => $pack)
                       @php
@@ -213,7 +216,11 @@
                         <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ $pack->price}}" data-name="{{ $pack->name }} {{ $pack->size }}">
                           {{ $pack->name }} {{ $pack->size }}
                         </button>
-                        <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>
+                        @if ($packaging_image) 
+                        <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$packaging_image) }}");' ></div>   
+                      @else 
+                        <div class="  m-1 rebrand-img" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div> 
+                      @endif
                       </div>
                       @endforeach
                       @else
@@ -224,7 +231,7 @@
                     <span class="item-value" id="packaging-price">0.00</span>
                   </div>
                   <div class="tab-pane fade attr-container" id="pills-cap" role="tabpanel" aria-labelledby="pills-cap-tab">
-                    <div class="row">
+                    <div class="row closure-container">
                       @if(count($closures)>0)
                       @foreach ($closures as $key => $closure)
                       @php
