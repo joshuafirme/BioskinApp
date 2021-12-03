@@ -11,7 +11,7 @@
   <style>
     .item-value{
      background:  #E2E6EA;
-     padding: 6px;
+     padding: 5px 15px 5px 15px !important;
      border-radius: 5px;
      margin-top: 10px;
     }
@@ -116,7 +116,7 @@
               </ul>
              </div>
         </div>
-        <div class="col-3 col-sm-3 col-lg-1 mt-5">
+        <div class="col-3 col-sm-3 col-lg-1 mt-5 mb-4">
           <div class="splide" id="read-one-slider">
             <div class="splide__track">
               <ul class="splide__list">
@@ -166,8 +166,11 @@
                     <div class="row">
                       @if (count($sizes) > 0)
                       @foreach ($sizes as $key => $item)
+                      @php
+                          $active = $item->size == $product->size ? 'active' : '';
+                      @endphp
                       <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-size btn-block m-1" data-price="{{ $item->price }}" data-size="{{ $item->size }}" data-sku="{{ $item->sku }}">{{ $item->size }}</button>
+                        <button class="btn btn-light btn-size btn-block m-1 {{$active}}" data-price="{{ $item->price }}" data-size="{{ $item->size }}" data-sku="{{ $item->sku }}">{{ $item->size }}</button>
                       </div>
                       @endforeach
                       @else
@@ -181,9 +184,18 @@
                   <div class="tab-pane fade attr-container" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
                     <div class="row" id="volumes-container">
                       @foreach ($volumes as $key => $item)
-                      <div class="col-sm-12 col-md-6">
-                        <button class="btn btn-light btn-volume btn-block m-1" data-sku="{{ $product->sku }}" data-volume="{{ $item->volume }}" data-price="{{ $item->price }}">{{ $item->volume }}</button>
-                      </div>
+                        @php
+                            $active = '';
+                        @endphp
+                        @if ($key == 0)
+                          @php
+                              $active = 'active';
+                          @endphp
+                        @endif
+                        <div class="col-sm-12 col-md-6">
+                          <button class="btn btn-light btn-volume btn-block m-1 {{ $active }}" data-sku="{{ $product->sku }}" data-volume="{{ $item->volume }}" 
+                            data-price="{{ $item->price }}">{{ $item->volume }}</button>
+                        </div>
                       @endforeach
                     </div>
                     <h5 class="mt-4">Price </h5>
@@ -222,7 +234,12 @@
                         <button class="btn btn-light btn-closure btn-block m-1" data-price="{{ $closure->price}}" data-sku="{{ $closure->sku }}" data-name="{{ $closure->name }} {{ $closure->size }}">
                           {{ $closure->name }} {{ $closure->size }}
                         </button>
-                        <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$closure_image) }}");' ></div>
+                        
+                        @if ($closure_image) 
+                          <div class="  m-1 rebrand-img" style='background-image:url("{{ asset('images/'.$closure_image) }}");' ></div>     
+                        @else 
+                          <div class="  m-1 rebrand-img" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div> 
+                        @endif
                       </div>
                       @endforeach
                       @else
@@ -235,6 +252,8 @@
                 </div>
                 
             </div>
+            <hr>
+            <small class="text-danger attr-validation"></small>
         </div>
         <div class="col-md-12 col-lg-2">
           <div class="ml-3 mt-4 product-customization">
@@ -271,6 +290,7 @@
             </div>
           </div>
         </div>
+        
     </div>
         
 

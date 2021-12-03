@@ -201,6 +201,28 @@
             $('.btn-variation').removeClass('active');
             $this.addClass('active');
         });
+
+        $(document).on('click', '.btn-add-cart', async function(){ 
+            if (!$('.btn-size').hasClass('active')) {
+                $('.attr-validation').text('Please select product size.');
+                return;
+            }
+            if (!$('.btn-volume').hasClass('active')) {
+                $('.attr-validation').text('Please select product volume.');
+                return;
+            }   
+            if (!$('.btn-packaging').hasClass('active')) {
+                $('.attr-validation').text('Please select product packaging.');
+                return;
+            }   
+            if (!$('.btn-closure').hasClass('active')) {
+                $('.attr-validation').text('Please select product cap.');
+                return;
+            }   
+
+            $('.attr-validation').text('');
+        });
+     
     }
 
     function clearSelectedVolumeInfo() {
@@ -225,12 +247,25 @@
 
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-      }
+    }
+
+    function initSelectedAttr() {
+        if ($('.btn-size').hasClass('active')) {
+            let size = $('#pills-sizes').find('.active').attr('data-size');
+            $('#custom-size').text(size);
+        }
+        if ($('.btn-volume').hasClass('active')) {
+            let volume = $('#pills-volumes').find('.active').attr('data-volume');
+            $('.custom-volume').text(volume);
+        }   
+    }
 
     async function render() {
         await initSplide();
         await on_Click();
         makeResponvie();
+
+       initSelectedAttr();
     }
 
     render();
