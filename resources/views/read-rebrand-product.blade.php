@@ -177,8 +177,13 @@
                       </div>
                       @endforeach
                       @else
-                        <button class="btn btn-light btn-size m-1"
-                        data-price="{{ $product->price }}" data-size="{{ $product->size }}" data-sku="{{ $product->sku }}">{{ $product->size }}</button>
+                      @php
+                          $packaging_ids = isset($product->packaging) ? implode(",", $product->packaging) : "";
+                          $closure_ids = isset($product->closures) ? implode(",", $product->closures) : "";
+                      @endphp
+                        <button class="btn btn-light btn-size m-1 active"
+                        data-price="{{ $product->price }}" data-size="{{ $product->size }}" data-sku="{{ $product->sku }}"
+                        data-packaging-ids="{{ $packaging_ids }}" data-closure-ids="{{ $closure_ids }}">{{ $product->size }}</button>
                       @endif
                     </div>
                      <!--<h5 class="mt-4">Price </h5>
