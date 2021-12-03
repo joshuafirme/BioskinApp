@@ -278,7 +278,14 @@ class ProductController extends Controller
                 $images[] = $folder_to_save . "/" . $image_name;
             }
         }
+        if (!$request->packaging) {
+            $request['packaging'] = [];
+        }
 
+        if (!$request->closures) {
+            $request['closures'] = [];
+        }
+        
         $product->update($request->all());
 
         foreach ($images as $key => $data) {

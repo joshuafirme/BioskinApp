@@ -224,7 +224,7 @@
                       </div>
                       @endforeach
                       @else
-                        <button class="btn btn-light btn-block m-1" data-sku="{{ $product->sku }}">None</button>
+                      <p class="mx-auto text-muted">No available packaging</p>
                       @endif
                     </div>
                     <h5 class="mt-4">Price </h5>
@@ -250,7 +250,7 @@
                       </div>
                       @endforeach
                       @else
-                        <button class="btn btn-light btn-closure btn-block m-1" data-sku="{{ $product->sku }}">None</button>
+                        <p class="mx-auto text-muted">No available cap</p>
                       @endif
                     </div>
                     <h5 class="mt-4">Price </h5>
