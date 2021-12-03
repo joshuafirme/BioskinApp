@@ -78,28 +78,34 @@
 
     async function readPackaging(ids, object) {
         
-        $.ajax({
-            url: '/read-packaging/'+ids,
-            type: 'GET',
-            success:function(data){ console.log(data)
-                let html = ''; 
-                if (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        html += '<div class="col-sm-12 col-md-6">';
-                            html += '<button class="btn btn-light btn-'+object+' btn-block m-1" data-sku="'+data[i].sku+'" data-name="'+data[i].name+'" data-price="'+data[i].price+'">'+data[i].name+ ' '+ data[i].size+'</button>';
-                            
-                        html += '<div class="m-1 rebrand-img" id="data-image-'+data[i].sku+'"></div>'; 
-                        html += '</div>';
+        var html = ''; 
+        if (ids) {
+            $.ajax({
+                url: '/read-packaging/'+ids,
+                type: 'GET',
+                success:function(data){ console.log(data)
+                    if (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            html += '<div class="col-sm-12 col-md-6">';
+                                html += '<button class="btn btn-light btn-'+object+' btn-block m-1" data-sku="'+data[i].sku+'" data-name="'+data[i].name+'" data-price="'+data[i].price+'">'+data[i].name+ ' '+ data[i].size+'</button>';
+                                
+                            html += '<div class="m-1 rebrand-img" id="data-image-'+data[i].sku+'"></div>'; 
+                            html += '</div>';
+                        }
                     }
+                    $('.'+object+'-container').html(html);
+    
+                    for (var i = 0; i < data.length; i++) {
+                        readImage(data[i].sku);
+                    }
+                    
                 }
-                $('.'+object+'-container').html(html);
-
-                for (var i = 0; i < data.length; i++) {
-                    readImage(data[i].sku);
-                }
-                
-            }
-        });
+            });
+        } 
+        else {
+            html += '<p class="mx-auto text-muted">No available packaging</p>';
+            $('.'+object+'-container').html(html);
+        }
         
     }
     async function readImage(sku) {
@@ -207,12 +213,10 @@
       
             await readProductInfo(sku, category_name);
             await readProductVolume(sku);
-            if (packaging_ids) {
-                await readPackaging(packaging_ids, 'packaging');
-            }
-            if (closure_ids) {
-                await readPackaging(closure_ids, 'closure');
-            }
+            
+            await readPackaging(packaging_ids, 'packaging');
+            await readPackaging(closure_ids, 'closure');
+            
 
             window.history.pushState(window.location.href, 'Title', '/rebrand/'+sku+"/"+category_name);
             setActive('btn-size', $this);
