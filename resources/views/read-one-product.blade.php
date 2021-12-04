@@ -110,7 +110,7 @@
                     <button class="btn btn-success btn-block m-1">Buy now</button>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>
+                    <a data-sku="{{$product->sku}}" data-price="{{$product->price}}" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>
                 </div>
                 @if ($product->rebranding == 1)
                 <div class="col-12">
@@ -174,3 +174,4 @@
 
 @include('footer')
 <script src="{{asset('js/customer/read-one.js')}}"></script>
+@include('scripts._cart')

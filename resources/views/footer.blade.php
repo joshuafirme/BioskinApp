@@ -6,6 +6,9 @@
   </aside>
   <!-- /.control-sidebar -->
 
+  <style>
+
+  </style>
   <!-- Main Footer -->
   <footer class="main-footer">
     <main class="d-flex align-items-center py-3 py-md-0">
@@ -31,6 +34,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    }); 
 
     if ($('#secondary-slider').length > 0) {
       var column_count = 4;
@@ -64,6 +73,7 @@
 
   });
 </script>
+
 @if(strpos($page_title,"Login") != "")
   <script src="{{asset('js/login.js')}}"></script>
 @endif
@@ -88,7 +98,13 @@
   function topFunction() {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
+
+
 </script>
+
+@include('scripts._global')
+@include('partials._modals')
+<script src="{{asset('js/customer/login.js')}}"></script>
 
 </body>
 </html>

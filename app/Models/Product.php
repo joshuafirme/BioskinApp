@@ -59,4 +59,10 @@ class Product extends Model
                         ->get();
     }
 
+    
+    public function readRetail($sku) {
+     
+
+    }
+
 }

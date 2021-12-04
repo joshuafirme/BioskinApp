@@ -38,7 +38,15 @@ Route::middleware('auth')->group(function () {
         Route::resource('/variation', 'VariationController');
         Route::resource('/carousel', 'CarouselController');
     });
+
+    Route::get('/cart', 'CartController@index');
+    Route::get('/cart-count', 'CartController@cartCount');
+    Route::get('/read-cart', 'CartController@readCart');
 });
+
+Route::post('/add-to-cart', 'CartController@addToCart');
+
+
 Route::resource('/category', 'CategoryController');
 Route::get('/category/read-one/{id}', 'CategoryController@readCategory');
 Route::resource('/subcategory', 'SubcategoryController');
@@ -69,4 +77,5 @@ Route::get('/login', 'UserController@login_view');
 Route::get('/logout', 'UserController@logout');
 Route::get('/signup', 'UserController@signup_view');
 Route::post('/do-login', 'UserController@doLogin');
+Route::post('/login-ajax', 'UserController@doLoginAjax');
 Route::post('/do-signup', 'UserController@doSignup');

@@ -31,9 +31,9 @@
             </li>
             @endif
             <li class="nav-item">
-              <a href="{{ url('/') }}" class="nav-link">
+              <a href="{{ url('/cart') }}" class="nav-link">
                 <img src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/000000/external-shopping-cart-shopping-those-icons-lineal-color-those-icons.png"/>
-                <span class="badge badge-lg badge-success navbar-badge">0</span>
+                <span class="badge badge-lg badge-success navbar-badge cart-count"></span>
               </a>
             </li>
           </ul>

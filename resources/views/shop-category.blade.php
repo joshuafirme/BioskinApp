@@ -66,3 +66,4 @@
 
 @include('footer')
 <script src="{{asset('js/customer/product.js')}}"></script>
+@include('scripts._cart')

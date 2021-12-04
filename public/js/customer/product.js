@@ -18,7 +18,7 @@ async function getItems (data) {
         html +=      '<button class="btn btn-success btn-block m-1">Buy now</button>';
         html +=   '</div>';
         html +=    '<div class="col-2">';
-        html +=        '<a class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
+        html +=        '<a data-sku="'+ data.sku +'" data-price="'+ data.price +'" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
         html +=     '</div>';
         if (data.rebranding == 1) {
             html +=     '<div class="col-12">';
@@ -252,7 +252,9 @@ async function readCategoryID(subcategory_id) {
 }
 
 
+
 async function on_Click(category_id) {
+
     $(document).on('click', '.btn-load-more', async function(){
         $(this).html('<i class="fas fa-spinner fa-spin"></i>');
         setTimeout(async function() {

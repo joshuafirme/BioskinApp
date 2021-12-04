@@ -57,6 +57,15 @@ class UserController extends Controller
             return redirect()->back()->with('danger', 'Invalid username or password.');  
         }
     }
+    public function doLoginAjax() {
+        if (Auth::attempt(['email' => request()->email, 'password' => request()->password])) 
+        {
+            return response()->json(['status' => 200, 'message' => 'authorized']);
+        }
+        else {
+            return response()->json(['status' => 200, 'message' => 'unauthorized']);
+        }
+    }
     public function logout() {
         Auth::logout();
         Session::flush();

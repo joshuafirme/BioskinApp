@@ -322,8 +322,13 @@
             $('#custom-size').text(size);
         }
         if ($('.btn-volume').hasClass('active')) {
-            let volume = $('#pills-volumes').find('.active').attr('data-volume');
+            let el = $('#pills-volumes');
+            let volume = el.find('.active').attr('data-volume');
+            let price = el.find('.active').attr('data-price');
             $('.custom-volume').text(volume);
+            $('#custom-price').text(price);
+            let total = parseFloat(price) * parseInt(volume);
+            $('#volume-total-price').text(formatNumber(total));
         }   
     }
 
