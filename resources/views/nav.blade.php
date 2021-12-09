@@ -32,8 +32,8 @@
             @endif
             <li class="nav-item">
               <a href="{{ url('/cart') }}" class="nav-link">
-                <img src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/000000/external-shopping-cart-shopping-those-icons-lineal-color-those-icons.png"/>
-                <span class="badge badge-lg badge-success navbar-badge cart-count"></span>
+                <img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/30/000000/external-shopping-cart-interface-kiranshastry-lineal-kiranshastry-1.png"/>
+                <span class="badge badge-lg badge-success navbar-badge cart-count" style="font-size: 14px;"></span>
               </a>
             </li>
           </ul>
