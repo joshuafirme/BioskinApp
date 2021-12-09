@@ -27,6 +27,7 @@ class Product extends Model
         'packaging',
         'closures',
         'rebranding',
+        'packaging_price_included'
 
     ];
 

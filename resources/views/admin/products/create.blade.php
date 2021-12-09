@@ -168,6 +168,14 @@
 
                           <div class="col-sm-12 mt-3">
                               
+                            <div class="form-check">
+                              <input type="checkbox" class="form-check-input" name="packaging_price_included">
+                              <label class="form-check-label" for="packaging_price_included">Packaging price included</label>
+                            </div>
+                            </div>
+
+                          <div class="col-sm-12 mt-3">
+                              
                           <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="rebranding" id="rebranding" value="1">
                             <label class="form-check-label" for="exampleCheck1">Rebranding</label>

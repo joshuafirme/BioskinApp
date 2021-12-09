@@ -186,6 +186,17 @@
 
                           <div class="col-sm-12 mt-3">
                               
+                            <div class="form-check">
+                              @php
+                                  $packaging_price_included_checked = $product->packaging_price_included == 1 ? "checked" : "";
+                              @endphp
+                              <input type="checkbox" class="form-check-input" name="packaging_price_included" {{ $packaging_price_included_checked }} >
+                              <label class="form-check-label" for="">Packaging price included</label>
+                            </div>
+                            </div>
+
+                          <div class="col-sm-12 mt-3">
+                              
                           <div class="form-check">
                             @php
                                 $checked = $product->rebranding == 1 ? "checked" : "";

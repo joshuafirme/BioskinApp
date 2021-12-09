@@ -163,7 +163,7 @@ class ProductController extends Controller
 
         $request['category_id'] = implode(", ",$request->category_id);
         $request['sub_category_id'] = implode(", ",$request->sub_category_id);
-
+        $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
         $images=array();
         if($files=$request->file('images')){
             foreach($files as $file){
@@ -285,6 +285,8 @@ class ProductController extends Controller
         if (!$request->closures) {
             $request['closures'] = [];
         }
+
+        $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
         
         $product->update($request->all());
 

@@ -80,6 +80,7 @@ class CartController extends Controller
                     ->leftJoin('packaging as PG', 'PG.id', '=', 'cart.packaging_sku')
                     ->leftJoin('packaging as C', 'C.id', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
+                    ->whereNotIn('P.category_id', [10])
                     ->get();
     }
 
