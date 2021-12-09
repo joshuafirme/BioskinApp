@@ -29,7 +29,7 @@
       @endphp
    @foreach ($categories as $item)
    <a class="col-6 col-sm-4 col-md-{{$col_count}} text-center" href="{{ url('/shop/category/'.$item->id) }}">
-          <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
+          <div class="text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
           </a>
@@ -184,7 +184,7 @@
         <h3 class="text-muted text-center wording-2">Enjoy promos and discounts when you sign up here. You can now add vouchers to your checkouts for a much enjoyable shopping!</h3>
       </div>
     </div>
-    <div class="splide landing" id="secondary-slider" style="width:88%; margin: 0 auto;">
+    <div class="splide landing mb-5" id="secondary-slider" style="width:88%; margin: 0 auto;">
       <div class="splide__track">
         <ul class="splide__list">
           @foreach ($carousel as $item)
@@ -196,10 +196,6 @@
       </div>
     </div>
 
-  </div>
-        <div class="row" id="product-container" style="min-height: 700px;"></div>
-        
-  </div>
   <!-- /.content-wrapper -->
 
 @include('footer')

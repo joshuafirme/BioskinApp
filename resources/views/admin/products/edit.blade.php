@@ -160,6 +160,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
+                            <small class="text-secondary" style="top:-10px"> - First selected option is the default packaging for retail.</small>
                             <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
                             @foreach ($packaging as $item)
@@ -173,6 +174,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
+                            <small class="text-secondary" style="top:-10px"> - First selected option is the default closure for retail.</small>
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
                             @foreach ($packaging as $item)
@@ -194,6 +196,17 @@
                               <label class="form-check-label" for="">Packaging price included</label>
                             </div>
                             </div>
+
+                            <div class="col-sm-12 mt-3">
+                              
+                              <div class="form-check">
+                                @php
+                                    $closure_price_included_checked = $product->closure_price_included == 1 ? "checked" : "";
+                                @endphp
+                                <input type="checkbox" class="form-check-input" name="closure_price_included" {{ $closure_price_included_checked }} >
+                                <label class="form-check-label" for="">Closure price included</label>
+                              </div>
+                              </div>
 
                           <div class="col-sm-12 mt-3">
                               

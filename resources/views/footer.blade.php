@@ -11,11 +11,125 @@
   </style>
   <!-- Main Footer -->
   <footer class="main-footer">
-    <main class="d-flex align-items-center py-3 py-md-0">
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 2021 Bioskin</strong> <span class="ml-1">All rights reserved.</span>
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <!-- Left -->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
 
-    </main>
+          <div class="me-5 d-none d-lg-block">
+            <span>Get connected with us on social networks:</span>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+
+      <!-- Right -->
+      <div class="float-right">
+        <a href="https://www.facebook.com/BioskinTechLabInc" class="m-4 text-reset" target="_blank">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/bioskinphilippines/" class="m-4 text-reset" target="_blank">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@bioskinphilippines" class="m-4 text-reset" target="_blank">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://shopee.ph/bioskinphilippines" class="m-4 text-reset" target="_blank">
+          <i class="fas fa-store"></i>
+        </a>
+      </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right -->
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" style="object-fit: cover;" width="100px" height="auto">
+          </h6>
+          <p>
+            We can help you turn your vision into a reality! Start your SKINCARE and COSMETICS business with us
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Products
+          </h6>
+          <p>
+            <a href="#!" class="text-reset">Angular</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">React</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Vue</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Laravel</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Useful links
+          </h6>
+          <p>
+            <a href="#!" class="text-reset">Pricing</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Settings</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Orders</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Help</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Contact
+          </h6>
+          <p><i class="fas fa-home me-3"></i> Ecoland Subdivision Basketball Court, Block 4 Phase 2 Lot 11 Maya St, Matina Pangi Rd, Davao City, 8000 Davao del Sur</p>
+          <p>
+            <i class="fas fa-envelope me-3"></i>
+            bioskin1a@yahoo.com
+          </p>
+          <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+          <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © {{ date('Y') }} Bioskin Philippines  | All Rights Reserved
+  </div>
+
   </footer>
 </div>
 <!-- ./wrapper -->

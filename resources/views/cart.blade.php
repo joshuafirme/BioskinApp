@@ -9,13 +9,7 @@
   <!-- /.navbar -->
 
   <style>
-    footer{
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        margin-bottom: 0px;
-    }
+    
     table {
         border-collapse: collapse !important;
     }
@@ -53,7 +47,7 @@
       @endphp
         @foreach ($categories as $item)
         <a class="col-6 col-sm-4 col-md-{{$col_count}} text-center" href="{{ url('/shop/category/'.$item->id) }}">
-          <div class="text-bold text-muted category-name"  data-id="{{ $item->id }}" 
+          <div class="text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
           </a>

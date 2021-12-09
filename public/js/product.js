@@ -223,7 +223,7 @@ $(document).on('click', '.btn-confirm-archive', function(){
                 $('#confirmModal').modal('hide');
                 $('.tbl-product').DataTable().ajax.reload();
                 $.toast({
-                    text: 'Product was successfully adjusted.',
+                    text: 'Product was successfully deleted.',
                     showHideTransition: 'plain',
                     hideAfter: 4500, 
                 });

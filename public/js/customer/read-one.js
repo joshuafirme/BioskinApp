@@ -196,6 +196,7 @@
             let total = parseFloat(price) * parseInt(volume);
             $('#volume-total-price').text(formatNumber(total));
         });
+
         $(document).on('click', '.btn-size', async function(){ 
             let $this = $(this);
             let category_name = $('#category-value').val();
@@ -221,10 +222,15 @@
             window.history.pushState(window.location.href, 'Title', '/rebrand/'+sku+"/"+category_name);
             setActive('btn-size', $this);
         });
+
         $(document).on('click', '.btn-packaging', async function(){ 
+
+            validateAttr();
+
             let $this = $(this);
             let price = $this.attr('data-price');
             let packaging_name = $this.attr('data-name');
+
             $('#custom-packaging').text(packaging_name);
             $('#packaging-price').text(price);
             $('#custom-packaging-price').text(price);
@@ -232,10 +238,13 @@
 
             let volume = $('.custom-volume:first').text();
             // compute total
-            let total = parseFloat(price) * parseInt(volume);
-            $('#packaging-total-price').text(formatNumber(total));
+            computeTotal('packaging', price, volume);
         });
+
         $(document).on('click', '.btn-closure', async function(){ 
+
+            validateAttr();
+            
             let $this = $(this);
             let price = $this.attr('data-price');
             let name = $this.attr('data-name');
@@ -245,8 +254,7 @@
             setActive('btn-closure', $this);
             let volume = $('.custom-volume:first').text();
             // compute total
-            let total = parseFloat(price) * parseInt(volume);
-            $('#closure-total-price').text(formatNumber(total));
+            computeTotal('closure', price, volume);
         });
 
         $(document).on('click', '.btn-variation', async function(){ 
@@ -264,26 +272,35 @@
         });
 
         $(document).on('click', '.btn-add-cart', async function(){ 
-            if (!$('.btn-size').hasClass('active')) {
-                $('.attr-validation').text('Please select product size.');
-                return;
-            }
-            if (!$('.btn-volume').hasClass('active')) {
-                $('.attr-validation').text('Please select product volume.');
-                return;
-            }   
-            if (!$('.btn-packaging').hasClass('active')) {
-                $('.attr-validation').text('Please select product packaging.');
-                return;
-            }   
-            if (!$('.btn-closure').hasClass('active')) {
-                $('.attr-validation').text('Please select product cap.');
-                return;
-            }   
-
-            $('.attr-validation').text('');
+            validateAttr();
         });
      
+    }
+
+    function computeTotal(obj, price, volume) {
+        let total = parseFloat(price) * parseInt(volume);
+        $('#'+obj+'-total-price').text(formatNumber(total));
+    }
+
+    function validateAttr() {
+        if (!$('.btn-size').hasClass('active')) {
+            $('.attr-validation').text('Please select product size.');
+            return;
+        }
+        if (!$('.btn-volume').hasClass('active')) {
+            $('.attr-validation').text('Please select product volume.');
+            return;
+        }   
+        if (!$('.btn-packaging').hasClass('active')) {
+            $('.attr-validation').text('Please select product packaging.');
+            return;
+        }   
+        if (!$('.btn-closure').hasClass('active')) {
+            $('.attr-validation').text('Please select product cap.');
+            return;
+        }   
+
+        $('.attr-validation').text('');
     }
 
     function clearSelectedAttrbutes() {

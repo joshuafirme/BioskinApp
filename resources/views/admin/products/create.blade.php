@@ -148,7 +148,8 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
-                            <select class="form-control" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
+                            <small class="text-secondary" style="top:-10px"> - First selected option is the default packaging for retail.</small>
+                            <select class="form-control mb-0" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
                             @foreach ($packaging as $item)
                               <option value="{{$item->id}}">{{$item->name}} {{ $item->size }}</option>
@@ -158,6 +159,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
+                            <small class="text-secondary" style="top:-10px"> - First selected option is the default closure for retail.</small>
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select closures"
                             multiple>
                             @foreach ($packaging as $item)
@@ -167,12 +169,19 @@
                           </div>
 
                           <div class="col-sm-12 mt-3">
-                              
                             <div class="form-check">
                               <input type="checkbox" class="form-check-input" name="packaging_price_included">
                               <label class="form-check-label" for="packaging_price_included">Packaging price included</label>
                             </div>
+                          </div>
+
+                          <div class="col-sm-12 mt-3">
+                            <div class="form-check">
+                              <input type="checkbox" class="form-check-input" name="closure_price_included">
+                              <label class="form-check-label" for="closure_price_included">Closure price included</label>
                             </div>
+                          </div>
+                          
 
                           <div class="col-sm-12 mt-3">
                               
