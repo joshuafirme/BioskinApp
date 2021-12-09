@@ -79,9 +79,7 @@
             @endphp
             @foreach ($cache_categories as $item)
               <div class="col-6">
-                <p>
-                  <a href="#!" class="text-reset">{{$item->name}}</a>
-                </p>
+                <a href="{{ url('/shop/category/'.$item->id) }}" class="text-reset">{{$item->name}}</a>
               </div>
             @endforeach
           </div>
