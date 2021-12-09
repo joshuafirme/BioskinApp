@@ -16,7 +16,13 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::paginate(10);
-        
+
+        $cache_categories = Category::where('status', 1)->get();
+
+        if (!Cache::get('categories-cache')) {
+            Cache::put('categories-cache', $cache_categories);
+        }
+
         return view('admin.category.index', compact('category'));
     }
 
@@ -57,6 +63,8 @@ class CategoryController extends Controller
         }
 
         Category::create($input);
+
+        Cache::forget('products-cache');
 
         return redirect()->back()
             ->with('success', 'category was created.');
@@ -105,8 +113,10 @@ class CategoryController extends Controller
             $request->image->move(public_path('images/' . $folder_to_save), $image_name);
             $input['image'] = $folder_to_save . "/" . $image_name;
         }
-        ;
+
         Category::where('id', $id)->update($input);
+
+        Cache::forget('products-cache');
 
         return redirect()->back()
             ->with('success', 'Category was updated.');
