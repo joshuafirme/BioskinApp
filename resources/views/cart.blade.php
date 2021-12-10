@@ -69,10 +69,10 @@
           </ol>
         </nav>
       </div>
-    <div class="m-5 table-container" style="overflow-y: auto; height:550px;">
+    <div class="m-5 table-container" style="overflow-y: auto; height:590px;">
         <table class="table table-borderless mb-5" id="cart-table">
             <thead>
-              <th><input type="checkbox" name="select_all" value="1" id="select-all-product"></th>
+              <th></th>
                 <th>Product Ordered</th>
                 <th>Item Description</th>
                 <th>Variation</th>
@@ -95,9 +95,13 @@
                 </tr>
             </tbody>
         </table>
-         
     </div>
-    
+    <div class="m-5" style="height: 200px;">
+      <hr>
+      <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
+      <button class="btn btn-danger ml-3">Delete selected</button>
+      <div class="float-right mr-3">Total Item: 1000 <span><button class="btn btn-success ml-3">Checkout</button></span></div>
+    </div>
     
   <!-- /.content-wrapper -->
 
