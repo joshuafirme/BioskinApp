@@ -17,12 +17,6 @@ class CategoryController extends Controller
     {
         $category = Category::paginate(10);
 
-        $cache_categories = Category::where('status', 1)->get();
-
-        if (!Cache::get('categories-cache')) {
-            Cache::put('categories-cache', $cache_categories);
-        }
-
         return view('admin.category.index', compact('category'));
     }
 
