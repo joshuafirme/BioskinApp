@@ -72,7 +72,7 @@ class CartController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
-                    ->select('Cart.amount', 'Cart.qty', 'P.*', 
+                    ->select('cart.amount', 'cart.qty', 'P.*', 
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
