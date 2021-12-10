@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', 'CartController@index');
     Route::get('/cart-count', 'CartController@cartCount');
     Route::get('/read-cart', 'CartController@readCart');
+    Route::post('/cart/remove/{ids}', 'CartController@removeItem');
 });
 
 Route::post('/add-to-cart', 'CartController@addToCart');

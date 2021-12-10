@@ -207,14 +207,28 @@
                   </div>
                   <div class="tab-pane fade attr-container" id="pills-packaging" role="tabpanel" aria-labelledby="pills-packaging-tab">
                     <div class="row packaging-container">
+                      @php
+                          $selected_packaging_price = 0.00;
+                      @endphp
                       @if(count($packagings)>0)
                       @foreach ($packagings as $key => $pack)
                       @php
                           $packaging_image = \DB::table('product_images')->where('sku', $pack->sku)->value('image');
-                
+
+                          if ($key == 0 && $product->packaging_price_included == 1) {
+                            $selected_packaging_price = $pack->price;
+                            $pack->price = '0.00';
+                          }
+                          else if($key > 0 && $product->packaging_price_included == 1) {
+                            if ($selected_packaging_price < $pack->price) {
+                                $pack->price = (double)$pack->price - (double)$selected_packaging_price; 
+                            } else {
+                                $pack->price = (double)$selected_packaging_price + (double)$pack->price; 
+                            }
+                          }
                       @endphp
                       <div class="col-6 col-md-6">
-                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ $pack->price}}" data-name="{{ $pack->name }} {{ $pack->size }}">
+                        <button class="btn btn-light btn-packaging btn-block m-1" data-sku="{{ $pack->sku }}" data-price="{{ number_format($pack->price,2,".",",")  }}" data-name="{{ $pack->name }} {{ $pack->size }}">
                           {{ $pack->name }} {{ $pack->size }}
                         </button>
                         @if ($packaging_image) 
@@ -237,6 +251,9 @@
                       @foreach ($closures as $key => $closure)
                       @php
                           $closure_image = \DB::table('product_images')->where('sku', $closure->sku)->value('image');
+                          if ($key == 0 && $product->closure_price_included == 1) {
+                            $closure->price = '0.00';
+                          }
                       @endphp
                       <div class="col-6">
                         <button class="btn btn-light btn-closure btn-block m-1" data-price="{{ $closure->price}}" data-sku="{{ $closure->sku }}" data-name="{{ $closure->name }} {{ $closure->size }}">

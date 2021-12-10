@@ -72,7 +72,7 @@ class CartController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
-                    ->select('cart.amount', 'cart.qty', 'P.*', 
+                    ->select('cart.id as cart_id', 'cart.amount', 'cart.qty', 'P.*', 
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
@@ -86,6 +86,14 @@ class CartController extends Controller
 
     public function cartCount() {
         return Cart::where('user_id', Auth::id())->count();
+    }
+
+    public function removeItem($ids) {
+
+        $ids_arr =  explode(',', $ids);
+        Cart::whereIn('id', $ids_arr)->delete();
+        
+        return 'deleted';
     }
 
     public function readDefaultPackaging($sku) {

@@ -82,24 +82,16 @@
                 <th>Order Subtotal</th>
             </thead>
             <tbody id="cart-item-container">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>   <div class="row justify-content-center mt-5">
-                        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                      </div></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
             </tbody>
-        </table>
+        </table>   
+        <div class="row justify-content-center mt-5">
+          <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
     </div>
     <div class="m-5" style="height: 200px;">
       <hr>
       <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
-      <button class="btn btn-danger ml-3">Delete selected</button>
+      <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
       <div class="float-right mr-3">Total Item: 1000 <span><button class="btn btn-success ml-3">Checkout</button></span></div>
     </div>
     

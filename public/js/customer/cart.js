@@ -4,7 +4,7 @@ function getItems (data,i) {
     var closure = data.closure != null ? data.closure : '-';
     var variation = data.variation != null ? data.variation : '-';
     html += '<tr>';
-    html +=    '<td><input type="checkbox" name="checkbox[]" value=""></input></td>';
+    html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'"></input></td>';
     html +=    '<td>';
     html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:150px;"  id="data-image-'+i+'"></div></a>';
     html +=    '</td>';
@@ -83,6 +83,47 @@ async function readImage(sku, i) {
         }
     });
 }
+
+    $('#select-all-product').on('click', function(){
+        $('input[type="checkbox"]').prop('checked', this.checked);
+    });
+
+    $(document).on('click','#btn-delete-selected', function(){
+
+        var $this = $(this);
+        $this.html('<i class="fas fa-spinner fa-pulse"></i>');
+
+        var ids = [];
+
+        $('#cart-table tbody').find(':checkbox:checked').each(function(i){
+            ids[i] = $(this).val();
+        });
+
+        if (ids.length > 0) {
+            $.ajax({
+                url: '/cart/remove/'+ids,
+                type: 'POST',
+                success:function(data){ 
+                    readCart();
+                    $.toast({
+                        text: 'Item was removed from cart.',
+                        showHideTransition: 'plain',
+                        hideAfter: 4500, 
+                    });
+                }
+            });
+        }
+        else {
+            $.toast({
+                text: 'Please selecte an item.',
+                showHideTransition: 'plain',
+                hideAfter: 2500, 
+            });
+        }
+        
+        $this.html('Delete selected');
+        
+    });
 
 
 readCart();
