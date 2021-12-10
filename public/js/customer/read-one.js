@@ -225,8 +225,6 @@
 
         $(document).on('click', '.btn-packaging', async function(){ 
 
-            validateAttr();
-
             let $this = $(this);
             let price = $this.attr('data-price');
             let packaging_name = $this.attr('data-name');
@@ -242,8 +240,6 @@
         });
 
         $(document).on('click', '.btn-closure', async function(){ 
-
-            validateAttr();
             
             let $this = $(this);
             let price = $this.attr('data-price');
