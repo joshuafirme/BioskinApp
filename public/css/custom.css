@@ -7,6 +7,20 @@ body{
   font-family: "Karla", sans-serif !important;
 }
 
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 10px !important;
+  -webkit-box-shadow: inset 0 0 5px #B3B3B3;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px !important;
+  -webkit-box-shadow: inset 0 0 5px #B3B3B3;
+}
+
 .content-wrapper {
   min-height: 1000px !important;
 }

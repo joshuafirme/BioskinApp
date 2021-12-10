@@ -23,6 +23,13 @@
         padding: 10px !important; 
         margin: 0 !important;
     }
+    thead{
+        position: sticky !important;
+        top: 0 !important;
+        background-color: #FFF;
+        border-color: #C4BFC2;
+        z-index: 999;
+    }
   
   </style>
 
@@ -62,9 +69,10 @@
           </ol>
         </nav>
       </div>
-    <div class="m-5 table-container">
-        <table class="table mb-5" id="cart-table">
+    <div class="m-5 table-container" style="overflow-y: auto; height:550px;">
+        <table class="table table-borderless mb-5" id="cart-table">
             <thead>
+              <th><input type="checkbox" name="select_all" value="1" id="select-all-product"></th>
                 <th>Product Ordered</th>
                 <th>Item Description</th>
                 <th>Variation</th>
