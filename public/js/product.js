@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }); 
     
-    function fetchProduct(){
-        $('.tbl-product').DataTable({
+    function fetchProduct(object = 'product'){
+        $('.tbl-'+object).DataTable({
         
            processing: true,
            serverSide: true,
@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
             ajax:{
                 url: "/read-product",
                 type:"GET",
+                data: {
+                    object : object
+                }
             },
           order: [[0, 'desc']],
                
@@ -240,8 +243,6 @@ function getClosures(packaging_id) {
         tpye: 'GET',
         success:function(data){ 
             populateDropdown(data, 'cap')
-            
-           
     
         }
       });
@@ -286,14 +287,15 @@ function initComponents()
 { 
     var category_id = $('select[name=category_id]').val();
     var sku = $('input[name=sku]').val();
-    //var packaging_id = $('select[name=packaging_id]').val();
     choices();
     if ($('select[name=category_id]').length > 0) {
         getSubcategory(category_id);
     }
-    //getClosures(packaging_id);
     if ($('.tbl-product').length > 0) {
         fetchProduct(); 
+    }
+    else if ($('.tbl-packaging').length > 0) {console.log('pack')
+        fetchProduct('packaging');  
     }
 
     readPricePerVolume(sku);

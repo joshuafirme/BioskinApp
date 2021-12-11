@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = new Product;
-        $product = $product->readAllProduct();
+        $product = $product->readAllProduct('product');
         return view('admin.products.index');
     }
 
@@ -36,16 +36,19 @@ class ProductController extends Controller
     public function readAllProduct() {
         
         $product = new Product;
-        $product = $product->readAllProduct();
+        $object = request()->object;
+
+        $product = $product->readAllProduct($object);
+        
         
         if(request()->ajax())
         { 
             return datatables()->of($product)
                 ->addColumn('action', function($product)
                 {
-                    $button = ' <a class="btn btn-sm" data-id="'. $product->id .'" href="'. route('product.edit',$product->id) .'"><i class="fa fa-edit"></i></a>';
+                    $button = ' <a class="btn btn-sm" data-id="'. $product->id .'" href="'. route(request()->object.'.edit',$product->id) .'"><i class="fa fa-edit"></i></a>';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<a data-id="'. $product->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
+                  //  $button .= '<a data-id="'. $product->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;
                 })
                 ->addColumn('variation', function($product){ return $product->variation_id == 0 ? "None" : $product->variation; })
@@ -99,6 +102,7 @@ class ProductController extends Controller
                 ->make(true);
         }
     }
+
     public function readCategories($ids) {
         $ids = explode(', ', $ids);
         return DB::table('category')
@@ -110,7 +114,7 @@ class ProductController extends Controller
                 ->whereIn('id', $ids)->get('name');
     }
     public function readPackaging($packaging_ids) {
-        return DB::table('packaging')
+        return DB::table('products')
                 ->select('name', 'size')
                 ->whereIn('id', $packaging_ids)->get();
     }
@@ -125,12 +129,11 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $packaging = Packaging::all();
+        $packaging = Product::where('category_id', 10)->get();
         $sizes = Size::all();
         $variations = Variation::all();
-        $closures = Closures::all();
         $subcategories = Subcategory::all();
-        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations', 'closures', 'subcategories'));
+        return view('admin.products.create', compact('categories', 'packaging', 'sizes', 'variations', 'subcategories'));
     }
 
     /**
@@ -235,7 +238,7 @@ class ProductController extends Controller
     public function edit(Product $product, ProductPrice $p)
     {
         $categories = Category::all();
-        $packaging = Packaging::all();
+        $packaging = Product::where('category_id', 10)->get();
         $sizes = Size::all();
         $variations = Variation::all();
         $subcategories = Subcategory::all();

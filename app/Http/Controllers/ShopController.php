@@ -38,25 +38,29 @@ class ShopController extends Controller
     }
 
     public function readAllProduct()
-    {
+    { 
+        $object = request()->object;
+        
         $p = new Product;
         if (Cache::get('products-cache')) {
             $data = Cache::get('products-cache');
         }else {    
-            Cache::put('products-cache', $p->readAllProduct());
-            $data = $p->readAllProduct();
+            Cache::put('products-cache', $p->readAllProduct($object));
+            $data = $p->readAllProduct($object);
         }
         return $data;
     }
 
     public function readAllPackaging()
     {
-        $p = new Packaging;
+        $object = request()->object;
+
+        $p = new Product;
         if (Cache::get('packaging-cache')) {
             $data = Cache::get('packaging-cache');
         }else {
-            Cache::put('packaging-cache', $p->readAllPackaging());
-            $data = $p->readAllPackaging();
+            Cache::put('packaging-cache', $p->readAllProduct($object));
+            $data = $p->readAllProduct($object);
         }
         return  $data;
     }
@@ -89,13 +93,7 @@ class ShopController extends Controller
 
     public function readOneProduct($sku, $category_name, Product $__product)
     {
-        if (strpos(strtolower($category_name), 'pack') !== false ||
-            strpos(strtolower($category_name), 'close') !== false) {
-            $product = Packaging::where('sku', $sku)->first(); 
-        }
-        else {
-            $product = Product::where('sku', $sku)->first(); 
-        }
+        $product = Product::where('sku', $sku)->first(); 
 
         $c = new Category;
         $s = new Subcategory;

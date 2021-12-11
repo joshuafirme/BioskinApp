@@ -39,13 +39,31 @@ class Product extends Model
         'closures' => 'array',
     ];
 
-    public function readAllProduct()
+    public function readAllProduct($object)
+    {
+        if ($object == 'packaging') {
+            return $this->readAllPackaging();
+        }
+        else {
+            return DB::table('products as P')
+                ->select("P.*", 'P.id as id',
+                        'V.name as variation',
+                        )
+                ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
+                ->whereNotIn('category_id', [10])
+                ->get();
+        }
+
+    }
+
+    public function readAllPackaging()
     {
         return DB::table('products as P')
             ->select("P.*", 'P.id as id',
                     'V.name as variation',
                     )
             ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
+            ->whereIn('category_id', [10])
             ->get();
     }
 

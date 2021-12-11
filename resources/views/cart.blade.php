@@ -69,7 +69,7 @@
           </ol>
         </nav>
       </div>
-    <div class="m-5 table-container" style="overflow-y: auto; height:590px;">
+    <div class="m-5 table-container" style="overflow-y: auto; height:550px;">
         <table class="table table-borderless mb-5" id="cart-table">
             <thead>
               <th></th>
@@ -92,7 +92,7 @@
       <hr>
       <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
       <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
-      <div class="float-right mr-3">Total Item: 1000 <span><button class="btn btn-success ml-3">Checkout</button></span></div>
+      <div class="float-right mr-3">Total Item: ₱<span id="total-amount"></span> <span><button class="btn btn-success ml-3">Checkout</button></span></div>
     </div>
     
   <!-- /.content-wrapper -->

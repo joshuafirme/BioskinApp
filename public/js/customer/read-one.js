@@ -266,37 +266,12 @@
             $('.btn-variation').removeClass('active');
             $this.addClass('active');
         });
-
-        $(document).on('click', '.btn-add-cart', async function(){ 
-            validateAttr();
-        });
      
     }
 
     function computeTotal(obj, price, volume) {
         let total = parseFloat(price) * parseInt(volume);
         $('#'+obj+'-total-price').text(formatNumber(total));
-    }
-
-    function validateAttr() {
-        if (!$('.btn-size').hasClass('active')) {
-            $('.attr-validation').text('Please select product size.');
-            return;
-        }
-        if (!$('.btn-volume').hasClass('active')) {
-            $('.attr-validation').text('Please select product volume.');
-            return;
-        }   
-        if (!$('.btn-packaging').hasClass('active')) {
-            $('.attr-validation').text('Please select product packaging.');
-            return;
-        }   
-        if (!$('.btn-closure').hasClass('active')) {
-            $('.attr-validation').text('Please select product cap.');
-            return;
-        }   
-
-        $('.attr-validation').text('');
     }
 
     function clearSelectedAttrbutes() {

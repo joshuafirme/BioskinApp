@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Packaging;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Size;
@@ -19,8 +20,8 @@ class PackagingController extends Controller
      */
     public function index(ProductPrice $product_volume)
     {
-        $packaging = new Packaging;
-        $packaging = $packaging->readAll();
+        $packaging = new Product;
+        $packaging = $packaging ->readAllPackaging();
         return view('admin.packaging.index', compact('packaging', 'product_volume'));
     }
 
@@ -54,7 +55,7 @@ class PackagingController extends Controller
             }
         }
         
-        Packaging::create($request->all());
+        Product::create($request->all());
         foreach ($images as $key => $data) {
             DB::table('product_images')
             ->insert([ 
@@ -111,7 +112,7 @@ class PackagingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Packaging $packaging, ProductPrice $product_price)
+    public function edit(Product $packaging, ProductPrice $product_price)
     {
         $categories = Category::all();
         $subcategories = Subcategory::all();
@@ -133,7 +134,7 @@ class PackagingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Packaging $packaging)
+    public function update(Request $request, Product $packaging)
     { 
         if ($request['volumes'] != null) {
             $volumes = explode(",",$request['volumes']);

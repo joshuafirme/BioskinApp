@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use DB;
 use App\Models\Category;
+use App\Models\Packaging;
 use Auth;
 
 class CartController extends Controller
@@ -20,8 +21,9 @@ class CartController extends Controller
     public function addToCart() {
 
        if (Auth::check()) {
-           $user_id = Auth::id();
+            $user_id = Auth::id();
             $sku = request()->sku;
+            $order_type = request()->order_type;
             $retail_price = request()->retail_price;
             $packaging_sku = "";
             $cap_sku = "";
@@ -29,7 +31,7 @@ class CartController extends Controller
             $packaging_sku = $this->readDefaultPackaging($sku);
             $cap_sku = $this->readDefaultCap($sku);
 
-            if ($this->isProductExists($sku, $user_id) == true) {
+            if ($this->isProductExists($sku, $user_id, $order_type) == true) {
                 Cart::where([
                     ['user_id', $user_id],
                     ['sku', $sku]
@@ -61,10 +63,11 @@ class CartController extends Controller
        }
     }
 
-    public function isProductExists($sku, $user_id){
+    public function isProductExists($sku, $user_id, $order_type){
         $cart = Cart::where([
                 ['user_id', $user_id],
-                ['sku', $sku]
+                ['sku', $sku],
+                ['order_type', $order_type]
             ])->get();
 
         return $cart->count() > 0 ? true : false;
@@ -72,7 +75,7 @@ class CartController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
-                    ->select('cart.id as cart_id', 'cart.amount', 'cart.qty', 'P.*', 
+                    ->select('cart.id as cart_id', 'cart.amount', 'cart.qty', 'P.*', 'cart.sku as sku',
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
@@ -80,8 +83,12 @@ class CartController extends Controller
                     ->leftJoin('packaging as PG', 'PG.id', '=', 'cart.packaging_sku')
                     ->leftJoin('packaging as C', 'C.id', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
-                    ->whereNotIn('P.category_id', [10])
+                    ->orderBy('cart.id', 'desc')
                     ->get();
+    }
+
+    public function readPackagingName($sku) {
+        return Packaging::where('sku', $sku)->value('name');
     }
 
     public function cartCount() {

@@ -1,12 +1,19 @@
 <script>
-    function addToCart(sku, retail_price, btn) {
-        btn.html('<i class="fas fa-spinner fa-pulse"></i>');
-        $.ajax({
+    function addToCart(sku, retail_price, btn, order_type) {
+        let input_attr = 'valid';
+        if (order_type == 1) {
+            input_attr = validateAttr();
+        }
+        if (input_attr == 'invalid') {}
+        else {
+            btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+            $.ajax({
             url: '/add-to-cart',
             type: 'POST',
             data: {
                 sku   : sku,
-                retail_price : retail_price
+                retail_price : retail_price,
+                order_type : order_type
             },
             success:async function(data){ 
                 if (data.message == 'unauthorized') {
@@ -25,13 +32,38 @@
             
             }
         });
+        }
+        
 }
 
+
+
+function validateAttr() {
+        if (!$('.btn-size').hasClass('active')) {
+            $('.attr-validation').text('Please select product size.');
+            return 'invalid';
+        }
+        if (!$('.btn-volume').hasClass('active')) {
+            $('.attr-validation').text('Please select product volume.');
+            return 'invalid';
+        }   
+        if (!$('.btn-packaging').hasClass('active')) {
+            $('.attr-validation').text('Please select product packaging.');
+            return 'invalid';
+        }   
+        if (!$('.btn-closure').hasClass('active')) {
+            $('.attr-validation').text('Please select product cap.');
+            return 'invalid';
+        }   
+
+        $('.attr-validation').text('');
+    }
 
 $(document).on('click', '.btn-add-cart', async function(){
     let sku = $(this).attr('data-sku');
     let price = $(this).attr('data-price');
     let btn = $(this);
-    addToCart(sku, price, btn);
+    let order_type = $(this).attr('data-order-type');
+    addToCart(sku, price, btn, order_type);
 });
 </script>

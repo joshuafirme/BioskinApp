@@ -29,6 +29,7 @@
 @include('admin.scripts')
 @include('partials._modals')
 @include('partials._global_scripts')
+@include('admin.datatables-scripts')
 <script src="{{asset('js/product.js')}}"></script>
 </body>
 </html>

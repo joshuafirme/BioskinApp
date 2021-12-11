@@ -53,10 +53,13 @@ async function filterByCategory(data,object,category_id) {
 
 var data_storage;
 var last_key = 0;        
-async function readProducts(category_id, object = 'category') { 
+async function readProducts(category_id, object = 'category', type = 'product') { 
     $.ajax({
-        url: '/shop/read-all-product',
+        url: '/shop/read-all-'+type,
         type: 'GET',
+        data: {
+            object : type
+        },
         success:async function(data){
 
                 data_storage = await filterByCategory(data,object,category_id);
@@ -226,7 +229,7 @@ async function readCategoryName(category_id, object = 'category', subcategory_id
 
             setTimeout(async function(){
                 if(category_name.toLowerCase().indexOf("pack") != -1) {
-                    await readPackaging(category_id);
+                    await readProducts(category_id, object, 'packaging');
                 }
                 else {
                     if (object.indexOf('sub_category') != -1) {
@@ -321,7 +324,7 @@ async function on_Click(category_id) {
 
         $('#category-name-hidden').val(category_name);
         if (category_name.toLowerCase().indexOf("pack") != -1) {
-            await readPackaging(subcategory_id, object); 
+            await readProducts(subcategory_id, object, 'packaging');
             console.log('read pack')
         }
         else {
@@ -349,7 +352,7 @@ async function on_Click(category_id) {
         window.history.pushState(window.location.href, 'Title', '/shop/category/'+category_id);
     
         if (category_name.toLowerCase().indexOf("pack") != -1) {
-            await readPackaging(category_id);
+            await readProducts(category_id, 'category', 'packaging');
         }
         else {
             await readProducts(category_id); 

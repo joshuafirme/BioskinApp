@@ -39,7 +39,7 @@ class Packaging extends Model
     }
     
     public function readPackaging($packaging_ids) {
-        return DB::table('packaging')
+        return DB::table('products')
                 ->whereIn('id', $packaging_ids)->get();
     }
 

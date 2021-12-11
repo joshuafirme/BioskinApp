@@ -45,51 +45,24 @@
           <div class="col-md-12 col-lg-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-hover" id="packaging-table">
-                        <tr>
-                            <th class="py-2 text-left">SKU</th>
-                            <th class="py-2 text-left">Packaging Name</th>
-                            <th class="py-2 text-left">Category</th>
-                            <th class="py-2 text-left">Subcategory</th>
-                            <th class="py-2 text-left">Volumes</th>
-                            <th class="py-2 text-left">Size</th>
-                            <th class="py-2 text-left">Price</th>
-                            <th class="py-2 text-left">Action</th>
-                        </tr>
-                        @foreach ($packaging as $data)
-                        <tr id="record-id-{{ $data->id }}">
-                            <td>{{ $data->sku }}</td>
-                            <td>{{ $data->name }}</td>
-                            <td>{{ $data->category }}</td>
-                            <td>{{ $data->subcategory }}</td>
-                            <td>
-                            @php
-                              $volumes = $product_volume->readVolumes($data->sku);
-                              $volumes = explode(",",$volumes);
-                            @endphp
-                            @if(count($volumes) > 0) 
-                                @foreach ($volumes as $volume) 
-                                    <span class="badge badge-primary m-1">{{$volume}}</span>
-                                @endforeach
-                            @endif
-                            </td>
-                            <td>{{ $data->size }}</td>
-                            <td>{{ $data->price }}</td>
-                            <td>
-                                <form action="{{ route('packaging.destroy',$data->id) }}" method="POST">                      
-                                    <a class="btn" href="{{ route('packaging.edit',$data->id) }}"><i class="fas fa-edit"></i></a>
-            
-                                    @csrf
-                                    @method('DELETE')
-            
-                                    <a record-id="{{ $data->id }}" object="packaging"
-                                        class="btn delete-record"><i class="fas fa-trash"></i></a>
-                                </form>  
-                            </td>    
-                        </tr>
-                        @endforeach
+                    <table class="table table-hover tbl-packaging" id="packaging-table">
+                        <thead>
+                            <tr>
+                                 <th>SKU</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Sub category</th>
+                                <th>Variation</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Volumes</th>
+                                <th>Packaging</th>
+                                <th>Closures</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
-                    {!! $packaging->links("pagination::bootstrap-4") !!}
                 </div>
             </div>
         </div>
