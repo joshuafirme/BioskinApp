@@ -56,7 +56,7 @@ function validateAttr() {
             $('.attr-validation').text('Please select product packaging.');
             return 'invalid';
         }   
-        if (!$('.btn-closure').hasClass('active')) {
+        if (!$('.btn-closure').hasClass('active') && $('.closure-container').text().indexOf("No available") == -1) {
             $('.attr-validation').text('Please select product cap.');
             return 'invalid';
         }   
