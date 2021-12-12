@@ -75,6 +75,7 @@
               <th></th>
                 <th>Product Ordered</th>
                 <th>Item Description</th>
+                <th>Size</th>
                 <th>Variation</th>
                 <th>Packaging</th>
                 <th>Cap</th>

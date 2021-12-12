@@ -3,12 +3,14 @@ function getItems (data,identifier) {
     var packaging = data.packaging != null ? data.packaging : '-';
     var closure = data.closure != null ? data.closure : '-';
     var variation = data.variation != null ? data.variation : '-';
+    var size = data.size != null ? data.size : '-';
     html += '<tr>';
     html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'"></input></td>';
     html +=    '<td>';
     html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:150px;"  id="data-image-'+identifier+'"></div></a>';
     html +=    '</td>';
     html +=    '<td id="data-name-'+identifier+'">'+data.name+'</td>';
+    html +=    '<td>'+size+'</td>';
     html +=    '<td>'+variation+'</td>';
     html +=    '<td>'+packaging+'</td>';
     html +=    '<td>'+closure+'</td>';
