@@ -193,8 +193,7 @@
             $('.custom-volume').text(volume);
             $('#custom-price').text(price);
             // compute total
-            let total = parseFloat(price) * parseInt(volume);
-            $('#volume-total-price').text(formatNumber(total));
+            computeTotal('volume', price, volume);
         });
 
         $(document).on('click', '.btn-size', async function(){ 
@@ -211,6 +210,9 @@
             $('#size-price').text(price);
 
             $('#custom-size').text(size);
+
+            $('.btn-add-cart').attr('data-sku', sku);
+            $('.btn-add-cart').attr('data-price', price);
       
             await readProductInfo(sku, category_name);
             await readProductVolume(sku);
@@ -272,6 +274,15 @@
     function computeTotal(obj, price, volume) {
         let total = parseFloat(price) * parseInt(volume);
         $('#'+obj+'-total-price').text(formatNumber(total));
+
+        let vol = $('#volume-total-price').text().replaceAll(",", "");
+        let pack = $('#packaging-total-price').text().replaceAll(",", "");
+        let cap = $('#closure-total-price').text().replaceAll(",", "");
+
+        let overall_total = parseFloat(vol) + parseFloat(pack) + parseFloat(cap);
+
+        $('#overall-total-price').text(formatNumber(overall_total));
+        $('#overall-total-price').attr('content', overall_total);
     }
 
     function clearSelectedAttrbutes() {

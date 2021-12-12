@@ -1,19 +1,24 @@
 <script>
     function addToCart(sku, retail_price, btn, order_type) {
-        let input_attr = 'valid';
-        if (order_type == 1) {
-            input_attr = validateAttr();
-        }
-        if (input_attr == 'invalid') {}
-        else {
-            btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+      
+        let volume = $('#volumes-container').find('.active').attr('data-volume');
+        let packaging_sku = $('.packaging-container').find('.active').attr('data-sku');
+        let closure_sku = $('.closure-container').find('.active').attr('data-sku');
+       
+        let total_amount = $('#overall-total-price').attr('content');
+
+        btn.html('<i class="fas fa-spinner fa-pulse"></i>');
             $.ajax({
             url: '/add-to-cart',
             type: 'POST',
             data: {
                 sku   : sku,
                 retail_price : retail_price,
-                order_type : order_type
+                order_type : order_type,
+                volume : volume,
+                packaging_sku : packaging_sku,
+                closure_sku : closure_sku,
+                total_amount : total_amount
             },
             success:async function(data){ 
                 if (data.message == 'unauthorized') {
@@ -32,7 +37,7 @@
             
             }
         });
-        }
+        
         
 }
 
@@ -64,6 +69,14 @@ $(document).on('click', '.btn-add-cart', async function(){
     let price = $(this).attr('data-price');
     let btn = $(this);
     let order_type = $(this).attr('data-order-type');
-    addToCart(sku, price, btn, order_type);
+
+    let input_attr = 'valid';
+    if (order_type == 1) {
+        input_attr = validateAttr();
+    }
+    if (input_attr != 'invalid') {
+      addToCart(sku, price, btn, order_type);
+    }
+
 });
 </script>

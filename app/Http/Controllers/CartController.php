@@ -25,11 +25,26 @@ class CartController extends Controller
             $sku = request()->sku;
             $order_type = request()->order_type;
             $retail_price = request()->retail_price;
-            $packaging_sku = "";
-            $cap_sku = "";
 
             $packaging_sku = $this->readDefaultPackaging($sku);
             $cap_sku = $this->readDefaultCap($sku);
+
+            $qty = 1;
+            $total_amount = $retail_price;
+
+            if (isset(request()->packaging_sku)) {
+                $packaging_sku = request()->packaging_sku;
+            }
+            if (isset(request()->closure_sku)) {
+                $cap_sku = request()->closure_sku;
+            }
+            if (isset(request()->volume)) {
+                $qty = request()->volume;
+            }
+            if (isset(request()->total_amount)) {
+                $total_amount = request()->total_amount;
+            }
+            
 
             if ($this->isProductExists($sku, $user_id, $order_type) == true) {
                 Cart::where([
@@ -52,8 +67,8 @@ class CartController extends Controller
                     'sku' => $sku,
                     'packaging_sku' => $packaging_sku,
                     'cap_sku' => $cap_sku,
-                    'qty' => 1,
-                    'amount' => $retail_price
+                    'qty' => $qty,
+                    'amount' => $total_amount
                 ]);
             }
       
@@ -75,13 +90,13 @@ class CartController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
-                    ->select('cart.id as cart_id', 'cart.amount', 'cart.qty', 'P.*', 'cart.sku as sku',
+                    ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
                     ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
-                    ->leftJoin('packaging as PG', 'PG.id', '=', 'cart.packaging_sku')
-                    ->leftJoin('packaging as C', 'C.id', '=', 'cart.cap_sku')
+                    ->leftJoin('products as PG', 'PG.sku', '=', 'cart.packaging_sku')
+                    ->leftJoin('products as C', 'C.sku', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
                     ->orderBy('cart.id', 'desc')
                     ->get();
