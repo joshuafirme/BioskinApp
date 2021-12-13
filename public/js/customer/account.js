@@ -48,7 +48,7 @@ function readAddresses() {
                 $('.addresses-main-container').html(html);
             }
             else {
-                html =+ '<p class="text-center text-muted">Cart is empty.</p>';
+                html += '<p class="text-center text-muted">No address.</p>';
                 $('.addresses-main-container').html(html);
             }
         }
