@@ -1,5 +1,5 @@
 @php
-  $page_title = "Cart | Bioskin";
+  $page_title = "Account | Bioskin";
 
  
     if (\Cache::get('categories-cache')) {
