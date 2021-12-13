@@ -16,7 +16,14 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
-        User::where('id', Auth::id())->update($request->except('password','_token','_method'));
+        $input = $request->except('password','_token','_method');
+        if($request->hasFile('image')){       
+            $folder_to_save = 'profile';
+            $image_name = uniqid() . "." . $request->image->extension();
+            $request->image->move(public_path('images/' . $folder_to_save), $image_name);
+            $input['image'] = $folder_to_save . "/" . $image_name;
+        }
+        User::where('id', Auth::id())->update($input);
         return redirect()->back()
         ->with('success', 'Profile was updated successfully.');
     }

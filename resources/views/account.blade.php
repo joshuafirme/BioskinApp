@@ -104,11 +104,16 @@
     <div class="container">
         <div class="row" style="margin-bottom: 150px;">
             <div class="col-sm-3">
-                <img src="https://img.icons8.com/small/75/000000/user-male-circle.png"/>
-                <span>{{ $user->firstname ." ". $user->middlename ." ". $user->lastname }}</span>
+                @if ($user->image) 
+                    <img class="img-thumbnail rounded-circle" width="75px" src="{{ asset('/images/'.$user->image) }}"/>
+                @else 
+                    <img src="https://img.icons8.com/small/75/000000/user-male-circle.png"/>
+                @endif
+                <span class="ml-2">{{ $user->firstname ." ". $user->middlename ." ". $user->lastname }}</span>
                 <hr>
                 <div class="text-center">
-                    <input type="file" name="file" id="file" class="inputfile">
+                <form action="{{ action('AccountController@update') }}" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="image" id="file" class="inputfile">
                     <label for="file" class="btn btn-light">Select image</label>
                 </div>
                 <div class="text-center">File Extension JPEG, PNG</div>
@@ -133,7 +138,7 @@
                             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <span class="card-title text-bold"><h4>My profile</h4></span>
                                 <p class="card-text">Manage and Protect Your Account</p>
-                                <form action="{{ action('AccountController@update') }}" method="POST">
+                                @include('includes.alerts')
                                     @csrf
                                     <div class="form-group row">
                                       <label for="staticEmail" class="col-sm-2 col-form-label">Full name</label>
