@@ -85,23 +85,23 @@
     <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
 
         @foreach ($cache_categories as $item)
-        <a class="col-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
+        <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
         </a>
       @endforeach
     </div> 
-    <div class="breadcrumb-container ml-2 mt-2">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-white">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Account</li>
-          </ol>
-        </nav>
-    </div>
 
     <div class="container">
+      <div class="breadcrumb-container ml-2 mt-2">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-white">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Account</li>
+            </ol>
+          </nav>
+      </div>
         <div class="row" style="margin-bottom: 150px;">
             <div class="col-sm-3">
                 @if ($user->image) 
@@ -193,7 +193,7 @@
                             </div>
                             <div class="tab-pane fade" id="addresses" role="tabpanel" aria-labelledby="addresses-tab">
                                 <span class="card-title text-bold"><h4>My addresses</h4></span>
-                                <button class="btn btn-outline-secondary float-right"  data-toggle="modal" data-target="#add-address-modal">
+                                <button class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#add-address-modal">
                                     <i class="fas fa-plus"></i>
                                      Add new address
                                     </button>

@@ -177,7 +177,7 @@ async function readAllCategory() {
             col_count = data.length > 9 ? '2' : '1';
             for (var i = 0; i < data.length; i++) {
                 let wording = data[i].wording ? data[i].wording : "";
-                html += '<a class="col-6 col-sm-4 col-md-1 text-center">';
+                html += '<a class="p-1 ml-3 mr-3 text-center">';
                 html += '<div class="text-muted category-name" data-name="'+data[i].name+'" ';
                 html += 'data-wording="'+ wording +'" data-id="'+data[i].id+'">'+data[i].name+'</div>';
                 html += '</a>'

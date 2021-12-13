@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserAddress;
 use Auth;
+use Cache;
 
 class AccountController extends Controller
 {
@@ -31,6 +32,7 @@ class AccountController extends Controller
 
     public function addAddress()
     {
+        Cache::forget('addresses-cache');
         UserAddress::create([
             'user_id' => Auth::id(),
             'name' => request()->fullname,
@@ -42,15 +44,24 @@ class AccountController extends Controller
 
     public function readAddresses()
     {
-        return UserAddress::where('user_id', Auth::id())->get();
+        $addresses = UserAddress::where('user_id', Auth::id())->get();
+        if (Cache::get('addresses-cache')) {
+            $data = Cache::get('addresses-cache');
+        }else {
+            Cache::put('addresses-cache', $addresses);
+            $data = $addresses;
+        }
+        return $data;
     }
 
     public function deleteAddress($id)
     {
+        Cache::forget('addresses-cache');
         UserAddress::where('id', $id)->delete();
     }
 
     public function setAddressDefault($id) {
+        Cache::forget('addresses-cache');
         UserAddress::where('user_id', Auth::id())
             ->where('is_active', 1)
             ->update([

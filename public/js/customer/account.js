@@ -58,33 +58,42 @@ function readAddresses() {
 $(document).on('click','#btn-save-address', function(e){
     e.preventDefault();
     var btn = $(this);
-    btn.html('<i class="fas fa-spinner fa-pulse"></i>');
 
     var fullname = $('#fullname').val();
     var address = $('#address').val();
     var phone_no = $('#phone_no').val();
 
-    $.ajax({
-        url: '/account/add-address',
-        type: 'POST',
-        data: {
-            fullname : fullname,
-            address  : address,
-            phone_no : phone_no
-        },
-        success: function(data){
-            $('#add-address-modal').modal('hide');
-            btn.html('Add');
-            $.toast({
-                text: 'Address was successfully saved!',
-                showHideTransition: 'plain',
-                hideAfter: 3500, 
-            });
-            
-            
-            readAddresses();
-        }
-    });
+    if (fullname || address || phone_no) {
+        btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+        $.ajax({
+            url: '/account/add-address',
+            type: 'POST',
+            data: {
+                fullname : fullname,
+                address  : address,
+                phone_no : phone_no
+            },
+            success: function(data){
+                $('#add-address-modal').modal('hide');
+                btn.html('Add');
+                $.toast({
+                    text: 'Address was successfully saved!',
+                    showHideTransition: 'plain',
+                    hideAfter: 3500, 
+                });
+                
+                
+                readAddresses();
+            }
+        });
+    }
+    else {
+        $.toast({
+            text: 'Please fill all the details.',
+            showHideTransition: 'plain',
+            hideAfter: 3500, 
+        });
+    }
     
 });
 

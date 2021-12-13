@@ -103,6 +103,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('/courier') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Courier</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('/carousel') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Carousel</p>

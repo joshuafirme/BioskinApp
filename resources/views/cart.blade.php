@@ -53,7 +53,7 @@
            $col_count = count($categories) > 9 ? '2' : '1';
       @endphp
         @foreach ($categories as $item)
-        <a class="col-6 col-sm-4 col-md-1 text-center" href="{{ url('/shop/category/'.$item->id) }}">
+        <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-muted category-name"  data-id="{{ $item->id }}" 
             data-name="{{ $item->name }}" >
             {{ $item->name }}</div> 
@@ -93,7 +93,7 @@
       <hr>
       <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
       <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
-      <div class="float-right mr-3">Total Item: ₱<span id="total-amount"></span> <span><button class="btn btn-success ml-3">Checkout</button></span></div>
+      <div class="float-right mr-3">Total Item: ₱<span id="total-amount"></span> <span><a href="{{ url('/checkout') }}" class="btn btn-success ml-3">Checkout</a></span></div>
     </div>
     
   <!-- /.content-wrapper -->

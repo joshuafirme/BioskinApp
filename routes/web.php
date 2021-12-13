@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/size', 'SizeController');
         Route::resource('/variation', 'VariationController');
         Route::resource('/carousel', 'CarouselController');
+        Route::resource('/courier', 'CourierController');
     });
 
     Route::get('/cart', 'CartController@index');
@@ -44,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/read-cart', 'CartController@readCart');
     Route::post('/cart/remove/{ids}', 'CartController@removeItem');
     Route::get('/cart/read-packaging/{sku}', 'CartController@readPackagingName');
+
+    Route::get('/checkout', 'CheckoutController@index');
+    Route::get('/read-default-address', 'CheckoutController@readDefaultAddress');
 
     Route::get('/account', 'AccountController@index');
     Route::post('/account-update', 'AccountController@update');

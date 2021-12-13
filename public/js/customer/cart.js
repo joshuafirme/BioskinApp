@@ -19,7 +19,7 @@ function getItems (data,identifier) {
     html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
     html +=    '</div>';
     html +=    '</td>';
-    html +=    '<td>₱'+data.amount+'</td>';
+    html +=    '<td>₱'+formatNumber(data.amount)+'</td>';
     html += '</tr>';
 
     return html;
