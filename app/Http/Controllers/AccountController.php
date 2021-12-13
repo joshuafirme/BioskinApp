@@ -52,10 +52,11 @@ class AccountController extends Controller
 
     public function setAddressDefault($id) {
         UserAddress::where('user_id', Auth::id())
-            ->where('is_active', $id)
+            ->where('is_active', 1)
             ->update([
                 'is_active' => 0
             ]);
+
         UserAddress::where('id', $id)
             ->update([
                 'is_active' => 1
