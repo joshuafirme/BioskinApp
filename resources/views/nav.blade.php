@@ -25,7 +25,7 @@
             </li>
             @if(Auth::check())
             <li class="nav-item">
-              <a href="{{ url('/') }}" class="nav-link">
+              <a href="{{ url('/account') }}" class="nav-link">
                 Account
               </a>
             </li>

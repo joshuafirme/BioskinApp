@@ -43,7 +43,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart-count', 'CartController@cartCount');
     Route::get('/read-cart', 'CartController@readCart');
     Route::post('/cart/remove/{ids}', 'CartController@removeItem');
-    Route::get('/cart/read-packaging/{sku}', 'CartController@readPackagingName');});
+    Route::get('/cart/read-packaging/{sku}', 'CartController@readPackagingName');
+
+    Route::get('/account', 'AccountController@index');
+    Route::post('/account-update', 'AccountController@update');
+
+});
 
 Route::post('/add-to-cart', 'CartController@addToCart');
 

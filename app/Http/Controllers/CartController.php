@@ -68,7 +68,8 @@ class CartController extends Controller
                     'packaging_sku' => $packaging_sku,
                     'cap_sku' => $cap_sku,
                     'qty' => $qty,
-                    'amount' => $total_amount
+                    'amount' => $total_amount,
+                    'order_type' => $order_type
                 ]);
             }
       
