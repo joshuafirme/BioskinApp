@@ -199,34 +199,8 @@
                                     </button>
                                 <p class="card-text"><hr></p>
                             
-                                <div class="addresses-container">
-                                    <div class="form-group row">
-                                        <label for="input" class="col-sm-2 col-form-label">Fullname</label>
-                                        <div class="col-sm-10">
-                                            <div class="m-2">{{ $user->username }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="input" class="col-sm-2 col-form-label">Address</label>
-                                        <div class="col-sm-10">
-                                            <div class="m-2">
-                                                Ecoland Subdivision, Block 4 Phase 2 Lot 11 Maya St,
-                                                Matina Pangi Road, Davao City, 8000 Davao del Sur
-                                               
-                                               </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="input" class="col-sm-2 col-form-label">Phone number</label>
-                                        <div class="col-sm-10">
-                                            <div class="m-2">09923123123</div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-secondary m-1">Set as default</button>
-                                    <button class="btn btn-secondary m-1">Change</button>
-                                    <button class="btn btn-secondary m-1">Delete</button>
+                                <div class="addresses-main-container">
                                 </div>
-                                <hr>
                             </div>
                             <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">...</div>
                           </div>
@@ -240,3 +214,5 @@
   <!-- /.content-wrapper -->
 
 @include('footer')
+
+<script src="{{asset('js/customer/account.js')}}"></script>

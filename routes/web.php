@@ -47,6 +47,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/account', 'AccountController@index');
     Route::post('/account-update', 'AccountController@update');
+    Route::get('/account/read-addresses', 'AccountController@readAddresses');
+    Route::post('/account/add-address', 'AccountController@addAddress');
+    Route::post('/account/delete-address/{id}', 'AccountController@deleteAddress');
+    Route::post('/account/address-set-default/{id}', 'AccountController@setAddressDefault');
 
 });
 
