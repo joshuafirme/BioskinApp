@@ -170,7 +170,7 @@
                                       <div class="form-group row">
                                         <label for="input" class="col-sm-2 col-form-label">Gender</label>
                                         <div class="col-sm-10">
-                                          <select type="" class="form-control">
+                                          <select type="" class="form-control" name="gender">
                                               <option value="" selected disabled>--select gender--</option>
                                               <option value="Male" {{ $user->gender == "Male" ? "selected" : "" }}>Male</option>
                                               <option value="Female" {{ $user->gender == "Female" ? "selected" : "" }}>Female</option>
@@ -180,7 +180,7 @@
                                       <div class="form-group row">
                                         <label for="input" class="col-sm-2 col-form-label">Date of birth</label>
                                         <div class="col-sm-10">
-                                          <input type="date" class="form-control" name="birth_date" required>
+                                          <input type="date" class="form-control" name="birth_date" required value="{{ $user->birth_date }}">
                                         </div>
                                       </div>
                                       <button class="btn btn-success mt-3">Save changes</button>
