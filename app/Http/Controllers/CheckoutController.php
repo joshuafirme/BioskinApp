@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserAddress;
 use App\Models\Cart;
+use App\Models\Courier;
 use Auth;
+use Cache;
 
 class CheckoutController extends Controller
 {
@@ -19,6 +21,17 @@ class CheckoutController extends Controller
         return UserAddress::where('user_id', Auth::id())
             ->where('is_active', 1)
             ->first();
+    }
+
+    public function readCourier() {
+        $courier = Courier::where('status', 1)->get();
+        if (Cache::get('courier-cache')) {
+            $data = Cache::get('courier-cache');
+        }else {
+            Cache::put('courier-cache', $courier);
+            $data = $courier;
+        }
+        return $data;
     }
 
     public function readCart() {

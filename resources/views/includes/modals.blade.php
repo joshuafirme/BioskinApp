@@ -50,4 +50,20 @@
           </div>
     </div>
   </div>
-  
+
+  <div class="modal fade" id="courier-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/25/000000/external-courier-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png"/>
+            <h5 class="modal-title ml-2 " id="exampleModalLabel">Change courier</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+            </div>
+          </div>
+    </div>
+  </div>
