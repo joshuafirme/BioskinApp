@@ -33,6 +33,15 @@
         border-color: #C4BFC2;
         z-index: 999;
     }
+
+    .payment-method-container button, .row .btn{
+        background-color: #F2F2F2;
+        padding: 7px;
+        border: 2px solid #E2E6EA !important;
+        margin-bottom: 10px;
+        width: 180px;
+        color: #000;
+      }
   
   </style>
 
@@ -101,8 +110,8 @@
             </div>
         </div>
     </div>
-    <div class="ml-5 mr-5 table-container" style="overflow-y: auto; height:380px;">  
-        <table class="table table-borderless mb-5" id="cart-table">
+    <div class="ml-5 mr-5 table-container" >  
+        <table class="table table-borderless" id="cart-table">
             <thead style="background-color: #F4F4F4;">
                 <th>Product Ordered</th>
                 <th>Item Description</th>
@@ -114,16 +123,20 @@
                 <th>Order Subtotal</th>
             </thead>
             <tbody id="cart-item-container">
+                @php
+                    $total = 0;
+                @endphp
                 @foreach ($cart as $item)
                 @php
+                    $total = $total + $item->amount;
                     $src = \DB::table('product_images')->where('sku', $item->sku)->value('image');
                 @endphp
                 <tr>
                     <td>
                         @if ($src)
-                        <div class="responsive-img" style="width:150px; background-image:url('/images/{{ $src }}')"></div>
+                        <div class="responsive-img" style="width:100px; background-image:url('/images/{{ $src }}')"></div>
                         @else
-                        <div class="responsive-img" style="width:150px; background-image: url('https://via.placeholder.com/450x450.png?text=No%20image%20available')"></div>
+                        <div class="responsive-img" style="width:100px; background-image: url('https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png')"></div>
                         @endif
                     </td>
                     <td>{{$item->name}}</td>
@@ -132,7 +145,7 @@
                     <td>{{$item->packaging ?$item->packaging : "-"}}</td>
                     <td>{{$item->closure ? $item->closure : "-"}}</td>
                     <td>{{$item->qty}}</td>
-                    <td>₱{{$item->amount}}</td>
+                    <td>₱{{number_format($item->amount,2,".",",")}}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -152,12 +165,12 @@
                         $courier = App\Models\Courier::where('status', 1)->first();
                     @endphp
                     <div class="col-sm-12 col-md-4">
-                        <div class="text-center p-2 mt-2" style="background-color: #F4F4F4;" id="courier_text">
+                        <div class="text-center p-2 mt-2" style="background-color: #F4F4F4;">
                         <img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/25/000000/external-courier-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png"/>
-                        <span class="ml-2">{{ $courier->name }}</span>
+                        <span class="ml-2"  id="courier_text">{{ $courier->name }}</span>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-2">
+                    <div class="col-sm-12 col-md-3">
                         <div class="btn btn-sm btn-primary m-2" id="btn-change-courier" data-toggle="modal" data-target="#courier-modal">Change courier</div>
                     </div>
                     <div class="col-sm-12 col-md-4">
@@ -167,11 +180,73 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-2">
-              
+        <div class="col-sm-3">
+            <div class="text-bold mt-4 mr-0 mr-sm-4 text-center">Shipment Fee</div>
+            <div class="text-center mr-0 mr-sm-4 " id="shipment_fee_text">₱100.00</div>
         </div>
       </div>
-      <hr>
+    </div>
+    <div class="ml-5 mr-5" style="margin-bottom: 200px;">
+        <hr>
+        <div class="row">
+          <div class="col-sm-3 text-center payment-method-container">
+              <p class="text-bold">Payment Method</p>
+              <div><button>Credit/Debit Card</button></div>
+              <div><button>Online Payment</button></div>
+              <div><button>Cash on Delivery</button></div>
+          </div>
+          <div class="col-sm-9 row">
+            <div class="col-sm-8">
+                <div class="p-3">
+                    <div class="text-center text-bold p-2" style="background-color: #F4F4F4;">Vouchers</div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6">
+                        <form>
+                            <input id="voucher" type="text" class="form-control mt-2" placeholder="Enter voucher code">
+                        </form>
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <div class="text-bold mt-2">Select voucher</div>
+                      </div>
+                  </div>  
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="text-bold mt-4 text-center">Voucher Discount</div>
+                <div class="text-center" id="shipment_fee_text">0.00</div>
+            </div>
+            <div class="col-sm-12">
+               <hr>
+            </div>
+            <div class="col-sm-8">
+                <div class="text-bold float-sm-right m-1">Merchandise Subtotal</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="text-left text-sm-center m-1" id="shipment_fee_text">₱{{number_format($total,2,".",",")}}</div>
+            </div>
+            <div class="col-sm-8">
+                <div class="text-bold float-sm-right m-1">Shipping Total</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="text-left text-sm-center m-1" id="shipment_fee_text">0.00</div>
+            </div>
+            <div class="col-sm-8">
+                <div class="text-bold float-sm-right m-1">Voucher Discount</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="text-left text-sm-center m-1" id="shipment_fee_text">0.00</div>
+            </div>
+            <div class="col-sm-8">
+                <div class="text-bold float-sm-right m-1">Total Payment</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="text-left text-sm-center m-1" id="shipment_fee_text">110.00</div>
+            </div>
+          </div>
+        </div>
+        
+        <hr>
+        <button class="btn btn-success float-right">Place Order</button>
     </div>
     
   <!-- /.content-wrapper -->

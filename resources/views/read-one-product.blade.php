@@ -99,7 +99,7 @@
             @if (isset($selected_image)) 
              <div class="responsive-img mt-5" id="main-image" style='background-image:url("{{ asset('images/'.$selected_image) }}");' ></div>
             @else 
-             <div class="responsive-img mt-5" id="main-image" style='background-image:url("https://via.placeholder.com/450x450.png?text=No%20image%20available");' ></div>
+             <div class="responsive-img mt-5" id="main-image" style='background-image:url("https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png");' ></div>
             @endif
             <div class="row product-buttons mt-5">
                 <div class="col-10">

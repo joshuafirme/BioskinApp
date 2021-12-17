@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/variation', 'VariationController');
         Route::resource('/carousel', 'CarouselController');
         Route::resource('/courier', 'CourierController');
+        Route::resource('/voucher', 'VoucherController');
     });
 
     Route::get('/cart', 'CartController@index');

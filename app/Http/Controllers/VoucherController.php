@@ -3,29 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Courier;
+use App\Models\Voucher;
 
-class CourierController extends Controller
+class VoucherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $courier = Courier::paginate(10);
-        return view('admin.courier.index', compact('courier'));
+        $voucher = Voucher::paginate(10);
+        return view('admin.voucher.index', compact('voucher'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('admin.courier.create');
+        return view('admin.voucher.create');
     }
 
     /**
@@ -37,12 +27,12 @@ class CourierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:couriers',
+            'voucher_code' => 'required|unique:voucher',
         ]);
 
-        Courier::create($request->all());
+        Voucher::create($request->all());
 
-        return redirect()->back()->with('success', 'Courier was added.');
+        return redirect()->back()->with('success', 'voucher was added.');
     }
 
     /**
@@ -62,9 +52,9 @@ class CourierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Courier $courier)
+    public function edit(voucher $voucher)
     {
-        return view('admin.courier.edit', compact('courier'));
+        return view('admin.voucher.edit', compact('voucher'));
     }
 
     /**
@@ -76,9 +66,9 @@ class CourierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Courier::where('id', $id)->update($request->except('_token','_method'));
+        Voucher::where('id', $id)->update($request->except('_token','_method'));
 
-        return redirect()->back()->with('success', 'Courier was updated.');
+        return redirect()->back()->with('success', 'Voucher was updated.');
     }
 
     /**
@@ -89,17 +79,17 @@ class CourierController extends Controller
      */
     public function destroy($id)
     {
-        $courier = Courier::findOrFail($id);
-        if ($courier->delete()) {
+        $voucher = Voucher::findOrFail($id);
+        if ($voucher->delete()) {
             return response()->json([
                 'status' =>  'success',
-                'message' => 'courier was deleted.'
+                'message' => 'Voucher was deleted.'
             ], 200);
         }
 
         return response()->json([
             'status' =>  'error',
-            'message' => 'Deleting courier failed.'
+            'message' => 'Deleting voucher failed.'
         ], 200);
     }
 }

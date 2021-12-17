@@ -67,9 +67,9 @@
 
                 }
                 else {
-                    $('<img/>').attr('src', 'https://via.placeholder.com/450x450.png?text=No%20image%20available').on('load', function() {
+                    $('<img/>').attr('src', 'https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png').on('load', function() {
                         $(this).remove(); 
-                        document.getElementById('data-image-'+sku).style.backgroundImage='url("https://via.placeholder.com/450x450.png?text=No%20image%20available")';
+                        document.getElementById('data-image-'+sku).style.backgroundImage='url("https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png")';
                     });
                 }
             }
@@ -122,9 +122,9 @@
                     });
                 }
                 else {
-                    $('<img/>').attr('src', 'https://via.placeholder.com/450x450.png?text=No%20image%20available').on('load', function() {
+                    $('<img/>').attr('src', 'https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png').on('load', function() {
                         $(this).remove(); 
-                        document.getElementById('data-image-'+sku).style.backgroundImage='url("https://via.placeholder.com/450x450.png?text=No%20image%20available")';
+                        document.getElementById('data-image-'+sku).style.backgroundImage='url("https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png")';
                     });
                 }
             }

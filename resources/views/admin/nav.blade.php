@@ -61,6 +61,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('/voucher') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Vouchers</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('/product') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Product</p>
