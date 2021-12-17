@@ -156,6 +156,11 @@ $(document).on('click', '#btn-place-order', async function(){
     });
 });
 
+$(document).on('click', '.payment-method-container button', function(){ 
+    $('.payment-method-container button').removeClass('active');
+    $(this).addClass('active');
+});
+
 $(document).on('click', '#btn-set-default', function(){ 
     readDefaultAddress();
 });
