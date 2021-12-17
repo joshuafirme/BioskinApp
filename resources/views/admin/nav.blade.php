@@ -31,15 +31,21 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          @php
+              $user = Auth::user();
+          @endphp
+          @if ($user->image) 
+               <img class="img-circle elevation-2" src="{{ asset('/images/'.$user->image) }}"/>
+          @else 
+              <img src="https://img.icons8.com/small/75/ffffff/user-male-circle.png"/>
+          @endif
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{$user->firstname}} {{$user->lastname}}</a>
         </div>
-      </div>-->
+      </div>
 
       <!-- 
       **ACCESS LEVELS**
@@ -54,72 +60,78 @@
       
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+              <a href="{{ url('/users') }}" class="nav-link">
+                <i class="fas fa-shopping-cart nav-icon"></i>
+                <p>Manage Orders</p>
+              </a>
+            </li>
               <li class="nav-item">
                 <a href="{{ url('/users') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-user nav-icon"></i>
                   <p>User Management</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('/voucher') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-gifts nav-icon"></i>
                   <p>Vouchers</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/product') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Product</p>
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-tools"></i>
+                  <p>
+                    Maintenance
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ url('/product') }}" class="nav-link">
+                      <i class="fas fa-cube nav-icon"></i>
+                      <p>Product</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/category') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Category</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/subcategory') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Sub Category</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/packaging') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Packaging</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/variation') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Variation</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/courier') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Courier</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/carousel') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carousel</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('/category') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Category</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/subcategory') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sub Category</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/packaging') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Packaging</p>
-                </a>
-              </li>
-            <!--  <li class="nav-item">
-                <a href="{{ url('/closures') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Closures</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/size') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Size</p>
-                </a>
-              </li>-->
-              <li class="nav-item">
-                <a href="{{ url('/variation') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Variation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/courier') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Courier</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/carousel') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Carousel</p>
-                </a>
-              </li>
+
 
 
         </ul>

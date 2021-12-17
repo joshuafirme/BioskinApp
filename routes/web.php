@@ -45,11 +45,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart-count', 'CartController@cartCount');
     Route::get('/read-cart', 'CartController@readCart');
     Route::post('/cart/remove/{ids}', 'CartController@removeItem');
+    Route::post('/cart/check-item/{id}', 'CartController@checkItem');
     Route::get('/cart/read-packaging/{sku}', 'CartController@readPackagingName');
 
     Route::get('/checkout', 'CheckoutController@index');
     Route::get('/read-default-address', 'CheckoutController@readDefaultAddress');
     Route::get('/checkout/read-courier', 'CheckoutController@readCourier');
+    Route::get('/validate-voucher', 'CheckoutController@validateVoucher');
+    
 
     Route::get('/account', 'AccountController@index');
     Route::post('/account-update', 'AccountController@update');

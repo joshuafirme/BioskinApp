@@ -95,6 +95,10 @@ function readCourier() {
     });
 }
 
+function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
+
 $('#btn-change-address').on('click', function(){
     readAddresses();
 });
@@ -108,6 +112,48 @@ $(document).on('change', '[name=rdo-address]', async function(){
     $('#fullname').text(name);
     $('#address').text(address);
     $('#phone_no').text(phone);
+});
+
+$(document).on('keyup', '#voucher', async function(){ 
+    let voucher_code = $(this).val();
+    if (voucher_code.length > 3) {
+        $.ajax({
+            url: '/validate-voucher',
+            type: 'GET',
+            data: {
+                voucher_code : voucher_code
+            },
+            success:function(discount){
+                let html = '<small class="text-danger" id="">Invalid voucher</small>';
+                if (discount == 'invalid') {
+                    $('#voucher-validation').html(html);
+                    $('.voucher_discount_text').text('0.00');
+                }
+                else {
+                    html = '<small class="text-success" id="">Voucher applied</small>';
+                    $('#voucher-validation').html(html);
+                    let merchant_total = $('#total_payment_text').text().replaceAll(',','');
+                    let total = parseFloat(merchant_total) - parseFloat(discount);
+                    $('.voucher_discount_text').text(discount);
+                    $('#total_payment_text').text(formatNumber(total.toFixed(2)));
+                }
+            }
+        });
+    }
+
+});
+
+$(document).on('click', '#btn-place-order', async function(){ 
+    let voucher_code = $(this).val();
+    $.ajax({
+        url: '/validate-voucher',
+        type: 'GET',
+        data: {
+            voucher_code : voucher_code
+        },
+        success:function(data){
+        }
+    });
 });
 
 $(document).on('click', '#btn-set-default', function(){ 

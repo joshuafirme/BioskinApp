@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserAddress;
 use App\Models\Cart;
 use App\Models\Courier;
+use App\Models\Voucher;
 use Auth;
 use Cache;
 
@@ -23,6 +24,18 @@ class CheckoutController extends Controller
             ->first();
     }
 
+    public function validateVoucher() {
+        if (isset(request()->voucher_code)) {
+            $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
+            if (isset($voucher) && $voucher) {
+                return $voucher->discount;
+            }
+            else {
+                return 'invalid';
+            }
+        }
+    }
+
     public function readCourier() {
         $courier = Courier::where('status', 1)->get();
         if (Cache::get('courier-cache')) {
@@ -36,6 +49,7 @@ class CheckoutController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
+                    ->where('is_checked', 1)
                     ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')

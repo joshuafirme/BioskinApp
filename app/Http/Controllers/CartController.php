@@ -91,7 +91,7 @@ class CartController extends Controller
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
-                    ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
+                    ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku', 'cart.is_checked',
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
@@ -101,6 +101,10 @@ class CartController extends Controller
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
                     ->orderBy('cart.id', 'desc')
                     ->get();
+    }
+
+    public function checkItem($id) {
+        Cart::where('id', $id)->update([ 'is_checked' => request()->check_value ]);
     }
 
     public function readPackagingName($sku) {

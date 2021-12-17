@@ -8,7 +8,33 @@
  @include('nav')
   <!-- /.navbar -->
 
-  <style>
+  <style>.border-md {
+    border-width: 2px !important;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.form-control:focus {
+    box-shadow: none;
+}
+      .form-control {
+      border: 2px solid #d5dae2;
+      padding: 15px 25px;
+      min-height: 45px;
+      font-size: 13px; }
+      .form-control::-webkit-input-placeholder {
+        color: #919aa3; }
+      .form-control::-moz-placeholder {
+        color: #919aa3; }
+      .form-control:-ms-input-placeholder {
+        color: #919aa3; }
+      .form-control::-ms-input-placeholder {
+        color: #919aa3; }
+      .form-control::placeholder {
+        color: #919aa3; }
     .card{
         background-color: #F4F4F4;
         padding: 10px;
@@ -39,9 +65,13 @@
         padding: 7px;
         border: 2px solid #E2E6EA !important;
         margin-bottom: 10px;
-        width: 180px;
         color: #000;
       }
+
+      .payment-method-container button {
+          width: 150px;
+      }
+
   
   </style>
 
@@ -77,6 +107,8 @@
         </a>
       @endforeach
     </div> 
+    
+    <div class="container">
     <div class="breadcrumb-container ml-2 mt-2">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-white">
@@ -90,17 +122,17 @@
 
     <h3 class="text-center text-bold">Checkout</h3>
     <div class="container card delivery-address-container">
-        <div class="row ml-5 mr-5">
-            <div class="col-sm-12 col-md-3 mt-3">
+        <div class="row ">
+            <div class="col-sm-12 col-md-3">
                 <img src="https://img.icons8.com/color/50/000000/marker.png"/><span class="ml-1" style=""> Delivery Address</span>
             </div>
-            <div class="col-sm-12 col-md-2 mt-3">
+            <div class="col-sm-12 col-md-2">
                 <div id="fullname">
                 </div>
                 <div id="phone_no">
                 </div>
             </div>
-            <div class="col-sm-12 col-md-5 mt-3">
+            <div class="col-sm-12 col-md-5">
                 <div id="address">
                 </div>
             </div>
@@ -110,7 +142,7 @@
             </div>
         </div>
     </div>
-    <div class="ml-5 mr-5 table-container" >  
+    <div class=" table-container" >  
         <table class="table table-borderless" id="cart-table">
             <thead style="background-color: #F4F4F4;">
                 <th>Product Ordered</th>
@@ -151,14 +183,14 @@
             </tbody>
         </table>   
     </div>
-    <div class="ml-5 mr-5">
+    <div class="">
       <hr>
       <div class="row">
         <div class="col-sm-3">
-            <textarea class="form-control" name="" id=""rows="4" placeholder="Leave a message (Optional)"></textarea>
+            <textarea class="form-control" id="notes" rows="4" placeholder="Leave a message (Optional)"></textarea>
         </div>
         <div class="col-sm-6">
-            <div class="p-3">
+            <div class="p-1">
                 <div class="text-center text-bold p-2" style="background-color: #F4F4F4;">Shipping Option</div>
                 <div class="row">
                     @php
@@ -170,8 +202,8 @@
                         <span class="ml-2"  id="courier_text">{{ isset($courier->name) ? $courier->name : "" }}</span>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-3">
-                        <div class="btn btn-sm btn-primary m-2" id="btn-change-courier" data-toggle="modal" data-target="#courier-modal">Change courier</div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="btn btn-sm btn-secondary m-2" id="btn-change-courier" data-toggle="modal" data-target="#courier-modal">Change courier</div>
                     </div>
                     <div class="col-sm-12 col-md-4">
                         <div class="text-bold mt-2">Receive by</div>
@@ -186,34 +218,42 @@
         </div>
       </div>
     </div>
-    <div class="ml-5 mr-5" style="margin-bottom: 200px;">
+    <div class="" style="margin-bottom: 200px;">
         <hr>
         <div class="row">
           <div class="col-sm-3 text-center payment-method-container">
               <p class="text-bold">Payment Method</p>
-              <div><button>Credit/Debit Card</button></div>
-              <div><button>Online Payment</button></div>
-              <div><button>Cash on Delivery</button></div>
+              <div><button class="btn btn-secondary">Credit/Debit Card</button></div>
+              <div><button class="btn btn-secondary">Online Payment</button></div>
+              <div><button class="btn btn-secondary">Cash on Delivery</button></div>
           </div>
           <div class="col-sm-9 row">
             <div class="col-sm-8">
-                <div class="p-3">
+                <div class="p-1">
                     <div class="text-center text-bold p-2" style="background-color: #F4F4F4;">Vouchers</div>
                     <div class="row">
                       <div class="col-sm-12 col-md-6">
                         <form>
-                            <input id="voucher" type="text" class="form-control mt-2" placeholder="Enter voucher code">
+                            <div class="input-group mt-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                        <i class="fas fa-gift text-muted"></i>
+                                    </span>
+                                </div>
+                                <input type="text" id="voucher" class="form-control bg-white border-left-0 border-md" placeholder="Enter voucher code">
+                            </div>
+                            <div id="voucher-validation"></div>
                         </form>
                       </div>
                       <div class="col-sm-12 col-md-6">
-                          <div class="text-bold mt-2">Select voucher</div>
+                        <div class="btn btn-sm btn-secondary mt-3" id="btn-select-voucher" data-toggle="modal" data-target="#voucher-modal">Select Voucher</div>
                       </div>
                   </div>  
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="text-bold mt-4 text-center">Voucher Discount</div>
-                <div class="text-center" id="shipment_fee_text">0.00</div>
+                <div class="text-center voucher_discount_text">0.00</div>
             </div>
             <div class="col-sm-12">
                <hr>
@@ -222,32 +262,36 @@
                 <div class="text-bold float-sm-right m-1">Merchandise Subtotal</div>
             </div>
             <div class="col-sm-4">
-                <div class="text-left text-sm-center m-1" id="shipment_fee_text">₱{{number_format($total,2,".",",")}}</div>
+                <div class="text-left text-sm-right m-1" id="merchant_total_text">₱{{number_format($total,2,".",",")}}</div>
             </div>
             <div class="col-sm-8">
                 <div class="text-bold float-sm-right m-1">Shipping Total</div>
             </div>
             <div class="col-sm-4">
-                <div class="text-left text-sm-center m-1" id="shipment_fee_text">0.00</div>
+                <div class="text-left text-sm-right m-1" id="shipment_fee_text">0.00</div>
             </div>
             <div class="col-sm-8">
                 <div class="text-bold float-sm-right m-1">Voucher Discount</div>
             </div>
             <div class="col-sm-4">
-                <div class="text-left text-sm-center m-1" id="shipment_fee_text">0.00</div>
+                <div class="text-left text-sm-right m-1">- <span class="voucher_discount_text">0.00</span></div>
             </div>
             <div class="col-sm-8">
                 <div class="text-bold float-sm-right m-1">Total Payment</div>
             </div>
             <div class="col-sm-4">
-                <div class="text-left text-sm-center m-1" id="shipment_fee_text">110.00</div>
+                <div class="text-left text-sm-right m-1">₱<span id="total_payment_text">{{number_format($total,2,".",",")}}</span></div>
             </div>
           </div>
         </div>
-        
         <hr>
-        <button class="btn btn-success float-right">Place Order</button>
+        <div class="row mt-2">
+           <div class="col-sm-12">
+            <button class="btn btn-secondary text-bold float-right">Place Order</button>
+           </div>
+        </div>
     </div>
+   </div>
     
   <!-- /.content-wrapper -->
 

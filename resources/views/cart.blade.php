@@ -60,41 +60,43 @@
           </a>
       @endforeach
     </div> 
+  <div class="container">
     <div class="breadcrumb-container ml-2 mt-2">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-white">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cart</li>
-          </ol>
-        </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{url('/shop')}}">Shop</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Cart</li>
+        </ol>
+      </nav>
+    </div>
+  <div class="table-container" style="overflow-y: auto; height:550px;">
+      <table class="table table-borderless mb-5" id="cart-table">
+          <thead style="background-color: #F4F4F4;">
+            <th></th>
+              <th>Product Ordered</th>
+              <th>Item Description</th>
+              <th>Size</th>
+              <th>Variation</th>
+              <th>Packaging</th>
+              <th>Cap</th>
+              <th>Quantity</th>
+              <th>Order Subtotal</th>
+          </thead>
+          <tbody id="cart-item-container">
+          </tbody>
+      </table>   
+      <div class="row justify-content-center mt-5">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
       </div>
-    <div class="m-5 table-container" style="overflow-y: auto; height:550px;">
-        <table class="table table-borderless mb-5" id="cart-table">
-            <thead>
-              <th></th>
-                <th>Product Ordered</th>
-                <th>Item Description</th>
-                <th>Size</th>
-                <th>Variation</th>
-                <th>Packaging</th>
-                <th>Cap</th>
-                <th>Quantity</th>
-                <th>Order Subtotal</th>
-            </thead>
-            <tbody id="cart-item-container">
-            </tbody>
-        </table>   
-        <div class="row justify-content-center mt-5">
-          <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-        </div>
-    </div>
-    <div class="m-5" style="height: 200px;">
-      <hr>
-      <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
-      <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
-      <div class="float-right mr-3">Total Item: ₱<span id="total-amount"></span> <span><a href="{{ url('/checkout') }}" class="btn btn-success ml-3">Checkout</a></span></div>
-    </div>
+  </div>
+  <div class="m-5" style="height: 200px;">
+    <hr>
+    <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
+    <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
+    <div class="float-right mr-3">Total Selected Item: ₱<span id="total-amount">0.00</span> <span><a href="{{ url('/checkout') }}" class="btn btn-success ml-3">Checkout</a></span></div>
+  </div>
+  </div>
     
   <!-- /.content-wrapper -->
 
