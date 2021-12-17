@@ -167,7 +167,7 @@
                     <div class="col-sm-12 col-md-4">
                         <div class="text-center p-2 mt-2" style="background-color: #F4F4F4;">
                         <img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/25/000000/external-courier-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png"/>
-                        <span class="ml-2"  id="courier_text">{{ $courier->name }}</span>
+                        <span class="ml-2"  id="courier_text">{{ isset($courier->name) ? $courier->name : "" }}</span>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-3">
@@ -175,7 +175,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4">
                         <div class="text-bold mt-2">Receive by</div>
-                        <div id="receive_by_text">{{ $courier->receive_by }}</div>
+                        <div id="receive_by_text">{{ isset($courier->receive_by) ? $courier->receive_by : "" }}</div>
                     </div>
                 </div>
             </div>
