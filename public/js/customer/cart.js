@@ -58,6 +58,7 @@ $(document).ready(function () {
                 else {
                     let html_no_data = '<p class="text-center text-muted">Cart is empty.</p>';
                     $('.table-container').append(html_no_data);
+                    $('#btn-checkout').hide();
                 }
     
     

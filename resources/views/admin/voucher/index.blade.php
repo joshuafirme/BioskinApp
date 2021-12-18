@@ -48,6 +48,7 @@
                         <tr>
                             <th class="py-2 text-left">Voucher Code</th>
                             <th class="py-2 text-left">Disount Amount</th>
+                            <th class="py-2 text-left">Minimun Purchase Amount</th>
                             <th class="py-2 text-left">Status</th>
                             <th class="py-2 text-left">Action</th>
                         </tr>
@@ -56,6 +57,7 @@
                         <tr id="record-id-{{ $data->id }}">
                             <td>{{ $data->voucher_code }}</td>
                             <td>{{ $data->discount }}</td>
+                            <td>{{ $data->minimum_purchase_amount }}</td>
                             @if ($data->status == 1)
                                 <td><span class="badge badge-success">Active</span></td>
                             @else 

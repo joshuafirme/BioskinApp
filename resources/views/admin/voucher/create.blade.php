@@ -60,12 +60,15 @@
                                 <input type="text" class="form-control" name="discount" placeholder="100.00" required>
                             </div>
     
+                            <div class="col-sm-12 col-md-6">
+                                <label class="col-form-label">Minumun purchase amount</label>
+                                <input type="text" class="form-control" name="minimum_purchase_amount" placeholder="100.00" required>
+                            </div>
+
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2">Save</button>
                                 <a href="{{ route('voucher.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>
                               </div>
-                              
-                
                         </div>
                     </form>
                 </div>

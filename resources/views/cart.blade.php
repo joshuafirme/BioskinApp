@@ -61,7 +61,7 @@
       @endforeach
     </div> 
   <div class="container">
-    <div class="breadcrumb-container ml-2 mt-2">
+    <div class="breadcrumb-container mt-2">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -94,7 +94,9 @@
     <hr>
     <input type="checkbox" name="select_all" value="1" id="select-all-product"> <span class="ml-2">Select all</span>
     <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
-    <div class="float-right mr-3">Total Selected Item: ₱<span id="total-amount">0.00</span> <span><a href="{{ url('/checkout') }}" class="btn btn-success ml-3">Checkout</a></span></div>
+    <div class="float-right mr-3">Total Selected Item: ₱<span id="total-amount">0.00</span> 
+      <span><a id="btn-checkout" href="{{ url('/checkout') }}" class="btn btn-success ml-3">Checkout</a></span>
+    </div>
   </div>
   </div>
     

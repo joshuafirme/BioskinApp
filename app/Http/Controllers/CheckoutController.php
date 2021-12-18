@@ -7,15 +7,64 @@ use App\Models\UserAddress;
 use App\Models\Cart;
 use App\Models\Courier;
 use App\Models\Voucher;
+use App\Models\Order;
 use Auth;
 use Cache;
+use DB;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
-        $cart = $this->readCart();
+        $cart = $this->readCartChecked();
         return view('checkout', compact('cart'));
+    }
+
+    public function placeOrder() {
+
+        $items = $this->readCartChecked();
+        $order_id = $this->generateOrderID();
+        $user_id = Auth::id();
+
+        foreach ($items as $data) {
+            Order::create([
+                'order_id' => $order_id,
+                'user_id' => $user_id,
+                'sku' => $data->sku,
+                'packaging_sku' => $data->packaging_sku,
+                'cap_sku' => $data->cap_sku,
+                'qty' => $data->qty,
+                'amount' => $data->amount,
+            ]);
+        }
+
+        $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
+        if (isset($voucher) && $voucher) {
+            DB::table('order_voucher')->insert([
+                'order_id' => $order_id,
+                'voucher_code' => request()->voucher_code
+            ]);
+        }
+
+        $this->removeCartChecked();
+    }
+
+    public function removeCartChecked() {
+        Cart::where('is_checked', 1)->delete();
+    }
+
+    public function generateOrderID() {
+        return date('Ymd') . $this->generateRandomCapitalLetters(8);
+    }
+
+    public function generateRandomCapitalLetters($length = 6) {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     public function readDefaultAddress() {
@@ -48,7 +97,7 @@ class CheckoutController extends Controller
         }
     }
 
-    public function readCart() {
+    public function readCartChecked() {
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
                     ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',

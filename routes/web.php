@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/read-default-address', 'CheckoutController@readDefaultAddress');
     Route::get('/checkout/read-courier', 'CheckoutController@readCourier');
     Route::get('/validate-voucher', 'CheckoutController@validateVoucher');
+    Route::post('/place-order', 'CheckoutController@placeOrder');
     
 
     Route::get('/account', 'AccountController@index');

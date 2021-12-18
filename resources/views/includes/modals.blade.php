@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="courier-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal fade" id="courier-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-md">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,6 +63,20 @@
           </div>
             <div class="modal-body">
 
+            </div>
+          </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="order-placed-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-body text-center mt-3 mb-3">
+                <div><img src="https://img.icons8.com/pastel-glyph/64/26e07f/nft-checked.png"/></div>
+                <h2 class="mt-3">Order Placed</h2>
+                <p>You can now check your purchases <a href="#">here</a></p>
+                <a href="{{ url('/shop') }}">Continue shopping</a>
             </div>
           </div>
     </div>

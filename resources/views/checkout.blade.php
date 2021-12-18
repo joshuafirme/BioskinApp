@@ -225,7 +225,7 @@
               <p class="text-bold">Payment Method</p>
               <div><button class="btn btn-secondary">Credit/Debit Card</button></div>
               <div><button class="btn btn-secondary">Online Payment</button></div>
-              <div><button class="btn btn-secondary">Cash on Delivery</button></div>
+              <div><button class="btn btn-secondary" data-value="cod">Cash on Delivery</button></div>
           </div>
           <div class="col-sm-9 row">
             <div class="col-sm-8">
@@ -287,7 +287,11 @@
         <hr>
         <div class="row mt-2">
            <div class="col-sm-12">
-            <button class="btn btn-secondary text-bold float-right">Place Order</button>
+            <div class="float-right">
+                <div id="input-validation"></div>
+                @if (count($cart) > 0) 
+                <button class="btn btn-secondary text-bold float-right" id="btn-place-order">Place Order</button></div>
+                @endif
            </div>
         </div>
     </div>

@@ -11,6 +11,7 @@ class Voucher extends Model
     protected $fillable = [
         'voucher_code',
         'discount',
+        'minimum_purchase_amount',
         'status'
     ];
 }

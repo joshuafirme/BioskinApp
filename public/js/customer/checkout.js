@@ -114,7 +114,7 @@ $(document).on('change', '[name=rdo-address]', async function(){
     $('#phone_no').text(phone);
 });
 
-$(document).on('keyup', '#voucher', async function(){ 
+$(document).on('blur', '#voucher', async function(){ 
     let voucher_code = $(this).val();
     if (voucher_code.length > 3) {
         $.ajax({
@@ -144,14 +144,37 @@ $(document).on('keyup', '#voucher', async function(){
 });
 
 $(document).on('click', '#btn-place-order', async function(){ 
-    let voucher_code = $(this).val();
+    var btn = $(this);
+    let voucher_code = $('#voucher').val();
+    let notes = $('#notes').val();
+    let html = '';
+    if ($('.payment-method-container').find('.active').length > 0) {
+
+    }
+    else {
+        html = '<small class="text-danger">Please select payment method.</small>';
+        $('#input-validation').html(html);
+        return;
+    }
+
+    $('#input-validation').html('');
+
+    btn.prop('disabled', true);
+    btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+
     $.ajax({
-        url: '/validate-voucher',
-        type: 'GET',
+        url: '/place-order',
+        type: 'POST',
         data: {
-            voucher_code : voucher_code
+            voucher_code : voucher_code,
+            notes : notes
         },
         success:function(data){
+            btn.remove();
+            $('#order-placed-modal').modal({
+                backdrop: 'static',
+                keyboard: false 
+            });
         }
     });
 });
@@ -181,3 +204,4 @@ $(document).on('change', '[name=rdo-courier]', async function(){
 
 
 readDefaultAddress();
+
