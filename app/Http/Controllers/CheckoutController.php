@@ -86,14 +86,13 @@ class CheckoutController extends Controller
     }
 
     public function readCourier() {
-        if (Cache::has('courier-cache')) {
-            $data = Cache::get('courier-cache');
-            return $data;
+        $cache_data = Cache::get('courier-cache');
+        if (count($cache_data) > 0) {
+            return $cache_data;
         }else {
             $courier = Courier::where('status', 1)->get();
             Cache::put('courier-cache', $courier);
-            $data = $courier;
-            return $data;
+            return $courier;
         }
     }
 
