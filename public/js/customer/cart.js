@@ -108,12 +108,39 @@ $(document).ready(function () {
             }
         });
     }
+
+    async function updateCartCheck(id, check_value) {
+        
+        $.ajax({
+            url: '/cart/check-item/'+id,
+            type: 'POST',
+            data: {
+                check_value : check_value
+            },
+            success:function(data){ 
+                
+            }
+        });
+    }
     
         $('#select-all-product').on('click', function(){
             $('input[type="checkbox"]').prop('checked', this.checked);
+
+            let total = 0;
+            let check_value = 0;
+            $('#cart-item-container').find(':checkbox:checked').each(async function(i){
+                total += parseFloat(total) + parseFloat($(this).attr('data-amount'));
+                let id = $(this).val();
+                if ($(this).is(':checked') == true) {
+                    check_value = 1;
+                }
+                await updateCartCheck(id, check_value);
+            });
+            $('#total-amount').text(formatNumber(total.toFixed(2)));
+
         });
     
-        $(document).on('click','#cart-item-container input[type="checkbox"]', function(){
+        $(document).on('click','#cart-item-container input[type="checkbox"]', async function(){
             let check_value = 0;
             let id = $(this).val();
             let total = 0;
@@ -124,16 +151,7 @@ $(document).ready(function () {
             if ($(this).is(':checked') == true) {
                 check_value = 1;
             }
-            $.ajax({
-                url: '/cart/check-item/'+id,
-                type: 'POST',
-                data: {
-                    check_value : check_value
-                },
-                success:function(data){ 
-                    
-                }
-            });
+            await updateCartCheck(id, check_value);
         });
     
         $(document).on('click','#btn-delete-selected', function(){

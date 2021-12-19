@@ -52,7 +52,7 @@ function validateAttr() {
             $('.attr-validation').text('Please select product volume.');
             return 'invalid';
         }   
-        if (!$('.btn-packaging').hasClass('active')) {
+        if (!$('.btn-packaging').hasClass('active') && $('.packaging-container').text().indexOf("No available") == -1) {
             $('.attr-validation').text('Please select product packaging.');
             return 'invalid';
         }   

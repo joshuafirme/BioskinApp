@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Courier;
 use App\Models\Voucher;
 use App\Models\Order;
+use App\Models\OrderPayment;
 use Auth;
 use Cache;
 use DB;
@@ -45,6 +46,14 @@ class CheckoutController extends Controller
                 'voucher_code' => request()->voucher_code
             ]);
         }
+
+        OrderPayment::create([
+            'order_id' => $order_id,
+            'payment_method' => 'COD',
+            'status' => 1,
+        ]);
+
+
 
         $this->removeCartChecked();
     }
