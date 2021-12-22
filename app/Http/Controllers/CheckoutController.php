@@ -21,6 +21,104 @@ class CheckoutController extends Controller
         return view('checkout', compact('cart'));
     }
 
+    public function paynamicsPayment() {
+    
+        $_mid = "000000201221F7E57B0B"; 
+        $_requestid = substr(uniqid(), 0, 13);
+        $_responseid = rand(9,100);
+        $_ipaddress = $_SERVER['REMOTE_ADDR'];
+        $_noturl = "http://127.0.0.1:8000/paynamics"; 
+        $_resurl = "http://127.0.0.1:8000/paynamics"; 
+        $_cancelurl = "http://localhost/aspr/cancel/"; 
+        $_fname = "Joshua"; 
+        $_mname = "C"; 
+        $_lname = "Firme"; 
+        $_addr1 = "Nasugbu Batangas"; 
+        $_addr2 = "Nasugbu Batangas";
+        $_city = "Batangas"; 
+        $_state = "MM"; 
+        $_country = "PH"; 
+        $_zip = "2314"; 
+        $_sec3d = "enabled";  
+        $_email = "technical@paynamics.net";
+        $_phone = "3308772"; 
+        $_mobile = "09178134828"; 
+        $_clientip = $_SERVER['REMOTE_ADDR'];
+
+        $expiry_limit = date('yyyy-MMddTHH:mm');
+        $trxtype = 'authorized';
+        
+        $_amount = 200.00; 
+        $_currency = "PHP"; 
+        $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+        $forSign = $_mid . 
+                $_requestid . 
+                $_ipaddress . 
+                $_noturl . 
+                $_resurl .  
+                $_fname . 
+                $_lname . 
+                $_mname . 
+                $_addr1 . 
+                $_addr2 . 
+                $_city . 
+                $_state . 
+                $_country . 
+                $_zip . 
+                $_email . 
+                $_phone . 
+                $_clientip . 
+                $_amount . 
+                $_currency . 
+                $_sec3d. 
+                $expiry_limit.
+                $trxtype.
+                $mkey;
+                
+                
+        $_sign = hash("sha512", $forSign);
+        $strxml = '
+        <?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Body>
+        <saleResponse xmlns="http://test.payserv.net/">
+        <saleResult>
+        <application>
+        <merchantid>'.$_mid.'</merchantid>
+        <merchantkey>'.$mkey.'</merchantkey>
+        <request_id>'.$_requestid.'</request_id>
+        <response_id>'.$_responseid.'</response_id>
+        <timestamp></timestamp>
+        <rebill_id> </rebill_id>
+        <signature>'.$_sign.'</signature>
+        </application>
+        <responseStatus>
+        <response_code> </response_code>
+        <response_message> </response_message>
+        <response_advise> </response_advise>
+        </responseStatus>
+        </saleResult>
+        </saleResponse>
+        </soap:Body>
+        </soap:Envelope>
+        ';
+        
+       
+        $b64string =  base64_encode($strxml);
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://testpti.payserv.net/webpayment/defaultv3/ResponsePage.aspx', [
+            'body' => $b64string,
+            'headers' => [
+                "Content-type: text/xml;charset=\"utf-8\"",
+                "Accept: text/xml",
+            ],
+          ]);
+          
+          return  $response->getBody();
+    }
+
     public function placeOrder() {
 
         $items = $this->readCartChecked();
@@ -59,7 +157,9 @@ class CheckoutController extends Controller
     }
 
     public function removeCartChecked() {
-        Cart::where('is_checked', 1)->delete();
+        Cart::where('is_checked', 1)
+        ->where('user_id', Auth::id())
+        ->delete();
     }
 
     public function generateOrderID() {
