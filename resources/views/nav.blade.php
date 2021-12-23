@@ -61,7 +61,8 @@
             <li class="nav-item dropdown">
               <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->firstname }}</a>
               <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                <li><a href="{{url('/')}}" class="dropdown-item">My account</a></li>
+                <li><a href="{{url('/account')}}" class="dropdown-item">My account</a></li>
+                <li><a href="{{url('/my-purchases')}}" class="dropdown-item">My Purchases</a></li>
                 <li><a href="{{url('/logout')}}" class="dropdown-item">Logout</a></li>
             </li>
           @else 

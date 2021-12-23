@@ -26,15 +26,15 @@ class CheckoutController extends Controller
         $_mid = "000000201221F7E57B0B"; 
         $_requestid = substr(uniqid(), 0, 13);
         $_responseid = rand(9,100);
-        $_ipaddress = $_SERVER['REMOTE_ADDR'];
+        $_ipaddress = '136.158.17.103';
         $_noturl = "http://127.0.0.1:8000/paynamics"; 
-        $_resurl = "http://127.0.0.1:8000/paynamics"; 
+        $_resurl = "http://127.0.0.1:8000/checkout"; 
         $_cancelurl = "http://localhost/aspr/cancel/"; 
         $_fname = "Joshua"; 
         $_mname = "C"; 
         $_lname = "Firme"; 
         $_addr1 = "Nasugbu Batangas"; 
-        $_addr2 = "Nasugbu Batangas";
+        $_addr2 = "Batangas CITY";
         $_city = "Batangas"; 
         $_state = "MM"; 
         $_country = "PH"; 
@@ -44,13 +44,10 @@ class CheckoutController extends Controller
         $_phone = "3308772"; 
         $_mobile = "09178134828"; 
         $_clientip = $_SERVER['REMOTE_ADDR'];
-
-        $expiry_limit = date('yyyy-MMddTHH:mm');
-        $trxtype = 'authorized';
-        
-        $_amount = 200.00; 
+        $_amount = 300.00; 
         $_currency = "PHP"; 
         $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+
         $forSign = $_mid . 
                 $_requestid . 
                 $_ipaddress . 
@@ -66,49 +63,65 @@ class CheckoutController extends Controller
                 $_country . 
                 $_zip . 
                 $_email . 
-                $_phone . 
+                $_mobile . 
                 $_clientip . 
                 $_amount . 
                 $_currency . 
-                $_sec3d. 
-                $expiry_limit.
-                $trxtype.
+                $_sec3d . 
                 $mkey;
-                
-                
-        $_sign = hash("sha512", $forSign);
-        $strxml = '
-        <?xml version="1.0" encoding="utf-8"?>
-        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body>
-        <saleResponse xmlns="http://test.payserv.net/">
-        <saleResult>
-        <application>
-        <merchantid>'.$_mid.'</merchantid>
-        <merchantkey>'.$mkey.'</merchantkey>
-        <request_id>'.$_requestid.'</request_id>
-        <response_id>'.$_responseid.'</response_id>
-        <timestamp></timestamp>
-        <rebill_id> </rebill_id>
-        <signature>'.$_sign.'</signature>
-        </application>
-        <responseStatus>
-        <response_code> </response_code>
-        <response_message> </response_message>
-        <response_advise> </response_advise>
-        </responseStatus>
-        </saleResult>
-        </saleResponse>
-        </soap:Body>
-        </soap:Envelope>
-        ';
         
-       
-        $b64string =  base64_encode($strxml);
+        $_sign = hash("sha512", $forSign);
+        
+        $strxml = "";
+        $strxml .= "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+
+        $strxml .= "<Request>";
+            
+            $strxml .= "<orders>";
+                $strxml .= "<items>";
+                    // item 1
+                    $strxml .= "<Items>";
+                        $strxml .= "<itemname>item 1</itemname>";
+                        $strxml .= "<quantity >1</quantity>";
+                        $strxml .= "<amount>".$_amount ."</amount>";
+                    $strxml .= "</Items>";
+                $strxml .= "</items>";
+            $strxml .= "</orders>";
+            $strxml .= "<mid>" . $_mid . "</mid>";
+            $strxml .= "<request_id>" . $_requestid . "</request_id>";
+            $strxml .= "<ip_address>" . $_ipaddress . "</ip_address>";
+            $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
+            $strxml .= "<response_url>" . $_resurl . "</response_url>";
+            $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
+            $strxml .= "<mtac_url>".$_resurl."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
+            $strxml .= "<descriptor_note>test</descriptor_note>"; // pls set this to the descriptor of the merchant ""
+            $strxml .= "<fname>" . $_fname . "</fname>";
+            $strxml .= "<lname>" . $_lname . "</lname>";
+            $strxml .= "<mname>" . $_mname . "</mname>";
+            $strxml .= "<address1>" . $_addr1 . "</address1>";
+            $strxml .= "<address2>" . $_addr2 . "</address2>";
+            $strxml .= "<city>" . $_city . "</city>";
+            $strxml .= "<state>" . $_state . "</state>";
+            $strxml .= "<country>" . $_country . "</country>";
+            $strxml .= "<zip>" . $_zip . "</zip>";
+            $strxml .= "<secure3d>" . $_sec3d . "</secure3d>";
+            $strxml .= "<email>" . $_email . "</email>";
+            $strxml .= "<phone>" . $_phone . "</phone>";
+            $strxml .= "<mobile>" . $_mobile . "</mobile>";
+            $strxml .= "<amount>" . $_amount . "</amount>";
+            $strxml .= "<currency>" . $_currency . "</currency>";
+            $strxml .= "<expiry_limit></expiry_limit>";
+            $strxml .= "<trxtype>authorized</trxtype>";
+            $strxml .= "<client_ip>" . $_clientip . "</client_ip>";
+            $strxml .= "<mlogo_url>https://gmalcilk.sirv.com/c084d2e12ec5d8f32f6fa5f16b76d001.jpeg</mlogo_url>";// pls set this to the url where your logo is hosted
+            $strxml .= "<pmethod></pmethod>";
+            $strxml .= "<signature>" . $_sign . "</signature>";
+        $strxml .= "</Request>";
+        
+    
+        $b64string = base64_encode($strxml);
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://testpti.payserv.net/webpayment/defaultv3/ResponsePage.aspx', [
+        $response = $client->request('POST', 'https://testpti.payserv.net/webpayment/default.aspx', [
             'body' => $b64string,
             'headers' => [
                 "Content-type: text/xml;charset=\"utf-8\"",
@@ -116,7 +129,7 @@ class CheckoutController extends Controller
             ],
           ]);
           
-          return  $response->getBody();
+          return  $response;
     }
 
     public function placeOrder() {

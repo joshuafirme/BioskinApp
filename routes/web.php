@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/read-courier', 'CheckoutController@readCourier');
     Route::get('/validate-voucher', 'CheckoutController@validateVoucher');
     Route::post('/place-order', 'CheckoutController@placeOrder');
+
+    Route::get('/my-purchases', 'MyPurchasesController@index');
+
+    Route::get('/paynamics', 'CheckoutController@paynamicsPayment')->name('paynamics');
     
 
     Route::get('/account', 'AccountController@index');

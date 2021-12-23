@@ -292,6 +292,107 @@
                 @if (count($cart) > 0) 
                 <button class="btn btn-secondary text-bold float-right" id="btn-place-order">Place Order</button></div>
                 @endif
+                @php
+                    $_mid = "000000201221F7E57B0B"; 
+                    $_requestid = substr(uniqid(), 0, 13);
+                    $_responseid = rand(9,100);
+                    $_ipaddress = '136.158.17.242';
+                    $_noturl = route('paynamics'); 
+                    $_resurl = route('paynamics'); 
+                    $_cancelurl = "http://127.0.0.1:8000/checkout"; 
+                    $_fname = "Sandy"; 
+                    $_mname = "C"; 
+                    $_lname = "Cruz"; 
+                    $_addr1 = "Nasugbu Batangas"; 
+                    $_addr2 = "Batangas City";
+                    $_city = "Batangas"; 
+                    $_state = "PH"; 
+                    $_country = "PH"; 
+                    $_zip = "4231"; 
+                    $_sec3d = "try3d";  
+                    $_email = "technical@paynamics.net";
+                    $_phone = "3308772"; 
+                    $_mobile = "09178134828"; 
+                    $_clientip = $_SERVER['REMOTE_ADDR'];
+                    $_amount = 100.00; 
+                    $_currency = "PHP"; 
+                    $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+
+                    $forSign = $_mid . 
+                            $_requestid . 
+                            $_ipaddress . 
+                            $_noturl . 
+                            $_resurl .  
+                            $_fname . 
+                            $_lname . 
+                            $_mname . 
+                            $_addr1 . 
+                            $_addr2 . 
+                            $_city . 
+                            $_state . 
+                            $_country . 
+                            $_zip . 
+                            $_email . 
+                            $_mobile . 
+                            $_clientip . 
+                            $_amount . 
+                            $_currency . 
+                            $_sec3d . 
+                            $mkey;
+
+                    $_sign = hash("sha512", $forSign);
+                    
+                    $strxml = "";
+                    $strxml .= "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+                    $strxml .= "<Request>";
+                        $strxml .= "<orders>";
+                            $strxml .= "<items>";
+                                // item 1
+                                $strxml .= "<Items>";
+                                    $strxml .= "<itemname>item 1</itemname>";
+                                    $strxml .= "<quantity >1</quantity>";
+                                    $strxml .= "<amount >".$_amount ."</amount>";
+                                $strxml .= "</Items>";
+                            $strxml .= "</items>";
+                        $strxml .= "</orders>";
+                        $strxml .= "<mid>" . $_mid . "</mid>";
+                        $strxml .= "<request_id>" . $_requestid . "</request_id>";
+                        $strxml .= "<ip_address>" . $_ipaddress . "</ip_address>";
+                        $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
+                        $strxml .= "<response_url>" . $_resurl . "</response_url>";
+                        $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
+                        $strxml .= "<mtac_url>".$_resurl."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
+                        $strxml .= "<descriptor_note>test</descriptor_note>"; // pls set this to the descriptor of the merchant ""
+                        $strxml .= "<fname>" . $_fname . "</fname>";
+                        $strxml .= "<lname>" . $_lname . "</lname>";
+                        $strxml .= "<mname>" . $_mname . "</mname>";
+                        $strxml .= "<address1>" . $_addr1 . "</address1>";
+                        $strxml .= "<address2>" . $_addr2 . "</address2>";
+                        $strxml .= "<city>" . $_city . "</city>";
+                        $strxml .= "<state>" . $_state . "</state>";
+                        $strxml .= "<country>" . $_country . "</country>";
+                        $strxml .= "<zip>" . $_zip . "</zip>";
+                        $strxml .= "<secure3d>" . $_sec3d . "</secure3d>";
+                        $strxml .= "<trxtype>authorized</trxtype>";
+                        $strxml .= "<email>" . $_email . "</email>";
+                        $strxml .= "<phone>" . $_phone . "</phone>";
+                        $strxml .= "<mobile>" . $_mobile . "</mobile>";
+                        $strxml .= "<amount >" . $_amount . "</amount>";
+                        $strxml .= "<currency>" . $_currency . "</currency>";
+                        $strxml .= "<expiry_limit></expiry_limit>";
+                        $strxml .= "<client_ip>" . $_clientip . "</client_ip>";
+                        $strxml .= "<mlogo_url>https://gmalcilk.sirv.com/c084d2e12ec5d8f32f6fa5f16b76d001.jpeg</mlogo_url>";// pls set this to the url where your logo is hosted
+                        $strxml .= "<pmethod></pmethod>";
+                        $strxml .= "<signature>". $_sign ."</signature>";
+                        $strxml .= "</Request>";
+                    
+                        $b64string = base64_encode($strxml);
+                @endphp
+                <form name="surecollect" id="surecollect" method="post" action="https://testpti.payserv.net/webpayment/Default.aspx">
+                    @csrf
+                    <input type="hidden" name="paymentrequest" value="{{$b64string}}">
+                    <button type="submit" class="btn btn-secondary text-bold float-right">Paynamics</button></div>
+                </form>
            </div>
         </div>
     </div>

@@ -17,54 +17,54 @@
   <!-- /.navbar -->
 
   <style>
-      .my-profile-container {
-          background-color: #F4F4F4;
-      }
-      .inputfile {
-  /* visibility: hidden etc. wont work */
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.inputfile:focus + label {
-  /* keyboard navigation */
-  outline: 1px dotted #000;
-  outline: -webkit-focus-ring-color auto 5px;
-}
-.inputfile + label * {
-  pointer-events: none;
-}
-.custom-file-input::-webkit-file-upload-button {
-  visibility: hidden;
-}
-.custom-file-input::before {
-  content: 'Select some files';
-  color: black;
-  display: inline-block;
-  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
-  border: 1px solid #999;
-  border-radius: 3px;
-  padding: 5px 8px;
-  outline: none;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  cursor: pointer;
-  text-shadow: 1px 1px #fff;
-  font-weight: 700;
-  font-size: 10pt;
-}
-.custom-file-input:hover::before {
-  border-color: black;
-}
-.custom-file-input:active {
-  outline: 0;
-}
-.custom-file-input:active::before {
-  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
-}
+  .my-profile-container {
+    background-color: #F4F4F4;
+  }
+  .inputfile {
+    /* visibility: hidden etc. wont work */
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .inputfile:focus + label {
+    /* keyboard navigation */
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+  .inputfile + label * {
+    pointer-events: none;
+  }
+  .custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .custom-file-input::before {
+    content: 'Select some files';
+    color: black;
+    display: inline-block;
+    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  .custom-file-input:hover::before {
+    border-color: black;
+  }
+  .custom-file-input:active {
+    outline: 0;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+  }
   
   </style>
 
@@ -118,7 +118,7 @@
                 </div>
                 <div class="text-center">File Extension JPEG, PNG</div>
                 <hr>
-                <div class="ml-2">My Account</div>
+                <div class="ml-2 text-muted">My Account</div>
                 <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <li class="nav-item">
                       <a class="nav-link active" id="profile-tab"  data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
@@ -129,7 +129,13 @@
                     <li class="nav-item">
                       <a class="nav-link" id="change-password-tab" data-toggle="tab" href="#change-password" role="tab" aria-controls="change-password">Change password</a>
                     </li>
-                  </ul>
+                </ul>
+                <hr>
+                <div class="ps-vs-n ml-2">
+                  <div class="mt-2"><a href="{{ url('/my-purchases') }}" class="text-muted">My Purchases</a></div>
+                  <div class="mt-2"><a href="#" class="text-muted">My Vouchers</a></div>
+                  <div class="mt-2"><a href="#" class="text-muted">Notification</a></div>
+                </div>
             </div>
             <div class="col-sm-9">
                 <div class="card my-profile-container">
@@ -137,8 +143,8 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <span class="card-title text-bold"><h4>My profile</h4></span>
-                                <p class="card-text">Manage and Protect Your Account</p>
-                                @include('includes.alerts')
+                                  <p class="card-text">Manage and Protect Your Account</p>
+                                  @include('includes.alerts')
                                     @csrf
                                     <div class="form-group row">
                                       <label for="staticEmail" class="col-sm-2 col-form-label">Full name</label>
@@ -163,13 +169,13 @@
                                     <div class="form-group row">
                                         <label for="input" class="col-sm-2 col-form-label">Email address</label>
                                         <div class="col-sm-10">
-                                          <input type="" class="form-control" value="{{ $user->email }}" name="email" placeholder="Email">
+                                          <input type="" class="form-control" value="{{ $user->email }}" name="email" placeholder="Email" readonly>
                                         </div>
                                       </div>
                                       <div class="form-group row">
                                         <label for="input" class="col-sm-2 col-form-label">Phone number</label>
                                         <div class="col-sm-10">
-                                          <input type="" class="form-control" value="{{ $user->phone_no }}" name="phone_no" placeholder="Phone number">
+                                          <input type="" class="form-control" value="{{ $user->phone_no }}" name="phone_no" placeholder="Phone number" readonly>
                                         </div>
                                       </div>
                                       <div class="form-group row">

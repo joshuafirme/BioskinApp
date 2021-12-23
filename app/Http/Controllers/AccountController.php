@@ -18,7 +18,7 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
-        $input = $request->except('password','_token','_method');
+        $input = $request->except('password','_token','_method', 'phone_no', 'email');
         if($request->hasFile('image')){       
             $folder_to_save = 'profile';
             $image_name = uniqid() . "." . $request->image->extension();
