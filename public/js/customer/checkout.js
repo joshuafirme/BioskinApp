@@ -50,7 +50,9 @@ function readDefaultAddress() {
     $.ajax({
         url: '/read-default-address/',
         type: 'GET',
-        success:function(data){  
+        success:function(data){ 
+             
+            $('#address_id').val(data.id);
             $('#fullname').text(data.name);
             $('#phone_no').text(data.phone_no);
             $('#address').text(data.address);
@@ -105,10 +107,12 @@ $('#btn-change-address').on('click', function(){
 
 $(document).on('change', '[name=rdo-address]', async function(){ 
 
+    let address_id = $(this).attr('data-id');
     let name = $(this).attr('data-name');
     let address = $(this).attr('data-address');
     let phone = $(this).attr('data-phone');
 
+    $('#address_id').val(address_id);
     $('#fullname').text(name);
     $('#address').text(address);
     $('#phone_no').text(phone);
@@ -146,6 +150,7 @@ $(document).on('blur', '#voucher', async function(){
 $(document).on('click', '#btn-place-order', async function(){ 
     var btn = $(this);
     let voucher_code = $('#voucher').val();
+    let address_id = $('#address_id').val();
     let notes = $('#notes').val();
     let html = '';
     if ($('.payment-method-container').find('.active').length > 0) {
@@ -167,6 +172,7 @@ $(document).on('click', '#btn-place-order', async function(){
         type: 'POST',
         data: {
             voucher_code : voucher_code,
+            address_id : address_id,
             notes : notes
         },
         success:function(data){

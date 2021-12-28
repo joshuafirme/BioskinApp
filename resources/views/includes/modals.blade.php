@@ -15,6 +15,27 @@
                     </div>
 
                     <div class="col-sm-12 mt-2">
+                      <label class="col-form-label">Region</label>
+                      <select class="form-control" name="region" id="region"></select>
+                  </div>
+
+                  <div class="col-sm-12 mt-2">
+                    <label class="col-form-label">Province</label>
+                    <select class="form-control" name="province" id="province"></select>
+                  </div>
+
+                  <div class="col-sm-12 mt-2">
+                    <label class="col-form-label">Municipality</label>
+                    <select class="form-control" name="municipality" id="municipality"></select>
+                  </div>
+
+                  <div class="col-sm-12 mt-2">
+                    <label class="col-form-label">Barangay</label>
+                    <select class="form-control" name="brgy" id="brgy"></select>
+                  </div>
+
+
+                    <div class="col-sm-12 mt-2">
                         <label class="col-form-label">Address</label>
                         <textarea rows="3" type="text" class="form-control" id="address" required></textarea>
                     </div>

@@ -85,8 +85,14 @@
                               <div class="col-sm-12 col-md-6 mt-2">    
                                 <label class="col-form-label">Access rights</label>
                                 <select class="form-control" name="access_rights" id="access_rights">
-                                    <option value="1">Admin</option>
+                                    <option value="1">Sales Admin</option>
                                     <option value="2">Customer</option>
+                                    <option value="3">Sales Department</option>
+                                    <option value="4">Accounting</option>
+                                    <option value="5">Production</option>
+                                    <option value="6">Finish Goods</option>
+                                    <option value="7">Logistics/Warehousing</option>
+                                    <option value="8">Clients/CSR</option>
                                 </select>
                               </div>
                               

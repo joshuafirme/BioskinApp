@@ -17,7 +17,8 @@ $(document).ready(function () {
         html +=    '<td>'+closure+'</td>';
         html +=    '<td>';
         html +=        '<div class="row align-items-center">';
-        html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
+     //   html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
+     html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
         html +=    '</div>';
         html +=    '</td>';
         html +=    '<td>₱'+formatNumber(data.amount)+'</td>';

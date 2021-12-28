@@ -58,8 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/place-order', 'CheckoutController@placeOrder');
 
     Route::get('/my-purchases', 'MyPurchasesController@index');
+    Route::get('/my-purchase/{order_id}', 'MyPurchasesController@readOne');
 
     Route::get('/paynamics', 'CheckoutController@paynamicsPayment')->name('paynamics');
+    
+    Route::get('/read-shipping-address/{order_id}', 'ManageOrderController@readShippingAddress');
     
 
     Route::get('/account', 'AccountController@index');
@@ -68,7 +71,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/add-address', 'AccountController@addAddress');
     Route::post('/account/delete-address/{id}', 'AccountController@deleteAddress');
     Route::post('/account/address-set-default/{id}', 'AccountController@setAddressDefault');
-
+    Route::get('/get-provinces/{region}', 'AccountController@getProvinces');
+    Route::get('/get-municipalities', 'AccountController@getMunicipalities');
+    Route::get('/get-brgys', 'AccountController@getBrgys');
 });
 
 Route::post('/add-to-cart', 'CartController@addToCart');

@@ -5,15 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserAddress;
+use App\Models\PhilippineArea;
 use Auth;
 use Cache;
 
 class AccountController extends Controller
 {
-    public function index()
+    public function index(PhilippineArea $pa)
     {
         $user = User::where('id', Auth::id())->first();
         return view('account', compact('user'));
+    }
+
+    public function getProvinces($region) {
+        $pa = new PhilippineArea;
+        return $pa->getProvinces($region);
+    }
+
+    public function getMunicipalities() {
+        $pa = new PhilippineArea;
+        return $pa->getMunicipalities(request()->region, request()->province);
+    }
+
+    public function getBrgys() {
+        $pa = new PhilippineArea;
+        return $pa->getBrgys(request()->region, request()->province, request()->municipality);
     }
 
     public function update(Request $request)

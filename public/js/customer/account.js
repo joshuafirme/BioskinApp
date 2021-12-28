@@ -144,7 +144,80 @@ $(document).on('click','#btn-set-as-default', function(e){
     
 });
 
+$(document).on('change','#region', function(e){
+    e.preventDefault();
+    var region = $(this).val();
+    getProvinces(region);
+    
+});
 
+$(document).on('change','#province', function(e){
+    e.preventDefault();
+    var province = $(this).val();
+    getMunicipalities(province);
+    
+});
 
+function populateRegions() {
+    fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
+          .then(function(response) {
+            response.json().then(function(data) { 
+              Object.keys(data).forEach(function(key) {
+                $('select[name=region]').append('<option value="' + key + '">' + data[key].region_name + '</option>');
+              });
+            });
+          })
+          .catch(function(error) {
+            console.error(error);
+          }); 
+}
 
+function getProvinces(region) {
+    $.ajax({
+        url: '/get-provinces/'+region,
+        tpye: 'GET',
+        success:function(data){ 
+            if($('select[name=province] option').length == 1) {
+                
+                Object.keys(data).forEach(function(province) {
+                    $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
+                });
+            }
+            else {
+                $('select[name=province]').empty();
+                Object.keys(data).forEach(function(province) { console.log(province)
+                    $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
+                });
+            }
+        }
+      });
+}
+
+function getMunicipalities(province) {
+    var region = $('#region').val();
+    $.ajax({
+        url: '/get-municipalities',
+        type: 'GET',
+        data: {
+            province : province,
+            region : region
+        },
+        success:function(data){ 
+            if($('select[name=municipality] option').length == 1) {
+                
+                Object.keys(data).forEach(function(municipality) {
+                    $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
+                });
+            }
+            else {
+                $('select[name=municipality]').empty();
+                Object.keys(data).forEach(function(municipality) {
+                    $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
+                });
+            }
+        }
+      });
+}
+
+populateRegions();
 readAddresses();

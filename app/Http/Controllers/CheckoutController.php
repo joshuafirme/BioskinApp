@@ -129,7 +129,7 @@ class CheckoutController extends Controller
             ],
           ]);
           
-          return  $response;
+          return  $response->getBody();
     }
 
     public function placeOrder() {
@@ -155,6 +155,13 @@ class CheckoutController extends Controller
             DB::table('order_voucher')->insert([
                 'order_id' => $order_id,
                 'voucher_code' => request()->voucher_code
+            ]);
+        }
+
+        if (request()->address_id) {
+            DB::table('order_address')->insert([
+                'order_id' => $order_id,
+                'address_id' => request()->address_id
             ]);
         }
 

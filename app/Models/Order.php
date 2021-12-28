@@ -46,4 +46,29 @@ class Order extends Model
             ->where('O.order_id', $order_no)
             ->get();
     }
+
+    
+    public function readMyOrders($order_id)
+    {
+        return DB::table('orders as O')
+        ->select('O.sku', 'P.size', 'O.order_id', 'O.amount', 'O.qty', 'P.name', 'P.price', 'V.name as variation', 'PG.name as packaging', 'C.name as closure', 'O.status')
+        ->leftJoin('products as P', 'P.sku', '=', 'O.sku')
+        ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
+        ->leftJoin('products as PG', 'PG.sku', '=', 'O.packaging_sku')
+        ->leftJoin('products as C', 'C.sku', '=', 'O.cap_sku')
+        ->leftJoin('category', 'category.id', '=', 'P.category_id')
+        ->where('O.user_id', \Auth::id())
+        ->where('O.order_id', $order_id)
+        ->orderBy('O.id', 'desc')
+        ->get();
+    }
+
+    public function readShippingAddress($order_id) {
+        return DB::table('order_address as OA')
+            ->select('UA.*')
+            ->leftJoin('user_addresses as UA', 'UA.id', '=', 'OA.address_id')
+            ->where('order_id', $order_id)
+            ->first();
+    }
+ 
 }

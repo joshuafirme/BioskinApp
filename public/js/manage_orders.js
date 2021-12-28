@@ -110,11 +110,11 @@ async function getShippingFee(order_no) {
     });
 }
 
-async function readShippingAddress(user_id) {
+async function readShippingAddress(order_id) { 
     $.ajax({
-        url: '/read-shipping-address/'+user_id,
+        url: '/read-shipping-address/'+order_id,
         type: 'GET',
-        success:function(data){
+        success:function(data){ console.log(data)
             let html = '';
             html += '<label>Shipping Address</label>';
             html += '<div>'+data.municipality+', '+data.brgy+' '+data.street+'</div>';
@@ -150,8 +150,9 @@ async function on_Click() {
         let payment_method = $(this).attr('data-payment');
         let user_id = $(this).attr('data-user-id');
         let delivery_date = $(this).attr('data-delivery-date');
-        let btn = '<button class="btn btn-sm btn-outline-dark" id="btn-print" type="button">Print</button>';
+        let btn = '';
         if (active_pill != 'completed' && active_pill != 'cancelled') {
+            btn += '<button class="btn btn-sm btn-danger" id="btn-deny" data-active-pill="'+active_pill+'"  type="button">Deny</button>';
             btn += '<button class="btn btn-sm btn-success" id="btn-change-status" data-active-pill="'+active_pill+'" data-status="'+status+'"  type="button">'+btn_text+'</button>';
         }
 
@@ -175,7 +176,7 @@ async function on_Click() {
         $('#show-orders-modal').find('.modal-footer').html(btn);
 
         await readOneOrder(order_no);
-      //  await readShippingAddress(user_id);
+        await readShippingAddress(order_no);
         
         
         

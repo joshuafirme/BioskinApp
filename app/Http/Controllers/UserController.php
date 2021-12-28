@@ -41,6 +41,24 @@ class UserController extends Controller
                     elseif($user->access_rights == 2) {
                         $html = "Customer";
                     }
+                    elseif($user->access_rights == 3) {
+                        $html = "Sales Department";
+                    }
+                    elseif($user->access_rights == 4) {
+                        $html = "Accounting";
+                    }
+                    elseif($user->access_rights == 5) {
+                        $html = "Production";
+                    }
+                    elseif($user->access_rights == 6) {
+                        $html = "Finish Goods";
+                    }
+                    elseif($user->access_rights == 7) {
+                        $html = "Logistics/Warehousing";
+                    }
+                    elseif($user->access_rights == 8) {
+                        $html = "Clients/CSR";
+                    }
                     return $html;
                 })
                 ->rawColumns(['action','access_rights'])

@@ -359,3 +359,28 @@ body{
   display: flex;
   justify-content: center;
 }
+
+.pagination > li > a,
+.pagination > li > span {
+    color: #00AD35 !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+    background-color: #00AD35 !important;
+    border-color: #00AD35 !important;
+    color: #FFF !important;
+}
+
+.nav-link.active{
+  background-color:#00AD35 !important;
+}
+
+.nav-link:hover{
+  color:#00AD35 !important;
+}
+

@@ -2,6 +2,15 @@
 
 @section('content')
 
+<style>
+  .nav-link.active {
+    color: #FFF !important;
+  }
+  .nav-tabs .nav-link {
+    color: #00AD35;
+  }
+</style>
+
 @php
     $page_title = "Bioskin | Manage Orders";
 @endphp
@@ -34,10 +43,10 @@
                                 @php
                                     $pending_count = App\Models\Order::where('status', 1)->distinct()->count('order_id');
                                 @endphp
-                              <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending <span class="badge badge-primary">{{$pending_count}}</span></a>
+                              <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Processing <span class="badge badge-primary">{{$pending_count}}</span></a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="placed-tab" data-toggle="tab" href="#placed" role="tab" aria-controls="placed" aria-selected="false">Placed</a>
+                              <a class="nav-link" id="placed-tab" data-toggle="tab" href="#placed" role="tab" aria-controls="placed" aria-selected="false">On the way</a>
                             </li>
                           </ul>
                           <div class="tab-content" id="myTabContent">
@@ -80,7 +89,8 @@
                   </button>
               </div>
               <div class="modal-body" id="printable-order-info">
-                  <div class="row" id="user-info">
+                <button class="btn btn-sm btn-outline-dark float-right" id="btn-print" type="button">Print</button><br>
+                  <div class="row mt-4" id="user-info">
                   </div>
                   <div class="mt-3 mb-3" id="shipping-info-container"></div>
                 <table class="table table-hover">
