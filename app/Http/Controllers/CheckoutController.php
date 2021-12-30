@@ -9,127 +9,92 @@ use App\Models\Courier;
 use App\Models\Voucher;
 use App\Models\Order;
 use App\Models\OrderPayment;
+use App\Models\OrderDetail;
 use Auth;
 use Cache;
 use DB;
+use SoapClient;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        $ip = $this->getIp();
+        $user = Auth::user();
+        $address = $this->readDefaultAddress();
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip'));
     }
 
-    public function paynamicsPayment() {
-    
-        $_mid = "000000201221F7E57B0B"; 
-        $_requestid = substr(uniqid(), 0, 13);
-        $_responseid = rand(9,100);
-        $_ipaddress = '136.158.17.103';
-        $_noturl = "http://127.0.0.1:8000/paynamics"; 
-        $_resurl = "http://127.0.0.1:8000/checkout"; 
-        $_cancelurl = "http://localhost/aspr/cancel/"; 
-        $_fname = "Joshua"; 
-        $_mname = "C"; 
-        $_lname = "Firme"; 
-        $_addr1 = "Nasugbu Batangas"; 
-        $_addr2 = "Batangas CITY";
-        $_city = "Batangas"; 
-        $_state = "MM"; 
-        $_country = "PH"; 
-        $_zip = "2314"; 
-        $_sec3d = "enabled";  
-        $_email = "technical@paynamics.net";
-        $_phone = "3308772"; 
-        $_mobile = "09178134828"; 
-        $_clientip = $_SERVER['REMOTE_ADDR'];
-        $_amount = 300.00; 
-        $_currency = "PHP"; 
-        $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+    public function paynamicsPayment() { return phpinfo();
+        if (!empty($_GET["responseid"]) && !empty($_GET["requestid"])) {
+            $order_id = base64_decode($_GET["requestid"]);
+            $response_id = base64_decode($_GET["responseid"]);
 
-        $forSign = $_mid . 
-                $_requestid . 
-                $_ipaddress . 
-                $_noturl . 
-                $_resurl .  
-                $_fname . 
-                $_lname . 
-                $_mname . 
-                $_addr1 . 
-                $_addr2 . 
-                $_city . 
-                $_state . 
-                $_country . 
-                $_zip . 
-                $_email . 
-                $_mobile . 
-                $_clientip . 
-                $_amount . 
-                $_currency . 
-                $_sec3d . 
-                $mkey;
-        
-        $_sign = hash("sha512", $forSign);
-        
-        $strxml = "";
-        $strxml .= "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+            $mode = 'Test';
 
-        $strxml .= "<Request>";
-            
-            $strxml .= "<orders>";
-                $strxml .= "<items>";
-                    // item 1
-                    $strxml .= "<Items>";
-                        $strxml .= "<itemname>item 1</itemname>";
-                        $strxml .= "<quantity >1</quantity>";
-                        $strxml .= "<amount>".$_amount ."</amount>";
-                    $strxml .= "</Items>";
-                $strxml .= "</items>";
-            $strxml .= "</orders>";
-            $strxml .= "<mid>" . $_mid . "</mid>";
-            $strxml .= "<request_id>" . $_requestid . "</request_id>";
-            $strxml .= "<ip_address>" . $_ipaddress . "</ip_address>";
-            $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
-            $strxml .= "<response_url>" . $_resurl . "</response_url>";
-            $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
-            $strxml .= "<mtac_url>".$_resurl."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
-            $strxml .= "<descriptor_note>test</descriptor_note>"; // pls set this to the descriptor of the merchant ""
-            $strxml .= "<fname>" . $_fname . "</fname>";
-            $strxml .= "<lname>" . $_lname . "</lname>";
-            $strxml .= "<mname>" . $_mname . "</mname>";
-            $strxml .= "<address1>" . $_addr1 . "</address1>";
-            $strxml .= "<address2>" . $_addr2 . "</address2>";
-            $strxml .= "<city>" . $_city . "</city>";
-            $strxml .= "<state>" . $_state . "</state>";
-            $strxml .= "<country>" . $_country . "</country>";
-            $strxml .= "<zip>" . $_zip . "</zip>";
-            $strxml .= "<secure3d>" . $_sec3d . "</secure3d>";
-            $strxml .= "<email>" . $_email . "</email>";
-            $strxml .= "<phone>" . $_phone . "</phone>";
-            $strxml .= "<mobile>" . $_mobile . "</mobile>";
-            $strxml .= "<amount>" . $_amount . "</amount>";
-            $strxml .= "<currency>" . $_currency . "</currency>";
-            $strxml .= "<expiry_limit></expiry_limit>";
-            $strxml .= "<trxtype>authorized</trxtype>";
-            $strxml .= "<client_ip>" . $_clientip . "</client_ip>";
-            $strxml .= "<mlogo_url>https://gmalcilk.sirv.com/c084d2e12ec5d8f32f6fa5f16b76d001.jpeg</mlogo_url>";// pls set this to the url where your logo is hosted
-            $strxml .= "<pmethod></pmethod>";
-            $strxml .= "<signature>" . $_sign . "</signature>";
-        $strxml .= "</Request>";
-        
-    
-        $b64string = base64_encode($strxml);
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://testpti.payserv.net/webpayment/default.aspx', [
-            'body' => $b64string,
-            'headers' => [
-                "Content-type: text/xml;charset=\"utf-8\"",
-                "Accept: text/xml",
-            ],
-          ]);
-          
-          return  $response->getBody();
+            if ($mode == 'Test') {
+                $mid = "000000201221F7E57B0B";
+                $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+                $client = new SoapClient("https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL");
+            } elseif ($mode == 'Live') {
+                $mid = $this->_paymentMethod->getMerchantConfig('live_mid');
+                $mkey = $this->_paymentMethod->getMerchantConfig('live_mkey');
+                $client = new SoapClient("https://ptipaygate.paynamics.net/ccservice/ccservice.asmx?WSDL");
+            }
+
+            $request_id = '';
+            $length = 8;
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $request_id .= $characters[rand(0, $charactersLength - 1)];
+            }
+
+            $merchantid = $mid;
+            $requestid = $request_id;
+            $org_trxid = $response_id;
+            $org_trxid2 = "";
+            $cert = $mkey;
+            $data = $merchantid . $requestid . $org_trxid . $org_trxid2;
+            $data = utf8_encode($data . $cert);
+
+            // create signature
+            $sign = hash("sha512", $data);
+
+            $params = array("merchantid" => $merchantid,
+                "request_id" => $requestid,
+                "org_trxid" => $org_trxid,
+                "org_trxid2" => $org_trxid2,
+                "signature" => $sign);
+
+            $result = $client->query($params);
+            $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
+            $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
+            return $response_message;
+            switch ($response_code) {
+                case 'GR001':
+                case 'GR002':
+                case 'GR033':
+                    $this->getResponse()->setRedirect(
+                        $this->_getUrl('checkout/onepage/success')
+                    );
+                    break;
+                default:
+                    $this->messageManager->addErrorMessage(
+                        __($response_message)
+                    );
+                    /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
+                    $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+                    return $resultRedirect->setPath('checkout/cart');
+                    break;
+            }
+
+//            $this->getResponse()->setRedirect(
+//                $this->_getUrl('checkout/onepage/success')
+//            );
+        }
     }
 
     public function placeOrder() {
@@ -151,25 +116,25 @@ class CheckoutController extends Controller
         }
 
         $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
-        if (isset($voucher) && $voucher) {
-            DB::table('order_voucher')->insert([
+     
+        if (isset(request()->address_id) && isset(request()->courier_id) && isset(request()->opt_payment_method)) {
+
+            //if voucher valid
+            $voucher_code = "";
+            if (isset($voucher) && $voucher) {
+                $voucher_code = request()->voucher_code;
+            }
+
+            OrderDetail::create([
                 'order_id' => $order_id,
-                'voucher_code' => request()->voucher_code
+                'address_id' => request()->address_id,
+                'courier_id' => request()->courier_id,
+                'voucher_code' => $voucher_code,
+                'payment_method' => request()->opt_payment_method,
+                'shipping_fee_mop' => 1,
+                'status' => 1,
             ]);
         }
-
-        if (request()->address_id) {
-            DB::table('order_address')->insert([
-                'order_id' => $order_id,
-                'address_id' => request()->address_id
-            ]);
-        }
-
-        OrderPayment::create([
-            'order_id' => $order_id,
-            'payment_method' => 'COD',
-            'status' => 1,
-        ]);
 
 
 
@@ -238,5 +203,21 @@ class CheckoutController extends Controller
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
                     ->orderBy('cart.id', 'desc')
                     ->get();
+    }
+
+    
+
+    public function getIp(){
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
+            if (array_key_exists($key, $_SERVER) === true){
+                foreach (explode(',', $_SERVER[$key]) as $ip){
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
+                        return $ip;
+                    }
+                }
+            }
+        }
+        return request()->ip(); // it will return server ip when no client ip found
     }
 }

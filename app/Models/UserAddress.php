@@ -11,8 +11,13 @@ class UserAddress extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'address',
         'phone_no',
+        'region',
+        'province',
+        'municipality',
+        'brgy',
+        'detailed_loc',
+        'notes',
         'is_active'
     ];
 }

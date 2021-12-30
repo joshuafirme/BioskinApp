@@ -52,8 +52,13 @@ class AccountController extends Controller
         UserAddress::create([
             'user_id' => Auth::id(),
             'name' => request()->fullname,
-            'address' => request()->address,
-            'phone_no' => request()->phone_no
+            'phone_no' => request()->phone_no,
+            'region' => request()->region,
+            'province' => request()->province,
+            'municipality' => request()->municipality,
+            'brgy' => request()->brgy,
+            'detailed_loc' => request()->detailed_loc,
+            'notes' => request()->notes,
         ]);
         return 'address created';
     }

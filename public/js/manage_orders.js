@@ -84,15 +84,8 @@ function getComputation(total) {
         html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
         html += '<td>Subtotal:</td>';
         html += '<td>₱'+formatNumber(total.toFixed(2))+'</td>';
-
-    html += '</tr>';    
-        html += '<tr>';
-        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
-        html += '<td>Delivery charge:</td>';
-    html += '<td>₱0.00</td>';
-
-    html += '</tr>';    
-        html += '<tr>';
+    html += '</tr>';      
+    html += '<tr>';
         html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
         html += '<td>Total:</td>';
     html += '<td>₱'+formatNumber(total_amount.toFixed(2))+'</td>';
@@ -117,7 +110,7 @@ async function readShippingAddress(order_id) {
         success:function(data){ console.log(data)
             let html = '';
             html += '<label>Shipping Address</label>';
-            html += '<div>'+data.municipality+', '+data.brgy+' '+data.street+'</div>';
+            html += '<div>'+data.province+', '+data.municipality+' '+data.brgy+' '+data.detailed_loc+'</div>';
             html += '<div>Nearest landmark: '+data.notes+'</div>';
             $('#shipping-info-container').html(html);
         }

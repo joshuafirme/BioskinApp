@@ -1,6 +1,9 @@
 function getItems (data,identifier) {
-    var html = '<input type="radio" name="rdo-address" data-id="'+data.id+'" data-name="'+data.name+'" data-address="'+data.address+'" data-phone="'+data.phone_no+'">';
-    html += '<div class="address-container">';
+    let address = "-";
+    if (data.province && data.municipality) {
+        address = data.province+', '+data.municipality+' '+data.brgy+' - '+data.detailed_loc;
+    }
+    var html = '<input type="radio" name="rdo-address" data-id="'+data.id+'" data-name="'+data.name+'" data-address="'+address+'" data-phone="'+data.phone_no+'">';
     html += '<div class="address-container">';
     html += '<div class="form-group row">';
     html +=     '<label for="input" class="col-sm-2 col-form-label">Fullname</label>';
@@ -10,7 +13,7 @@ function getItems (data,identifier) {
     html +='</div>';
     html += '<div class="form-group row">';
     html +=     '<label for="input" class="col-sm-2 col-form-label">Address</label>';
-    html +=     '<div class="col-sm-10"><div class="m-2">'+data.address+'</div></div>';
+    html +=     '<div class="col-sm-10"><div class="m-2">'+address+'</div></div>';
     html += '</div>';
     html +=  '<div class="form-group row">';
     html +=     '<label for="input" class="col-sm-2 col-form-label">Phone number</label>';
@@ -18,7 +21,7 @@ function getItems (data,identifier) {
     html +=          '<div class="m-2">'+data.phone_no+'</div>';
     html +=     '</div>';
     html +=  '</div>';
-    html += '<hr></div>';
+    html += '<hr>';
 
     return html;
 }
@@ -51,11 +54,14 @@ function readDefaultAddress() {
         url: '/read-default-address/',
         type: 'GET',
         success:function(data){ 
-             
+            let address = "-";
+            if (data.province && data.municipality) {
+                address = data.province+', '+data.municipality+' '+data.brgy;
+            }
             $('#address_id').val(data.id);
             $('#fullname').text(data.name);
             $('#phone_no').text(data.phone_no);
-            $('#address').text(data.address);
+            $('#address').text(address);
         }
     });
 }
@@ -109,7 +115,7 @@ $(document).on('change', '[name=rdo-address]', async function(){
 
     let address_id = $(this).attr('data-id');
     let name = $(this).attr('data-name');
-    let address = $(this).attr('data-address');
+    let address = $(this).attr('data-address');// 
     let phone = $(this).attr('data-phone');
 
     $('#address_id').val(address_id);
@@ -151,15 +157,28 @@ $(document).on('click', '#btn-place-order', async function(){
     var btn = $(this);
     let voucher_code = $('#voucher').val();
     let address_id = $('#address_id').val();
+    let courier_id = $('#courier_id').val();
+    let opt_payment_method = $('.payment-method-container').find('.active').attr('data-value');
+    let opt_shipping_mop = $('input[name="opt_shipping_mop"]:checked').val();
+
     let notes = $('#notes').val();
     let html = '';
-    if ($('.payment-method-container').find('.active').length > 0) {
-
-    }
-    else {
+    if ($('.payment-method-container').find('.active').length == 0) {
         html = '<small class="text-danger">Please select payment method.</small>';
         $('#input-validation').html(html);
         return;
+    }
+    if (courier_id.length == 0) {
+        html = '<small class="text-danger">Please select courier.</small>';
+        $('#input-validation').html(html);
+        return;
+    }
+    if (address_id.length == 0) {
+        html = '<small class="text-danger">Please select address.</small>';
+        $('#input-validation').html(html);
+        return;
+    }
+    else {
     }
 
     $('#input-validation').html('');
@@ -173,6 +192,9 @@ $(document).on('click', '#btn-place-order', async function(){
         data: {
             voucher_code : voucher_code,
             address_id : address_id,
+            courier_id : courier_id,
+            opt_payment_method : opt_payment_method,
+            opt_shipping_mop : opt_shipping_mop,
             notes : notes
         },
         success:function(data){
@@ -200,9 +222,11 @@ $(document).on('click', '#btn-change-courier', function(){
 
 $(document).on('change', '[name=rdo-courier]', async function(){ 
 
+    let courier_id = $(this).attr('data-id');
     let name = $(this).attr('data-name');
     let receive_by = $(this).attr('data-receive');
-    console.log(name)
+
+    $('#courier_id').val(courier_id);
     $('#courier_text').text(name);
     $('#receive_by_text').text(receive_by);
 });

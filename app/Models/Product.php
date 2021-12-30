@@ -14,6 +14,7 @@ class Product extends Model
         'sku',
         'variation_code',
         'name',
+        'qty',
         'price',
         'description',
         'directions',

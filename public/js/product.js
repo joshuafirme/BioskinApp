@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {data: 'name', name: 'name'},
                 {data: 'category', name: 'category'},
                 {data: 'subcategory', name: 'subcategory'},
+                {data: 'qty', name: 'qty'},
                 {data: 'variation', name: 'variation'},
                 {data: 'size', name: 'size'},
                 {data: 'price', name: 'price'},

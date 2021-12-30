@@ -10,7 +10,11 @@ function getItems (data,identifier) {
     html +='</div>';
     html += '<div class="form-group row">';
     html +=     '<label for="input" class="col-sm-2 col-form-label">Address</label>';
-    html +=     '<div class="col-sm-10"><div class="m-2">'+data.address+'</div></div>';
+    let address = "-";
+    if (data.province && data.municipality) {
+        address = data.province+', '+data.municipality+' '+data.brgy;
+    }
+    html +=     '<div class="col-sm-10"><div class="m-2">'+address+'</div></div>';
     html += '</div>';
     html +=  '<div class="form-group row">';
     html +=     '<label for="input" class="col-sm-2 col-form-label">Phone number</label>';
@@ -60,18 +64,28 @@ $(document).on('click','#btn-save-address', function(e){
     var btn = $(this);
 
     var fullname = $('#fullname').val();
-    var address = $('#address').val();
     var phone_no = $('#phone_no').val();
+    var region = $('#region').val();
+    var province = $('#province').val();
+    var municipality = $('#municipality').val();
+    var brgy = $('#brgy').val();
+    var detailed_loc = $('#detailed_loc').val();
+    var notes = $('#notes').val();
 
-    if (fullname || address || phone_no) {
+    if (fullname && phone_no && region && province && municipality && brgy && detailed_loc || notes) {
         btn.html('<i class="fas fa-spinner fa-pulse"></i>');
         $.ajax({
             url: '/account/add-address',
             type: 'POST',
             data: {
-                fullname : fullname,
-                address  : address,
-                phone_no : phone_no
+                fullname     : fullname,
+                phone_no     : phone_no,
+                region       : region,
+                province     : province,
+                municipality : municipality,
+                brgy         : brgy,
+                detailed_loc : detailed_loc,
+                notes        : notes
             },
             success: function(data){
                 $('#add-address-modal').modal('hide');
@@ -158,6 +172,13 @@ $(document).on('change','#province', function(e){
     
 });
 
+$(document).on('change','#municipality', function(e){
+    e.preventDefault();
+    var municipality = $(this).val();
+    getBrgys(municipality);
+    
+});
+
 function populateRegions() {
     fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
           .then(function(response) {
@@ -165,6 +186,8 @@ function populateRegions() {
               Object.keys(data).forEach(function(key) {
                 $('select[name=region]').append('<option value="' + key + '">' + data[key].region_name + '</option>');
               });
+
+              getProvinces($('#region').val());
             });
           })
           .catch(function(error) {
@@ -177,18 +200,12 @@ function getProvinces(region) {
         url: '/get-provinces/'+region,
         tpye: 'GET',
         success:function(data){ 
-            if($('select[name=province] option').length == 1) {
-                
-                Object.keys(data).forEach(function(province) {
-                    $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
-                });
-            }
-            else {
-                $('select[name=province]').empty();
-                Object.keys(data).forEach(function(province) { console.log(province)
-                    $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
-                });
-            }
+            $('select[name=province]').empty();
+            Object.keys(data).forEach(function(province) { console.log(province)
+                $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
+            });
+
+            getMunicipalities($('select[name=province]').val())
         }
       });
 }
@@ -203,18 +220,34 @@ function getMunicipalities(province) {
             region : region
         },
         success:function(data){ 
-            if($('select[name=municipality] option').length == 1) {
-                
-                Object.keys(data).forEach(function(municipality) {
-                    $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
-                });
-            }
-            else {
-                $('select[name=municipality]').empty();
-                Object.keys(data).forEach(function(municipality) {
-                    $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
-                });
-            }
+            
+            $('select[name=municipality]').empty();
+            Object.keys(data).forEach(function(municipality) {
+                $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
+            });
+
+            getBrgys($('select[name=municipality]').val());
+        }
+      });
+}
+
+function getBrgys(municipality) {
+    var region = $('#region').val();
+    var province = $('#province').val();
+    $.ajax({
+        url: '/get-brgys',
+        type: 'GET',
+        data: {
+            municipality : municipality,
+            region       : region,
+            province     : province
+        },
+        success:function(data){ 
+            
+            $('select[name=brgy]').empty();
+            data.forEach(function(brgy) {
+                $('select[name=brgy]').append('<option value="' + brgy + '">' + brgy + '</option>');
+            });
         }
       });
 }

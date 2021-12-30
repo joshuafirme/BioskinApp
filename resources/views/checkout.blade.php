@@ -190,7 +190,7 @@
         <div class="col-sm-3">
             <textarea class="form-control" id="notes" rows="4" placeholder="Leave a message (Optional)"></textarea>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-9">
             <div class="p-1">
                 <div class="text-center text-bold p-2" style="background-color: #F4F4F4;">Shipping Option</div>
                 <div class="row">
@@ -199,6 +199,7 @@
                     @endphp
                     <div class="col-sm-12 col-md-4">
                         <div class="text-center p-2 mt-2" style="background-color: #F4F4F4;">
+                        <input type="hidden" id="courier_id" value="{{ $courier->id }}">
                         <img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/25/000000/external-courier-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png"/>
                         <span class="ml-2"  id="courier_text">{{ isset($courier->name) ? $courier->name : "" }}</span>
                         </div>
@@ -213,10 +214,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="text-bold mt-4 mr-0 mr-sm-4 text-center">Shipment Fee</div>
-            <div class="text-center mr-0 mr-sm-4 " id="shipment_fee_text">₱100.00</div>
-        </div>
       </div>
     </div>
     <div class="" style="margin-bottom: 200px;">
@@ -224,9 +221,8 @@
         <div class="row">
           <div class="col-sm-3 text-center payment-method-container">
               <p class="text-bold">Payment Method</p>
-              <div><button class="btn btn-secondary">Credit/Debit Card</button></div>
-              <div><button class="btn btn-secondary">Online Payment</button></div>
-              <div><button class="btn btn-secondary" data-value="cod">Cash on Delivery</button></div>
+              <div><button class="btn btn-secondary" data-value="online_payment">Online Payment</button></div>
+              <div><button class="btn btn-secondary" data-value="COD">Cash on Delivery</button></div>
           </div>
           <div class="col-sm-9 row">
             <div class="col-sm-8">
@@ -265,12 +261,12 @@
             <div class="col-sm-4">
                 <div class="text-left text-sm-right m-1" id="merchant_total_text">₱{{number_format($total,2,".",",")}}</div>
             </div>
-            <div class="col-sm-8">
+         <!--   <div class="col-sm-8">
                 <div class="text-bold float-sm-right m-1">Shipping Total</div>
             </div>
             <div class="col-sm-4">
                 <div class="text-left text-sm-right m-1" id="shipment_fee_text">0.00</div>
-            </div>
+            </div>-->
             <div class="col-sm-8">
                 <div class="text-bold float-sm-right m-1">Voucher Discount</div>
             </div>
@@ -283,9 +279,14 @@
             <div class="col-sm-4">
                 <div class="text-left text-sm-right m-1">₱<span id="total_payment_text">{{number_format($total,2,".",",")}}</span></div>
             </div>
+            <div class="col-12 mt-1">
+                <small class="float-right">*Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
           </div>
         </div>
-        <hr>
         <div class="row mt-2">
            <div class="col-sm-12">
             <div class="float-right">
@@ -296,24 +297,24 @@
                 @php
                     $_mid = "000000201221F7E57B0B"; 
                     $_requestid = substr(uniqid(), 0, 13);
-                    $_ipaddress = '136.158.34.132';
+                    $_ipaddress = $ip;
                     $_noturl = route('paynamics'); 
                     $_resurl = route('paynamics'); 
                     $_cancelurl = "http://127.0.0.1:8000/checkout"; 
-                    $_fname = "Joshua"; 
-                    $_mname = "C"; 
-                    $_lname = "Firme"; 
-                    $_addr1 = "Nasugbu Batangas"; 
-                    $_addr2 = "Batangas City";
-                    $_city = "Batangas"; 
-                    $_state = "MM"; 
+                    $_fname = $user->firstname; 
+                    $_mname = $user->middlename; 
+                    $_lname = $user->lastname; 
+                    $_addr1 = $address->province ." ".$address->municipality." ".$address->brgy ." ".$address->detailed_loc; 
+                    $_addr2 = "";
+                    $_city = $address->municipality; 
+                    $_state = ""; 
                     $_country = "PH"; 
-                    $_zip = "4231"; 
-                    $_email = "technical@paynamics.net";
-                    $_phone = "3308772"; 
-                    $_mobile = "09972812495"; 
+                    $_zip = ""; 
+                    $_email = $user->email;
+                    $_phone = ""; 
+                    $_mobile = $user->phone_no; 
                     $_clientip = $_SERVER['REMOTE_ADDR'];
-                    $_amount = number_format((float)200, 2, '.', '');
+                    $_amount = number_format((float)$total, 2, '.', '');
                     $_currency = "PHP"; 
                     $_sec3d = "try3d";  
                     $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
@@ -348,11 +349,13 @@
                         $strxml .= "<orders>";
                             $strxml .= "<items>";
                                 // item 1
+                            foreach ($cart as $key => $item) {
                                 $strxml .= "<Items>";
-                                    $strxml .= "<itemname>item 1</itemname>";
-                                    $strxml .= "<quantity>1</quantity>";
-                                    $strxml .= "<amount >".$_amount ."</amount>";
+                                    $strxml .= "<itemname>".$item->name ."</itemname>";
+                                    $strxml .= "<quantity>".$item->qty ."</quantity>";
+                                    $strxml .= "<amount>".$item->price ."</amount>";
                                 $strxml .= "</Items>";
+                            }
                             $strxml .= "</items>";
                         $strxml .= "</orders>";
                         $strxml .= "<mid>" . $_mid . "</mid>";

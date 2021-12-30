@@ -29,13 +29,12 @@ class PhilippineArea extends Model
         return $obj[$region]['province_list'][$province]['municipality_list'];
     }
 
-    public function getBrgys($region, $province, $municipalities){
+    public function getBrgys($region, $province, $municipality){
 
         $json = @file_get_contents($this->URL());
         $obj = $json === FALSE ? array() : json_decode($json, true);
 
-        return $obj[$region]['province_list'][$province];
-      //  return $obj['4A']['province_list']['BATANGAS']['municipality_list'];
+        return $obj[$region]['province_list'][$province]['municipality_list'][$municipality]['barangay_list'];
     }
 
 }
