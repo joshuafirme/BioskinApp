@@ -89,6 +89,11 @@
                                   </select>
                               </div>
 
+                              <div class="col-sm-12 col-md-6 mt-sm-2">
+                                <label class="col-form-label">Quantity</label>
+                                <input type="number" step="any" class="form-control" name="qty" value="{{ $packaging->qty }}" required>
+                              </div>
+
                               <div class="col-sm-12 col-md-6 mt-sm-2 mt-md-3">
                                 <label for="choices-single-default">Size</label>
                                 <input type="text" class="form-control" name="size" value="{{ $packaging->size }}" required>

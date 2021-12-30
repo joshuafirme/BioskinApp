@@ -52,6 +52,7 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Sub category</th>
+                                <th>Qty</th>
                                 <th>Variation</th>
                                 <th>Size</th>
                                 <th>Price</th>

@@ -69,17 +69,18 @@ class CheckoutController extends Controller
                 "org_trxid2" => $org_trxid2,
                 "signature" => $sign);
 
-            $result = $client->query($params);
+            $result = $client->query($params);    
             $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
             $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
-            return $response_message;
+            $response_advise = $result->queryResult->txns->ServiceResponse->responseStatus->response_advise;
+            $processor_response_id = $result->queryResult->txns->ServiceResponse->responseStatus->processor_response_id;
+          //  print_r(json_encode($result));
+          //  return;
             switch ($response_code) {
                 case 'GR001':
                 case 'GR002':
                 case 'GR033':
-                    $this->getResponse()->setRedirect(
-                        $this->_getUrl('checkout/onepage/success')
-                    );
+                    return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 default:
                     $this->messageManager->addErrorMessage(
