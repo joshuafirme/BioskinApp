@@ -304,7 +304,7 @@
                     $_fname = $user->firstname; 
                     $_mname = $user->middlename; 
                     $_lname = $user->lastname; 
-                    $_addr1 = isset($address->province) ? $address->province : "" ." ".isset($address->municipality) ? $address->municipality : "" ." ".isset($address->brgy) ? $address->brgy : "" ." ".isset($address->detailed_loc) ? $address->detailed_loc : ""; 
+                    $_addr1 = $address->province ." ".$address->municipality." ".$address->brgy ." ".$address->detailed_loc; 
                     $_addr2 = "";
                     $_city = $address->municipality; 
                     $_state = ""; 
