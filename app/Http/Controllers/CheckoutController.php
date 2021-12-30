@@ -26,7 +26,7 @@ class CheckoutController extends Controller
         return view('checkout', compact('cart', 'user', 'address', 'ip'));
     }
 
-    public function paynamicsPayment() { return phpinfo();
+    public function paynamicsPayment() { 
         if (!empty($_GET["responseid"]) && !empty($_GET["requestid"])) {
             $order_id = base64_decode($_GET["requestid"]);
             $response_id = base64_decode($_GET["responseid"]);
