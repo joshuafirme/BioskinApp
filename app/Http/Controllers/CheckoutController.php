@@ -19,7 +19,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        return phpinfo();
+       // return phpinfo();
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();

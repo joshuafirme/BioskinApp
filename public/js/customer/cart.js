@@ -118,7 +118,7 @@ $(document).ready(function () {
             data: {
                 check_value : check_value
             },
-            success:function(data){ 
+            success:function(data){ console.log(check_value)
                 
             }
         });
@@ -127,16 +127,19 @@ $(document).ready(function () {
         $('#select-all-product').on('click', function(){
             $('input[type="checkbox"]').prop('checked', this.checked);
 
-            let total = 0;
-            let check_value = 0;
-            $('#cart-item-container').find(':checkbox:checked').each(async function(i){
-                total += parseFloat(total) + parseFloat($(this).attr('data-amount'));
-                let id = $(this).val();
+            var total = 0;
+            var check_value = 0;
+            $('#cart-item-container').find(':checkbox').each(async function(i){
+               
                 if ($(this).is(':checked') == true) {
+                    total = parseFloat(total) + parseFloat($(this).attr('data-amount'));
                     check_value = 1;
-                }
-                await updateCartCheck(id, check_value);
+                    await updateCartCheck($(this).val(), check_value);
+                } else { 
+                    await updateCartCheck($(this).val(), check_value);
+                } 
             });
+
             $('#total-amount').text(formatNumber(total.toFixed(2)));
 
         });
