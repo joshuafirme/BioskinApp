@@ -133,7 +133,7 @@ thead{
                 </div>
             </div>
             <div class="col-sm-12 col-md-5">
-                <div id="address">{{ isset($address->address) ? $address->address : "" }}
+                <div id="address">{{ $address->municipality." ".$address->brgy ." ".$address->detailed_loc }}
                 </div>
             </div>
             <div class="col-sm-12 col-md-2">

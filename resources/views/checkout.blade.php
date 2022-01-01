@@ -60,7 +60,7 @@
         z-index: 999;
     }
 
-    .payment-method-container button, .row .btn{
+    .btn-grey{
         background-color: #F2F2F2;
         padding: 7px;
         border: 2px solid #E2E6EA !important;
@@ -69,9 +69,23 @@
       }
 
       .payment-method-container button {
-          width: 150px;
+          border: 1px solid #D9D9D9;
+          margin-bottom: 10px;
+          height: 50px;
       }
 
+      .payment-method-container .active {
+          border: 1px solid #00AD35;
+          background-color: #EFF6EC !important;
+      }
+      .fa-check-circle{
+          margin-top: 3px;
+          color: #00AD35;
+      }
+      .fa-circle{
+          margin-top: 3px;
+          color: #BFBFBF;
+      }
   
   </style>
 
@@ -138,8 +152,8 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-2">
-                <button class="btn btn-secondary m-1 float-none float-md-right" id="btn-set-default">Default</button>
-                <button class="btn btn-secondary m-1 float-none float-md-right" id="btn-change-address" data-toggle="modal" data-target="#checkout-address-modal">Change</button>
+                <button class="btn btn-secondary btn-grey m-1 float-none float-md-right" id="btn-set-default">Default</button>
+                <button class="btn btn-secondary btn-grey m-1 float-none float-md-right" id="btn-change-address" data-toggle="modal" data-target="#checkout-address-modal">Change</button>
             </div>
         </div>
     </div>
@@ -205,7 +219,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4">
-                        <div class="btn btn-sm btn-secondary m-2" id="btn-change-courier" data-toggle="modal" data-target="#courier-modal">Change courier</div>
+                        <div class="btn btn-sm btn-secondary btn-grey m-2" id="btn-change-courier" data-toggle="modal" data-target="#courier-modal">Change courier</div>
                     </div>
                     <div class="col-sm-12 col-md-4">
                         <div class="text-bold mt-2">Receive by</div>
@@ -220,11 +234,167 @@
         <hr>
         <div class="row">
           <div class="col-sm-3 text-center payment-method-container">
-              <p class="text-bold">Payment Method</p>
-              <div><button class="btn btn-secondary" data-value="online_payment">Online Payment</button></div>
-              <div><button class="btn btn-secondary" data-value="COD">Cash on Delivery</button></div>
+              <p class="text-bold">Select Payment Method</p>
+              <div><button class="btn active btn-block" data-value="COD">Cash on Delivery <i class="fas fa-check-circle float-right"></i></button></div>
+              <div><button class="btn btn-block" data-value="online_payment">Online Payment <i class="far fa-circle float-right"></i></button></div>
           </div>
-          <div class="col-sm-9 row">
+          <div class="col-sm-9 payment-methods-container d-none">
+            
+            <div class="mb-4">
+             <div class="row mb-3">
+                <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="cc" name="rad_pm" type="radio" id="rad_cc" class="custom-control-input" checked>
+                        <label class="custom-control-label text-md-left" for="rad_cc">
+                            <span class="pm-icon-holder">
+                                <img style="margin-top: -12px;" src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/51/000000/external-credit-card-ecommerce-vitaliy-gorbachev-flat-vitaly-gorbachev.png"/>
+                            </span>
+                            &nbsp;
+                        <span class="text-prussian-blue font-weight-bold small">Credit / Debit Card</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="gc" name="rad_pm" type="radio" id="rad_gcash" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_gcash">
+                            <span class="pm-icon-holder">
+                                <img style="border-radius:5px; margin-top: -12px;" width="51" src="https://logos-download.com/wp-content/uploads/2020/06/GCash_Logo.png"/>
+                            </span>
+                            &nbsp;
+                        <span class="text-prussian-blue font-weight-bold small">GCash e-wallet</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="bpionline" name="rad_pm" type="radio" id="rad_bpi" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_bpi">
+                            <span class="pm-icon-holder">
+                                <img style="border-radius:5px; margin-top: -12px;" class="bg-white" width="51" src="https://cdn.freelogovectors.net/wp-content/uploads/2020/05/bpi-logo-bank-of-the-philippine-islands.png"/>
+                            </span>
+                            &nbsp;
+                        <span class="text-prussian-blue font-weight-bold small">BPI Online</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="br_bdo_ph" name="rad_pm" type="radio" id="rad_bdo" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_bdo">
+                            <span class="pm-icon-holder">
+                                <img style="" class="bg-white" width="51" src="https://gmalcilk.sirv.com/bdo_logo.png"/>
+                            </span>
+                            &nbsp;
+                        <span class="text-prussian-blue font-weight-bold small">BDO Online via Brankas</span>
+                        </label>
+                    </div>
+                </div>
+             </div>
+             <div class="mb-1"><b>Over the Counter Payments</b></div>
+             <div class="row">
+                <div id="pm_ceb" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_ceb" name="rad_pm" type="radio" id="rad_ceb" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_ceb">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ceb.png" alt="Cebuana Lhuillier">
+                            </span>
+                            &nbsp;
+                        <span class="text-prussian-blue font-weight-bold small">Cebuana Lhuillier</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash at for your online purchase any Cebuana Lhuillier branch.</span>
+                    </div>
+                </div>
+                <div id="pm_seveneleven" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_seveneleven" name="rad_pm" type="radio" id="rad_seveneleven" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_seveneleven">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/7connect.png" alt="7-Eleven">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">7-Eleven</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash for your online purchase at any 7-Eleven store.</span>
+                    </div>
+                </div>
+                <div id="pm_ecpay" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_ecpay" name="rad_pm" type="radio" id="rad_ecpay" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_ecpay">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ecpay.png" alt="ECPay">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">ECPay</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash for your online purchase at any ECPay accredited store.</span>
+                    </div>
+                </div>
+                <div id="pm_cliqq" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_cliqq" name="rad_pm" type="radio" id="rad_cliqq" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_cliqq">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/cliqq.png" alt="Cliqq">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">CLiQQ</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash for your online purchase at any (7-Eleven) CLiQQ touchscreen payment kiosk.</span>
+                    </div>
+                </div>
+                <div id="pm_ml" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_ml" name="rad_pm" type="radio" id="rad_ml" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_ml">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ml.png" alt="M Lhuillier">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">M Lhuillier</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash for your online purchase at any MLhuillier branch.</span>
+                    </div>
+                </div>
+                <div id="pm_bayadcenter" class="col-md-6 col-xs-12" style="display: none">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_bayadcenter" name="rad_pm" type="radio" id="rad_bayadcenter" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_bayadcenter">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/bayadcenter.png" alt="BayadCenter">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">Bayad Center</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">Pay in cash for your online purchase at Bayad Center branches.</span>
+                    </div>
+                </div>
+                <div id="pm_bdootc" class="col-md-6 col-xs-12" style="display:block;">
+                    <div class="custom-control custom-radio">
+                        <input value="rad_bdootc" name="rad_pm" type="radio" id="rad_bdootc" class="custom-control-input">
+                        <label class="custom-control-label text-md-left" for="rad_bdootc">
+                            <span class="pm-icon-holder">
+                                <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/bdootc.png" alt="BDO">
+                            </span>
+                            &nbsp;
+        <span class="text-prussian-blue font-weight-bold small">BDO</span>
+                        </label>
+                        <br>
+                        <span class="small text-blueberry">To pay for your online purchase, go to the nearest BDO branch.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+          </div>
+          <div class="col-sm-9 row computation-container">
             <div class="col-sm-8">
                 <div class="p-1">
                     <div class="text-center text-bold p-2" style="background-color: #F4F4F4;">Vouchers</div>
@@ -243,7 +413,7 @@
                         </form>
                       </div>
                       <div class="col-sm-12 col-md-6">
-                        <div class="btn btn-sm btn-secondary mt-3" id="btn-select-voucher" data-toggle="modal" data-target="#voucher-modal">Select Voucher</div>
+                        <div class="btn btn-sm btn-secondary btn-grey mt-3" id="btn-select-voucher" data-toggle="modal" data-target="#voucher-modal">Select Voucher</div>
                       </div>
                   </div>  
                 </div>
@@ -292,113 +462,11 @@
             <div class="float-right">
                 <div id="input-validation"></div>
                 @if (count($cart) > 0) 
-                <button class="btn btn-secondary text-bold float-right" id="btn-place-order">Place Order</button></div>
+                <button class="btn btn-secondary btn-grey text-bold float-right" id="btn-place-order">Place Order</button></div>
                 @endif
-                @php
-                    $_mid = "000000201221F7E57B0B"; 
-                    $_requestid = substr(uniqid(), 0, 13);
-                    $_ipaddress = $ip;
-                    $_noturl = route('paynamics'); 
-                    $_resurl = route('paynamics'); 
-                    $_cancelurl = "http://127.0.0.1:8000/checkout"; 
-                    $_fname = $user->firstname; 
-                    $_mname = $user->middlename; 
-                    $_lname = $user->lastname; 
-                    $_addr1 = $address->province ." ".$address->municipality." ".$address->brgy ." ".$address->detailed_loc; 
-                    $_addr2 = "";
-                    $_city = $address->municipality; 
-                    $_state = ""; 
-                    $_country = "PH"; 
-                    $_zip = ""; 
-                    $_email = $user->email;
-                    $_phone = ""; 
-                    $_mobile = $user->phone_no; 
-                    $_clientip = $_SERVER['REMOTE_ADDR'];
-                    $_amount = number_format((float)$total, 2, '.', '');
-                    $_currency = "PHP"; 
-                    $_sec3d = "try3d";  
-                    $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
-
-                    $for_sign = $_mid . 
-                            $_requestid . 
-                            $_ipaddress . 
-                            $_noturl . 
-                            $_resurl .  
-                            $_fname . 
-                            $_lname . 
-                            $_mname . 
-                            $_addr1 . 
-                            $_addr2 . 
-                            $_city . 
-                            $_state . 
-                            $_country . 
-                            $_zip . 
-                            $_email . 
-                            $_phone . 
-                            $_clientip . 
-                            $_amount . 
-                            $_currency . 
-                            $_sec3d . 
-                            $_mkey;
-
-                    $_sign = hash("sha512", $for_sign);
-
-                    $strxml = "";
-                    $strxml .= "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
-                    $strxml .= "<Request>";
-                        $strxml .= "<orders>";
-                            $strxml .= "<items>";
-                                // item 1
-                            foreach ($cart as $key => $item) {
-                                $strxml .= "<Items>";
-                                    $strxml .= "<itemname>".$item->name ."</itemname>";
-                                    $strxml .= "<quantity>".$item->qty ."</quantity>";
-                                    $strxml .= "<amount>".$item->price ."</amount>";
-                                $strxml .= "</Items>";
-                            }
-                            $strxml .= "</items>";
-                        $strxml .= "</orders>";
-                        $strxml .= "<mid>" . $_mid . "</mid>";
-                        $strxml .= "<request_id>" . $_requestid . "</request_id>";
-                        $strxml .= "<ip_address>" . $_ipaddress . "</ip_address>";
-                        $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
-                        $strxml .= "<response_url>" . $_resurl . "</response_url>";
-                        $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
-                        $strxml .= "<mtac_url>".$_resurl."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
-                        $strxml .= "<descriptor_note></descriptor_note>"; // pls set this to the descriptor of the merchant ""
-                        $strxml .= "<fname>" . $_fname . "</fname>";
-                        $strxml .= "<lname>" . $_lname . "</lname>";
-                        $strxml .= "<mname>" . $_mname . "</mname>";
-                        $strxml .= "<address1>" . $_addr1 . "</address1>";
-                        $strxml .= "<address2>" . $_addr2 . "</address2>";
-                        $strxml .= "<city>" . $_city . "</city>";
-                        $strxml .= "<state>" . $_state . "</state>";
-                        $strxml .= "<country>" . $_country . "</country>";
-                        $strxml .= "<zip>" . $_zip . "</zip>";
-                        $strxml .= "<secure3d>" . $_sec3d . "</secure3d>";
-                        $strxml .= "<trxtype>authorized</trxtype>";
-                        $strxml .= "<email>" . $_email . "</email>";
-                        $strxml .= "<phone>" . $_phone . "</phone>";
-                        $strxml .= "<mobile>" . $_mobile . "</mobile>";
-                        $strxml .= "<amount >" . $_amount . "</amount>";
-                        $strxml .= "<currency>" . $_currency . "</currency>";
-                        $strxml .= "<expiry_limit></expiry_limit>"; //".date('Y-MdTH:m')."
-                        $strxml .= "<client_ip>" . $_clientip . "</client_ip>";
-                        $strxml .= "<mlogo_url>https://gmalcilk.sirv.com/c084d2e12ec5d8f32f6fa5f16b76d001.jpeg</mlogo_url>";// pls set this to the url where your logo is hosted
-                        $strxml .= "<pmethod></pmethod>";
-                        $strxml .= "<signature>". $_sign ."</signature>";
-                        $strxml .= "</Request>";
-                    
-                        $b64string = base64_encode($strxml);
-                        
-                @endphp
-                <form name="surecollect" id="surecollect" method="post" action="https://testpti.payserv.net/webpayment/Default.aspx">
-                    @csrf
-                    <input type="hidden" name="paymentrequest" value="{{$b64string}}">
-                    <button type="submit" class="btn btn-secondary text-bold float-right">Paynamics</button></div>
-                </form>
            </div>
         </div>
+        <div id="paynamics-form-container"></div>
     </div>
    </div>
     

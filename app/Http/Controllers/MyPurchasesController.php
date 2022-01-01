@@ -27,7 +27,7 @@ class MyPurchasesController extends Controller
         $order_items = $o->readMyOrders($order_id);
    
         $address = $o->readShippingAddress($order_id);
-       
+     
         return view('my-purchase', compact('order_items', 'order_id', 'address'));
     }
 }

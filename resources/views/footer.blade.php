@@ -50,6 +50,23 @@
     <div class="container text-center text-md-start mt-5">
       <!-- Grid row -->
       <div class="row mt-3">
+        <div class="col-sm-12 text-left">
+          <div class="mb-4">
+            <div class="mb-1">Payment Methods</div>
+            <img class="mr-2" width="32px"
+            src="{{asset('images/gcash-logo.png')}}"
+            alt="Gcash" style="border-radius: 3px;">
+            <img class="mr-2" width="45px"
+                src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                alt="Visa">
+            <img class="mr-2" width="45px"
+                src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                alt="Mastercard">
+            <img class="mr-2" width="45px"
+                src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/jcb.svg"
+                alt="Mastercard">
+          </div>
+         </div>
         <!-- Grid column -->
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <!-- Content -->

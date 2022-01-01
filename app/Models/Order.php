@@ -64,9 +64,9 @@ class Order extends Model
     }
 
     public function readShippingAddress($order_id) {
-        return DB::table('order_address as OA')
+        return DB::table('order_details as OD')
             ->select('UA.*')
-            ->leftJoin('user_addresses as UA', 'UA.id', '=', 'OA.address_id')
+            ->leftJoin('user_addresses as UA', 'UA.id', '=', 'OD.address_id')
             ->where('order_id', $order_id)
             ->first();
     }

@@ -59,8 +59,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-purchases', 'MyPurchasesController@index');
     Route::get('/my-purchase/{order_id}', 'MyPurchasesController@readOne');
-
-    Route::get('/paynamics', 'CheckoutController@paynamicsPayment')->name('paynamics');
+    
+    Route::post('/paynamics-payment', 'CheckoutController@paynamicsPayment')->name('paynamicsPayment');
+    Route::get('/paynamics-notification', 'CheckoutController@paynamicsNotification')->name('paynamicsNotification');
+    Route::get('/checkout/paynamics-form', 'CheckoutController@paynamicsForm');
     
     Route::get('/read-shipping-address/{order_id}', 'ManageOrderController@readShippingAddress');
     

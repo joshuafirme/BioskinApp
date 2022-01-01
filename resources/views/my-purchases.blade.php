@@ -148,10 +148,16 @@
            <div class="col-sm-12 col-md-8">
             <ul class="nav nav-pills mb-3 mt-3 float-right" id="pills-tab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
+                <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">All</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">To pay</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Processing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">On the way</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">To receive</a>
@@ -165,79 +171,86 @@
             </ul>
            </div>
         </div>
-        @foreach ($my_orders as $item)
-        <div class="table-container mt-4 border ">  
-          <table class="table table-borderless" id="cart-table">
-              <thead style="background-color: #E7E6E6;">
-                  <th>Product Ordered</th>
-                  <th>Item Description</th>
-                  <th>Size</th>
-                  <th>Variation</th>
-                  <th>Packaging</th>
-                  <th>Cap</th>
-                  <th>Quantity</th>
-                  <th>Order Subtotal</th>
-              </thead>
-              <tbody>
-                @php
-                    $order_mdl = new \App\Models\Order;
-                    $order_items = $order_mdl->readMyOrders($item->order_id);  
-                    $total = 0; 
-                @endphp
-                @foreach ($order_items as $key => $data)
-                  <tr>
-                    <td>
-                      @php
-                          $src = \DB::table('product_images')->where('sku', $item->sku)->value('image');
-                          $total = $total + $data->price;
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
 
-                          switch ($data->status) {
-                            case 1:
-                              $status = 'Processing';
-                              break;
-                            case 2:
-                              $status = 'On the way';
-                              break;
-                            default:
-                              # code...
-                              break;
-                          }
-                      @endphp
-                      @if ($src)
-                      <div class="responsive-img" style="width:70px; background-image:url('/images/{{ $src }}')"></div>
-                      @else
-                      <div class="responsive-img" style="width:70px; background-image: url('https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png')"></div>
-                      @endif
-                    </td>
-                    <td>{{$data->name}}</td>
-                    <td>{{$data->size ?$data->size : "-"}}</td>
-                    <td>{{$data->variation ? $data->variation : "-"}}</td>
-                    <td>{{$data->packaging ?$data->packaging : "-"}}</td>
-                    <td>{{$data->closure ? $data->closure : "-"}}</td>
-                    <td>{{$data->qty}}</td>
-                    <td>₱{{number_format($data->amount,2,".",",")}}</td>
-                  </tr> 
-                @endforeach
-                  <tr>
-                    <td colspan="3"></td>
-                    <td colspan="5"><hr></td>
-                  </tr> 
-                  <tr>
-                    <td colspan="3"></td>
-                    <td colspan="3"><span class="badge badge-success"> {{$status}}</span><br><a class="text-dark" href="{{ url('/my-purchase/'.$item->order_id) }}"><b>Order ID: <u>{{ $item->order_id }}</u></b></a>
-                      </td>
-                    <td>Total Payment</td>
-                    <td><b>₱{{number_format($total,2,".",",")}}</b></td>
-                  </tr> 
+            @foreach ($my_orders as $item)
+            <div class="table-container mt-4 border ">  
+              <table class="table table-borderless" id="cart-table">
+                  <thead style="background-color: #E7E6E6;">
+                      <th>Product Ordered</th>
+                      <th>Item Description</th>
+                      <th>Size</th>
+                      <th>Variation</th>
+                      <th>Packaging</th>
+                      <th>Cap</th>
+                      <th>Quantity</th>
+                      <th>Order Subtotal</th>
+                  </thead>
+                  <tbody>
+                    @php
+                        $order_mdl = new \App\Models\Order;
+                        $order_items = $order_mdl->readMyOrders($item->order_id);  
+                        $total = 0; 
+                    @endphp
+                    @foreach ($order_items as $key => $data)
+                      <tr>
+                        <td>
+                          @php
+                              $src = \DB::table('product_images')->where('sku', $item->sku)->value('image');
+                              $total = $total + $data->price;
+    
+                              switch ($data->status) {
+                                case 1:
+                                  $status = 'Processing';
+                                  break;
+                                case 2:
+                                  $status = 'On the way';
+                                  break;
+                                default:
+                                  # code...
+                                  break;
+                              }
+                          @endphp
+                          @if ($src)
+                          <div class="responsive-img" style="width:70px; background-image:url('/images/{{ $src }}')"></div>
+                          @else
+                          <div class="responsive-img" style="width:70px; background-image: url('https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png')"></div>
+                          @endif
+                        </td>
+                        <td>{{$data->name}}</td>
+                        <td>{{$data->size ?$data->size : "-"}}</td>
+                        <td>{{$data->variation ? $data->variation : "-"}}</td>
+                        <td>{{$data->packaging ?$data->packaging : "-"}}</td>
+                        <td>{{$data->closure ? $data->closure : "-"}}</td>
+                        <td>{{$data->qty}}</td>
+                        <td>₱{{number_format($data->amount,2,".",",")}}</td>
+                      </tr> 
+                    @endforeach
+                      <tr>
+                        <td colspan="3"></td>
+                        <td colspan="5"><hr></td>
+                      </tr> 
+                      <tr>
+                        <td colspan="6"><a class="text-dark" href="{{ url('/my-purchase/'.$item->order_id) }}"><b>Order ID: <u>{{ $item->order_id }}</u></b></a><span class="badge badge-success ml-3"> {{$status}}</span></td>
+                        <td>Total Payment</td>
+                        <td><b>₱{{number_format($total,2,".",",")}}</b></td>
+                      </tr> 
+    
+                  </tbody>
+              </table>  
+          </div>
+            @endforeach
+    
+            <div class="mt-3">
+              {{ $my_orders->links() }}
+            </div>
 
-              </tbody>
-          </table>  
-      </div>
-        @endforeach
-
-        <div class="mt-3">
-          {{ $my_orders->links() }}
+          </div>
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
         </div>
+      
     </div>
 
    </div>

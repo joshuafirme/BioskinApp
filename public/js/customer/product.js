@@ -18,7 +18,7 @@ async function getItems (data) {
         html +=      '<button class="btn btn-success btn-block m-1">Buy now</button>';
         html +=   '</div>';
         html +=    '<div class="col-2">';
-        html +=        '<a data-sku="'+ data.sku +'" data-price="'+ data.price +'" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
+        html +=        '<a data-sku="'+ data.sku +'" data-price="'+ data.price +'" data-order-type="0" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
         html +=     '</div>';
         if (data.rebranding == 1) {
             html +=     '<div class="col-12">';

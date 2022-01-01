@@ -158,12 +158,14 @@ $(document).on('click', '#btn-place-order', async function(){
     let voucher_code = $('#voucher').val();
     let address_id = $('#address_id').val();
     let courier_id = $('#courier_id').val();
-    let opt_payment_method = $('.payment-method-container').find('.active').attr('data-value');
+    let opt_payment_method = $("input[name='rad_pm']:checked").val();
+    let mode_of_payment = $('.payment-method-container').find('.active').attr('data-value');
+
     let opt_shipping_mop = $('input[name="opt_shipping_mop"]:checked').val();
 
     let notes = $('#notes').val();
     let html = '';
-    if ($('.payment-method-container').find('.active').length == 0) {
+    if (mode_of_payment == 'online_payment' && !opt_payment_method) {
         html = '<small class="text-danger">Please select payment method.</small>';
         $('#input-validation').html(html);
         return;
@@ -199,17 +201,54 @@ $(document).on('click', '#btn-place-order', async function(){
         },
         success:function(data){
             btn.remove();
-            $('#order-placed-modal').modal({
-                backdrop: 'static',
-                keyboard: false 
-            });
+            if (mode_of_payment == 'COD') {
+                $('#order-placed-modal').modal({
+                    backdrop: 'static',
+                    keyboard: false 
+                });
+            }
+            else {
+                paynamicsPayment(opt_payment_method);
+            }
         }
     });
 });
 
+function paynamicsPayment(pmethod) {
+    $.ajax({
+        url: '/paynamics-payment',
+        type: 'POST',
+        data: {
+            pmethod : pmethod
+        },
+        success:function(data){
+            console.log(data)
+            $('#paynamics-form-container').html(data);
+        }
+    });
+}
+
 $(document).on('click', '.payment-method-container button', function(){ 
     $('.payment-method-container button').removeClass('active');
     $(this).addClass('active');
+    let btn_active = $('.payment-method-container').find('.active');
+    let payment_method = btn_active.attr('data-value');
+    $('.payment-method-container button i').remove();
+    let _text = '';
+    let fa_class = btn_active.hasClass("active") ? 'fas fa-check-circle' : 'far fa-circle';
+    if (payment_method == 'online_payment') {
+        $('.payment-methods-container').removeClass('d-none');
+        $('.computation-container').addClass('col-lg-12');
+        _text = 'Online Payment';
+        $('.payment-method-container button').html('Cash on Delivery <i class="far fa-circle float-right"></i>');
+    }
+    else {
+        $('.payment-methods-container').addClass('d-none');
+        $('.computation-container').removeClass('col-lg-12');
+        _text = 'Cash on Delivery';
+        $('.payment-method-container button').html('Online Payment <i class="far fa-circle float-right"></i>');
+    }
+    $(this).html(_text+' <i class="'+fa_class+' float-right"></i>');
 });
 
 $(document).on('click', '#btn-set-default', function(){ 

@@ -385,3 +385,10 @@ body{
 }
 
 
+.alert-success {
+  background-color: #00AD35 !important;
+}
+
+.text-success {
+  color: #00AD35 !important;
+}
