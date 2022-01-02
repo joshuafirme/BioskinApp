@@ -34,7 +34,7 @@ class ManageOrderController extends Controller
                 ->addColumn('action', function($order)
                 {
                     $button = '<a class="btn btn-sm btn-show-order" data-name="'. $order->firstname .'" data-order-no="'. $order->order_id .'" ';
-                    $button .= 'data-user-id="'. $order->user_id .'" data-payment="COD" data-delivery-date="" '; 
+                    $button .= 'data-user-id="'. $order->user_id .'" data-payment="'.$order->payment_method.'" data-delivery-date="" '; 
                     $button .= 'data-phone="'. $order->phone_no .'" data-email="'. $order->email .'" style="color:#1970F1;">Show orders</a>';
                     return $button;
                 })

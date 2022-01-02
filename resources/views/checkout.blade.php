@@ -240,7 +240,7 @@
           </div>
           <div class="col-sm-9 payment-methods-container d-none">
             
-            <div class="mb-4">
+            <div class="mb-4 border p-3">
              <div class="row mb-3">
                 <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
                     <div class="custom-control custom-radio">
@@ -259,7 +259,7 @@
                         <input value="gc" name="rad_pm" type="radio" id="rad_gcash" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_gcash">
                             <span class="pm-icon-holder">
-                                <img style="border-radius:5px; margin-top: -12px;" width="51" src="https://logos-download.com/wp-content/uploads/2020/06/GCash_Logo.png"/>
+                                <img style="border-radius:5px; margin-top: -9px;" width="51" src="https://logos-download.com/wp-content/uploads/2020/06/GCash_Logo.png"/>
                             </span>
                             &nbsp;
                         <span class="text-prussian-blue font-weight-bold small">GCash e-wallet</span>
@@ -295,7 +295,7 @@
              <div class="row">
                 <div id="pm_ceb" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_ceb" name="rad_pm" type="radio" id="rad_ceb" class="custom-control-input">
+                        <input value="ceb" name="rad_pm" type="radio" id="rad_ceb" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_ceb">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ceb.png" alt="Cebuana Lhuillier">
@@ -309,7 +309,7 @@
                 </div>
                 <div id="pm_seveneleven" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_seveneleven" name="rad_pm" type="radio" id="rad_seveneleven" class="custom-control-input">
+                        <input value="7eleven" name="rad_pm" type="radio" id="rad_seveneleven" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_seveneleven">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/7connect.png" alt="7-Eleven">
@@ -323,7 +323,7 @@
                 </div>
                 <div id="pm_ecpay" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_ecpay" name="rad_pm" type="radio" id="rad_ecpay" class="custom-control-input">
+                        <input value="ecpay" name="rad_pm" type="radio" id="rad_ecpay" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_ecpay">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ecpay.png" alt="ECPay">
@@ -337,7 +337,7 @@
                 </div>
                 <div id="pm_cliqq" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_cliqq" name="rad_pm" type="radio" id="rad_cliqq" class="custom-control-input">
+                        <input value="cliqq" name="rad_pm" type="radio" id="rad_cliqq" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_cliqq">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/cliqq.png" alt="Cliqq">
@@ -351,7 +351,7 @@
                 </div>
                 <div id="pm_ml" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_ml" name="rad_pm" type="radio" id="rad_ml" class="custom-control-input">
+                        <input value="ml" name="rad_pm" type="radio" id="rad_ml" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_ml">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/ml.png" alt="M Lhuillier">
@@ -365,7 +365,7 @@
                 </div>
                 <div id="pm_bayadcenter" class="col-md-6 col-xs-12" style="display: none">
                     <div class="custom-control custom-radio">
-                        <input value="rad_bayadcenter" name="rad_pm" type="radio" id="rad_bayadcenter" class="custom-control-input">
+                        <input value="bayadcenter" name="rad_pm" type="radio" id="rad_bayadcenter" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_bayadcenter">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/bayadcenter.png" alt="BayadCenter">
@@ -379,7 +379,7 @@
                 </div>
                 <div id="pm_bdootc" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
-                        <input value="rad_bdootc" name="rad_pm" type="radio" id="rad_bdootc" class="custom-control-input">
+                        <input value="bdootc" name="rad_pm" type="radio" id="rad_bdootc" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_bdootc">
                             <span class="pm-icon-holder">
                                 <img src="https://testpti.payserv.net/webpayment/resources/images/otc-icons/bdootc.png" alt="BDO">

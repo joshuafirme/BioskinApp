@@ -132,7 +132,7 @@
                 </ul>
                 <hr>
                 <div class="ps-vs-n ml-2">
-                  <div class="mt-2"><a href="{{ url('/my-purchases') }}" class="text-muted">My Purchases</a></div>
+                  <div class="mt-2"><a href="{{ url('/my-purchases?status=all') }}" class="text-muted">My Purchases</a></div>
                   <div class="mt-2"><a href="#" class="text-muted">My Vouchers</a></div>
                   <div class="mt-2"><a href="#" class="text-muted">Notification</a></div>
                 </div>

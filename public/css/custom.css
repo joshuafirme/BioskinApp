@@ -380,6 +380,10 @@ body{
   background-color:#00AD35 !important;
 }
 
+.nav-link.active:hover{
+  color:#FFF !important;
+}
+
 .nav-link:hover{
   color:#00AD35 !important;
 }
@@ -387,6 +391,10 @@ body{
 
 .alert-success {
   background-color: #00AD35 !important;
+}
+
+.alert-secondary {
+  background: #E7E6E6 !important; color:#000 !important; border:#E7E6E6 !important;
 }
 
 .text-success {

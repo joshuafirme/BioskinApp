@@ -169,6 +169,8 @@ $(document).on('click', '#btn-place-order', async function(){
         html = '<small class="text-danger">Please select payment method.</small>';
         $('#input-validation').html(html);
         return;
+    } else {
+        opt_payment_method = 'COD';
     }
     if (courier_id.length == 0) {
         html = '<small class="text-danger">Please select courier.</small>';

@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/place-order', 'CheckoutController@placeOrder');
 
     Route::get('/my-purchases', 'MyPurchasesController@index');
+    Route::get('/my-purchases/search', 'MyPurchasesController@search');
     Route::get('/my-purchase/{order_id}', 'MyPurchasesController@readOne');
     
     Route::post('/paynamics-payment', 'CheckoutController@paynamicsPayment')->name('paynamicsPayment');

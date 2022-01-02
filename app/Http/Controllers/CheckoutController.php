@@ -239,6 +239,8 @@ class CheckoutController extends Controller
                 'qty' => $data->qty,
                 'amount' => $data->amount,
             ]);
+
+            $this->updateInventory($data->sku, $data->qty);
         }
 
         $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
@@ -262,7 +264,15 @@ class CheckoutController extends Controller
             ]);
         }
 
-      //  $this->removeCartChecked();
+        $this->removeCartChecked();
+    }
+
+    public function updateInventory($sku, $qty){
+        
+        Product::where('sku', $sku)
+            ->update([
+                'qty' => DB::raw('qty - '. $qty .'')
+            ]);
     }
 
     public function removeCartChecked() {

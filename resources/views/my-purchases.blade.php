@@ -123,7 +123,7 @@
     <div class="container">
         <div class="row ">
            <div class="col-sm-12">
-            <form action="">
+            <form action="{{ action('MyPurchasesController@search') }}" method="post">
               <input class="form-control float-right w-50" id="input-search-product" type="search" placeholder="Search by Order ID or Product Name" aria-label="Search">
             </form>
            </div>
@@ -147,17 +147,20 @@
            </div>
            <div class="col-sm-12 col-md-8">
             <ul class="nav nav-pills mb-3 mt-3 float-right" id="pills-tab" role="tablist">
+              @php
+                $status = isset($_GET['status']) ? $_GET['status'] : "";
+              @endphp
               <li class="nav-item">
-                <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">All</a>
+                <a class="nav-link {{ $status == 'all'  ? "active" : "" }}" href="{{url('/my-purchases?status=all')}}">All</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">To pay</a>
+                <a class="nav-link {{ $status ==  '0' ? "active" : "" }}" href="{{url('/my-purchases?status=0')}}">To pay</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Processing</a>
+                <a class="nav-link {{ $status ==  '1' ? "active" : "" }}" href="{{url('/my-purchases?status=1')}}">Processing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">On the way</a>
+                <a class="nav-link {{ $status ==  '2' ? "active" : "" }}" href="{{url('/my-purchases?status=2')}}">On the way</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">To receive</a>
@@ -173,7 +176,25 @@
         </div>
         <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+            @php
+              $my_orders = \App\Models\Order::select('orders.order_id')
+                      ->where('user_id', Auth::id())
+                      ->where('OD.status', $status)
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->orderBy('orders.created_at', 'desc')
+                      ->distinct('orders.order_id')
+                      ->paginate(5);
 
+                      if ($status == 'all' || !isset($_GET['status'])) {
+                        $my_orders = \App\Models\Order::select('orders.order_id')
+                        ->where('user_id', Auth::id())
+                        ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                        ->orderBy('orders.created_at', 'desc')
+                        ->distinct('orders.order_id')
+                        ->paginate(3);
+                      }
+            @endphp
+            @if (count($my_orders) > 0)
             @foreach ($my_orders as $item)
             <div class="table-container mt-4 border ">  
               <table class="table table-borderless" id="cart-table">
@@ -190,7 +211,7 @@
                   <tbody>
                     @php
                         $order_mdl = new \App\Models\Order;
-                        $order_items = $order_mdl->readMyOrders($item->order_id);  
+                        $order_items = $order_mdl->readOrdersByOrderIDAndStatus($item->order_id);  
                         $total = 0; 
                     @endphp
                     @foreach ($order_items as $key => $data)
@@ -221,7 +242,7 @@
                         <td>{{$data->name}}</td>
                         <td>{{$data->size ?$data->size : "-"}}</td>
                         <td>{{$data->variation ? $data->variation : "-"}}</td>
-                        <td>{{$data->packaging ?$data->packaging : "-"}}</td>
+                        <td>{{$data->packaging ? $data->packaging : "-"}}</td>
                         <td>{{$data->closure ? $data->closure : "-"}}</td>
                         <td>{{$data->qty}}</td>
                         <td>₱{{number_format($data->amount,2,".",",")}}</td>
@@ -232,7 +253,9 @@
                         <td colspan="5"><hr></td>
                       </tr> 
                       <tr>
-                        <td colspan="6"><a class="text-dark" href="{{ url('/my-purchase/'.$item->order_id) }}"><b>Order ID: <u>{{ $item->order_id }}</u></b></a><span class="badge badge-success ml-3"> {{$status}}</span></td>
+                        <td colspan="6"><a class="text-dark" href="{{ url('/my-purchase/'.$item->order_id) }}"><b>Order ID: {{ $item->order_id }}</b></a><span class="badge badge-success ml-3"> {{$status}}</span>
+                          <br><span><a href="{{ url('/my-purchase/'.$item->order_id) }}">View more details</a></span>
+                        </td>
                         <td>Total Payment</td>
                         <td><b>₱{{number_format($total,2,".",",")}}</b></td>
                       </tr> 
@@ -241,9 +264,12 @@
               </table>  
           </div>
             @endforeach
+            @else
+              <div class="alert alert-secondary text-center">No order was found.</div>
+            @endif
     
             <div class="mt-3">
-              {{ $my_orders->links() }}
+              {{ $my_orders->appends(request()->except('page'))->links() }}
             </div>
 
           </div>

@@ -9,21 +9,28 @@ async function getItems (data) {
 
         html += '<div class="m-2">';
         html +=  '<div class="text-dark text-bold mt-1">'+data.name+'</div>';
+        let qty_text = 'Qty: '+data.qty;
+        if (data.qty == 0) {
+            qty_text = '<span class="text-danger">Out of stock</span>';
+        }
+        html +=  '<div class="text-muted mt-1 float-right">'+qty_text+'</div>';
         html +=   '<div class="text-muted mt-1">'+data.size+'</div>';
         html +=   '<div class="text-muted mt-1">₱'+data.price+'</div>';
         html +=   '</div>';
+        if (data.qty > 0) {
 
-        html += '<div class="row product-buttons mt-2">';
-        html +=   '<div class="col-10">';
-        html +=      '<button class="btn btn-success btn-block m-1">Buy now</button>';
-        html +=   '</div>';
-        html +=    '<div class="col-2">';
-        html +=        '<a data-sku="'+ data.sku +'" data-price="'+ data.price +'" data-order-type="0" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
-        html +=     '</div>';
-        if (data.rebranding == 1) {
-            html +=     '<div class="col-12">';
-            html +=         '<a href="/rebrand/'+ data.sku +'/'+category_name+'" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>';
+            html += '<div class="row product-buttons mt-2">';
+            html +=   '<div class="col-10">';
+            html +=      '<button class="btn btn-success btn-block m-1">Buy now</button>';
+            html +=   '</div>';
+            html +=    '<div class="col-2">';
+            html +=        '<a data-sku="'+ data.sku +'" data-price="'+ data.price +'" data-order-type="0" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';
             html +=     '</div>';
+            if (data.rebranding == 1) {
+                html +=     '<div class="col-12">';
+                html +=         '<a href="/rebrand/'+ data.sku +'/'+category_name+'" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>';
+                html +=     '</div>';
+            }
         }
         html +=  '</div>';
         html +=   '</div>';
