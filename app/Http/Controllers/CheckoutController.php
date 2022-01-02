@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserAddress;
+use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Courier;
 use App\Models\Voucher;
@@ -265,6 +266,9 @@ class CheckoutController extends Controller
         }
 
         $this->removeCartChecked();
+
+        Cache::forget('products-cache');
+        Cache::forget('packaging-cache');
     }
 
     public function updateInventory($sku, $qty){

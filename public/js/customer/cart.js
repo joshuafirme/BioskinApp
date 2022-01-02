@@ -6,11 +6,11 @@ $(document).ready(function () {
         var variation = data.variation != null ? data.variation : '-';
         var size = data.size != null ? data.size : '-';
         html += '<tr>';
-        html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-check-val="'+data.is_checked+'"></input></td>';
+        html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-stock="'+data.stock+'" data-check-val="'+data.is_checked+'"></input></td>';
         html +=    '<td>';
         html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:100px;"  id="data-image-'+identifier+'"></div></a>';
         html +=    '</td>';
-        html +=    '<td id="data-name-'+identifier+'">'+data.name+'</td>';
+        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> Stock: '+data.stock+'</td>';
         html +=    '<td>'+size+'</td>';
         html +=    '<td>'+variation+'</td>';
         html +=    '<td>'+packaging+'</td>';
@@ -27,7 +27,7 @@ $(document).ready(function () {
         return html;
     }
     
-    function readCart() {
+    async function readCart() {
         var html = '';
         $.ajax({
             url: '/read-cart',
@@ -66,6 +66,8 @@ $(document).ready(function () {
                 for (var i = 0; i < data.length; i++) { 
                     readImage(data[i].sku, i);
                 }
+
+                await uncheckIfOutOfStock();
                 
             }
         });
@@ -106,6 +108,19 @@ $(document).ready(function () {
     
                 
                 makeResponvie();
+            }
+        });
+    }
+
+    
+    async function uncheckIfOutOfStock() {
+        $('#cart-item-container').find('[type=checkbox]').each(async function(i){
+            let check_value = 0;
+            if (parseInt($(this).attr('data-stock')) == 0) {
+                check_value = 0; 
+                $(this).prop( "checked", false );
+                $(this).prop( "disabled", true );
+                await updateCartCheck($(this).val(), check_value);
             }
         });
     }
@@ -207,6 +222,9 @@ $(document).ready(function () {
             
         });
     
-    
-    readCart();
+    async function render() {
+        await readCart();
+    }
+
+    render();
 });
