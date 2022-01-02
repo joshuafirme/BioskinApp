@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\OrderDetail;
 
 class ManageOrderController extends Controller
 {
@@ -15,7 +16,10 @@ class ManageOrderController extends Controller
     public function readOrders(Order $o)
     {
         $status = 1;
-        if (request()->object == "prepared") {
+        if (request()->object == "to-pay") {
+            $status = 0;
+        }
+        if (request()->object == "otw") {
             $status = 2;
         }
         else if (request()->object == "shipped") {
@@ -25,7 +29,7 @@ class ManageOrderController extends Controller
             $status = 4;
         }
         else if (request()->object == "cancelled") {
-            $status = 0;
+            $status = 5;
         }
         $order = $o->readOrdersByStatus($status);
         if(request()->ajax())
@@ -50,6 +54,25 @@ class ManageOrderController extends Controller
         }
     }
 
+    
+    public function changeOrderStatus($order_id) {
+        
+        if (request()->status == 2) { 
+           // $orders = $this->readOneOrder($order_id);
+           // $this->recordSale($orders);
+        }
+
+        OrderDetail::where('order_id', $order_id)->update([
+            'status' => request()->status
+        ]);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'order changed status success',
+            'req_params' =>request()->status
+        ]);
+    }
+
     public function readShippingAddress($order_id) {
         $o = new Order;
         $data = $o->readShippingAddress($order_id);
@@ -61,9 +84,9 @@ class ManageOrderController extends Controller
         return $order->readOneOrder($order_id);
     }
 
-    public function readTotalAmount($order_no) {
+    public function readTotalAmount($order_id) {
         return DB::table('orders')
-        ->where('order_no', $order_no)
+        ->where('order_no', $order_id)
         ->sum('amount');
     }
 }

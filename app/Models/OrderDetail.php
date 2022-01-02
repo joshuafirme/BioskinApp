@@ -14,7 +14,9 @@ class OrderDetail extends Model
         'courier_id',
         'voucher_code',
         'payment_method',
-        'shipping_fee_mop',
+        'request_id',
+        'response_id',
+        'response_message',
         'status'
     ];
    

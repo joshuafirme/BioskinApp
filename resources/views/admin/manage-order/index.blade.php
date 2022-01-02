@@ -39,20 +39,39 @@
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
+                          <li class="nav-item">
+                            <a class="nav-link" id="to-pay-tab" data-toggle="tab" href="#to-pay" role="tab" aria-controls="to-pay" aria-selected="false">To pay</a>
+                          </li>
                             <li class="nav-item">
                                 @php
-                                    $pending_count = App\Models\Order::where('status', 1)->distinct()->count('order_id');
+                                    $processing_count = App\Models\Order::where('status', 1)->distinct()->count('order_id');
                                 @endphp
-                              <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Processing <span class="badge badge-primary">{{$pending_count}}</span></a>
+                              <a class="nav-link active" id="processing-tab" data-toggle="tab" href="#processing" role="tab" aria-controls="processing" aria-selected="true">Processing <span class="badge badge-primary">{{$processing_count}}</span></a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="placed-tab" data-toggle="tab" href="#placed" role="tab" aria-controls="placed" aria-selected="false">On the way</a>
+                              <a class="nav-link" id="otw-tab" data-toggle="tab" href="#otw" role="tab" aria-controls="otw" aria-selected="false">On the way</a>
                             </li>
                           </ul>
                           <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                            <div class="tab-pane fade show" id="to-pay" role="tabpanel" aria-labelledby="to-pay-tab">
+                              <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-to-pay-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
+                          </div>
+                            <div class="tab-pane fade show active" id="processing" role="tabpanel" aria-labelledby="processing-tab">
                                 <div class="mt-4">
-                                    <table class="table table-hover" id="tbl-pending-order">
+                                    <table class="table table-hover" id="tbl-processing-order">
                                       <thead>
                                           <tr>
                                               <th>Order #</th>
@@ -66,7 +85,22 @@
                                   </table>
                                   </div>
                             </div>
-                            <div class="tab-pane fade" id="placed" role="tabpanel" aria-labelledby="placed-tab">...</div>
+                            <div class="tab-pane fade" id="otw" role="tabpanel" aria-labelledby="otw-tab">
+                              <div class="mt-4">
+                                <table class="table table-hover" id="tbl-otw-order">
+                                  <thead>
+                                      <tr>
+                                          <th>Order #</th>
+                                          <th>Customer Name</th>
+                                          <th>Email</th>
+                                          <th>Phone number</th>
+                                          <th>Date Order</th>
+                                          <th>Action</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                              </div>
+                            </div>
                           </div>
                     </div>
                 </div>

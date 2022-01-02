@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-order', 'ManageOrderController@index');
         Route::get('/manage-order/read-orders', 'ManageOrderController@readOrders');
         Route::get('/manage-order/read-one-order/{order_id}', 'ManageOrderController@readOneOrder');
+        Route::post('/manage-order/change-status/{order_id}', 'ManageOrderController@changeOrderStatus');
         Route::resource('/users', 'UserController');
         Route::get('/read-users', 'UserController@readUsers');
         Route::resource('/product', 'ProductController');

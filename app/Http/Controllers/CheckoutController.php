@@ -254,18 +254,25 @@ class CheckoutController extends Controller
                 $voucher_code = request()->voucher_code;
             }
 
+           $pmethod = request()->opt_payment_method;
+           $status = 0;
+
+           if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph') {
+               $status = 1;
+           }
+
             OrderDetail::create([
                 'order_id' => $order_id,
                 'address_id' => request()->address_id,
                 'courier_id' => request()->courier_id,
                 'voucher_code' => $voucher_code,
-                'payment_method' => request()->opt_payment_method,
+                'payment_method' => $pmethod,
                 'shipping_fee_mop' => 1,
-                'status' => 1,
+                'status' => $status,
             ]);
         }
 
-        $this->removeCartChecked();
+       // $this->removeCartChecked();
 
         Cache::forget('products-cache');
         Cache::forget('packaging-cache');
@@ -331,7 +338,7 @@ class CheckoutController extends Controller
     public function readCartChecked() {
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
-                    ->select( 'P.*', 'P.name as name', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
+                    ->select( 'P.*', 'P.name as name', 'P.qty as stock', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
                     'PG.name as packaging', 'C.name as closure', 
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')

@@ -196,7 +196,7 @@
             @endphp
             @if (count($my_orders) > 0)
             @foreach ($my_orders as $item)
-            <div class="table-container mt-4 border ">  
+            <div class="table-container mt-1 border ">  
               <table class="table table-borderless" id="cart-table">
                   <thead style="background-color: #E7E6E6;">
                       <th>Product Ordered</th>
@@ -222,6 +222,9 @@
                               $total = $total + $data->price;
     
                               switch ($data->status) {
+                                case 0:
+                                  $status = 'To Pay';
+                                  break;
                                 case 1:
                                   $status = 'Processing';
                                   break;

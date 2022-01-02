@@ -169,7 +169,8 @@ $(document).on('click', '#btn-place-order', async function(){
         html = '<small class="text-danger">Please select payment method.</small>';
         $('#input-validation').html(html);
         return;
-    } else {
+    } 
+    else if (mode_of_payment == 'COD'){
         opt_payment_method = 'COD';
     }
     if (courier_id.length == 0) {
@@ -201,8 +202,9 @@ $(document).on('click', '#btn-place-order', async function(){
             opt_shipping_mop : opt_shipping_mop,
             notes : notes
         },
-        success:function(data){
+        success:function(result){
             btn.remove();
+           // if (result == '')
             if (mode_of_payment == 'COD') {
                 $('#order-placed-modal').modal({
                     backdrop: 'static',
