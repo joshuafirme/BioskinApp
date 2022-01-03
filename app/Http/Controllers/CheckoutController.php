@@ -257,7 +257,7 @@ class CheckoutController extends Controller
            $pmethod = request()->opt_payment_method;
            $status = 0;
 
-           if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph') {
+           if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
                $status = 1;
            }
 

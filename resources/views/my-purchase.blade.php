@@ -116,7 +116,7 @@ thead{
           <ol class="breadcrumb bg-white">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="{{url('/account')}}">Account</a></li>
-            <li class="breadcrumb-item"><a href="{{url('/my-purchases')}}">My Purchases</a></li>
+            <li class="breadcrumb-item"><a href="{{url('/my-purchases?status=all')}}">My Purchases</a></li>
             <li class="breadcrumb-item active" aria-current="page">Order ID {{ $order_id }}</li>
           </ol>
         </nav>
@@ -136,8 +136,52 @@ thead{
                 <div id="address">{{ $address->municipality." ".$address->brgy ." ".$address->detailed_loc }}
                 </div>
             </div>
+            @php
+                
+                $order_detail = DB::table('order_details as OD')
+                    ->where('order_id', $order_id)
+                    ->leftJoin('voucher as V', 'V.voucher_code', '=', 'OD.voucher_code')
+                    ->first();
+
+                    switch ($order_detail->status) {
+                        case 0:
+                          $status = 'To Pay';
+                          break;
+                        case 1:
+                            $status = 'Processing';
+                            break;
+                        case 2:
+                            $status = 'On the way';
+                            break;
+                        case 3:
+                            $status = 'To receive';
+                            break;
+                        default:
+                                  # code...
+                            break;
+                      }    
+                      
+                      switch ($order_detail->payment_method) {
+                        case 'cc':
+                          $order_detail->payment_method = 'Credit/Debit Card';
+                          break;
+                        case 'gc':
+                          $order_detail->payment_method = 'GCash';
+                            break;
+                        case 'bpionline':
+                          $order_detail->payment_method = 'BPI Online';
+                            break;
+                        case 'br_bdo_ph':
+                          $order_detail->payment_method = "BDO Online";
+                        default:
+                                  # code...
+                            break;
+                      }    
+            @endphp
             <div class="col-sm-12 col-md-2">
                 <b>Order ID: {{$order_id}}</b>
+                <span class="badge badge-success">{{ $status }}</span>
+                <br><span class="badge badge-light">{{ $order_detail->payment_method }}</span>
             </div>
         </div>
 
@@ -184,14 +228,27 @@ thead{
                       <td colspan="5"><hr></td>
                     </tr> 
                     <tr>
-                      <td colspan="3"></td>
-                      <td colspan="3"></td>
+                      <td colspan="6"></td>
+                      <td>Merchandise subtotal</td>
+                      <td><b>₱{{number_format($total,2,".",",")}}</b></td>
+                    </tr> 
+                    <tr>
+                      <td colspan="6"></td>
+                      <td>Voucher discount</td>
+                      <td><b>₱{{number_format($order_detail->discount,2,".",",")}}</b></td>
+                    </tr>
+                    @php
+                        $total = $total - $order_detail->discount;
+                    @endphp
+                    <tr>
+                      <td colspan="6"></td>
                       <td>Total Payment</td>
                       <td><b>₱{{number_format($total,2,".",",")}}</b></td>
                     </tr> 
-  
+                    
                 </tbody>
             </table>  
+            <small class="m-2 float-lg-right">*Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
         </div>
     </div>
 

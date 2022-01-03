@@ -92,7 +92,7 @@
                                     <option value="5">Production</option>
                                     <option value="6">Finish Goods</option>
                                     <option value="7">Logistics/Warehousing</option>
-                                    <option value="8">Clients/CSR</option>
+                                    <option value="8">Customer Service Representative</option>
                                 </select>
                               </div>
                               

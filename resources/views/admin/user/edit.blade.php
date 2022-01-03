@@ -85,8 +85,14 @@
                                    // $disabled = $user->access_rights == 1 ? "disabled" : "";
                                 @endphp
                                 <select class="form-control" name="access_rights" id="access_rights">
-                                    <option value="1" {{ $user->access_rights == 1 ? 'selected' : '' }}>Admin</option>
-                                    <option value="2" {{ $user->access_rights == 2 ? 'selected' : '' }}>Customer</option>
+                                    <option value="1"{{ $user->access_rights == 1 ? 'selected' : '' }}>Sales Admin</option>
+                                    <option value="2"{{ $user->access_rights == 2 ? 'selected' : '' }}>Customer</option>
+                                    <option value="3"{{ $user->access_rights == 3 ? 'selected' : '' }}>Sales Department</option>
+                                    <option value="4"{{ $user->access_rights == 4 ? 'selected' : '' }}>Accounting</option>
+                                    <option value="5"{{ $user->access_rights == 5 ? 'selected' : '' }}>Production</option>
+                                    <option value="6"{{ $user->access_rights == 6 ? 'selected' : '' }}>Finish Goods</option>
+                                    <option value="7"{{ $user->access_rights == 7 ? 'selected' : '' }}>Logistics/Warehousing</option>
+                                    <option value="8"{{ $user->access_rights == 8 ? 'selected' : '' }}>Customer Service Representative</option>
                                 </select>
                               </div>
 

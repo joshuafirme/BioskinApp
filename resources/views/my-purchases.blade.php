@@ -163,7 +163,7 @@
                 <a class="nav-link {{ $status ==  '2' ? "active" : "" }}" href="{{url('/my-purchases?status=2')}}">On the way</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">To receive</a>
+                <a class="nav-link {{ $status ==  '3' ? "active" : "" }}" href="{{url('/my-purchases?status=3')}}">To receive</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Completed</a>
@@ -196,7 +196,7 @@
             @endphp
             @if (count($my_orders) > 0)
             @foreach ($my_orders as $item)
-            <div class="table-container mt-1 border ">  
+            <div class="table-container mt-3 border ">  
               <table class="table table-borderless" id="cart-table">
                   <thead style="background-color: #E7E6E6;">
                       <th>Product Ordered</th>
@@ -219,7 +219,7 @@
                         <td>
                           @php
                               $src = \DB::table('product_images')->where('sku', $item->sku)->value('image');
-                              $total = $total + $data->price;
+                              $total = $total + $data->amount;
     
                               switch ($data->status) {
                                 case 0:
@@ -230,6 +230,9 @@
                                   break;
                                 case 2:
                                   $status = 'On the way';
+                                  break;
+                                case 3:
+                                  $status = 'To receive';
                                   break;
                                 default:
                                   # code...
@@ -259,7 +262,7 @@
                         <td colspan="6"><a class="text-dark" href="{{ url('/my-purchase/'.$item->order_id) }}"><b>Order ID: {{ $item->order_id }}</b></a><span class="badge badge-success ml-3"> {{$status}}</span>
                           <br><span><a href="{{ url('/my-purchase/'.$item->order_id) }}">View more details</a></span>
                         </td>
-                        <td>Total Payment</td>
+                        <td>Total Amount</td>
                         <td><b>₱{{number_format($total,2,".",",")}}</b></td>
                       </tr> 
     

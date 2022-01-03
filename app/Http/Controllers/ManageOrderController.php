@@ -22,14 +22,17 @@ class ManageOrderController extends Controller
         if (request()->object == "otw") {
             $status = 2;
         }
-        else if (request()->object == "shipped") {
+        else if (request()->object == "to-receive") {
             $status = 3;
         }
-        else if (request()->object == "completed") {
+        else if (request()->object == "received") {
             $status = 4;
         }
-        else if (request()->object == "cancelled") {
+        else if (request()->object == "completed") {
             $status = 5;
+        }
+        else if (request()->object == "cancelled") {
+            $status = 6;
         }
         $order = $o->readOrdersByStatus($status);
         if(request()->ajax())

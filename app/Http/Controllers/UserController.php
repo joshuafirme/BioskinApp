@@ -36,7 +36,7 @@ class UserController extends Controller
                 ->addColumn('access_rights', function($user){
                     $html = "";
                     if($user->access_rights == 1) {
-                        $html = "Admin";
+                        $html = "Sales Admin";
                     }
                     elseif($user->access_rights == 2) {
                         $html = "Customer";
@@ -57,7 +57,7 @@ class UserController extends Controller
                         $html = "Logistics/Warehousing";
                     }
                     elseif($user->access_rights == 8) {
-                        $html = "Clients/CSR";
+                        $html = "CSR";
                     }
                     return $html;
                 })

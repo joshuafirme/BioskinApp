@@ -51,6 +51,12 @@
                             <li class="nav-item">
                               <a class="nav-link" id="otw-tab" data-toggle="tab" href="#otw" role="tab" aria-controls="otw" aria-selected="false">On the way</a>
                             </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="to-receive-tab" data-toggle="tab" href="#to-receive" role="tab" aria-controls="to-receive" aria-selected="false">To receive</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="received-tab" data-toggle="tab" href="#received" role="tab" aria-controls="received" aria-selected="false">Order received</a>
+                            </li>
                           </ul>
                           <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show" id="to-pay" role="tabpanel" aria-labelledby="to-pay-tab">
@@ -88,6 +94,38 @@
                             <div class="tab-pane fade" id="otw" role="tabpanel" aria-labelledby="otw-tab">
                               <div class="mt-4">
                                 <table class="table table-hover" id="tbl-otw-order">
+                                  <thead>
+                                      <tr>
+                                          <th>Order #</th>
+                                          <th>Customer Name</th>
+                                          <th>Email</th>
+                                          <th>Phone number</th>
+                                          <th>Date Order</th>
+                                          <th>Action</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                              </div>
+                            </div>
+                            <div class="tab-pane fade" id="to-receive" role="tabpanel" aria-labelledby="to-receive-tab">
+                              <div class="mt-4">
+                                <table class="table table-hover" id="tbl-to-receive-order">
+                                  <thead>
+                                      <tr>
+                                          <th>Order #</th>
+                                          <th>Customer Name</th>
+                                          <th>Email</th>
+                                          <th>Phone number</th>
+                                          <th>Date Order</th>
+                                          <th>Action</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                              </div>
+                            </div>
+                            <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">
+                              <div class="mt-4">
+                                <table class="table table-hover" id="tbl-received-order">
                                   <thead>
                                       <tr>
                                           <th>Order #</th>

@@ -49,7 +49,7 @@ async function readOneOrder(order_no) {
             $.each(data,function(i,v){
                 var html = "";
                 setTimeout(function() {
-                    total = parseFloat(total) + parseFloat(data[i].price);
+                    total = parseFloat(total) + parseFloat(data[i].amount);
                     html += getItems(data[i]);
                     if (data.length-1 == i) {
                         html += getComputation(total);
@@ -86,11 +86,21 @@ function getComputation(total) {
     let fee = $('#shipping-fee-value').attr('content');
     let total_amount = total; //+ parseFloat(fee);
     var html = "";
+
+    let active_tab = $('.nav-tabs .active').attr('aria-controls');
+
     html += '<tr>';
         html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
         html += '<td>Subtotal:</td>';
         html += '<td>₱'+formatNumber(total.toFixed(2))+'</td>';
-    html += '</tr>';      
+    html += '</tr>';
+    if (active_tab == 'to-receive') {
+        html += '<tr>';
+            html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+            html += '<td>Shipping fee:</td>';
+            html += '<td><input id="shipping-fee-value" class="form-control"></td>';
+        html += '</tr>'; 
+    }     
     html += '<tr>';
         html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
         html += '<td>Total:</td>';
@@ -130,48 +140,56 @@ function formatNumber(num) {
 async function on_Click() {
     
     $(document).on('click','.btn-show-order', async function(){
+        let order_no = $(this).attr('data-order-no');
+        let customer_name = $(this).attr('data-name');
+        let phone = $(this).attr('data-phone');
+        let email = $(this).attr('data-email');
+        let payment_method = $(this).attr('data-payment');
+
         let active_tab= $('.nav-tabs .active').attr('aria-controls');
         let btn_text = 'Accept'
-        let status = 1; console.log(active_tab)
+        let status = 1; 
+
         if (active_tab== 'processing') {
             status = 2;
         }
         if (active_tab== 'otw') {
             status = 3;
         }
-        else if (active_tab== 'shipped') {
-            btn_text = 'Completed';
+        else if (active_tab== 'to-receive') {
             status = 4;
         }
-
-        let order_no = $(this).attr('data-order-no');
-        let customer_name = $(this).attr('data-name');
-        let phone = $(this).attr('data-phone');
-        let email = $(this).attr('data-email');
-        let payment_method = $(this).attr('data-payment');
-        let user_id = $(this).attr('data-user-id');
-        let delivery_date = $(this).attr('data-delivery-date');
         let btn = '';
-        if (active_tab!= 'completed' && active_tab!= 'cancelled') {
+ 
+        if ((active_tab!= 'completed' && active_tab!= 'cancelled') && (payment_method == 'cc' || payment_method == 'gc'
+        || payment_method == 'bpionline' || payment_method == 'br_bdo_ph')) {
             btn += '<button class="btn btn-sm btn-danger" id="btn-deny" data-active-tab="'+active_tab+'"  type="button">Deny</button>';
             btn += '<button class="btn btn-sm btn-success" id="btn-change-status" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">'+btn_text+'</button>';
         }
-
-                  
+           
         let html = '<div class="col-sm-12 col-md-6">';
             html += '<div>Customer name: <b>'+customer_name+'</b></div>';
             html += '<div>Contact #: <b>'+phone+'</b></div>';
             html += '<div>Email: <b>'+email+'</b></div>';
             html += '</div>';
             html += '<div class="col-sm-12 col-md-6">';
+            switch (payment_method) {
+                case 'cc':
+                    payment_method = "Credit/Debit Card";
+                    break;
+                case 'gc':
+                    payment_method = "GCash";
+                    break;
+                case 'bpionline':
+                    payment_method = "BPI Online";
+                    break;
+                case 'br_bdo_ph':
+                    payment_method = "BDO Online";
+                    break;
+            }
             html += '<div class="float-right">Order #: <b>'+order_no+'</b><div>Payment method: '+payment_method+'</div></div>';
-          //  if (active_tab == 'pending') {
-          //      html += '<div class="float-right" style="margin-right:55px;"><b>Estimated Delivery Date:</b> <input id="delivery_date" type="date" class="form-control"></div>';
-          //  }
-          //  else {
-          //      html += '<div class="float-right" style="margin-right:65px;"><b>Estimated Delivery Date:</b><br> '+delivery_date+'</div>';
-          //  }
             html += '</div>';
+
         $('#show-orders-modal').modal('show');
         $('#show-orders-modal').find('#user-info').html(html);
         $('#show-orders-modal').find('.modal-footer').html(btn);
@@ -189,17 +207,15 @@ async function on_Click() {
         let order_no = $(this).attr('data-order-no');
         let data_status = $(this).attr('data-status');
         let active_tab= $(this).attr('data-active-tab');
-        let delivery_date = "";
-        if($('#delivery_date').length > 0) {
-            if ($('#delivery_date').val().length > 0) {
-                delivery_date  = $('#delivery_date').val();
-            }
-            else {
-                alert('Please input the estimated delivery date.');
+        let shipping_fee_value = $('#shipping-fee-value').val();
+        let btn = $(this);
+
+        if (active_tab == 'to-receive') {
+            if (shipping_fee_value == "") {
+                alert('Please input shipping fee.');
                 return;
             }
-        } console.log(order_no)
-        let btn = $(this);
+        }
         $.ajax({
             url: '/manage-order/change-status/'+order_no,
             type: 'POST',
@@ -240,9 +256,14 @@ async function on_Click() {
         fetchOrder('otw');  
       });
 
-      $(document).on('click','#shipped-tab', function(){
-        $('#tbl-shipped-order').DataTable().destroy();
-        fetchOrder('shipped');  
+      $(document).on('click','#to-receive-tab', function(){
+        $('#tbl-to-receive-order').DataTable().destroy();
+        fetchOrder('to-receive');  
+      });
+
+      $(document).on('click','#received-tab', function(){
+        $('#tbl-received-order').DataTable().destroy();
+        fetchOrder('received');  
       });
 
       $(document).on('click','#completed-tab', function(){
