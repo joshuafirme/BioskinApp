@@ -202,7 +202,7 @@ $(document).on('click', '#btn-place-order', async function(){
             opt_shipping_mop : opt_shipping_mop,
             notes : notes
         },
-        success:function(result){
+        success:function(order_id){
             btn.remove();
            // if (result == '')
             if (mode_of_payment == 'COD') {
@@ -211,19 +211,21 @@ $(document).on('click', '#btn-place-order', async function(){
                     keyboard: false 
                 });
             }
-            else {
-                paynamicsPayment(opt_payment_method);
+            else {  
+                console.log(order_id)
+                paynamicsPayment(opt_payment_method, voucher_code);
             }
         }
     });
 });
 
-function paynamicsPayment(pmethod) {
+function paynamicsPayment(pmethod, voucher_code) {
     $.ajax({
         url: '/paynamics-payment',
         type: 'POST',
         data: {
-            pmethod : pmethod
+            pmethod : pmethod,
+            voucher_code : voucher_code
         },
         success:function(data){
             console.log(data)

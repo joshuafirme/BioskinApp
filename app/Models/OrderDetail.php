@@ -17,6 +17,7 @@ class OrderDetail extends Model
         'request_id',
         'response_id',
         'response_message',
+        'expiry_date',
         'status'
     ];
    

@@ -11,10 +11,10 @@ use App\Models\Voucher;
 use App\Models\Order;
 use App\Models\OrderPayment;
 use App\Models\OrderDetail;
+use App\Models\Paynamics;
 use Auth;
 use Cache;
 use DB;
-use SoapClient;
 
 class CheckoutController extends Controller
 {
@@ -33,15 +33,18 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $address = $this->readDefaultAddress();
         $cart = $this->readCartChecked();
+        $voucher_code = request()->voucher_code;
 
-        $total = $this->cartTotalAmount();
-        
+        $total = $this->cartCheckedTotalAmount($voucher_code);
+        $discount = $this->getDiscount($voucher_code);
+        $total = $total - $discount;
+
         $_mid = "000000201221F7E57B0B"; 
         $_requestid = substr(uniqid(), 0, 13);
         $_ipaddress = $ip;
         $_noturl = route('paynamicsNotification'); 
-        $_resurl = route('paynamicsNotification'); 
-        $_cancelurl = "http://127.0.0.1:8000/checkout"; 
+        $_resurl = route('paynamicsNotification');
+        $_cancelurl = url('/my-purchases?status=0'); 
         $_fname = $user->firstname; 
         $_mname = $user->middlename; 
         $_lname = $user->lastname; 
@@ -53,9 +56,9 @@ class CheckoutController extends Controller
         $_zip = ""; 
         $_email = $user->email;
         $_phone = ""; 
-        $_mobile = $user->phone_no; 
+        $_mobile = $address->phone_no; 
         $_clientip = $_SERVER['REMOTE_ADDR'];
-        $_amount = number_format((float)$total, 2, '.', '');
+        $_amount = number_format((float)$total, 2, '.', '') ;
         $_currency = "PHP"; 
         $_sec3d = "try3d";  
         $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
@@ -90,13 +93,24 @@ class CheckoutController extends Controller
             $strxml .= "<orders>";
                 $strxml .= "<items>";
                     // item 1
+                    $t_d = 0;
                 foreach ($cart as $key => $item) {
+                    $discount_v = $item->price - (((float)$discount / count($cart)) / $item->qty);
+                    
                     $strxml .= "<Items>";
                         $strxml .= "<itemname>".$item->name ."</itemname>";
                         $strxml .= "<quantity>".$item->qty ."</quantity>";
-                        $strxml .= "<amount>".$item->price ."</amount>";
+                        $strxml .= "<amount>".number_format((float)$discount_v, 2, '.', '') ."</amount>";
                     $strxml .= "</Items>";
+
+                   // $t_d = $t_d + $discount_v;
                 }
+                $strxml .= "<Items>";
+                    $strxml .= "<itemname>Discounted each item.</itemname>";
+                    $strxml .= "<quantity>0</quantity>";
+                    $strxml .= "<amount>".$discount ."</amount>";
+                $strxml .= "</Items>";
+               // return $t_d;
                 $strxml .= "</items>";
             $strxml .= "</orders>";
             $strxml .= "<mid>" . $_mid . "</mid>";
@@ -105,7 +119,7 @@ class CheckoutController extends Controller
             $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
             $strxml .= "<response_url>" . $_resurl . "</response_url>";
             $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
-            $strxml .= "<mtac_url>".$_resurl."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
+            $strxml .= "<mtac_url></mtac_url>"; // pls set this to the url where your terms and conditions are hosted
             $strxml .= "<descriptor_note></descriptor_note>"; // pls set this to the descriptor of the merchant ""
             $strxml .= "<fname>" . $_fname . "</fname>";
             $strxml .= "<lname>" . $_lname . "</lname>";
@@ -139,7 +153,6 @@ class CheckoutController extends Controller
                     .Absolute-Center {
                         font-family: "Roboto", Helvetica, Arial, sans-serif;
                         width: auto;
-                        height: 100px;
                         top:0;
                         bottom: 0;
                         left: 0;
@@ -149,8 +162,8 @@ class CheckoutController extends Controller
                         font-size: 14px;
                     }
                 </style>
-                <div class="Absolute-Center">
-                    <h3><i class="fas fa-spinner fa-pulse"></i> Please wait while you are being redirected to Paynamics payment page.</h3>
+                <div class="Absolute-Center card">
+                    <h3 class="m-3"><i class="fas fa-spinner fa-pulse"></i> Please wait while you are being redirected to Paynamics payment page.</h3>
                 </div>
                 <input type="hidden" name="paymentrequest" id="paymentrequest" value="'.$b64string.'" style="width:800px; padding: 20px;">
                 <script type="text/javascript">
@@ -162,59 +175,36 @@ class CheckoutController extends Controller
     }
 
     public function paynamicsNotification() { 
-        if (!empty($_GET["responseid"]) && !empty($_GET["requestid"])) {
-            $order_id = base64_decode($_GET["requestid"]);
-            $response_id = base64_decode($_GET["responseid"]);
+        if (!empty(request()->responseid) && !empty(request()->requestid)) {
+            $request_id = base64_decode(request()->requestid);
+            $response_id = base64_decode(request()->responseid);
 
-            $mode = 'Test';
+            $result = $this->getPaymentStatus($request_id, $response_id);
+         
 
-            if ($mode == 'Test') {
-                $mid = "000000201221F7E57B0B";
-                $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
-                $client = new SoapClient("https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL");
-            } elseif ($mode == 'Live') {
-                $mid = $this->_paymentMethod->getMerchantConfig('live_mid');
-                $mkey = $this->_paymentMethod->getMerchantConfig('live_mkey');
-                $client = new SoapClient("https://ptipaygate.paynamics.net/ccservice/ccservice.asmx?WSDL");
-            }
-
-            $request_id = '';
-            $length = 8;
-            $characters = '0123456789';
-            $charactersLength = strlen($characters);
-            $randomString = '';
-            for ($i = 0; $i < $length; $i++) {
-                $request_id .= $characters[rand(0, $charactersLength - 1)];
-            }
-
-            $merchantid = $mid;
-            $requestid = $request_id;
-            $org_trxid = $response_id;
-            $org_trxid2 = "";
-            $cert = $mkey;
-            $data = $merchantid . $requestid . $org_trxid . $org_trxid2;
-            $data = utf8_encode($data . $cert);
-
-            // create signature
-            $sign = hash("sha512", $data);
-
-            $params = array("merchantid" => $merchantid,
-                "request_id" => $requestid,
-                "org_trxid" => $org_trxid,
-                "org_trxid2" => $org_trxid2,
-                "signature" => $sign);
-
-            $result = $client->query($params);    
-            $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
-            $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
-            $response_advise = $result->queryResult->txns->ServiceResponse->responseStatus->response_advise;
-            $processor_response_id = $result->queryResult->txns->ServiceResponse->responseStatus->processor_response_id;
-          //  print_r(json_encode($result));
-          //  return;
+            if (isset($result->queryResult->txns->ServiceResponse)) {
+                $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
+                $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
+                $response_advise = $result->queryResult->txns->ServiceResponse->responseStatus->response_advise;
+                $processor_response_id = $result->queryResult->txns->ServiceResponse->responseStatus->processor_response_id;
+              }
+              else {
+                $response_code = $result->queryResult->responseStatus->response_code;
+                $response_message = $result->queryResult->responseStatus->response_message;
+                $response_advise = $result->queryResult->responseStatus->response_advise;
+                $processor_response_id = $result->queryResult->responseStatus->processor_response_id;
+              }
+  
             switch ($response_code) {
                 case 'GR001':
                 case 'GR002':
                 case 'GR033':
+                    OrderDetail::where('order_id', session()->get('order_id'))
+                    ->update([
+                        'request_id' => request()->responseid,
+                        'response_id' => request()->requestid,
+                        'response_message' => $response_message
+                    ]);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 default:
@@ -222,6 +212,11 @@ class CheckoutController extends Controller
                     break;
             }
         }
+    }
+
+    public function getPaymentStatus($request_id, $response_id) {
+        $paynamics = new Paynamics;
+        return $paynamics->getPaymentStatus($request_id, $response_id);
     }
 
     public function placeOrder() {
@@ -255,11 +250,15 @@ class CheckoutController extends Controller
             }
 
            $pmethod = request()->opt_payment_method;
+           $expiry_date = "";
            $status = 0;
 
-           if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
-               $status = 1;
-           }
+            if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
+                $status = 1;
+            }
+            else {
+                $expiry_date = date('Y-m-d h:m:s', strtotime(date('Y-m-d h:m:s').' + 2 days'));
+            }
 
             OrderDetail::create([
                 'order_id' => $order_id,
@@ -268,14 +267,20 @@ class CheckoutController extends Controller
                 'voucher_code' => $voucher_code,
                 'payment_method' => $pmethod,
                 'shipping_fee_mop' => 1,
+                'expiry_date' => $expiry_date,
                 'status' => $status,
             ]);
         }
 
-       // $this->removeCartChecked();
+        if ($pmethod == 'COD') {
+            $this->removeCartChecked();
+        }
 
         Cache::forget('products-cache');
         Cache::forget('packaging-cache');
+
+        session()->put('order_id', $order_id);
+        return $order_id;
     }
 
     public function updateInventory($sku, $qty){
@@ -346,14 +351,22 @@ class CheckoutController extends Controller
                     ->leftJoin('products as PG', 'PG.sku', '=', 'cart.packaging_sku')
                     ->leftJoin('products as C', 'C.sku', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
+                    ->where('P.qty','>', '0')
                     ->orderBy('cart.id', 'desc')
                     ->get();
     }
 
-    public function cartTotalAmount() {
+    public function cartCheckedTotalAmount($voucher_code) {
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
+                    ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
+                    ->where('P.qty','>', '0')
                     ->sum('amount');
+    }
+
+    public function getDiscount($voucher_code) {
+        $voucher = Voucher::where('voucher_code', $voucher_code)->first();
+        return isset($voucher->discount) ? $voucher->discount : 0;
     }
 
     public function getIp(){

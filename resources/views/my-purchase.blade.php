@@ -243,7 +243,8 @@ thead{
                     <tr>
                       <td colspan="6"></td>
                       <td>Total Payment</td>
-                      <td><b>₱{{number_format($total,2,".",",")}}</b></td>
+                      <td><b>₱{{number_format($total,2,".",",")}}</b>
+                        <br><button class="btn btn-success mt-2">Pay now</button></td>
                     </tr> 
                     
                 </tbody>

@@ -116,7 +116,7 @@ $(document).ready(function () {
     async function uncheckIfOutOfStock() {
         $('#cart-item-container').find('[type=checkbox]').each(async function(i){
             let check_value = 0;
-            if (parseInt($(this).attr('data-stock')) == 0) {
+            if (parseInt($(this).attr('data-stock')) <= 0) {
                 check_value = 0; 
                 $(this).prop( "checked", false );
                 $(this).prop( "disabled", true );
@@ -145,7 +145,9 @@ $(document).ready(function () {
             var total = 0;
             var check_value = 0;
             $('#cart-item-container').find(':checkbox').each(async function(i){
-               
+                if (this.disabled) {
+                    $(this).prop('checked', false);
+                }
                 if ($(this).is(':checked') == true) {
                     total = parseFloat(total) + parseFloat($(this).attr('data-amount'));
                     check_value = 1;
