@@ -8,6 +8,7 @@ use App\Models\Courier;
 use Hash;
 use Auth;
 use Session;
+use Utils;
 class UserController extends Controller
 {
     /**
@@ -205,7 +206,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
- 
+        $request['allowed_modules'] = isset($request->allowed_modules) ? $request->allowed_modules : [];
         if ($request->input('password')) {
             User::where('id', $id)
             ->update([

@@ -6,6 +6,9 @@ use App\Models\Category;
 
 class Utils
 {
+    public static function getModules() {
+        return ["Maintenance", "User Management", "Vouchers", "To Pay", "Processing Orders", "On the way"];
+    }
 
     public static function readCategories() {
         $cache_categories = Cache::get('categories-cache');

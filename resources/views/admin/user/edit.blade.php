@@ -110,7 +110,7 @@
                               </div>
 
                               @php
-                                  $modules_array = ["Maintenance", "User Management", "Vouchers", "Pending Orders"];
+                                  $modules_array = Utils::getModules();
                                   $allowed_modules_array = $user->allowed_modules != null ? json_decode($user->allowed_modules, true) : [];
                               @endphp
                               <div class="col-sm-12 col-md-6 mt-2">
