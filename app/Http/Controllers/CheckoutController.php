@@ -31,6 +31,7 @@ class CheckoutController extends Controller
     public function paynamicsPayment() {
         $ip = $this->getIp();
         $user = Auth::user();
+        
         $address = $this->readDefaultAddress();
         $cart = $this->readCartChecked();
         $voucher_code = request()->voucher_code;
@@ -92,25 +93,20 @@ class CheckoutController extends Controller
         $strxml .= "<Request>";
             $strxml .= "<orders>";
                 $strxml .= "<items>";
-                    // item 1
-                    $t_d = 0;
-                foreach ($cart as $key => $item) {
-                    $discount_v = $item->price - (((float)$discount / count($cart)) / $item->qty);
-                    
+                    foreach ($cart as $key => $item) {
+                        $discount_v = $item->price - (((float)$discount / count($cart)) / $item->qty);
+                        
+                        $strxml .= "<Items>";
+                            $strxml .= "<itemname>".$item->name ."</itemname>";
+                            $strxml .= "<quantity>".$item->qty ."</quantity>";
+                            $strxml .= "<amount>".number_format((float)$discount_v, 2, '.', '') ."</amount>";
+                        $strxml .= "</Items>";
+                    }
                     $strxml .= "<Items>";
-                        $strxml .= "<itemname>".$item->name ."</itemname>";
-                        $strxml .= "<quantity>".$item->qty ."</quantity>";
-                        $strxml .= "<amount>".number_format((float)$discount_v, 2, '.', '') ."</amount>";
+                        $strxml .= "<itemname>Discounted each item.</itemname>";
+                        $strxml .= "<quantity>0</quantity>";
+                        $strxml .= "<amount>".$discount ."</amount>";
                     $strxml .= "</Items>";
-
-                   // $t_d = $t_d + $discount_v;
-                }
-                $strxml .= "<Items>";
-                    $strxml .= "<itemname>Discounted each item.</itemname>";
-                    $strxml .= "<quantity>0</quantity>";
-                    $strxml .= "<amount>".$discount ."</amount>";
-                $strxml .= "</Items>";
-               // return $t_d;
                 $strxml .= "</items>";
             $strxml .= "</orders>";
             $strxml .= "<mid>" . $_mid . "</mid>";
@@ -147,31 +143,7 @@ class CheckoutController extends Controller
         
             $b64string = base64_encode($strxml);
 
-            return '<form action="https://testpti.payserv.net/webpayment/Default.aspx" method="post" id="paynamics_payment_form">
-                <style type="text/css">
-                    @import url(https://fonts.googleapis.com/css?family=Roboto);
-                    .Absolute-Center {
-                        font-family: "Roboto", Helvetica, Arial, sans-serif;
-                        width: auto;
-                        top:0;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        margin: auto;
-                        text-align: center;
-                        font-size: 14px;
-                    }
-                </style>
-                <div class="Absolute-Center card">
-                    <h3 class="m-3"><i class="fas fa-spinner fa-pulse"></i> Please wait while you are being redirected to Paynamics payment page.</h3>
-                </div>
-                <input type="hidden" name="paymentrequest" id="paymentrequest" value="'.$b64string.'" style="width:800px; padding: 20px;">
-                <script type="text/javascript">
-                    setTimeout(function (){
-                        document.forms["paynamics_payment_form"].submit();
-                    },2000);
-                </script>
-            </form>';
+            return $this->getPaynamicsForm($b64string);
     }
 
     public function paynamicsNotification() { 
@@ -180,7 +152,7 @@ class CheckoutController extends Controller
             $response_id = base64_decode(request()->responseid);
 
             $result = $this->getPaymentStatus($request_id, $response_id);
-         
+          //  return json_encode($result);
 
             if (isset($result->queryResult->txns->ServiceResponse)) {
                 $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
@@ -197,13 +169,24 @@ class CheckoutController extends Controller
   
             switch ($response_code) {
                 case 'GR001':
+                    OrderDetail::where('order_id', session()->get('order_id'))
+                    ->update([
+                        'status' => 1
+                    ]);
+                    break;
                 case 'GR002':
+                    OrderDetail::where('order_id', session()->get('order_id'))
+                    ->update([
+                        'status' => 1
+                    ]);
+                    break;
                 case 'GR033':
                     OrderDetail::where('order_id', session()->get('order_id'))
                     ->update([
                         'request_id' => request()->responseid,
                         'response_id' => request()->requestid,
-                        'response_message' => $response_message
+                        'response_message' => $response_message,
+                        'status' => 0
                     ]);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
@@ -217,6 +200,34 @@ class CheckoutController extends Controller
     public function getPaymentStatus($request_id, $response_id) {
         $paynamics = new Paynamics;
         return $paynamics->getPaymentStatus($request_id, $response_id);
+    }
+
+    public function getPaynamicsForm($b64string) {
+        return '<form action="https://testpti.payserv.net/webpayment/Default.aspx" method="post" id="paynamics_payment_form">
+            <style type="text/css">
+                @import url(https://fonts.googleapis.com/css?family=Roboto);
+                .Absolute-Center {
+                    font-family: "Roboto", Helvetica, Arial, sans-serif;
+                    width: auto;
+                    top:0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    text-align: center;
+                    font-size: 14px;
+                }
+            </style>
+            <div class="Absolute-Center card">
+                <h3 class="m-3"><i class="fas fa-spinner fa-pulse"></i> Please wait while you are being redirected to Paynamics payment page.</h3>
+            </div>
+            <input type="hidden" name="paymentrequest" id="paymentrequest" value="'.$b64string.'" style="width:800px; padding: 20px;">
+            <script type="text/javascript">
+                setTimeout(function (){
+                    document.forms["paynamics_payment_form"].submit();
+                },2000);
+            </script>
+        </form>';
     }
 
     public function placeOrder() {
@@ -254,10 +265,10 @@ class CheckoutController extends Controller
            $status = 0;
 
             if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
-                $status = 1;
+            //    $status = 1;
             }
             else {
-                $expiry_date = date('Y-m-d h:m:s', strtotime(date('Y-m-d h:m:s').' + 2 days'));
+                $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
             }
 
             OrderDetail::create([
@@ -330,14 +341,12 @@ class CheckoutController extends Controller
     }
 
     public function readCourier() {
-        $cache_data = Cache::get('courier-cache');
-        if (count($cache_data) > 0) {
-            return $cache_data;
-        }else {
-            $courier = Courier::where('status', 1)->get();
-            Cache::put('courier-cache', $courier);
-            return $courier;
+        $couriers = Cache::get('courier-cache');
+        if (!$couriers) { 
+            $couriers = Courier::where('status', 1)->get();
+            Cache::put('courier-cache', $couriers);
         }
+        return $couriers;
     }
 
     public function readCartChecked() {

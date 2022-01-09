@@ -105,14 +105,9 @@
 
     <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
         @php
-            if (\Cache::get('categories-cache')) {
-                $cache_categories = \Cache::get('categories-cache');
-            }
-            else {
-                $cache_categories = \App\Models\Category::where('status', 1)->get();
-            }
+            $categories = Utils::readCategories();
         @endphp
-        @foreach ($cache_categories as $item)
+        @foreach ($categories as $item)
         
         <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">
           <div class="text-muted category-name"  data-id="{{ $item->id }}" 
@@ -136,20 +131,18 @@
 
     <h3 class="text-center text-bold">Checkout</h3>
     <div class="container card delivery-address-container">
-        <input type="hidden" id="address_id">
+        <!-- set default address value -->
+        <input type="hidden" id="address_id" value="{{ $address->id }}">
         <div class="row">
             <div class="col-sm-12 col-md-3">
                 <img src="https://img.icons8.com/color/50/000000/marker.png"/><span class="ml-1" style=""> Delivery Address</span>
             </div>
             <div class="col-sm-12 col-md-2">
-                <div id="fullname">
-                </div>
-                <div id="phone_no">
-                </div>
+                <div id="fullname">{{ $address->fullname }}</div>
+                <div id="phone_no">{{ $address->phone_no }}</div>
             </div>
             <div class="col-sm-12 col-md-5">
-                <div id="address">
-                </div>
+                <div id="address">{{ Utils::concatAddress($address) }} <br> {{ $address->notes }}</div>
             </div>
             <div class="col-sm-12 col-md-2">
                 <button class="btn btn-secondary btn-grey m-1 float-none float-md-right" id="btn-set-default">Default</button>
@@ -271,7 +264,7 @@
                         <input value="bpionline" name="rad_pm" type="radio" id="rad_bpi" class="custom-control-input">
                         <label class="custom-control-label text-md-left" for="rad_bpi">
                             <span class="pm-icon-holder">
-                                <img style="border-radius:5px; margin-top: -12px;" class="bg-white" width="51" src="https://cdn.freelogovectors.net/wp-content/uploads/2020/05/bpi-logo-bank-of-the-philippine-islands.png"/>
+                                <img style="border-radius:5px; margin-top: -12px;" class="bg-white" width="51" src=""/>
                             </span>
                             &nbsp;
                         <span class="text-prussian-blue font-weight-bold small">BPI Online</span>

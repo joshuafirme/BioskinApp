@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Carousel;
+use Utils;
 
 class HomePageController extends Controller
 {

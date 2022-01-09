@@ -14,6 +14,7 @@ use App\Models\Closures;
 use App\Models\ProductPrice;
 use DB;
 use Cache;
+use Utils;
 class ShopController extends Controller
 {
     public function index(Product $p)
@@ -75,7 +76,7 @@ class ShopController extends Controller
     }
 
     public function readAllCategory() {
-        return Category::all();
+        return Utils::readCategories();
     }
 
     public function readCategoryID($subcategory_id) {

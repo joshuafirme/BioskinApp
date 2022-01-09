@@ -87,12 +87,7 @@
           </h6>
           <div class="row">
             @php
-              if (\Cache::get('categories-cache')) {
-                  $cache_categories = \Cache::get('categories-cache');
-              }
-              else {
-                  $cache_categories = \App\Models\Category::where('status', 1)->get();
-              }
+              $cache_categories = Utils::readCategories();
             @endphp
             @foreach ($cache_categories as $item)
               <div class="col-6">

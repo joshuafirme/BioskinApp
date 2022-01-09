@@ -49,8 +49,7 @@
 
     <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
       @php
-           $col_count = 1;
-           $col_count = count($categories) > 9 ? '2' : '1';
+         $categories = Utils::readCategories();
       @endphp
         @foreach ($categories as $item)
         <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">

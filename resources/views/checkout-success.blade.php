@@ -49,12 +49,7 @@
 
     <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
         @php
-            if (\Cache::get('categories-cache')) {
-                $cache_categories = \Cache::get('categories-cache');
-            }
-            else {
-                $cache_categories = \App\Models\Category::where('status', 1)->get();
-            }
+            $cache_categories = Utils::readCategories();
         @endphp
         @foreach ($cache_categories as $item)
         <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">
@@ -65,15 +60,11 @@
       @endforeach
     </div> 
   <div class="container">
-    <div class="card mt-5">
-        <div class="card-body">
-            <div class="alert alert-success">
-                <h4 class="alert-heading">{{ $response_message }}</h4>
-                <p>{{ $response_advise }}</p>
-                <p>{{ $processor_response_id }}</p>
-            </div>
-        </div>
-    </div>
+    <div class="alert alert-light mt-5">
+      <h4 class="alert-heading">{{ $response_message }}</h4>
+      <p>{{ $response_advise }}</p>
+      <a style="color:blue;" href="{{ url('/my-purchases?status=all') }}">View My Orders</a>
+  </div>
   </div>
   </div>
     

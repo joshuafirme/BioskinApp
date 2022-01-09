@@ -1,5 +1,10 @@
 @php
   $page_title = "My Purchases | Bioskin";
+  // read order details query              
+  $order_detail = DB::table('order_details as OD')
+    ->where('order_id', $order_id)
+    ->leftJoin('voucher as V', 'V.voucher_code', '=', 'OD.voucher_code')
+    ->first();
 @endphp
 
 @include('header')
@@ -136,48 +141,11 @@ thead{
                 <div id="address">{{ $address->municipality." ".$address->brgy ." ".$address->detailed_loc }}
                 </div>
             </div>
-            @php
-                
-                $order_detail = DB::table('order_details as OD')
-                    ->where('order_id', $order_id)
-                    ->leftJoin('voucher as V', 'V.voucher_code', '=', 'OD.voucher_code')
-                    ->first();
-
-                    switch ($order_detail->status) {
-                        case 0:
-                          $status = 'To Pay';
-                          break;
-                        case 1:
-                            $status = 'Processing';
-                            break;
-                        case 2:
-                            $status = 'On the way';
-                            break;
-                        case 3:
-                            $status = 'To receive';
-                            break;
-                        default:
-                                  # code...
-                            break;
-                      }    
+              @php
+                    $status = Utils::readStatusText($order_detail->status);
                       
-                      switch ($order_detail->payment_method) {
-                        case 'cc':
-                          $order_detail->payment_method = 'Credit/Debit Card';
-                          break;
-                        case 'gc':
-                          $order_detail->payment_method = 'GCash';
-                            break;
-                        case 'bpionline':
-                          $order_detail->payment_method = 'BPI Online';
-                            break;
-                        case 'br_bdo_ph':
-                          $order_detail->payment_method = "BDO Online";
-                        default:
-                                  # code...
-                            break;
-                      }    
-            @endphp
+                    $order_detail->payment_method = Utils::readPaymentMethodText($order_detail->payment_method);
+              @endphp
             <div class="col-sm-12 col-md-2">
                 <b>Order ID: {{$order_id}}</b>
                 <span class="badge badge-success">{{ $status }}</span>
@@ -244,12 +212,30 @@ thead{
                       <td colspan="6"></td>
                       <td>Total Payment</td>
                       <td><b>₱{{number_format($total,2,".",",")}}</b>
-                        <br><button class="btn btn-success mt-2">Pay now</button></td>
+                          <br>
+                          @if(empty($order_detail->expiry_date) && $order_detail->status == 0)
+                            <button class="btn btn-success mt-2" id="btn-pay-now" 
+                              data-order-id="{{$order_id}}" data-pay-now="true" data-expiry-date="{{$order_detail->expiry_date}}"
+                              data-pmethod="{{$order_detail->payment_method}}" data-voucher-code="{{$order_detail->voucher_code}}">
+                              Pay now
+                            </button>
+                            @else
+                            @endif
+                      </td>
                     </tr> 
                     
                 </tbody>
             </table>  
-            <small class="m-2 float-lg-right">*Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
+            
+            <small class="m-2 float-lg-right">
+              @php
+                  $expiry_date = date("Y-m-d H:i:s", strtotime($order_detail->created_at." + 2 days"))
+              @endphp
+              @if (Utils::isValidForPayment($expiry_date) && $order_detail->expiry_date) 
+              You have until {{ date('F d, Y H:i:s a', strtotime($expiry_date)) }} to make the payment.
+              <br>
+              *Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
+              @endif
         </div>
     </div>
 
@@ -264,5 +250,32 @@ thead{
     $(document).ready(function() {
         let w = $('.responsive-img').width();
         $('.responsive-img').height(w); 
+
+        function paynamicsPayment(pmethod, voucher_code) {
+            $.ajax({
+                url: '/paynamics-payment',
+                type: 'POST',
+                data: {
+                    pmethod : pmethod,
+                    voucher_code : voucher_code
+                },
+                success:function(data){
+                    console.log(data)
+                    $('#paynamics-form-container').html(data);
+                }
+            });
+        }
+
+        $(document).on('click','#btn-pay-now', function(){
+            var btn = $(this);
+            var id = $(this).attr('data-id');
+            var order_id = $(this).attr('data-order-id');
+            var pay_now = $(this).attr('data-pay-now');
+            btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+            alert(order_id)
+            return;
+            paynamicsPayment(pmethod, voucher_code);
+            
+        });
     });
 </script>

@@ -278,5 +278,5 @@ $(document).on('change', '[name=rdo-courier]', async function(){
 
 
 
-readDefaultAddress();
+//readDefaultAddress();
 

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Auth;
 use DB;
+use Utils;
 
 class MyPurchasesController extends Controller
 {
