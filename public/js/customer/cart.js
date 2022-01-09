@@ -5,12 +5,13 @@ $(document).ready(function () {
         var closure = data.closure != null ? data.closure : '-';
         var variation = data.variation != null ? data.variation : '-';
         var size = data.size != null ? data.size : '-';
+        var stock = data.stock == 0 ? "<div class='text-danger'>Out of stock</div>" : 'Stock: '+data.stock+'';
         html += '<tr>';
         html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-stock="'+data.stock+'" data-check-val="'+data.is_checked+'"></input></td>';
         html +=    '<td>';
         html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:100px;"  id="data-image-'+identifier+'"></div></a>';
         html +=    '</td>';
-        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> Stock: '+data.stock+'</td>';
+        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+'</td>';
         html +=    '<td>'+size+'</td>';
         html +=    '<td>'+variation+'</td>';
         html +=    '<td>'+packaging+'</td>';
@@ -142,6 +143,11 @@ $(document).ready(function () {
         $('#select-all-product').on('click', function(){
             $('input[type="checkbox"]').prop('checked', this.checked);
 
+             updateCart();
+
+        });
+
+        function updateCart() {
             var total = 0;
             var check_value = 0;
             $('#cart-item-container').find(':checkbox').each(async function(i){
@@ -158,8 +164,7 @@ $(document).ready(function () {
             });
 
             $('#total-amount').text(formatNumber(total.toFixed(2)));
-
-        });
+        }
     
         $(document).on('click','#cart-item-container input[type="checkbox"]', async function(){
             let check_value = 0;

@@ -174,7 +174,7 @@ thead{
                       <td>
                         @php
                             $src = \DB::table('product_images')->where('sku', $item->sku)->value('image');
-                            $total = $total + $data->price;
+                            $total = $total + $data->amount;
                         @endphp
                         @if ($src)
                         <div class="responsive-img" style="width:70px; background-image:url('/images/{{ $src }}')"></div>
@@ -234,8 +234,8 @@ thead{
               @if (Utils::isValidForPayment($expiry_date) && $order_detail->expiry_date) 
               You have until {{ date('F d, Y H:i:s a', strtotime($expiry_date)) }} to make the payment.
               <br>
-              *Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
               @endif
+              *Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
         </div>
     </div>
 

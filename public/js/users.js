@@ -35,18 +35,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function on_click() {
-    var product_id;
-    $(document).on('click', '.btn-archive-product', function(){ 
-        product_id = $(this).attr('data-id');
-        var row = $(this).closest("tr");
-        var name = row.find("td:eq(1)").text();console.log(name)
-        $('.delete-success').hide();
-        $('.delete-message').html('Are you sure do you want to archive <b>'+ name +'</b> ?');
+    var user_id;
+    $(document).on('click', '.btn-archive', function(){ 
+        user_id = $(this).attr('data-id');
+        $('.message').html('Are you sure do you want to delete this user?'); console.log(user_id)
     }); 
     
     $(document).on('click', '.btn-confirm-archive', function(){
         $.ajax({
-            url: '/product/archive/'+ product_id,
+            url: '/users/archive/'+ user_id,
             type: 'POST',
         
             beforeSend:function(){
@@ -55,18 +52,17 @@ function on_click() {
             
             success:function(){
                 setTimeout(function(){
-                    $('.btn-confirm-archive').text('Yes');
-                    $('#confirmModal').modal('hide');
-                    $('.tbl-product').DataTable().ajax.reload();
-                    $.toast({
-                        text: 'Product was successfully adjusted.',
-                        showHideTransition: 'plain',
-                        hideAfter: 4500, 
-                    });
+                    location.reload();
                 }, 1000);
             }
         });
   
+    });
+
+    $(document).on('change', '#access_rights', function(){
+        let access_rights = $(this).val();
+        initCourierContainer(access_rights)
+        
     });
      
     $(document).on('click', '#btn-change-password', function(){
@@ -84,8 +80,24 @@ function on_click() {
 }
 
 
+function initCourierContainer(access_rights) {
+    if (access_rights == 7) {
+        $('.courier-container').removeClass('d-none');
+    } else {
+        $('.courier-container').addClass('d-none');
+        $('#courier_id').val(0);
+    }
+}
+
+if ($('#choices-multiple-remove-button').length > 0) {
+    var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+        removeItemButton: true,
+      });
+}
+
 function initComponents()
 { 
+    initCourierContainer($('#access_rights').val());
     fetchUsers();
     on_click();
 }

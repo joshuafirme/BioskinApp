@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $page_title = "VCS | Update User";
+    $page_title = "Update User | Bioskin";
 @endphp
 
 <div class="content-header"></div>
@@ -95,6 +95,37 @@
                                     <option value="8"{{ $user->access_rights == 8 ? 'selected' : '' }}>Customer Service Representative</option>
                                 </select>
                               </div>
+
+                              <div class="col-sm-12 col-md-6 mt-2 d-none courier-container">    
+                                <label class="col-form-label">Courier</label>
+                                <select class="form-control" name="courier_id" id="courier_id">
+                                    <option value="0">-- Select courier --</option>
+                                    @foreach ($courier as $item)
+                                    @php
+                                        $selected = $user->courier_id == $item->id ? "selected" : "";
+                                    @endphp
+                                    <option {{$selected}} value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+
+                              @php
+                                  $modules_array = ["Maintenance", "User Management", "Vouchers", "Pending Orders"];
+                                  $allowed_modules_array = $user->allowed_modules != null ? json_decode($user->allowed_modules, true) : [];
+                              @endphp
+                              <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Allowed Modules</label>
+                                <select class="form-control" name="allowed_modules[]" id="choices-multiple-remove-button" placeholder="Select modules"
+                                multiple>
+                                @foreach ($modules_array as $item)
+                                    @php
+                                        $selected = $modules_array && in_array($item, $allowed_modules_array) ? "selected" : "";
+                                    @endphp
+                                  <option {{$selected}} value="{{$item}}">{{ $item }}</option>
+                                @endforeach
+                              </select>
+                              </div>
+
 
                               <div class="col-sm-12 col-md-6 mt-2 new-password-container d-none">
                                 <label class="col-form-label">New password</label>

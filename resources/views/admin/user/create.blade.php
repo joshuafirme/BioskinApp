@@ -95,10 +95,19 @@
                                     <option value="8">Customer Service Representative</option>
                                 </select>
                               </div>
+
+                              <div class="col-sm-12 col-md-6 mt-2 d-none courier-container">    
+                                <label class="col-form-label">Courier</label>
+                                <select class="form-control" name="courier_id" id="courier_id">
+                                    <option value="0">-- Select courier --</option>
+                                    @foreach ($courier as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                              </div>
                               
                               <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-sm btn-success mr-2" id="btn-add-user">Save changes</button>
-                                <a class="btn btn-sm btn-primary" id="btn-change-password">Change password</a>
+                                <button type="submit" class="btn btn-sm btn-success mr-2" id="btn-add-user">Add user</button>
                               </div>
                               
                 

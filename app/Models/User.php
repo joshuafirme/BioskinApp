@@ -30,6 +30,8 @@ class User extends Authenticatable
         'access_rights',
         'status',
         'image',
+        'courier_id',
+        'allowed_modules'
     ];
 
     /**

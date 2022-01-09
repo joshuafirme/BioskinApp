@@ -20,7 +20,6 @@
 
 @include('admin.scripts')
 @include('admin.datatables-scripts')
-@include('partials._global_scripts')
 <script src="{{asset('js/users.js')}}"></script>
 
 </body>

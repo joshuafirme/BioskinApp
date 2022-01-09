@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Courier;
 use Hash;
 use Auth;
 use Session;
@@ -21,7 +22,7 @@ class UserController extends Controller
 
     public function readUsers() {
         
-        $user = User::all();
+        $user = User::where('status', 1)->get();
         
         if(request()->ajax())
         { 
@@ -30,7 +31,7 @@ class UserController extends Controller
                 {
                     $button = '<a class="btn btn-sm" data-id="'. $user->id .'" href="'. route('users.edit',$user->id) .'"><i class="fa fa-edit"></i></a>';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<a data-id="'. $user->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
+                    $button .= '<a data-id="'. $user->id .'" class="btn btn-archive" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;
                 })
                 ->addColumn('access_rights', function($user){
@@ -155,7 +156,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        $courier = Courier::where('status', 1)->get();
+        return view('admin.user.create', compact('courier'));
     }
 
     /**
@@ -190,7 +192,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.user.edit', compact('user'));
+        $courier = Courier::where('status', 1)->get();
+        return view('admin.user.edit', compact('user', 'courier'));
     }
 
     /**
@@ -202,6 +205,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+ 
         if ($request->input('password')) {
             User::where('id', $id)
             ->update([
@@ -220,8 +224,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function archive($id)
     {
-        //
+        User::where('id',$id)->update(['status' => 0]);
+        return response()->json([
+            'status' => 'success',
+            'req_params' => $id
+        ]);
     }
 }

@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-order/read-one-order/{order_id}', 'ManageOrderController@readOneOrder');
         Route::post('/manage-order/change-status/{order_id}', 'ManageOrderController@changeOrderStatus');
         Route::resource('/users', 'UserController');
+        Route::post('/users/archive/{id}', 'UserController@archive');
         Route::get('/read-users', 'UserController@readUsers');
         Route::resource('/product', 'ProductController');
         Route::get('/delete-product-cache', 'ProductController@deleteProductCache')->name('delete-product-cache');

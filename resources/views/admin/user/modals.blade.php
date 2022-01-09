@@ -9,7 +9,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p class="delete-message"></p>
+          <p class="message"></p>
         </div>
         <div class="modal-footer">
           <button class="btn btn-sm btn-outline-dark btn-confirm-archive" type="button">Yes</button>

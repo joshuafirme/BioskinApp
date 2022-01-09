@@ -169,25 +169,14 @@ class CheckoutController extends Controller
   
             switch ($response_code) {
                 case 'GR001':
-                    OrderDetail::where('order_id', session()->get('order_id'))
-                    ->update([
-                        'status' => 1
-                    ]);
-                    break;
                 case 'GR002':
-                    OrderDetail::where('order_id', session()->get('order_id'))
-                    ->update([
-                        'status' => 1
-                    ]);
+                    $status = 1;
+                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
+                    return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 case 'GR033':
-                    OrderDetail::where('order_id', session()->get('order_id'))
-                    ->update([
-                        'request_id' => request()->responseid,
-                        'response_id' => request()->requestid,
-                        'response_message' => $response_message,
-                        'status' => 0
-                    ]);
+                    $status = 0;
+                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 default:
@@ -195,6 +184,16 @@ class CheckoutController extends Controller
                     break;
             }
         }
+    }
+
+    public function updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status) {
+        OrderDetail::where('order_id', session()->get('order_id'))
+        ->update([
+            'request_id' => request()->responseid,
+            'response_id' => request()->requestid,
+            'response_message' => $response_message,
+            'status' => $status
+        ]);
     }
 
     public function getPaymentStatus($request_id, $response_id) {
