@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class Utils
 {
-    public function curlRequest($url) {
+    public static function curlRequest($url) {
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_URL, $url);
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
