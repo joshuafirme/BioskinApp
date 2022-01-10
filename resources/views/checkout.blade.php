@@ -144,7 +144,7 @@
             <div class="col-sm-12 col-md-5">
                 <div id="address">
                     {{ isset($address) && $address ? Utils::concatAddress($address) : "" }} <br> 
-                    {{ isset($address->notes) ? $address->notes : $address->notes }}
+                    {{ isset($address->notes) ? $address->notes : "" }}
                 </div>
             </div>
             <div class="col-sm-12 col-md-2">
