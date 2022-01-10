@@ -134,7 +134,7 @@
                   $user = \Auth::user();
                   
                   $status = isset($_GET['status']) ? $_GET['status'] : "";
-                  $my_orders = \App\Models\Order::select('orders.order_id')
+                  $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
                       ->where('user_id', Auth::id())
                       ->where('OD.status', $status)
                       ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
@@ -170,7 +170,7 @@
                       ->distinct('orders.order_id')->count('id');
 
                       if ($status == 'all' || !isset($_GET['status'])) {
-                        $my_orders = \App\Models\Order::select('orders.order_id')
+                        $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
                         ->where('user_id', Auth::id())
                         ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                         ->orderBy('orders.created_at', 'desc')
