@@ -6,6 +6,15 @@ use App\Models\Category;
 
 class Utils
 {
+    public function curlRequest($url) {
+		$c = curl_init();
+		curl_setopt($c, CURLOPT_URL, $url);
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		$data = curl_exec($c);
+		curl_close($c);
+		return $data;
+	}
+
     public static function getModules() {
         return ["To pay", "Processing orders", "On the way", "To receive", "Completed"];
     }
