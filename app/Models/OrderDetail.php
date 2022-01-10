@@ -19,7 +19,8 @@ class OrderDetail extends Model
         'response_id',
         'response_message',
         'expiry_date',
-        'status'
+        'status',
+        'remarks'
     ];
 
     public function readOrderDetails($order_id) {
@@ -31,5 +32,6 @@ class OrderDetail extends Model
             ->where('order_id', $order_id)
             ->first();
     }
+
    
 }

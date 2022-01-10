@@ -87,5 +87,10 @@ class Order extends Model
             ->where('order_id', $order_id)
             ->first();
     }
+
+    
+    public function readTotalAmount($order_id) {
+        return DB::table($this->table . ' as O')->where('order_id', $order_id)->sum('amount');
+    }
  
 }

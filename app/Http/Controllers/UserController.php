@@ -169,9 +169,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
         User::create($request->all());
         return redirect()->back()
-        ->with('success', 'User was updated.');
+        ->with('success', 'User was created.');
     }
 
     /**
@@ -206,7 +207,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request['allowed_modules'] = isset($request->allowed_modules) ? $request->allowed_modules : [];
+        $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
         if ($request->input('password')) {
             User::where('id', $id)
             ->update([

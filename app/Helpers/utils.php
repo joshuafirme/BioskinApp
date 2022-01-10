@@ -7,7 +7,11 @@ use App\Models\Category;
 class Utils
 {
     public static function getModules() {
-        return ["Maintenance", "User Management", "Vouchers", "To Pay", "Processing Orders", "On the way"];
+        return ["To pay", "Processing orders", "On the way", "To receive", "Completed"];
+    }
+    
+    public static function getPages() {
+        return ["Maintenance", "User Management", "Vouchers", "Manage Orders"];
     }
 
     public static function readCategories() {

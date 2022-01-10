@@ -33,11 +33,25 @@ class CheckoutController extends Controller
         $user = Auth::user();
         
         $address = $this->readDefaultAddress();
-        $cart = $this->readCartChecked();
+        $checkout_items = $this->readCartChecked();
         $voucher_code = request()->voucher_code;
 
-        $total = $this->cartCheckedTotalAmount($voucher_code);
+        $total = $this->cartCheckedTotalAmount();
         $discount = $this->getDiscount($voucher_code);
+
+        if (isset(request()->pay_now) && request()->pay_now == 'true') {
+            $order_id = request()->order_id;
+            session()->put('order_id', $order_id);
+            $od = new OrderDetail;
+            $order = new Order;
+            $address = $od->readOrderDetails($order_id);
+
+            $checkout_items = $order->readMyOrders($order_id);
+            $total = $order->readTotalAmount($order_id);
+            $discount = $od->discount == null ? 0 : $od->discount;
+            // return json_encode($address);
+        }
+   
         $total = $total - $discount;
 
         $_mid = "000000201221F7E57B0B"; 
@@ -64,27 +78,8 @@ class CheckoutController extends Controller
         $_sec3d = "try3d";  
         $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
       
-        $for_sign = $_mid . 
-                $_requestid . 
-                $_ipaddress . 
-                $_noturl . 
-                $_resurl .  
-                $_fname . 
-                $_lname . 
-                $_mname . 
-                $_addr1 . 
-                $_addr2 . 
-                $_city . 
-                $_state . 
-                $_country . 
-                $_zip . 
-                $_email . 
-                $_phone . 
-                $_clientip . 
-                $_amount . 
-                $_currency . 
-                $_sec3d . 
-                $_mkey;
+        $for_sign = $_mid . $_requestid . $_ipaddress . $_noturl . $_resurl . $_fname . $_lname . $_mname . $_addr1 . $_addr2 . $_city . $_state . $_country . 
+        $_zip . $_email . $_phone . $_clientip . $_amount . $_currency . $_sec3d . $_mkey;
          
         $_sign = hash("sha512", $for_sign);
 
@@ -93,8 +88,8 @@ class CheckoutController extends Controller
         $strxml .= "<Request>";
             $strxml .= "<orders>";
                 $strxml .= "<items>";
-                    foreach ($cart as $key => $item) {
-                        $discount_v = $item->price - (((float)$discount / count($cart)) / $item->qty);
+                    foreach ($checkout_items as $key => $item) {
+                        $discount_v = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
                         
                         $strxml .= "<Items>";
                             $strxml .= "<itemname>".$item->name ."</itemname>";
@@ -364,7 +359,7 @@ class CheckoutController extends Controller
                     ->get();
     }
 
-    public function cartCheckedTotalAmount($voucher_code) {
+    public function cartCheckedTotalAmount() {
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')

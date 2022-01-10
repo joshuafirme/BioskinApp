@@ -2,6 +2,7 @@
   $page_title = "My Purchases | Bioskin";
   // read order details query              
   $order_detail = DB::table('order_details as OD')
+    ->select('OD.*', 'OD.status', 'V.discount')
     ->where('order_id', $order_id)
     ->leftJoin('voucher as V', 'V.voucher_code', '=', 'OD.voucher_code')
     ->first();
@@ -143,16 +144,16 @@ thead{
             </div>
               @php
                     $status = Utils::readStatusText($order_detail->status);
-                      
-                    $order_detail->payment_method = Utils::readPaymentMethodText($order_detail->payment_method);
+             
+                    $payment_method_text = Utils::readPaymentMethodText($order_detail->payment_method);
               @endphp
             <div class="col-sm-12 col-md-2">
                 <b>Order ID: {{$order_id}}</b>
                 <span class="badge badge-success">{{ $status }}</span>
-                <br><span class="badge badge-light">{{ $order_detail->payment_method }}</span>
+                <br><span class="badge badge-light">{{ $payment_method_text }}</span>
             </div>
         </div>
-
+        <div>Remarks: {{ $order_detail->remarks }}</div>
         <div class="table-container mt-4 border mb-5">  
             <table class="table table-borderless" id="cart-table">
                 <thead style="background-color: #E7E6E6;">
@@ -237,6 +238,7 @@ thead{
               @endif
               *Shipping fee not included, please wait for our logistics team to contact you with regard to the cost</small>
         </div>
+        <div id="paynamics-form-container" class="mb-5"></div>
     </div>
 
    </div>
@@ -251,13 +253,14 @@ thead{
         let w = $('.responsive-img').width();
         $('.responsive-img').height(w); 
 
-        function paynamicsPayment(pmethod, voucher_code) {
+        function paynamicsPayment(order_id, pay_now, pmethod) {
             $.ajax({
                 url: '/paynamics-payment',
                 type: 'POST',
                 data: {
-                    pmethod : pmethod,
-                    voucher_code : voucher_code
+                  order_id : order_id,
+                  pay_now : pay_now,
+                  pmethod : pmethod
                 },
                 success:function(data){
                     console.log(data)
@@ -270,11 +273,11 @@ thead{
             var btn = $(this);
             var id = $(this).attr('data-id');
             var order_id = $(this).attr('data-order-id');
+            var pmethod = $(this).attr('data-pmethod');
             var pay_now = $(this).attr('data-pay-now');
             btn.html('<i class="fas fa-spinner fa-pulse"></i>');
-            alert(order_id)
-            return;
-            paynamicsPayment(pmethod, voucher_code);
+   
+            paynamicsPayment(order_id, pay_now, pmethod);
             
         });
     });

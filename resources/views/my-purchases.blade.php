@@ -127,63 +127,47 @@
               <input class="form-control float-right w-50" id="input-search-product" type="search" placeholder="Search by Order ID or Product Name" aria-label="Search">
             </form>
            </div>
-           <div class="col-sm-12 col-md-4">
+           <div class="col-sm-12 col-md-3">
             <div class="row mb-3">
               <div class="col-2 col-sm-3">
                 @php
                   $user = \Auth::user();
-              @endphp
-              @if ($user->image) 
-                <img class="img-thumbnail rounded-circle" width="75px" src="{{ asset('/images/'.$user->image) }}"/>
-              @else 
-                <img src="https://img.icons8.com/small/75/000000/user-male-circle.png"/>
-              @endif
-              </div>
-              <div class="col-9">
-                <div class="mt-3 text-bold">{{ $user->firstname ." ". $user->middlename ." ". $user->lastname }}</div>
-                <div>{{ $user->phone_no }}</div>
-              </div>
-            </div>
-           </div>
-           <div class="col-sm-12 col-md-8">
-            <ul class="nav nav-pills mb-3 mt-3 float-right" id="pills-tab" role="tablist">
-              @php
-                $status = isset($_GET['status']) ? $_GET['status'] : "";
-              @endphp
-              <li class="nav-item">
-                <a class="nav-link {{ $status == 'all'  ? "active" : "" }}" href="{{url('/my-purchases?status=all')}}">All</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{ $status ==  '0' ? "active" : "" }}" href="{{url('/my-purchases?status=0')}}">To pay</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{ $status ==  '1' ? "active" : "" }}" href="{{url('/my-purchases?status=1')}}">Processing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{ $status ==  '2' ? "active" : "" }}" href="{{url('/my-purchases?status=2')}}">On the way</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{ $status ==  '3' ? "active" : "" }}" href="{{url('/my-purchases?status=3')}}">To receive</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Completed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Cancelled</a>
-              </li>
-            </ul>
-           </div>
-        </div>
-        <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
-            @php
-              $my_orders = \App\Models\Order::select('orders.order_id')
+                  
+                  $status = isset($_GET['status']) ? $_GET['status'] : "";
+                  $my_orders = \App\Models\Order::select('orders.order_id')
                       ->where('user_id', Auth::id())
                       ->where('OD.status', $status)
                       ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                       ->orderBy('orders.created_at', 'desc')
                       ->distinct('orders.order_id')
                       ->paginate(5);
+
+                      $to_pay_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 0)->count('OD.id');
+                      $processing_count = \App\Models\Order::where('user_id', Auth::id()) 
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 1)->count('OD.id');
+                      $otw_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 2)->count('OD.id');
+                      $to_receive_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 3)->count('OD.id');
+                      $completed_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 4)->count('OD.id');
+                      $cancelled_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                      ->distinct('orders.order_id')
+                      ->where('OD.status', 5)->count('OD.id');
+                      $all_count = \App\Models\Order::where('user_id', Auth::id())
+                      ->distinct('orders.order_id')->count('id');
 
                       if ($status == 'all' || !isset($_GET['status'])) {
                         $my_orders = \App\Models\Order::select('orders.order_id')
@@ -193,7 +177,49 @@
                         ->distinct('orders.order_id')
                         ->paginate(3);
                       }
-            @endphp
+
+                      
+              @endphp
+              @if ($user->image) 
+                <img class="img-thumbnail rounded-circle" width="75px" src="{{ asset('/images/'.$user->image) }}"/>
+              @else 
+                <img src="https://img.icons8.com/small/75/000000/user-male-circle.png"/>
+              @endif
+              </div>
+              <div class="col-9">
+                <div class="mt-1 text-bold">{{ $user->firstname ." ". $user->middlename ." ". $user->lastname }}</div>
+                <div>{{ $user->phone_no }}</div>
+              </div>
+            </div>
+           </div>
+           <div class="col-sm-12 col-md-9">
+            <ul class="nav nav-pills mb-3 mt-3 float-right" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link {{ $status == 'all'  ? "active" : "" }}" href="{{url('/my-purchases?status=all')}}">All <span class="badge">{{$all_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '0' ? "active" : "" }}" href="{{url('/my-purchases?status=0')}}">To pay <span class="badge">{{$to_pay_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '1' ? "active" : "" }}" href="{{url('/my-purchases?status=1')}}">Processing <span class="badge">{{$processing_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '2' ? "active" : "" }}" href="{{url('/my-purchases?status=2')}}">On the way <span class="badge">{{$otw_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '3' ? "active" : "" }}" href="{{url('/my-purchases?status=3')}}">To receive <span class="badge">{{$to_receive_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '4' ? "active" : "" }}" href="{{url('/my-purchases?status=4')}}">Completed <span class="badge">{{$completed_count}}</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $status ==  '5' ? "active" : "" }}" href="{{url('/my-purchases?status=5')}}">Cancelled <span class="badge">{{$cancelled_count}}</span></a>
+              </li>
+            </ul>
+           </div>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             @if (count($my_orders) > 0)
             @foreach ($my_orders as $item)
             <div class="table-container mt-3 border ">  
@@ -234,6 +260,10 @@
                                 case 3:
                                   $status = 'To receive';
                                   break;
+                                  case 4:
+                                  $status = 'To receive';
+                                  break;
+                                  
                                 default:
                                   # code...
                                   break;

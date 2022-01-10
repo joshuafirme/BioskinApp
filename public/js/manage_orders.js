@@ -133,7 +133,7 @@ async function readOrderDetails(order_id) {
         url: '/read-order-details/'+order_id,
         type: 'GET',
         success:function(data){ console.log(data)
-            let discount = data.discount != null ? data.discount : "";
+            let discount = data.discount != null ? data.discount : 0;
             localStorage.setItem('discount', discount);
 
             let html = '';
@@ -163,7 +163,7 @@ async function on_Click() {
         let btn_text = 'Accept'
         let status = 1; 
 
-        if (active_tab== 'processing') {
+        if (active_tab == 'processing') {
             status = 2;
         }
         if (active_tab== 'otw') {
@@ -269,14 +269,9 @@ async function on_Click() {
         fetchOrder('otw');  
       });
 
-      $(document).on('click','#to-receive-tab', function(){
+      $(document).on('click','#to-receive-tab', function(){ 
         $('#tbl-to-receive-order').DataTable().destroy();
         fetchOrder('to-receive');  
-      });
-
-      $(document).on('click','#received-tab', function(){
-        $('#tbl-received-order').DataTable().destroy();
-        fetchOrder('received');  
       });
 
       $(document).on('click','#completed-tab', function(){
@@ -311,7 +306,8 @@ function printElement(elem) {
 }
 
   async function render() {
-    await fetchOrder();  
+    let active_tab = $('.nav-tabs .active').attr('aria-controls');
+    await fetchOrder(active_tab);  
     await on_Click();
   }
 

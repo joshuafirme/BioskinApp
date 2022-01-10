@@ -284,7 +284,7 @@
                     </div>
                 </div>
              </div>
-             <div class="mb-1"><b>Over the Counter Payments</b></div>
+           <!--  <div class="mb-1"><b>Over the Counter Payments</b></div>
              <div class="row">
                 <div id="pm_ceb" class="col-md-6 col-xs-12" style="display:block;">
                     <div class="custom-control custom-radio">
@@ -384,7 +384,7 @@
                         <span class="small text-blueberry">To pay for your online purchase, go to the nearest BDO branch.</span>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
           </div>
           <div class="col-sm-9 row computation-container">

@@ -13,6 +13,7 @@
 
 @php
     $page_title = "Bioskin | Manage Orders";
+
 @endphp
 
 <div class="content-header"></div>
@@ -32,52 +33,51 @@
                 @endforeach
             </ul>
         </div>
+
         @endif
+
+        @php
+          $allowed_modules_array = explode(",",Auth::user()->allowed_modules);
+        @endphp 
 
         <div class="row">
             <div class="col-md-12 col-lg-12 mt-3">
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                          <li class="nav-item">
-                            <a class="nav-link" id="to-pay-tab" data-toggle="tab" href="#to-pay" role="tab" aria-controls="to-pay" aria-selected="false">To pay</a>
-                          </li>
+                          @if(in_array("To pay", $allowed_modules_array))
                             <li class="nav-item">
-                                @php
-                                    $processing_count = App\Models\Order::where('status', 1)->distinct()->count('order_id');
-                                @endphp
-                              <a class="nav-link active" id="processing-tab" data-toggle="tab" href="#processing" role="tab" aria-controls="processing" aria-selected="true">Processing <span class="badge badge-primary">{{$processing_count}}</span></a>
+                              <a class="nav-link" id="to-pay-tab" data-toggle="tab" href="#to-pay" role="tab" aria-controls="to-pay" aria-selected="false">To pay</a>
                             </li>
+                          @endif
+                          @if(in_array("Processing orders", $allowed_modules_array))
+                            <li class="nav-item">
+                              <a class="nav-link" id="processing-tab" data-toggle="tab" href="#processing" role="tab" aria-controls="processing" aria-selected="true">Processing <span class="badge">{{$processing_count}}</span></a>
+                            </li>
+                            @endif
+                            @if(in_array("On the way", $allowed_modules_array))
                             <li class="nav-item">
                               <a class="nav-link" id="otw-tab" data-toggle="tab" href="#otw" role="tab" aria-controls="otw" aria-selected="false">On the way</a>
                             </li>
+                            @endif
+                            @if(in_array("To receive", $allowed_modules_array))
                             <li class="nav-item">
                               <a class="nav-link" id="to-receive-tab" data-toggle="tab" href="#to-receive" role="tab" aria-controls="to-receive" aria-selected="false">To receive</a>
                             </li>
+                            @endif
+                            @if(in_array("Completed", $allowed_modules_array))
                             <li class="nav-item">
-                              <a class="nav-link" id="received-tab" data-toggle="tab" href="#received" role="tab" aria-controls="received" aria-selected="false">Order received</a>
+                              <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed</a>
                             </li>
+                            @endif
                           </ul>
+
+
                           <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show" id="to-pay" role="tabpanel" aria-labelledby="to-pay-tab">
-                              <div class="mt-4">
-                                  <table class="table table-hover" id="tbl-to-pay-order">
-                                    <thead>
-                                        <tr>
-                                            <th>Order #</th>
-                                            <th>Customer Name</th>
-                                            <th>Email</th>
-                                            <th>Phone number</th>
-                                            <th>Date Order</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                </div>
-                          </div>
-                            <div class="tab-pane fade show active" id="processing" role="tabpanel" aria-labelledby="processing-tab">
+                          @if(in_array("To pay", $allowed_modules_array))
+                              <div class="tab-pane fade" id="to-pay" role="tabpanel" aria-labelledby="to-pay-tab">
                                 <div class="mt-4">
-                                    <table class="table table-hover" id="tbl-processing-order">
+                                    <table class="table table-hover" id="tbl-to-pay-order">
                                       <thead>
                                           <tr>
                                               <th>Order #</th>
@@ -91,55 +91,80 @@
                                   </table>
                                   </div>
                             </div>
-                            <div class="tab-pane fade" id="otw" role="tabpanel" aria-labelledby="otw-tab">
-                              <div class="mt-4">
-                                <table class="table table-hover" id="tbl-otw-order">
-                                  <thead>
-                                      <tr>
-                                          <th>Order #</th>
-                                          <th>Customer Name</th>
-                                          <th>Email</th>
-                                          <th>Phone number</th>
-                                          <th>Date Order</th>
-                                          <th>Action</th>
-                                      </tr>
-                                  </thead>
-                              </table>
+                            @endif
+                            @if(in_array("Processing orders", $allowed_modules_array))
+                              <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
+                                  <div class="mt-4">
+                                      <table class="table table-hover" id="tbl-processing-order">
+                                        <thead>
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Customer Name</th>
+                                                <th>Email</th>
+                                                <th>Phone number</th>
+                                                <th>Date Order</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    </div>
                               </div>
-                            </div>
-                            <div class="tab-pane fade" id="to-receive" role="tabpanel" aria-labelledby="to-receive-tab">
-                              <div class="mt-4">
-                                <table class="table table-hover" id="tbl-to-receive-order">
-                                  <thead>
-                                      <tr>
-                                          <th>Order #</th>
-                                          <th>Customer Name</th>
-                                          <th>Email</th>
-                                          <th>Phone number</th>
-                                          <th>Date Order</th>
-                                          <th>Action</th>
-                                      </tr>
-                                  </thead>
-                              </table>
+                              @endif
+                              @if(in_array("On the way", $allowed_modules_array))
+                              <div class="tab-pane fade" id="otw" role="tabpanel" aria-labelledby="otw-tab">
+                                <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-otw-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
                               </div>
-                            </div>
-                            <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">
-                              <div class="mt-4">
-                                <table class="table table-hover" id="tbl-received-order">
-                                  <thead>
-                                      <tr>
-                                          <th>Order #</th>
-                                          <th>Customer Name</th>
-                                          <th>Email</th>
-                                          <th>Phone number</th>
-                                          <th>Date Order</th>
-                                          <th>Action</th>
-                                      </tr>
-                                  </thead>
-                              </table>
+                              @endif
+                              @if(in_array("To receive", $allowed_modules_array))
+                              <div class="tab-pane fade" id="to-receive" role="tabpanel" aria-labelledby="to-receive-tab">
+                                <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-to-receive-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
                               </div>
+                              @endif
+                              @if(in_array("Completed", $allowed_modules_array))
+                              <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                                <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-completed-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
+                              </div>
+                              @endif
                             </div>
-                          </div>
                     </div>
                 </div>
             </div>

@@ -5,12 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Auth;
+use Utils;
 
 class ManageOrderController extends Controller
 {
     public function index()
     {
-        return view('admin.manage-order.index');
+        $to_pay_count = Order::distinct('orders.order_id')->where('status', 0)->count('id');
+        $processing_count = Order::distinct('orders.order_id')->where('status', 1)->count('id');
+        $otw_count = Order::distinct('orders.order_id')->where('status', 2)->count('id');
+        $to_receive_count = Order::distinct('orders.order_id')->where('status', 3)->count('id');
+        $completed_count = Order::distinct('orders.order_id')->where('status', 4)->count('id');
+        $cancelled_count = Order::distinct('orders.order_id')->where('status', 5)->count('id');
+
+        return view('admin.manage-order.index', compact('to_pay_count', 'processing_count', 'otw_count', 'to_receive_count', 'completed_count', 'cancelled_count'));
     }
 
     public function readOrders(Order $o)
@@ -25,14 +34,11 @@ class ManageOrderController extends Controller
         else if (request()->object == "to-receive") {
             $status = 3;
         }
-        else if (request()->object == "received") {
+        else if (request()->object == "completed") {
             $status = 4;
         }
-        else if (request()->object == "completed") {
-            $status = 5;
-        }
         else if (request()->object == "cancelled") {
-            $status = 6;
+            $status = 5;
         }
         $order = $o->readOrdersByStatus($status);
         if(request()->ajax())
@@ -59,14 +65,22 @@ class ManageOrderController extends Controller
 
     
     public function changeOrderStatus($order_id) {
-        
-        if (request()->status == 2) { 
-           // $orders = $this->readOneOrder($order_id);
-           // $this->recordSale($orders);
+        $remarks = "";
+        if (request()->status == 1) { 
+           $remarks = "We're Processing your order.";
         }
-
+        else if (request()->status == 2) { 
+            $remarks = "Processing complete.";
+        }
+        else if (request()->status == 3) { 
+            $remarks = "Your order is out for pick up or delivery.";
+        }
+        else if (request()->status == 4) { 
+            $remarks = "Your order has been delivered.";
+        } 
         OrderDetail::where('order_id', $order_id)->update([
-            'status' => request()->status
+            'status' => request()->status,
+            'remarks' => $remarks
         ]);
         
         return response()->json([

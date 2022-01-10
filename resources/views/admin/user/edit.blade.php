@@ -111,11 +111,11 @@
 
                               @php
                                   $modules_array = Utils::getModules();
-                                  $allowed_modules_array = $user->allowed_modules != null ? json_decode($user->allowed_modules, true) : [];
+                                  $allowed_modules_array = $user->allowed_modules != null ? explode(",",$user->allowed_modules) : [];
                               @endphp
                               <div class="col-sm-12 col-md-6 mt-2">
-                                <label class="col-form-label" for="choices-multiple-remove-button">Allowed Modules</label>
-                                <select class="form-control" name="allowed_modules[]" id="choices-multiple-remove-button" placeholder="Select modules"
+                                <label class="col-form-label" for="choices-multiple-remove-button">Allowed Manage Order Tab</label>
+                                <select class="form-control" name="allowed_modules[]" id="choices-multiple-remove-button" placeholder="Select tab"
                                 multiple>
                                 @foreach ($modules_array as $item)
                                     @php
