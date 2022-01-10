@@ -82,9 +82,11 @@ function getItems (data) {
     return html;
 }
 
-function getComputation(total) {
+function getComputation(subtotal) {
     let fee = $('#shipping-fee-value').attr('content');
-    let total_amount = total; //+ parseFloat(fee);
+    let total_amount = 0; //+ parseFloat(fee);
+    let discount = parseFloat(localStorage.getItem('discount'));
+    total_amount = subtotal - discount;
     var html = "";
 
     let active_tab = $('.nav-tabs .active').attr('aria-controls');
@@ -92,8 +94,15 @@ function getComputation(total) {
     html += '<tr>';
         html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
         html += '<td>Subtotal:</td>';
-        html += '<td>₱'+formatNumber(total.toFixed(2))+'</td>';
+        html += '<td>₱'+formatNumber(subtotal.toFixed(2))+'</td>';
     html += '</tr>';
+
+    html += '<tr>';
+        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+        html += '<td>Discount:</td>';
+        html += '<td>₱'+formatNumber(discount)+'</td>';
+    html += '</tr>';
+
     if (active_tab == 'to-receive') {
         html += '<tr>';
             html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
@@ -119,15 +128,19 @@ async function getShippingFee(order_no) {
     });
 }
 
-async function readShippingAddress(order_id) { 
+async function readOrderDetails(order_id) { 
     $.ajax({
-        url: '/read-shipping-address/'+order_id,
+        url: '/read-order-details/'+order_id,
         type: 'GET',
         success:function(data){ console.log(data)
+            let discount = data.discount != null ? data.discount : "";
+            localStorage.setItem('discount', discount);
+
             let html = '';
             html += '<label>Shipping Address</label>';
             html += '<div>'+data.province+', '+data.municipality+' '+data.brgy+' '+data.detailed_loc+'</div>';
             html += '<div>Nearest landmark: '+data.notes+'</div>';
+            html += '<div>Courier: <span class="badge badge-light">'+data.courier+'</span></div>';
             $('#shipping-info-container').html(html);
         }
     });
@@ -187,15 +200,15 @@ async function on_Click() {
                     payment_method = "BDO Online";
                     break;
             }
-            html += '<div class="float-right">Order #: <b>'+order_no+'</b><div>Payment method: '+payment_method+'</div></div>';
+            html += '<div class="float-right">Order #: <b>'+order_no+'</b><div>Payment method: <span class="badge badge-light">'+payment_method+'</span></div></div>';
             html += '</div>';
 
         $('#show-orders-modal').modal('show');
         $('#show-orders-modal').find('#user-info').html(html);
         $('#show-orders-modal').find('.modal-footer').html(btn);
 
+        await readOrderDetails(order_no);
         await readOneOrder(order_no);
-        await readShippingAddress(order_no);
         
         
         

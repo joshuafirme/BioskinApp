@@ -76,9 +76,9 @@ class ManageOrderController extends Controller
         ]);
     }
 
-    public function readShippingAddress($order_id) {
-        $o = new Order;
-        $data = $o->readShippingAddress($order_id);
+    public function readOrderDetails($order_id) {
+        $o = new OrderDetail();
+        $data = $o->readOrderDetails($order_id);
         return response()->json($data);
     }
 
