@@ -51,6 +51,14 @@ body{
   background-color: #FFF;
   cursor: pointer;
 }
+
+.img-header{
+  background-size: contain;
+  background-position:center; 
+  background-repeat: no-repeat;
+  width:100%; 
+}
+
 #main-image{
   background-size: contain; 
   border-radius: 3px !important;
@@ -391,6 +399,10 @@ body{
 
 .alert-success {
   background-color: #00AD35 !important;
+}
+
+.btn-primary {
+  background: #00AD35 !important; color:#FFF !important; border:#00AD35 !important;
 }
 
 .alert-secondary {

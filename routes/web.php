@@ -20,9 +20,12 @@ Route::get('/', function(){
 });
 
 Route::get('/home', 'HomePageController@index');
+Route::get('/dashboard', 'DashboardController@index');
+Route::get('/terms-and-conditions', 'PagesController@termsAndConditions');
+Route::get('/about-us', 'PagesController@aboutUs');
 
 Route::middleware('auth')->group(function () {
-    Route::middleware('access_rights:1:3:4')->group(function () {
+    Route::middleware('access_rights:1:3:4:5:6:7:8')->group(function () {
         Route::get('/manage-order', 'ManageOrderController@index');
         Route::get('/manage-order/read-orders', 'ManageOrderController@readOrders');
         Route::get('/manage-order/read-one-order/{order_id}', 'ManageOrderController@readOneOrder');

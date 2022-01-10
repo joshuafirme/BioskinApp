@@ -5,12 +5,14 @@
 @include('header')
 
   <!-- Navbar -->
- @include('nav')
+  @include('nav')
   <!-- /.navbar -->
 
-  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+  @include('includes.categories-menu')
+
+  <main class="d-flex min-vh-100 py-3 py-md-0">
     <div class="container">
-      <div class="card login-card" style="margin-top: 100px;">
+      <div class="card login-card" style="margin-top: 50px;">
         <div class="row no-gutters mb-3">
           <div class="col-md-5" style="margin-top:-50px;">
             <img src="{{ asset('images/bs_dr_bgn.png')  }}" alt="login" class="login-card-img m-4 d-none d-md-block">
@@ -45,12 +47,9 @@
                   </div>
                   <button type="submit" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
                 </form>
-                <a href="#!" class="forgot-password-link">Forgot password?</a>
+               <!--  <a href="#!" class="forgot-password-link">Forgot password?</a> -->
                 <p class="login-card-footer-text">Don't have an account? <a href="{{ url('/signup') }}" class="text-reset">Register here</a></p>
-                <nav class="login-card-footer-nav">
-                  <a href="#!">Terms of use.</a>
-                  <a href="#!">Privacy policy</a>
-                </nav>
+                <a target="_blank" href="{{ url('/terms-and-conditions') }}">Terms and conditions</a>
             </div>
           </div>
         </div>

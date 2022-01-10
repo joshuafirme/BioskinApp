@@ -7,6 +7,8 @@
   <!-- Navbar -->
  @include('nav')
   <!-- /.navbar -->
+
+  @include('includes.categories-menu')
   <style>
       .registration-container {
   background-color: #FFF;
@@ -31,11 +33,11 @@
 
   </style>
 
-  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0" style="margin-top: 50px;">
+  <main class="d-flex min-vh-100 py-3 py-md-0" style="margin-top: 50px;">
     <div class="container">
       <div class="card login-card">
         <div class="container registration-container">
-            <div class="row py-5 align-items-center">
+            <div class="row py-5 ">
                 <!-- For Demo Purpose -->
                 <div class="col-md-5 pr-lg-5 mb-5 mb-md-0 ml-sm-0 ml-lg-5">
                     <img src="{{asset('images/undraw_fill_form_re_cwyf.svg')}}" alt="" class="img-fluid mb-3 d-none d-md-block">
@@ -137,6 +139,8 @@
                                 </button>
                               </div>
                             </div>
+                            
+                            <a target="_blank" href="{{ url('/terms-and-conditions') }}">Terms and conditions</a>
           
                             <!-- Divider Text 
                             <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
@@ -158,8 +162,8 @@
                             </div>-->
           
                             <!-- Already Registered -->
-                            <div class="text-center w-100 mt-3">
-                                <p class="text-muted font-weight-bold">Already Registered? <a href="{{ url('/login') }}" class="text-primary ml-2">Login</a></p>
+                            <div class="w-100 mt-3">
+                                <p class="text-muted">Already Registered? <a href="{{ url('/login') }}" class="text-primary ml-2">Login</a></p>
                             </div>
           
                         </div>

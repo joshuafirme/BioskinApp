@@ -170,6 +170,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
+         $request['allowed_pages'] = isset($request->allowed_pages) ? implode(",",$request->allowed_pages) : [];
         User::create($request->all());
         return redirect()->back()
         ->with('success', 'User was created.');
@@ -208,6 +209,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
+        $request['allowed_pages'] = isset($request->allowed_pages) ? implode(",",$request->allowed_pages) : [];
         if ($request->input('password')) {
             User::where('id', $id)
             ->update([

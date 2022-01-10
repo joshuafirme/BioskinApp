@@ -32,31 +32,9 @@
       }
   </style>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <div ></div>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
+@include('includes.categories-menu') 
     <input type="hidden" id="category-value" value="{{ $category_name }}">
     <input type="hidden" id="category-id-value" value="{{ $category_id }}">
-    <div class="row pl-3 pr-3 pt-1 pb-1 justify-content-center" style="margin-top: 11px; background-color: #EFF6EC;">
-        @foreach ($categories as $item)
-        <a class="p-1 ml-3 mr-3 text-center" href="{{ url('/shop/category/'.$item->id) }}">
-          <div class="text-muted category-name"  data-id="{{ $item->id }}" 
-            data-name="{{ $item->name }}" >
-            {{ $item->name }}</div> 
-          </a>
-      @endforeach
-    </div> 
     <div class="breadcrumb-container ml-2 mt-2">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
