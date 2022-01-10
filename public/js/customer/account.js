@@ -179,6 +179,12 @@ $(document).on('change','#municipality', function(e){
     
 });
 
+$(document).on('click','#btn-add-new-address', function(e){
+
+    populateRegions();
+    
+});
+
 function populateRegions() {
     fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
           .then(function(response) {
@@ -252,5 +258,4 @@ function getBrgys(municipality) {
       });
 }
 
-populateRegions();
 readAddresses();

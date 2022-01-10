@@ -199,7 +199,7 @@
                             </div>
                             <div class="tab-pane fade" id="addresses" role="tabpanel" aria-labelledby="addresses-tab">
                                 <span class="card-title text-bold"><h4>My addresses</h4></span>
-                                <button class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#add-address-modal">
+                                <button class="btn btn-outline-secondary float-right" id="btn-add-new-address" data-toggle="modal" data-target="#add-address-modal">
                                     <i class="fas fa-plus"></i>
                                      Add new address
                                     </button>
