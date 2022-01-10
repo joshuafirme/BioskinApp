@@ -13,9 +13,18 @@ class PhilippineArea extends Model
         return $this->url;
     }
 
+    function curlRequest($url) {
+		$c = curl_init();
+		curl_setopt($c, CURLOPT_URL, $url);
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		$data = curl_exec($c);
+		curl_close($c);
+		return $data;
+	 }
+
     public function getProvinces($region){
 
-        $json = @file_get_contents($this->URL());
+        $json = $this->curlRequest($this->URL());
         $obj = $json === FALSE ? array() : json_decode($json, true);
 
         return $obj[$region]['province_list'];
@@ -23,7 +32,7 @@ class PhilippineArea extends Model
 
     public function getMunicipalities($region, $province){
 
-        $json = @file_get_contents($this->URL());
+        $json = $this->curlRequest($this->URL());
         $obj = $json === FALSE ? array() : json_decode($json, true);
 
         return $obj[$region]['province_list'][$province]['municipality_list'];
@@ -31,7 +40,7 @@ class PhilippineArea extends Model
 
     public function getBrgys($region, $province, $municipality){
 
-        $json = @file_get_contents($this->URL());
+        $json = $this->curlRequest($this->URL());
         $obj = $json === FALSE ? array() : json_decode($json, true);
 
         return $obj[$region]['province_list'][$province]['municipality_list'][$municipality]['barangay_list'];
