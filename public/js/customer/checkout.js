@@ -42,7 +42,7 @@ function readAddresses() {
                 $('.addresses-main-container').html(html);
             }
             else {
-                html += '<p class="text-center text-muted">No address was found. Please add your address <a href="/my-account">here</>.</p>';
+                html += '<p class="text-center text-muted">No address was found. Please add your address <a href="/account">here</>.</p>';
                 $('.addresses-main-container').html(html);
             }
         }
