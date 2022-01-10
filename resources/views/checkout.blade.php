@@ -132,17 +132,20 @@
     <h3 class="text-center text-bold">Checkout</h3>
     <div class="container card delivery-address-container">
         <!-- set default address value -->
-        <input type="hidden" id="address_id" value="{{ $address->id }}">
+        <input type="hidden" id="address_id" value="{{ isset($address->id) ? $address->id : "" }}">
         <div class="row">
             <div class="col-sm-12 col-md-3">
                 <img src="https://img.icons8.com/color/50/000000/marker.png"/><span class="ml-1" style=""> Delivery Address</span>
             </div>
             <div class="col-sm-12 col-md-2">
-                <div id="fullname">{{ $address->fullname }}</div>
-                <div id="phone_no">{{ $address->phone_no }}</div>
+                <div id="fullname">{{ isset($address->fullname) ? $address->fullname : "" }}</div>
+                <div id="phone_no">{{ isset($address->phone_no) ? $address->phone_no : "" }}</div>
             </div>
             <div class="col-sm-12 col-md-5">
-                <div id="address">{{ Utils::concatAddress($address) }} <br> {{ $address->notes }}</div>
+                <div id="address">
+                    {{ isset($address) && $address ? Utils::concatAddress($address) : "" }} <br> 
+                    {{ isset($address->notes) ? $address->notes : $address->notes }}
+                </div>
             </div>
             <div class="col-sm-12 col-md-2">
                 <button class="btn btn-secondary btn-grey m-1 float-none float-md-right" id="btn-set-default">Default</button>
