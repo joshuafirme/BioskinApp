@@ -269,13 +269,13 @@ class CheckoutController extends Controller
 
            $pmethod = request()->opt_payment_method;
            $expiry_date = "";
-           $status = 1;
+           $status = 0;
 
-            if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
-            //    $status = 1;
+            if ($pmethod == 'COD') {
+                $status = 1;
             }
             else {
-                $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
+             //   $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
             }
 
             OrderDetail::create([
