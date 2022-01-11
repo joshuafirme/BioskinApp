@@ -26,6 +26,13 @@
                 if (data.message == 'unauthorized') {
                     $('#loginModal').modal('toggle');
                 }
+                else if (data.data == "not enough stock") {
+                    $.toast({
+                        text: 'Not enough stock!',
+                        showHideTransition: 'plain',
+                        hideAfter: 4500, 
+                    });
+                }
                 else {
                     $.toast({
                         text: 'Product was successfully added to cart!',

@@ -47,7 +47,7 @@
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                           @if(in_array("To pay", $allowed_modules_array))
                             <li class="nav-item">
-                              <a class="nav-link" id="to-pay-tab" data-toggle="tab" href="#to-pay" role="tab" aria-controls="to-pay" aria-selected="false">To pay</a>
+                              <a class="nav-link" id="to-pay-tab" data-toggle="tab" href="#to-pay" role="tab" aria-controls="to-pay" aria-selected="false">To pay <span class="badge">{{$to_pay_count}}</span></a>
                             </li>
                           @endif
                           @if(in_array("Processing orders", $allowed_modules_array))
@@ -57,17 +57,17 @@
                             @endif
                             @if(in_array("On the way", $allowed_modules_array))
                             <li class="nav-item">
-                              <a class="nav-link" id="otw-tab" data-toggle="tab" href="#otw" role="tab" aria-controls="otw" aria-selected="false">On the way</a>
+                              <a class="nav-link" id="otw-tab" data-toggle="tab" href="#otw" role="tab" aria-controls="otw" aria-selected="false">On the way <span class="badge">{{$otw_count}}</span></a>
                             </li>
                             @endif
                             @if(in_array("To receive", $allowed_modules_array))
                             <li class="nav-item">
-                              <a class="nav-link" id="to-receive-tab" data-toggle="tab" href="#to-receive" role="tab" aria-controls="to-receive" aria-selected="false">To receive</a>
+                              <a class="nav-link" id="to-receive-tab" data-toggle="tab" href="#to-receive" role="tab" aria-controls="to-receive" aria-selected="false">To receive <span class="badge">{{$to_receive_count}}</span></a>
                             </li>
                             @endif
                             @if(in_array("Completed", $allowed_modules_array))
                             <li class="nav-item">
-                              <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed</a>
+                              <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed <span class="badge">{{$completed_count}}</span></a>
                             </li>
                             @endif
                           </ul>

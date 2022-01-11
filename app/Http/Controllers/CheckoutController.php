@@ -254,7 +254,7 @@ class CheckoutController extends Controller
                 'amount' => $data->amount,
             ]);
 
-          //  $this->updateInventory($data->sku, $data->qty);
+            $this->updateInventory($data->sku, $data->qty);
         }
 
         $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
@@ -269,7 +269,7 @@ class CheckoutController extends Controller
 
            $pmethod = request()->opt_payment_method;
            $expiry_date = "";
-           $status = 0;
+           $status = 1;
 
             if ($pmethod == 'cc' || $pmethod == 'gc' || $pmethod == 'bpionline' || $pmethod == 'br_bdo_ph' || $pmethod == 'COD') {
             //    $status = 1;
@@ -290,9 +290,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        if ($pmethod == 'COD') {
-            $this->removeCartChecked();
-        }
+        $this->removeCartChecked();
 
         Cache::forget('products-cache');
         Cache::forget('packaging-cache');

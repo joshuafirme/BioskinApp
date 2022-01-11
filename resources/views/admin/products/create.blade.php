@@ -153,7 +153,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Packaging</label>
-                            <small class="text-secondary" style="top:-10px"> - First selected option is the default packaging for retail.</small>
+                           <!-- <small class="text-secondary" style="top:-10px"> - First selected option is the default closure for retail.</small>-->
                             <select class="form-control mb-0" name="packaging[]" id="choices-multiple-remove-button" placeholder="Select packaging"
                             multiple>
                             @foreach ($packaging as $item)
@@ -164,7 +164,7 @@
 
                           <div class="col-sm-12 col-md-6 mt-2 packaging">
                             <label class="col-form-label" for="choices-multiple-remove-button">Closures</label>
-                            <small class="text-secondary" style="top:-10px"> - First selected option is the default closure for retail.</small>
+                           <!-- <small class="text-secondary" style="top:-10px"> - First selected option is the default closure for retail.</small>-->
                             <select class="form-control" name="closures[]" id="choices-multiple-remove-button" placeholder="Select closures"
                             multiple>
                             @foreach ($packaging as $item)

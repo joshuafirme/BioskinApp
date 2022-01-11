@@ -151,6 +151,11 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                     style='background-image:url("https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png");'>
                 </div>
             @endif
+                <div class="m-2"> 
+                  <div id="qty-value" class="float-right">Qty: {{ $product->qty }}</div>
+                  <div id="size-value">{{ $product->size }}</div>
+                  <div id="price-value">₱{{ $product->price }}</div>
+                </div>
             <div class="row product-buttons mt-2">
                 <div class="col-10">
                     <button class="btn btn-success btn-block m-1">Buy now</button>

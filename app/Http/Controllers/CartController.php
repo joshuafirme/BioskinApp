@@ -59,33 +59,40 @@ class CartController extends Controller
             }
         
             
-
-            if ($this->isProductExists($sku, $user_id, $order_type) == true) {
-                Cart::where([
-                    ['user_id', $user_id],
-                    ['sku', $sku]
-                ])
-                    ->update([
-                        'amount' => DB::raw('amount + '. $retail_price .''),
-                        'qty' => DB::raw('qty + '. 1)
+            if ($this->readProductQty($sku) < $qty) {
+                return response()->json([
+                    'status' =>  'success',
+                    'data' => 'not enough stock'
+                ], 200);
+            } else {
+                if ($this->isProductExists($sku, $user_id, $order_type) == true) {
+                    Cart::where([
+                        ['user_id', $user_id],
+                        ['sku', $sku]
+                    ])
+                        ->update([
+                            'amount' => DB::raw('amount + '. $retail_price .''),
+                            'qty' => DB::raw('qty + '. 1)
+                        ]);
+                        
+                        return response()->json([
+                            'status' =>  'success',
+                            'data' => 'update existing product'
+                        ], 200);
+                }
+                else {
+                    Cart::create([
+                        'user_id' => Auth::id(),
+                        'sku' => $sku,
+                        'packaging_sku' => $packaging_sku,
+                        'cap_sku' => $cap_sku,
+                        'qty' => $qty,
+                        'amount' => $total_amount,
+                        'order_type' => $order_type
                     ]);
-                    
-                    return response()->json([
-                        'status' =>  'success',
-                        'data' => 'update existing product'
-                    ], 200);
+                }
             }
-            else {
-                Cart::create([
-                    'user_id' => Auth::id(),
-                    'sku' => $sku,
-                    'packaging_sku' => $packaging_sku,
-                    'cap_sku' => $cap_sku,
-                    'qty' => $qty,
-                    'amount' => $total_amount,
-                    'order_type' => $order_type
-                ]);
-            }
+        
       
        }
        else {
@@ -102,6 +109,11 @@ class CartController extends Controller
 
         return $cart->count() > 0 ? true : false;
     }
+
+    public function readProductQty($sku){
+        return Product::where('sku', $sku)->value('qty');
+    }
+
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())

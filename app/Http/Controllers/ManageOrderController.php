@@ -12,12 +12,12 @@ class ManageOrderController extends Controller
 {
     public function index()
     {
-        $to_pay_count = Order::distinct('orders.order_id')->where('status', 0)->count('id');
-        $processing_count = Order::distinct('orders.order_id')->where('status', 1)->count('id');
-        $otw_count = Order::distinct('orders.order_id')->where('status', 2)->count('id');
-        $to_receive_count = Order::distinct('orders.order_id')->where('status', 3)->count('id');
-        $completed_count = Order::distinct('orders.order_id')->where('status', 4)->count('id');
-        $cancelled_count = Order::distinct('orders.order_id')->where('status', 5)->count('id');
+        $to_pay_count = OrderDetail::distinct('order_id')->where('status', 0)->count('id');
+        $processing_count = OrderDetail::distinct('order_id')->where('status', 1)->count('id');
+        $otw_count = OrderDetail::distinct('order_id')->where('status', 2)->count('id');
+        $to_receive_count = OrderDetail::distinct('order_id')->where('status', 3)->count('id');
+        $completed_count = OrderDetail::distinct('order_id')->where('status', 4)->count('id');
+        $cancelled_count = OrderDetail::distinct('order_id')->where('status', 5)->count('id');
 
         return view('admin.manage-order.index', compact('to_pay_count', 'processing_count', 'otw_count', 'to_receive_count', 'completed_count', 'cancelled_count'));
     }
