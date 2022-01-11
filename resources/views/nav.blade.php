@@ -14,7 +14,7 @@
             <ul class="navbar-nav">
                 @if (Auth::check() && Auth::user()->access_rights == 1)
                     <li class="nav-item">
-                        <a href="{{ url('/product') }}" class="nav-link">
+                        <a href="{{ url('/dashboard') }}" class="nav-link">
                             Admin
                         </a>
                     </li>
