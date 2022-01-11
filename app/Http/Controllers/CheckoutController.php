@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\OrderPayment;
 use App\Models\OrderDetail;
 use App\Models\Paynamics;
+use App\Models\ProductPrice;
 use Auth;
 use Cache;
 use DB;
@@ -89,12 +90,19 @@ class CheckoutController extends Controller
             $strxml .= "<orders>";
                 $strxml .= "<items>";
                     foreach ($checkout_items as $key => $item) {
-                        $discount_v = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
+                        $price_by_volume = $this->readOnePriceBySKUAndVolume($item->sku, $item->qty);
+                        if ($price_by_volume) {
+                            $item->price = $price_by_volume;
+                        }
+                        $amount = $item->price;
+                        if ($discount > 0) {
+                            $amount = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
+                        }
                         
                         $strxml .= "<Items>";
                             $strxml .= "<itemname>".$item->name ."</itemname>";
                             $strxml .= "<quantity>".$item->qty ."</quantity>";
-                            $strxml .= "<amount>".number_format((float)$discount_v, 2, '.', '') ."</amount>";
+                            $strxml .= "<amount>".number_format((float)$amount, 2, '.', '') ."</amount>";
                         $strxml .= "</Items>";
                     }
                     $strxml .= "<Items>";
@@ -139,6 +147,11 @@ class CheckoutController extends Controller
             $b64string = base64_encode($strxml);
 
             return $this->getPaynamicsForm($b64string);
+    }
+
+    public function readOnePriceBySKUAndVolume($sku, $volume) {
+        $p = new ProductPrice;
+        return  $p->readOnePriceBySKUAndVolume($sku, $volume);
     }
 
     public function paynamicsNotification() { 
@@ -241,7 +254,7 @@ class CheckoutController extends Controller
                 'amount' => $data->amount,
             ]);
 
-            $this->updateInventory($data->sku, $data->qty);
+          //  $this->updateInventory($data->sku, $data->qty);
         }
 
         $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();

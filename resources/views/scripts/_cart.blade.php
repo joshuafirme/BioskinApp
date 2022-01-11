@@ -6,7 +6,8 @@
         let closure_sku = $('.closure-container').find('.active').attr('data-sku');
        
         let total_amount = $('#overall-total-price').attr('content');
-
+        let price_by_volume = $('#price_by_volume_hidden').val()
+    
         btn.html('<i class="fas fa-spinner fa-pulse"></i>');
             $.ajax({
             url: '/add-to-cart',
@@ -18,7 +19,8 @@
                 volume : volume,
                 packaging_sku : packaging_sku,
                 closure_sku : closure_sku,
-                total_amount : total_amount
+                total_amount : total_amount,
+                price_by_volume : price_by_volume
             },
             success:async function(data){ 
                 if (data.message == 'unauthorized') {

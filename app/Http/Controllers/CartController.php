@@ -8,6 +8,7 @@ use App\Models\Product;
 use DB;
 use App\Models\Category;
 use App\Models\Packaging;
+use App\Models\ProductPrice;
 use Auth;
 
 class CartController extends Controller
@@ -18,32 +19,45 @@ class CartController extends Controller
         return view('cart', compact('categories', 'cart'));
     }
 
+    
+
+    public function readOnePriceBySKUAndVolume($sku, $volume) {
+        $p = new ProductPrice;
+        return  $p->readOnePriceBySKUAndVolume($sku, $volume);
+    }
+
     public function addToCart() {
 
        if (Auth::check()) {
             $user_id = Auth::id();
             $sku = request()->sku;
+            $price = 0;
+
             $order_type = request()->order_type;
             $retail_price = request()->retail_price;
+            
+            $price = $retail_price;
 
             $packaging_sku = $this->readDefaultPackaging($sku);
             $cap_sku = $this->readDefaultCap($sku);
 
             $qty = 1;
             $total_amount = $retail_price;
-
+    
             if (isset(request()->packaging_sku)) {
                 $packaging_sku = request()->packaging_sku;
             }
             if (isset(request()->closure_sku)) {
                 $cap_sku = request()->closure_sku;
             }
-            if (isset(request()->volume)) {
+            if (isset(request()->volume) && request()->volume) {
                 $qty = request()->volume;
+                if ($order_type == 1) {
+                    $price = $this->readOnePriceBySKUAndVolume($sku, request()->volume);
+                }
+                $total_amount = (float)$price * $qty;
             }
-            if (isset(request()->total_amount)) {
-                $total_amount = request()->total_amount;
-            }
+        
             
 
             if ($this->isProductExists($sku, $user_id, $order_type) == true) {

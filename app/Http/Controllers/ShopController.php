@@ -90,7 +90,7 @@ class ShopController extends Controller
     public function readVolumes($sku, ProductPrice $p) {
         return  $p->readPricePerVolume($sku);
     }
-
+    
 
     public function readOneProduct($sku, $category_name, Product $__product)
     {

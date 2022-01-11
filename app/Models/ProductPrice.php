@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProductPrice extends Model
 {
     protected $table = 'product_price';
+
     public function readPricePerVolume($sku)
     {
         return $this->where('sku', $sku)->get();
+    }
+
+    public function readOnePriceBySKUAndVolume($sku, $volume)
+    {
+        return $this->where('sku', $sku)->where('volume', $volume)->value('price');
     }
 
     public function removePricePerVolume($sku, $volume) {

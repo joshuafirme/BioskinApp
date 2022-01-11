@@ -112,6 +112,7 @@ Route::get('/shop/read-one/{sku}/{category_name}', 'ShopController@readProductIn
 Route::get('/rebrand/{sku}/{category_name}', 'ShopController@readRebrandProduct');
 
 Route::get('/read-volumes/{sku}', 'ShopController@readVolumes');
+Route::get('/read-price-by-volume', 'ShopController@readOnePriceBySKUAndVolume');
 Route::get('/read-packaging/{ids}', 'ShopController@readPackaging');
 
 Route::get('/login', 'UserController@login_view');
