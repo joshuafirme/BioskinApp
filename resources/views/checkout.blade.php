@@ -188,11 +188,13 @@ $page_title = 'Checkout | Bioskin';
                     <th>Packaging</th>
                     <th>Cap</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                     <th>Order Subtotal</th>
                 </thead>
                 <tbody id="cart-item-container">
                     @php
                         $total = 0;
+                        $price = 0
                     @endphp
                     @foreach ($cart as $item)
                         @php
@@ -200,6 +202,11 @@ $page_title = 'Checkout | Bioskin';
                             $src = \DB::table('product_images')
                                 ->where('sku', $item->sku)
                                 ->value('image');
+                            $price = $item->price;
+                            $price_by_volume = Utils::readOnePriceBySKUAndVolume($item->sku, $item->qty);
+                            if ($price_by_volume) {
+                                $price = $price_by_volume;
+                            }
                         @endphp
                         <tr>
                             <td>
@@ -218,6 +225,7 @@ $page_title = 'Checkout | Bioskin';
                             <td>{{ $item->packaging ? $item->packaging : '-' }}</td>
                             <td>{{ $item->closure ? $item->closure : '-' }}</td>
                             <td>{{ $item->qty }}</td>
+                            <td>{{ $price  }}</td>
                             <td>₱{{ number_format($item->amount, 2, '.', ',') }}</td>
                         </tr>
                     @endforeach

@@ -3,9 +3,15 @@ namespace App\Helpers;
 use DateTime;
 use Cache;
 use App\Models\Category;
-
+use App\Models\ProductPrice;
 class Utils
 {
+
+    public static function readOnePriceBySKUAndVolume($sku, $volume) {
+        $p = new ProductPrice;
+        return  $p->readOnePriceBySKUAndVolume($sku, $volume);
+    }
+
     public static function curlRequest($url) {
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_URL, $url);
