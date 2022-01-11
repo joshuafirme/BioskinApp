@@ -111,8 +111,7 @@
             <i class="fas fa-envelope me-3"></i>
             bioskin1a@yahoo.com
           </p>
-          <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-          <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+          <p><i class="fas fa-phone me-3"></i> 0939 194 8404 / (082)282-0679</p>
         </div>
         <!-- Grid column -->
       </div>
