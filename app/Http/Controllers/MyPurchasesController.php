@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Auth;
@@ -11,13 +12,14 @@ use Utils;
 
 class MyPurchasesController extends Controller
 {
-    public function index()
+    public function index(Product $product)
     {           
-        return view('my-purchases');
+        return view('my-purchases', compact('product'));
     }
 
     public function readOne($order_id)
     {
+        $product = new Product;
         $o = new Order;
         $order_items = $o->readMyOrders($order_id);
         
@@ -26,6 +28,6 @@ class MyPurchasesController extends Controller
         }
         $address = $o->readShippingAddress($order_id);
      
-        return view('my-purchase', compact('order_items', 'order_id', 'address'));
+        return view('my-purchase', compact('order_items', 'order_id', 'address', 'product'));
     }
 }

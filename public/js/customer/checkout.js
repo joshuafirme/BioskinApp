@@ -161,6 +161,10 @@ $(document).on('click', '#btn-place-order', async function(){
     let opt_payment_method = $("input[name='rad_pm']:checked").val();
     let mode_of_payment = $('.payment-method-container').find('.active').attr('data-value');
 
+    var url = new URL(window.location);
+    var buy_now = url.searchParams.get("buy_now");
+    var sku = url.searchParams.get("sku");
+
     let opt_shipping_mop = $('input[name="opt_shipping_mop"]:checked').val();
 
     let notes = $('#notes').val();
@@ -200,7 +204,9 @@ $(document).on('click', '#btn-place-order', async function(){
             courier_id : courier_id,
             opt_payment_method : opt_payment_method,
             opt_shipping_mop : opt_shipping_mop,
-            notes : notes
+            notes : notes,
+            buy_now : buy_now,
+            sku : sku
         },
         success:function(order_id){
             btn.remove();
@@ -213,19 +219,21 @@ $(document).on('click', '#btn-place-order', async function(){
             }
             else {  
                 console.log(order_id)
-                paynamicsPayment(opt_payment_method, voucher_code);
+                paynamicsPayment(opt_payment_method, voucher_code, buy_now, sku);
             }
         }
     });
 });
 
-function paynamicsPayment(pmethod, voucher_code) {
+function paynamicsPayment(pmethod, voucher_code, buy_now, sku) {
     $.ajax({
         url: '/paynamics-payment',
         type: 'POST',
         data: {
             pmethod : pmethod,
-            voucher_code : voucher_code
+            voucher_code : voucher_code,
+            buy_now : buy_now,
+            sku : sku
         },
         success:function(data){
             console.log(data)

@@ -19,14 +19,14 @@ use DB;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(Product $product)
     {
        // return phpinfo();
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart', 'user', 'address', 'ip'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product'));
     }
 
     public function paynamicsPayment() {
@@ -50,8 +50,15 @@ class CheckoutController extends Controller
             $checkout_items = $order->readMyOrders($order_id);
             $total = $order->readTotalAmount($order_id);
             $discount = $od->discount == null ? 0 : $od->discount;
-            // return json_encode($address);
         }
+
+        else if (isset(request()->buy_now) && request()->buy_now == 'true') {
+            $sku = request()->sku;
+            $product = new Product;
+            $checkout_items = $product->readProductBySKU($sku);
+            $total = $product->readPriceBySKU($sku);
+        }
+
    
         $total = $total - $discount;
 
@@ -94,6 +101,11 @@ class CheckoutController extends Controller
                         if ($price_by_volume) {
                             $item->price = $price_by_volume;
                         }
+                        
+                        if (request()->buy_now == 'true') {
+                            $item->qty = 1;
+                        }
+
                         $amount = $item->price;
                         if ($discount > 0) {
                             $amount = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
@@ -105,11 +117,15 @@ class CheckoutController extends Controller
                             $strxml .= "<amount>".number_format((float)$amount, 2, '.', '') ."</amount>";
                         $strxml .= "</Items>";
                     }
-                    $strxml .= "<Items>";
-                        $strxml .= "<itemname>Discounted each item.</itemname>";
-                        $strxml .= "<quantity>0</quantity>";
-                        $strxml .= "<amount>".$discount ."</amount>";
-                    $strxml .= "</Items>";
+
+                    if ($discount > 0) {
+                        $strxml .= "<Items>";
+                            $strxml .= "<itemname>Discounted each item.</itemname>";
+                            $strxml .= "<quantity>0</quantity>";
+                            $strxml .= "<amount>".$discount ."</amount>";
+                        $strxml .= "</Items>";
+                    }
+                   
                 $strxml .= "</items>";
             $strxml .= "</orders>";
             $strxml .= "<mid>" . $_mid . "</mid>";
@@ -118,7 +134,7 @@ class CheckoutController extends Controller
             $strxml .= "<notification_url>" . $_noturl . "</notification_url>";
             $strxml .= "<response_url>" . $_resurl . "</response_url>";
             $strxml .= "<cancel_url>" . $_cancelurl . "</cancel_url>";
-            $strxml .= "<mtac_url></mtac_url>"; // pls set this to the url where your terms and conditions are hosted
+            $strxml .= "<mtac_url>".url('/terms-and-conditions')."</mtac_url>"; // pls set this to the url where your terms and conditions are hosted
             $strxml .= "<descriptor_note></descriptor_note>"; // pls set this to the descriptor of the merchant ""
             $strxml .= "<fname>" . $_fname . "</fname>";
             $strxml .= "<lname>" . $_lname . "</lname>";
@@ -238,25 +254,44 @@ class CheckoutController extends Controller
     }
 
     public function placeOrder() {
-
+  
         $items = $this->readCartChecked();
         $order_id = $this->generateOrderID();
         $user_id = Auth::id();
 
-        foreach ($items as $data) {
+        $product = new Product;
+       
+        if (isset(request()->buy_now) && request()->buy_now == "true") {  
+            $sku = request()->sku;
+            $this->updateInventory($sku, 1);
+        
             Order::create([
                 'order_id' => $order_id,
                 'user_id' => $user_id,
-                'sku' => $data->sku,
-                'packaging_sku' => $data->packaging_sku,
-                'cap_sku' => $data->cap_sku,
-                'qty' => $data->qty,
-                'amount' => $data->amount,
+                'sku' => $sku,
+                'packaging_sku' => $product->readDefaultPackagingID($sku),
+                'cap_sku' => $product->readDefaultCapID($sku),
+                'qty' => 1,
+                'amount' => $product->readPriceBySKU($sku),
             ]);
-
-            $this->updateInventory($data->sku, $data->qty);
+        } 
+        else {
+            foreach ($items as $data) {
+                Order::create([
+                    'order_id' => $order_id,
+                    'user_id' => $user_id,
+                    'sku' => $data->sku,
+                    'packaging_sku' => $data->packaging_sku,
+                    'cap_sku' => $data->cap_sku,
+                    'qty' => $data->qty,
+                    'amount' => $data->amount,
+                ]);
+    
+                $this->updateInventory($data->sku, $data->qty);
+            }
         }
-
+        
+   
         $voucher = Voucher::where('voucher_code', request()->voucher_code)->first();
      
         if (isset(request()->address_id) && isset(request()->courier_id) && isset(request()->opt_payment_method)) {
@@ -273,6 +308,7 @@ class CheckoutController extends Controller
 
             if ($pmethod == 'COD') {
                 $status = 1;
+                $this->removeCartChecked();
             }
             else {
              //   $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
@@ -290,7 +326,6 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $this->removeCartChecked();
 
         Cache::forget('products-cache');
         Cache::forget('packaging-cache');
@@ -358,7 +393,7 @@ class CheckoutController extends Controller
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
                     ->select( 'P.*', 'P.name as name', 'P.qty as stock', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
-                    'PG.name as packaging', 'C.name as closure', 
+                    'PG.name as packaging', 'C.name as closure', 'cart.packaging_sku', 'cart.cap_sku',
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
                     ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')

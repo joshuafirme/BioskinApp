@@ -4,7 +4,8 @@ $(document).ready(function () {
         var packaging = data.packaging != null ? data.packaging : '-';
         var closure = data.closure != null ? data.closure : '-';
         var variation = data.variation != null ? data.variation : '-';
-        var size = data.size != null ? data.size : '-';
+        var size = data.size != null ? data.size : '-'; 
+
         var stock = data.stock == 0 ? "<div class='text-danger'>Out of stock</div>" : 'Stock: '+data.stock+'';
         html += '<tr>';
         html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-stock="'+data.stock+'" data-check-val="'+data.is_checked+'"></input></td>';
@@ -14,8 +15,8 @@ $(document).ready(function () {
         html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+'</td>';
         html +=    '<td>'+size+'</td>';
         html +=    '<td>'+variation+'</td>';
-        html +=    '<td>'+packaging+'</td>';
-        html +=    '<td>'+closure+'</td>';
+        html +=    '<td id="packaging-name-'+identifier+'">'+packaging+'</td>';
+        html +=    '<td id="cap-name-'+identifier+'">'+closure+'</td>';
         html +=    '<td>';
         html +=        '<div class="row align-items-center">';
      //   html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
@@ -26,6 +27,17 @@ $(document).ready(function () {
         html += '</tr>';
     
         return html;
+    }
+
+    async function readPackagingName(id, identifier, object) {
+        $.ajax({
+            url: '/read-packaging-name/'+id,
+            type: 'GET',
+            success:function(data){ 
+                data = data ? data : "-";
+                $('#'+object+'-name-'+identifier).text(data)
+            }
+        });
     }
     
     async function readCart() {
@@ -66,6 +78,8 @@ $(document).ready(function () {
     
                 for (var i = 0; i < data.length; i++) { 
                     readImage(data[i].sku, i);
+                    readPackagingName(data[i].packaging_sku, i, 'packaging');
+                    readPackagingName(data[i].cap_sku, i, 'cap');
                 }
 
                 await uncheckIfOutOfStock();

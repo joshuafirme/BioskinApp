@@ -212,8 +212,8 @@ $order_detail = DB::table('order_details as OD')
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->size ? $data->size : '-' }}</td>
                                 <td>{{ $data->variation ? $data->variation : '-' }}</td>
-                                <td>{{ $data->packaging ? $data->packaging : '-' }}</td>
-                                <td>{{ $data->closure ? $data->closure : '-' }}</td>
+                                <td>{{ $product->readPackagingNameByID($item->packaging_sku) }}</td>
+                                <td>{{ $product->readPackagingNameByID($item->cap_sku) }}</td>
                                 <td>{{ $data->qty }}</td>
                                 <td>₱{{ number_format($data->amount, 2, '.', ',') }}</td>
                             </tr>

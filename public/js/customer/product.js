@@ -21,7 +21,7 @@ async function getItems(data) {
 
         html += '<div class="row product-buttons mt-2">';
         html += '<div class="col-10">';
-        html += '<button class="btn btn-success btn-block m-1">Buy now</button>';
+        html += '<a href="/checkout?buy_now=true&sku='+data.sku+'" class="btn btn-success btn-block m-1 btn-buy-now">Buy now</a>';
         html += '</div>';
         html += '<div class="col-2">';
         html += '<a data-sku="' + data.sku + '" data-price="' + data.price + '" data-order-type="0" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>';

@@ -196,18 +196,16 @@ $page_title = 'Checkout | Bioskin';
                         $total = 0;
                         $price = 0
                     @endphp
-                    @foreach ($cart as $item)
+                    @if (isset($_GET['buy_now']) && $_GET['buy_now'] == "true" && isset($_GET['sku']))
                         @php
-                            $total = $total + $item->amount;
-                            $src = \DB::table('product_images')
-                                ->where('sku', $item->sku)
-                                ->value('image');
-                            $price = $item->price;
-                            $price_by_volume = Utils::readOnePriceBySKUAndVolume($item->sku, $item->qty);
-                            if ($price_by_volume) {
-                                $price = $price_by_volume;
-                            }
+                            $sku = $_GET['sku'];
+                            $item = $product->readOneProduct($sku);
+                            $src = $product->readImages($sku);
                         @endphp
+                        @if ($item)
+                            @php
+                                $total = $item->price;
+                            @endphp
                         <tr>
                             <td>
                                 @if ($src)
@@ -222,13 +220,48 @@ $page_title = 'Checkout | Bioskin';
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->size ? $item->size : '-' }}</td>
                             <td>{{ $item->variation ? $item->variation : '-' }}</td>
-                            <td>{{ $item->packaging ? $item->packaging : '-' }}</td>
-                            <td>{{ $item->closure ? $item->closure : '-' }}</td>
+                            <td>{{ $product->readDefaultPackagingBySKU($item->sku) }}</td>
+                            <td>{{ $product->readDefaultCapBySKU($item->sku) }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ $price  }}</td>
-                            <td>₱{{ number_format($item->amount, 2, '.', ',') }}</td>
+                            <td>{{ $item->price  }}</td>
+                            <td>₱{{ number_format($item->price, 2, '.', ',') }}</td>
                         </tr>
-                    @endforeach
+                        @endif
+                    @else
+                        @foreach ($cart as $item)
+                            @php
+                                $total = $total + $item->amount;
+                                $src = \DB::table('product_images')
+                                    ->where('sku', $item->sku)
+                                    ->value('image');
+                                $price = $item->price;
+                                $price_by_volume = Utils::readOnePriceBySKUAndVolume($item->sku, $item->qty);
+                                if ($price_by_volume) {
+                                    $price = $price_by_volume;
+                                }
+                            @endphp
+                            <tr>
+                                <td>
+                                    @if ($src)
+                                        <div class="responsive-img"
+                                            style="width:100px; background-image:url('/images/{{ $src }}')"></div>
+                                    @else
+                                        <div class="responsive-img"
+                                            style="width:100px; background-image: url('https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png')">
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->size ? $item->size : '-' }}</td>
+                                <td>{{ $item->variation ? $item->variation : '-' }}</td>
+                                <td>{{ $product->readPackagingNameByID($item->packaging_sku) }}</td>
+                                <td>{{ $product->readPackagingNameByID($item->cap_sku) }}</td>
+                                <td>{{ $item->qty }}</td>
+                                <td>{{ $price  }}</td>
+                                <td>₱{{ number_format($item->amount, 2, '.', ',') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -519,7 +552,7 @@ $page_title = 'Checkout | Bioskin';
                 <div class="col-sm-12">
                     <div class="float-right">
                         <div id="input-validation"></div>
-                        @if (count($cart) > 0)
+                        @if (count($cart) > 0 || $item)
                             <button class="btn btn-secondary btn-grey text-bold float-right" id="btn-place-order">Place
                                 Order</button>
                     </div>
