@@ -36,11 +36,10 @@ class Order extends Model
     public function readOrdersByOrderIDAndStatus($order_id)
     {
         return DB::table($this->table . ' as O')
-        ->select('O.sku', 'P.size', 'O.order_id', 'O.amount', 'O.qty', 'P.name', 'P.price', 'V.name as variation', 'PG.name as packaging', 'C.name as closure', 'OD.status')
+        ->select('O.sku', 'P.size', 'O.order_id', 'O.amount', 'O.qty', 'P.name', 'P.price', 'V.name as variation', 
+        'O.packaging_sku', 'O.cap_sku', 'OD.status')
         ->leftJoin('products as P', 'P.sku', '=', 'O.sku')
         ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
-        ->leftJoin('products as PG', 'PG.sku', '=', 'O.packaging_sku')
-        ->leftJoin('products as C', 'C.sku', '=', 'O.cap_sku')
         ->leftJoin('category', 'category.id', '=', 'P.category_id')
         ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
         ->where('O.user_id', \Auth::id())
