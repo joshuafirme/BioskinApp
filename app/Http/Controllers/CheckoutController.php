@@ -21,7 +21,6 @@ class CheckoutController extends Controller
 {
     public function index(Product $product)
     {
-        return phpinfo();
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();

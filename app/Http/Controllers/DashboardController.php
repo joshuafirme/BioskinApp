@@ -16,4 +16,8 @@ class DashboardController extends Controller
         $orders_today_count = Order::whereRaw('Date(created_at) = CURDATE()')->count('order_id');
         return view('admin.dashboard', compact('total_sales_today', 'users_count', 'orders_today_count'));
     }
+
+    public function phpInfo() {
+        return phpinfo();
+    }
 }
