@@ -73,10 +73,10 @@ class Utils
                 $text = 'To receive';
                 break;
             case 4:
-                $status = 'Completed';
+                $text = 'Completed';
                 break;
-            case 4:
-                $status = 'Completed';
+            case 5:
+                $text = 'Cancelled';
                 break;
                     
             default:

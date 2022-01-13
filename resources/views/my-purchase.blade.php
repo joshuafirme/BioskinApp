@@ -163,13 +163,12 @@ $order_detail = DB::table('order_details as OD')
                     </div>
                 </div>
                 @php
-                    $status = Utils::readStatusText($order_detail->status);
-                    
+                    $status = Utils::readStatusText($order_detail->status); 
                     $payment_method_text = Utils::readPaymentMethodText($order_detail->payment_method);
                 @endphp
                 <div class="col-sm-12 col-md-2">
                     <b>Order ID: {{ $order_id }}</b>
-                    <span class="badge badge-success">{{ $status }}</span>
+                    <span class="badge badge-{{ $order_detail->status == 5 ? "danger" : "success" }}">{{ $status }}</span>
                     <br><span class="badge badge-light">{{ $payment_method_text }}</span><br>
                 </div>
             <div class="ml-2">Order placed: {{date('F d, Y h:i A', strtotime($order_detail->created_at))}} <br>
@@ -180,6 +179,9 @@ $order_detail = DB::table('order_details as OD')
             </div>
             </div>
             <div>{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
+            @if ($order_detail->status == 5)
+                <div>Cancellation reason: {{ $order_detail->cancellation_reason }}</div>
+            @endif
             <div class="table-container mt-4 border mb-5">
                 <table class="table table-borderless" id="cart-table">
                     <thead style="background-color: #E7E6E6;">
@@ -358,12 +360,13 @@ $order_detail = DB::table('order_details as OD')
                 btn.html('<i class="fas fa-spinner fa-pulse"></i>');
                 var order_id = $(this).attr('data-order-id');
                 var date_order = $(this).attr('data-date-order');
-
+                var cancellation_reason = $('#cancellation_reason').val();
                 $.ajax({
                     url: '/order/cancel/'+order_id,
                     type: 'POST',
                     data: {
-                        date_order : date_order
+                        date_order : date_order,
+                        cancellation_reason : cancellation_reason
                     },
                     success: function(data) {
                         console.log(data)
