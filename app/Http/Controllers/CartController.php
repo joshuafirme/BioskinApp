@@ -29,33 +29,61 @@ class CartController extends Controller
     public function addToCart() {
 
        if (Auth::check()) {
+            $product = new Product;
             $user_id = Auth::id();
             $sku = request()->sku;
             $price = 0;
 
             $order_type = request()->order_type;
-            $retail_price = request()->retail_price;
-            
+            $retail_price = $product->readPriceBySKU($sku);
             $price = $retail_price;
 
-            $packaging_sku = $this->readDefaultPackaging($sku);
-            $cap_sku = $this->readDefaultCap($sku);
+            $packaging_price = 0;
+            $cap_price = 0;
+
+            $packaging_id = $this->readDefaultPackaging($sku);
+            $default_packaging_price = $product->readPackagingPriceByID($packaging_id);
+
+            $packaging_price = $default_packaging_price;
+
+            $cap_id = $this->readDefaultCap($sku);
+            $default_cap_price = $product->readPackagingPriceByID($cap_id);
+
+            $cap_price = $default_cap_price;
 
             $qty = 1;
             $total_amount = $retail_price;
     
             if (isset(request()->packaging_sku)) {
-                $packaging_sku = request()->packaging_sku;
+                $packaging_id = request()->packaging_sku;
+                $packaging_price = $product->readPackagingPriceByID($packaging_id);
             }
             if (isset(request()->closure_sku)) {
-                $cap_sku = request()->closure_sku;
+                $cap_id = request()->closure_sku;
+                $cap_price = $product->readPackagingPriceByID($cap_id);
             }
             if (isset(request()->volume) && request()->volume) {
+
                 $qty = request()->volume;
+
                 if ($order_type == 1) {
                     $price = $this->readOnePriceBySKUAndVolume($sku, request()->volume);
                 }
-                $total_amount = (float)$price * $qty;
+               
+                $main_product_price = $price;
+
+            //    $selected_packaging_price = $packaging_price;
+            //    $selected_cap_price = $cap_price;
+
+            //    if ($product->isPackagingPriceIncluded($sku)) {
+            //        $packaging_price = $default_packaging_price - $packaging_price;
+            //    }
+            //    if ($product->isCapPriceIncluded($sku)) {
+            //        $cap_price = $default_cap_price - $cap_price;
+            //    }
+
+                $over_all_total = $main_product_price + $packaging_price + $cap_price;
+                $total_amount = (float)$over_all_total * $qty;
             }
         
             
@@ -64,15 +92,21 @@ class CartController extends Controller
                     'status' =>  'success',
                     'data' => 'not enough stock'
                 ], 200);
-            } else {
-                if ($this->isProductExists($sku, $user_id, $order_type) == true) {
+            } 
+            else {
+                if ($this->isProductExists($sku, $packaging_id, $cap_id, $user_id, $order_type) == true) {
+
+                    if ($order_type == 1) {
+
+                    }
+
                     Cart::where([
                         ['user_id', $user_id],
                         ['sku', $sku]
                     ])
                         ->update([
-                            'amount' => DB::raw('amount + '. $retail_price .''),
-                            'qty' => DB::raw('qty + '. 1)
+                            'amount' => DB::raw('amount + '. $total_amount .''),
+                            'qty' => DB::raw('qty + '. $qty)
                         ]);
                         
                         return response()->json([
@@ -84,8 +118,8 @@ class CartController extends Controller
                     Cart::create([
                         'user_id' => Auth::id(),
                         'sku' => $sku,
-                        'packaging_sku' => $packaging_sku,
-                        'cap_sku' => $cap_sku,
+                        'packaging_sku' => $packaging_id,
+                        'cap_sku' => $cap_id,
                         'qty' => $qty,
                         'amount' => $total_amount,
                         'order_type' => $order_type
@@ -100,10 +134,12 @@ class CartController extends Controller
        }
     }
 
-    public function isProductExists($sku, $user_id, $order_type){
+    public function isProductExists($sku, $packaging_id, $cap_id, $user_id, $order_type){
         $cart = Cart::where([
                 ['user_id', $user_id],
                 ['sku', $sku],
+                ['packaging_sku', $packaging_id],
+                ['cap_sku', $cap_id],
                 ['order_type', $order_type]
             ])->get();
 
@@ -149,6 +185,14 @@ class CartController extends Controller
         return 'deleted';
     }
 
+    
+    public function removeOneItem($id) {
+
+        Cart::where('id', $id)->delete();
+        
+        return 'deleted';
+    }
+    
     public function readDefaultPackaging($sku) {
 
         $packaging = Product::where('sku', $sku)->value('packaging');

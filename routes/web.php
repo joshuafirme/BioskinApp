@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/cart', 'CartController@index');
+    Route::post('/cart/delete/{id}', 'CartController@removeOneItem');
     Route::get('/cart-count', 'CartController@cartCount');
     Route::get('/read-cart', 'CartController@readCart');
     Route::post('/cart/remove/{ids}', 'CartController@removeItem');
@@ -70,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-purchases', 'MyPurchasesController@index');
     Route::get('/my-purchases/search', 'MyPurchasesController@search');
     Route::get('/my-purchase/{order_id}', 'MyPurchasesController@readOne');
+    Route::post('/order/cancel/{order_id}', 'MyPurchasesController@cancelOrder');
     
     Route::post('/paynamics-payment', 'CheckoutController@paynamicsPayment')->name('paynamicsPayment');
     Route::get('/paynamics-notification', 'CheckoutController@paynamicsNotification')->name('paynamicsNotification');

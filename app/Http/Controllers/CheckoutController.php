@@ -31,6 +31,7 @@ class CheckoutController extends Controller
     public function paynamicsPayment() {
         $ip = $this->getIp();
         $user = Auth::user();
+        $product = new Product;
         
         $address = $this->readDefaultAddress();
         $checkout_items = $this->readCartChecked();
@@ -53,7 +54,6 @@ class CheckoutController extends Controller
 
         else if (isset(request()->buy_now) && request()->buy_now == 'true') {
             $sku = request()->sku;
-            $product = new Product;
             $checkout_items = $product->readProductBySKU($sku);
             $total = $product->readPriceBySKU($sku);
         }
@@ -95,28 +95,33 @@ class CheckoutController extends Controller
         $strxml .= "<Request>";
             $strxml .= "<orders>";
                 $strxml .= "<items>";
+                    $debug_total = [];
                     foreach ($checkout_items as $key => $item) {
-                        $price_by_volume = $this->readOnePriceBySKUAndVolume($item->sku, $item->qty);
-                        if ($price_by_volume) {
-                            $item->price = $price_by_volume;
+                        // if rebranding
+                        if ((isset($item->order_type) && $item->order_type == 1) || (isset($item->rebranding) && $item->rebranding == 1)) {
+                            $price_by_volume = $this->readOnePriceBySKUAndVolume($item->sku, $item->qty);
+                            if ($price_by_volume) {
+                                $item->price = $price_by_volume;
+                            }
+                       
+                            $packaging_price = $product->readPackagingPriceByID($item->packaging_sku);
+                            $cap_price = $product->readPackagingPriceByID($item->cap_sku);
+                            $item->price = $item->price + $packaging_price + $cap_price;
                         }
-                        
                         if (request()->buy_now == 'true') {
                             $item->qty = 1;
                         }
-
-                        $amount = $item->price;
+                        array_push($debug_total, $item->price);
                         if ($discount > 0) {
-                            $amount = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
-                        }
-                        
+                            $item->price = $item->price - (((float)$discount / count($checkout_items)) / $item->qty);
+                        } 
                         $strxml .= "<Items>";
                             $strxml .= "<itemname>".$item->name ."</itemname>";
                             $strxml .= "<quantity>".$item->qty ."</quantity>";
-                            $strxml .= "<amount>".number_format((float)$amount, 2, '.', '') ."</amount>";
+                            $strxml .= "<amount>".number_format((float)$item->price, 2, '.', '') ."</amount>";
                         $strxml .= "</Items>";
-                    }
-
+                    } 
+                    //return $debug_total;
                     if ($discount > 0) {
                         $strxml .= "<Items>";
                             $strxml .= "<itemname>Discounted each item.</itemname>";
@@ -284,9 +289,10 @@ class CheckoutController extends Controller
                     'cap_sku' => $data->cap_sku,
                     'qty' => $data->qty,
                     'amount' => $data->amount,
+                    'rebranding' => $data->order_type,
                 ]);
     
-                $this->updateInventory($data->sku, $data->qty);
+           //     $this->updateInventory($data->sku, $data->qty);
             }
         }
         
@@ -392,7 +398,7 @@ class CheckoutController extends Controller
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
                     ->select( 'P.*', 'P.name as name', 'P.qty as stock', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku',
-                    'PG.name as packaging', 'C.name as closure', 'cart.packaging_sku', 'cart.cap_sku',
+                    'PG.name as packaging', 'C.name as closure', 'cart.packaging_sku', 'cart.cap_sku', 'cart.order_type',
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
                     ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')

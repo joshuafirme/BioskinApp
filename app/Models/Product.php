@@ -84,9 +84,11 @@ class Product extends Model
 
     
     public function readOneProduct($sku) {
-        return Product::select('products.*', 'V.name as variation')
+        return DB::table('products as P')
+        ->select('P.sku', 'P.name as name', 'P.price', 'P.size', 'P.qty as stock', 'V.name as variation', 'category.name as category')
         ->where('sku', $sku)
-        ->leftJoin('variations as V', 'V.id', '=', 'products.variation_id')
+        ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
+        ->leftJoin('category', 'category.id', '=', 'P.category_id')
         ->first(); 
     }
 
@@ -96,7 +98,7 @@ class Product extends Model
 
     public function readProductBySKU($sku) {
         return DB::table('products as P')
-                    ->select( 'P.*', 'P.name as name', 'P.qty as stock', 'V.name as variation', 'category.name as category')
+                    ->select('P.sku', 'P.name as name', 'P.price', 'P.size', 'P.qty as stock', 'V.name as variation', 'category.name as category')
                     ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
                     ->where('P.qty','>', '0')
@@ -104,8 +106,22 @@ class Product extends Model
                     ->get();
     }
 
+    public function isPackagingPriceIncluded($sku) {
+        $res = DB::table('products')->where('sku',$sku)->value('packaging_price_included');
+        return $res == 1 ? true : false;
+    }
+
+    public function isCapPriceIncluded($sku) {
+        return DB::table('products')->where('sku',$sku)->value('closure_price_included');
+    }
+
     public function readPriceBySKU($sku) {
         return DB::table('products')->where('sku',$sku)->value('price');
+    }
+
+    public function readPackagingPriceByID($id) {
+        $res = DB::table('products')->where('id',$id)->value('price');
+        return $res ? $res : 0;
     }
 
     public function readPackagingNameByID($id) {

@@ -78,6 +78,9 @@ class ManageOrderController extends Controller
         else if (request()->status == 4) { 
             $remarks = "Your order has been delivered.";
         } 
+        else if (request()->status == 5) { 
+            $cancellation_reason = "Your order has been delivered.";
+        } 
         OrderDetail::where('order_id', $order_id)->update([
             'status' => request()->status,
             'remarks' => $remarks

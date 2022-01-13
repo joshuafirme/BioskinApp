@@ -16,7 +16,8 @@ class Cart extends Model
         'cap_sku',
         'qty',
         'amount',
-        'is_checked'
+        'is_checked',
+        'order_type'
     ];
 
     public function addToCart() {

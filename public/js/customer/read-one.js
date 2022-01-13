@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data) {
                         for (var i = 0; i < data.length; i++) {
                             html += '<div class="col-sm-12 col-md-6">';
-                            html += '<button class="btn btn-light btn-' + object + ' btn-block m-1" data-sku="' + data[i].sku + '" data-name="' + data[i].name + '" data-price="' + data[i].price + '">' + data[i].name + ' ' + data[i].size + '</button>';
+                            html += '<button class="btn btn-light btn-' + object + ' btn-block m-1" data-sku="' + data[i].id + '" data-name="' + data[i].name + '" data-price="' + data[i].price + '">' + data[i].name + ' ' + data[i].size + '</button>';
 
                             html += '<div class="m-1 rebrand-img" id="data-image-' + data[i].sku + '"></div>';
                             html += '</div>';
@@ -198,6 +198,11 @@ document.addEventListener('DOMContentLoaded', function() {
             $('#volume-price').text(price);
 
             setActive('btn-volume', $this);
+
+            let total_packaging = parseInt(volume) * parseFloat($('#custom-packaging-price').text());
+            let total_cap = parseInt(volume) * parseFloat($('#custom-closure-price').text());
+            $('#closure-total-price').text(total_cap);
+            $('#packaging-total-price').text(total_packaging);
 
             $('.custom-volume').text(volume);
             $('#custom-price').text(price);

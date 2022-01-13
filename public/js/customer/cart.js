@@ -12,15 +12,16 @@ $(document).ready(function () {
         html +=    '<td>';
         html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:100px;"  id="data-image-'+identifier+'"></div></a>';
         html +=    '</td>';
-        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+'</td>';
+        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+'<br>';
+        html +=    '<button class="btn btn-delete" data-id="'+data.cart_id+'"><i class="fa fa-trash-alt" aria-hidden="true" style="color:#444444;"></i></button></td>';
         html +=    '<td>'+size+'</td>';
         html +=    '<td>'+variation+'</td>';
-        html +=    '<td id="packaging-name-'+identifier+'">'+packaging+'</td>';
-        html +=    '<td id="cap-name-'+identifier+'">'+closure+'</td>';
+        html +=    '<td class="packaging-name-'+identifier+'">-</td>';
+        html +=    '<td class="cap-name-'+identifier+'">-</td>';
         html +=    '<td>';
         html +=        '<div class="row align-items-center">';
      //   html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
-     html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
+        html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
         html +=    '</div>';
         html +=    '</td>';
         html +=    '<td>₱'+formatNumber(data.amount)+'</td>';
@@ -33,9 +34,9 @@ $(document).ready(function () {
         $.ajax({
             url: '/read-packaging-name/'+id,
             type: 'GET',
-            success:function(data){ 
+            success:function(data){  console.log(data)
                 data = data ? data : "-";
-                $('#'+object+'-name-'+identifier).text(data)
+                $('.'+object+'-name-'+identifier).text(data)
             }
         });
     }
@@ -71,15 +72,16 @@ $(document).ready(function () {
                 }
                 else {
                     let html_no_data = '<p class="text-center text-muted">Cart is empty.</p>';
+                    $('#cart-item-container').html(html);
                     $('.table-container').append(html_no_data);
                     $('#btn-checkout').hide();
                 }
     
     
                 for (var i = 0; i < data.length; i++) { 
-                    readImage(data[i].sku, i);
-                    readPackagingName(data[i].packaging_sku, i, 'packaging');
-                    readPackagingName(data[i].cap_sku, i, 'cap');
+                    await readImage(data[i].sku, i);
+                    await readPackagingName(data[i].packaging_sku, i, 'packaging');
+                    await readPackagingName(data[i].cap_sku, i, 'cap');
                 }
 
                 await uncheckIfOutOfStock();
@@ -192,6 +194,33 @@ $(document).ready(function () {
                 check_value = 1;
             }
             await updateCartCheck(id, check_value);
+        });
+
+        $(document).on('click','.btn-delete', async function(){
+            let id = $(this).attr('data-id');
+            
+            $('#delete-record-modal').modal('show');
+            $('.btn-confirm-delete').attr('data-id', id);
+        });
+
+        $(document).on('click','.btn-confirm-delete', async function(){
+            let id = $(this).attr('data-id');
+            let btn = $(this);
+            btn.html('<i class="fas fa-spinner fa-spin"></i>');
+            $.ajax({
+                url: '/cart/delete/'+id,
+                type: 'POST',
+                success:function(){ 
+                    readCart();
+                    $.toast({
+                        text: 'Item was removed from cart.',
+                        showHideTransition: 'plain',
+                        hideAfter: 4500, 
+                    });
+                    btn.html('Yes');
+                    $('#delete-record-modal').modal('hide');
+                }
+            });
         });
     
         $(document).on('click','#btn-delete-selected', function(){

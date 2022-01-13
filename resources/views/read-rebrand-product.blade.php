@@ -30,8 +30,10 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
     .nav-pills {
         border-bottom: 1px solid #EBEBEB !important;
     }
-
     .nav-link:hover {
+        color: #424C8E !important;
+    }
+    .nav-link.active:hover {
         color: #424C8E !important;
     }
 
@@ -269,7 +271,7 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                                     @endphp
                                     <div class="col-6 col-md-6">
                                         <button class="btn btn-light btn-packaging btn-block m-1"
-                                            data-sku="{{ $pack->sku }}"
+                                            data-sku="{{ $pack->id }}"
                                             data-price="{{ number_format($pack->price, 2, '.', ',') }}"
                                             data-name="{{ $pack->name }} {{ $pack->size }}">
                                             {{ $pack->name }} {{ $pack->size }}
@@ -307,7 +309,7 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                                     @endphp
                                     <div class="col-6">
                                         <button class="btn btn-light btn-closure btn-block m-1"
-                                            data-price="{{ $closure->price }}" data-sku="{{ $closure->sku }}"
+                                            data-price="{{ $closure->price }}" data-sku="{{ $closure->id }}"
                                             data-name="{{ $closure->name }} {{ $closure->size }}">
                                             {{ $closure->name }} {{ $closure->size }}
                                         </button>

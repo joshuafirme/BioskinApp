@@ -305,7 +305,10 @@ $page_title = 'My Purchases | Bioskin';
                                                                 $status = 'To receive';
                                                                 break;
                                                             case 4:
-                                                                $status = 'To receive';
+                                                                $status = 'Completed';
+                                                                break;
+                                                            case 5:
+                                                                $status = 'Cancelled';
                                                                 break;
                                                         
                                                             default:
@@ -342,7 +345,8 @@ $page_title = 'My Purchases | Bioskin';
                                             <td colspan="6"><a class="text-dark"
                                                     href="{{ url('/my-purchase/' . $item->order_id) }}"><b>Order ID:
                                                         {{ $item->order_id }}</b></a><span
-                                                    class="badge badge-success ml-3"> {{ $status }}</span>
+                                                    class="badge badge-success ml-3"> {{ $status }}</span> <br>
+                                                    Order placed: {{date('F d, Y h:i A', strtotime($item->created_at))}}
                                                 <br><span><a href="{{ url('/my-purchase/' . $item->order_id) }}">View
                                                         more details</a></span>
                                             </td>

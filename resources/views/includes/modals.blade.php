@@ -106,3 +106,32 @@
           </div>
     </div>
   </div>
+
+  <!--Confirm Modal-->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please select reason or call 0939 194 8404 / (082)282-0679</p>
+        <select class="form-control" name="cancellation_reason" id="cancellation_reason" style="height: 50px; fonr-size: 16px;">
+          <option value="Change of mind">Change of mind</option>
+          <option value="Want to change payment method">Want to change payment method</option>
+          <option value="Change/combine order">Change/combine order</option>
+          <option value="Duplicate order">Duplicate order</option>
+          <option value="Payment issue">Payment issue</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-outline-dark delete-record-btn" id="btn-confirm" type="button">Confirm cancellation</button>
+        <button class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

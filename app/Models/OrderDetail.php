@@ -20,7 +20,8 @@ class OrderDetail extends Model
         'response_message',
         'expiry_date',
         'status',
-        'remarks'
+        'remarks',
+        'cancellation_reason'
     ];
 
     public function readOrderDetails($order_id) {

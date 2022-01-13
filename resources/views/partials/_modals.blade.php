@@ -5,7 +5,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Delete record</h5>
+        <h5 class="modal-title">Confirmation</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,7 +14,7 @@
         <p>Are you sure you want to delete?</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-sm btn-outline-dark delete-record-btn" type="button">Yes</button>
+        <button class="btn btn-sm btn-outline-dark delete-record-btn btn-confirm-delete" type="button">Yes</button>
         <button class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</button>
       </div>
     </div>

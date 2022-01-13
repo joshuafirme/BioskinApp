@@ -7,7 +7,7 @@
        
         let total_amount = $('#overall-total-price').attr('content');
         let price_by_volume = $('#price_by_volume_hidden').val()
-    
+
         btn.html('<i class="fas fa-spinner fa-pulse"></i>');
             $.ajax({
             url: '/add-to-cart',

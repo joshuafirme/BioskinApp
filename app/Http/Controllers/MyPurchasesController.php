@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Auth;
@@ -20,6 +21,7 @@ class MyPurchasesController extends Controller
     public function readOne($order_id)
     {
         $product = new Product;
+        $product_price = new ProductPrice;
         $o = new Order;
         $order_items = $o->readMyOrders($order_id);
         
@@ -28,6 +30,22 @@ class MyPurchasesController extends Controller
         }
         $address = $o->readShippingAddress($order_id);
      
-        return view('my-purchase', compact('order_items', 'order_id', 'address', 'product'));
+        return view('my-purchase', compact('order_items', 'order_id', 'address', 'product', 'product_price'));
+    }
+
+    public function cancelOrder($order_id)
+    {
+        $date_order = strtotime(request()->date_order);
+        $five_minutes_ago = strtotime("-1 hour");
+    
+        if ($date_order >= $five_minutes_ago) {
+            OrderDetail::where('order_id', $order_id)->update([
+                'status' => 5
+            ]);
+            return 'status changed to cancel';
+        }
+        else {
+            return 'more than 1 hr';
+        }
     }
 }

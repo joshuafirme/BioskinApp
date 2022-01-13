@@ -170,15 +170,21 @@ $order_detail = DB::table('order_details as OD')
                 <div class="col-sm-12 col-md-2">
                     <b>Order ID: {{ $order_id }}</b>
                     <span class="badge badge-success">{{ $status }}</span>
-                    <br><span class="badge badge-light">{{ $payment_method_text }}</span>
+                    <br><span class="badge badge-light">{{ $payment_method_text }}</span><br>
                 </div>
+            <div class="ml-2">Order placed: {{date('F d, Y h:i A', strtotime($order_detail->created_at))}} <br>
+                
+            @if ($order_detail->status == 0 || $order_detail->status == 1)
+                <div>*The order that was placed one hour ago is cannot be cancelled.</div>
+            @endif
             </div>
-            <div>Remarks: {{ $order_detail->remarks }}</div>
+            </div>
+            <div>{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
             <div class="table-container mt-4 border mb-5">
                 <table class="table table-borderless" id="cart-table">
                     <thead style="background-color: #E7E6E6;">
                         <th>Product Ordered</th>
-                        <th>Item Description</th>
+                        <th width="25%">Item Description</th>
                         <th>Size</th>
                         <th>Variation</th>
                         <th>Packaging</th>
@@ -209,11 +215,23 @@ $order_detail = DB::table('order_details as OD')
                                         </div>
                                     @endif
                                 </td>
-                                <td>{{ $data->name }}</td>
+                                <td>
+                                    {{ $data->name }} <br>
+                                   @if($data->rebranding == 1)
+                                        ₱{{ $product_price->readOnePriceBySKUAndVolume($data->sku, $data->qty) }}
+                                   @else
+                                        ₱{{ $data->price }} <br>
+                                        <small>Packaging price included</small>
+                                   @endif
+                                </td>
                                 <td>{{ $data->size ? $data->size : '-' }}</td>
                                 <td>{{ $data->variation ? $data->variation : '-' }}</td>
-                                <td>{{ $product->readPackagingNameByID($data->packaging_sku) }}</td>
-                                <td>{{ $product->readPackagingNameByID($data->cap_sku) }}</td>
+                                <td>
+                                    {{ $product->readPackagingNameByID($data->packaging_sku) }} <br>
+                                    <div class="text-muted">₱{{$product->readPackagingPriceByID($data->packaging_sku)}}</div> </td>
+                                <td>
+                                    {{ $product->readPackagingNameByID($data->cap_sku) }} <br>
+                                    <div class="text-muted">₱{{$product->readPackagingPriceByID($data->cap_sku)}}</div></td>
                                 <td>{{ $data->qty }}</td>
                                 <td>₱{{ number_format($data->amount, 2, '.', ',') }}</td>
                             </tr>
@@ -238,10 +256,17 @@ $order_detail = DB::table('order_details as OD')
                             $total = $total - $order_detail->discount;
                         @endphp
                         <tr>
-                            <td colspan="6"></td>
-                            <td>Total Payment</td>
+                            <td colspan="6"></td>   
+                            <td>Total Payment 
+                                @if ($order_detail->status == 0 || $order_detail->status == 1)
+                                <br>
+                                    <a class="btn text-danger mt-2" id="cancel-order" 
+                                    data-order-id="{{ $order_id }}" data-date-order="{{ $order_detail->created_at }}">Cancel</a>
+                                @endif
+                            </td>
                             <td><b>₱{{ number_format($total, 2, '.', ',') }}</b>
                                 <br>
+                                
                                 @if (empty($order_detail->expiry_date) && $order_detail->status == 0)
                                     <button class="btn btn-success mt-2" id="btn-pay-now"
                                         data-order-id="{{ $order_id }}" data-pay-now="true"
@@ -250,7 +275,10 @@ $order_detail = DB::table('order_details as OD')
                                         data-voucher-code="{{ $order_detail->voucher_code }}">
                                         Pay now
                                     </button>
-                                @else
+                                @endif
+                                
+                                @if ($order_detail->status == 4)
+                                    <a class="btn btn-secondary mt-2">Request Return/Refund</a>
                                 @endif
                             </td>
                         </tr>
@@ -266,6 +294,7 @@ $order_detail = DB::table('order_details as OD')
                         You have until {{ date('F d, Y H:i:s a', strtotime($expiry_date)) }} to make the payment.
                         <br>
                     @endif
+                    
                     *Shipping fee not included, please wait for our logistics team to contact you with regard to the
                     cost
                 </small>
@@ -303,6 +332,7 @@ $order_detail = DB::table('order_details as OD')
 
             $(document).on('click', '#btn-pay-now', function() {
                 var btn = $(this);
+                btn.prop('disabled', true);
                 var id = $(this).attr('data-id');
                 var order_id = $(this).attr('data-order-id');
                 var pmethod = $(this).attr('data-pmethod');
@@ -311,6 +341,41 @@ $order_detail = DB::table('order_details as OD')
 
                 paynamicsPayment(order_id, pay_now, pmethod);
 
+            });
+
+            $(document).on('click', '#cancel-order', function() {
+                var btn = $(this);
+                var order_id = $(this).attr('data-order-id');
+                var date_order = $(this).attr('data-date-order');
+
+                $('#confirmation-modal').modal('show');
+                $('#btn-confirm').attr('data-order-id', order_id);
+                $('#btn-confirm').attr('data-date-order', date_order);
+            });
+
+            $(document).on('click', '#btn-confirm', function() {
+                var btn = $(this);
+                btn.html('<i class="fas fa-spinner fa-pulse"></i>');
+                var order_id = $(this).attr('data-order-id');
+                var date_order = $(this).attr('data-date-order');
+
+                $.ajax({
+                    url: '/order/cancel/'+order_id,
+                    type: 'POST',
+                    data: {
+                        date_order : date_order
+                    },
+                    success: function(data) {
+                        console.log(data)
+                        btn.html('Confirm cancellation');
+                        if (data == "more than 1 hr") {
+                            $('.modal-body').append("<small class='text-danger'>Your order can no longer be cancelled</small>")
+                        } 
+                        else {
+                            window.location.href = "/my-purchases?status=5";
+                        }
+                    }
+                });
             });
         });
     </script>

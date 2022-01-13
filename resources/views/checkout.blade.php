@@ -222,7 +222,7 @@ $page_title = 'Checkout | Bioskin';
                             <td>{{ $item->variation ? $item->variation : '-' }}</td>
                             <td>{{ $product->readDefaultPackagingBySKU($item->sku) }}</td>
                             <td>{{ $product->readDefaultCapBySKU($item->sku) }}</td>
-                            <td>{{ $item->qty }}</td>
+                            <td>1</td>
                             <td>{{ $item->price  }}</td>
                             <td>₱{{ number_format($item->price, 2, '.', ',') }}</td>
                         </tr>

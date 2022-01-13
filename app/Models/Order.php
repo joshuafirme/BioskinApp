@@ -17,6 +17,7 @@ class Order extends Model
         'cap_sku',
         'qty',
         'amount',
+        'rebranding',
         'status'
     ];
 
@@ -68,7 +69,7 @@ class Order extends Model
     {
         return DB::table('orders as O')
         ->select('O.sku', 'P.size', 'O.order_id', 'O.amount', 'O.qty', 'P.name', 'P.price', 'V.name as variation', 
-        'O.packaging_sku', 'O.cap_sku', 'O.status')
+        'O.packaging_sku', 'O.cap_sku', 'O.status', 'O.rebranding')
         ->leftJoin('products as P', 'P.sku', '=', 'O.sku')
         ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
         ->leftJoin('products as PG', 'PG.sku', '=', 'O.packaging_sku')
