@@ -11,6 +11,8 @@ use Session;
 use Utils;
 class UserController extends Controller
 {
+    private $page = "Users";
+
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +20,22 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         return view('admin.user.index');
     }
 
     public function readUsers() {
-        
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         $user = User::where('status', 1)->get();
         
         if(request()->ajax())
@@ -157,6 +170,12 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         $courier = Courier::where('status', 1)->get();
         return view('admin.user.create', compact('courier'));
     }
@@ -169,6 +188,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
          $request['allowed_pages'] = isset($request->allowed_pages) ? implode(",",$request->allowed_pages) : [];
         User::create($request->all());
@@ -195,6 +220,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         $courier = Courier::where('status', 1)->get();
         return view('admin.user.edit', compact('user', 'courier'));
     }
@@ -208,6 +239,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         $request['allowed_modules'] = isset($request->allowed_modules) ? implode(",",$request->allowed_modules) : [];
         $request['allowed_pages'] = isset($request->allowed_pages) ? implode(",",$request->allowed_pages) : [];
         if ($request->input('password')) {
@@ -230,6 +267,12 @@ class UserController extends Controller
      */
     public function archive($id)
     {
+        if (Auth::check()) {
+            $allowed_pages = explode(",",Auth::user()->allowed_pages);
+            if (!in_array($this->page, $allowed_pages)) {
+                return redirect('/not-auth');
+            }
+        }
         User::where('id',$id)->update(['status' => 0]);
         return response()->json([
             'status' => 'success',

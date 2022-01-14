@@ -3,13 +3,13 @@
 @section('content')
 
 @php
-    $page_title = "User Management | Bioskin";
+    $page_title = "Users | Bioskin";
 @endphp
 
 <div class="content-header"></div>
 
 <div class="page-header">
-  <h3 class="mt-2" id="page-title">User Management</h3>
+  <h3 class="mt-2" id="page-title">Users</h3>
           <hr>
       </div>
 

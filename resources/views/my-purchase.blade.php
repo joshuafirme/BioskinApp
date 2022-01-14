@@ -280,7 +280,7 @@ $order_detail = DB::table('order_details as OD')
                                 @endif
                                 
                                 @if ($order_detail->status == 4)
-                                    <a class="btn btn-secondary mt-2">Request Return/Refund</a>
+                                    <a class="btn btn-secondary mt-2" id="btn-return-refund">Request Return/Refund</a>
                                 @endif
                             </td>
                         </tr>
@@ -380,5 +380,9 @@ $order_detail = DB::table('order_details as OD')
                     }
                 });
             });
+        });
+
+        $(document).on('click', '#btn-return-refund', function() {
+            $('#return-refund-modal').modal('show');
         });
     </script>

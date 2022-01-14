@@ -18,4 +18,8 @@ class PagesController extends Controller
     public function contactUs() {
         return view('pages.contact-us');
     }
+
+    public function notAuth() {
+        return view('admin.pages.not-auth');
+    }
 }

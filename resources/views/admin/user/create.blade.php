@@ -107,6 +107,19 @@
                               </div>
 
                             @php
+                              $pages_array = Utils::getPages();
+                            @endphp
+                            <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Allowed Pages</label>
+                                <select class="form-control" name="allowed_pages[]" id="choices-multiple-remove-button" placeholder="Select tab"
+                                multiple>
+                                @foreach ($pages_array as $item)
+                                    <option value="{{$item}}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+
+                            @php
                                 $modules_array = Utils::getModules();
                             @endphp
                             <div class="col-sm-12 col-md-6 mt-2">

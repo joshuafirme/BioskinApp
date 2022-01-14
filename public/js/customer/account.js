@@ -185,6 +185,43 @@ $(document).on('click','#btn-add-new-address', function(e){
     
 });
 
+$('#confirm-password').on('blur', function() {
+    var password = $('#password').val();
+    var confirm_password = $(this).val();
+    if (confirm_password.replace(/ /g, '').length >= 6) {
+        if (password == confirm_password) {
+            return true;
+        } else {
+            alert('Password do not match!');
+        }
+    } else {
+        alert('Minimum of 6 characters!')
+    }
+
+});
+
+$(document).on('click','#btn-update-password', function(e){
+    let btn = $(this);
+    let password = $('#password').val();
+    btn.html('<i class="fas fa-spinner fa-spin"></i>')
+    $.ajax({
+        url: '/account/change-password',
+        type: 'POST',
+        data: {
+            password : password
+        },
+        success:function(data){
+            btn.html("Save")
+            $.toast({
+                text: 'Password was updated successfully.',
+                showHideTransition: 'plain',
+                hideAfter: 3500, 
+            });
+        }
+      });
+});
+
+
 function populateRegions() {
     fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
           .then(function(response) {
@@ -204,7 +241,7 @@ function populateRegions() {
 function getProvinces(region) {
     $.ajax({
         url: '/get-provinces/'+region,
-        tpye: 'GET',
+        type: 'GET',
         success:function(data){ 
             $('select[name=province]').empty();
             Object.keys(data).forEach(function(province) { console.log(province)

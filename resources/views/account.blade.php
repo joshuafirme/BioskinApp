@@ -238,7 +238,25 @@ if (\Cache::get('categories-cache')) {
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="change-password" role="tabpanel"
-                                aria-labelledby="change-password-tab">...</div>
+                                aria-labelledby="change-password-tab">
+
+                                <div class="form-group row">
+                                    <label for="input" class="col-sm-3 col-form-label">New Password</label>
+                                    <div class="col-sm-9">
+                                        <input id="password" type="password" class="form-control" autocomplete="new-password"
+                                            placeholder="New Password" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="input" class="col-sm-3 col-form-label">Confirm Password</label>
+                                    <div class="col-sm-9">
+                                        <input id="confirm-password" type="password" class="form-control"
+                                            placeholder="Confirm Password" required>
+                                    </div>
+                                </div>
+                                <button class="btn btn-success mt-3" id="btn-update-password">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

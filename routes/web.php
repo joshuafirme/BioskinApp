@@ -25,6 +25,7 @@ Route::get('/home', 'HomePageController@index');
 Route::get('/terms-and-conditions', 'PagesController@termsAndConditions');
 Route::get('/about-us', 'PagesController@aboutUs');
 Route::get('/contact-us', 'PagesController@contactUs');
+Route::get('/not-auth', 'PagesController@notAuth');
 
 Route::get('/read-packaging-name/{id}', 'ProductController@readPackagingNameByID');
 
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/account', 'AccountController@index');
     Route::post('/account-update', 'AccountController@update');
+    Route::post('/account/change-password', 'AccountController@changePassword');
     Route::get('/account/read-addresses', 'AccountController@readAddresses');
     Route::post('/account/add-address', 'AccountController@addAddress');
     Route::post('/account/delete-address/{id}', 'AccountController@deleteAddress');

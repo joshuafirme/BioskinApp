@@ -47,45 +47,54 @@
         </div>
       </div>
 
-      <!-- 
-      **ACCESS LEVELS**
-        Sales Clerk = 1
-        Inventory Clerk = 2
-        Owner = 3
-        Administrator = 4
-      -->
       @php
-       //   $access_level = Auth::user()->access_level;
+                
+          $allowed_pages = explode(",",$user->allowed_pages);
+       
       @endphp
       
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="{{ url('/dashboard') }}" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                  Dashboard
-                </p>
-              </a>
-          </li>
+
+            @if(in_array("Dashboard", $allowed_pages))
+            <li class="nav-item">
+              <a href="{{ url('/dashboard') }}" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+            </li>
+            @endif
+
+            @if(in_array("Manage Orders", $allowed_pages))
             <li class="nav-item">
               <a href="{{ url('/manage-order') }}" class="nav-link">
                 <i class="fas fa-shopping-cart nav-icon"></i>
                 <p>Manage Orders</p>
               </a>
             </li>
+            @endif
+
+            @if(in_array("Users", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/users') }}" class="nav-link">
                   <i class="fas fa-user nav-icon"></i>
-                  <p>User Management</p>
+                  <p>Users</p>
                 </a>
               </li>
+            @endif
+
+            @if(in_array("Vouchers", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/voucher') }}" class="nav-link">
                   <i class="fas fa-gifts nav-icon"></i>
                   <p>Vouchers</p>
                 </a>
               </li>
+            @endif
+
+            @if(in_array("Maintenance", $allowed_pages))
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-tools"></i>
@@ -97,7 +106,7 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ url('/product') }}" class="nav-link">
-                      <i class="fas fa-cube nav-icon"></i>
+                      <i class="far fa-circle nav-icon"></i>
                       <p>Product</p>
                     </a>
                   </li>
@@ -139,7 +148,7 @@
                   </li>
                 </ul>
               </li>
-
+              @endif
 
 
         </ul>

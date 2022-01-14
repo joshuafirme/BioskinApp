@@ -19,7 +19,7 @@
 <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2021 Val Construction Supply.</strong>
+    <strong>Copyright &copy; 2021 Bioskin Philippines</strong>
     All rights reserved.
   </footer>
 

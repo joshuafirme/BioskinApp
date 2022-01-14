@@ -9,6 +9,7 @@ use App\Models\PhilippineArea;
 use Auth;
 use Cache;
 use Utils;
+use Hash;
 
 class AccountController extends Controller
 {
@@ -45,6 +46,17 @@ class AccountController extends Controller
         User::where('id', Auth::id())->update($input);
         return redirect()->back()
         ->with('success', 'Profile was updated successfully.');
+    }
+
+    public function changePassword()
+    {
+        User::where('id', Auth::id())->update([
+            'password' => Hash::make(request()->password)
+        ]); 
+        
+        return response()->json([
+            'status' => 'success',
+        ]);
     }
 
     public function addAddress()

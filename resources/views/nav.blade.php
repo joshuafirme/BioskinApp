@@ -12,7 +12,10 @@
         <div class="collapse navbar-collapse order-3">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
-                @if (Auth::check() && Auth::user()->access_rights == 1)
+                @php
+                    $allowed_users = [1,3,4,5,6,7,8]
+                @endphp
+                @if (Auth::check() &&  in_array(Auth::user()->access_rights, $allowed_users))
                     <li class="nav-item">
                         <a href="{{ url('/dashboard') }}" class="nav-link">
                             Admin

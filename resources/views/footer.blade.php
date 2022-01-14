@@ -106,12 +106,15 @@
           <h6 class="text-uppercase fw-bold mb-4">
             Contact
           </h6>
-          <p><i class="fas fa-home me-3"></i> Ecoland Subdivision Basketball Court, Block 4 Phase 2 Lot 11 Maya St, Matina Pangi Rd, Davao City, 8000 Davao del Sur</p>
+          <p><i class="fas fa-home me-3"></i> Davao Bioskin Tech Laboratories Inc.
+            Block 4 Lot 11, Maya St., Ecoland, Davao City</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
             bioskin1a@yahoo.com
           </p>
-          <p><i class="fas fa-phone me-3"></i> 0939 194 8404 / (082)282-0679</p>
+          <div class="mb-3"><i class="fas fa-phone me-3 mr-2"></i> 
+             Tel no. 082 282-0679
+            <div class="ml-4">Cel no. 09985997417 / 09399242105</div></div>
         </div>
         <!-- Grid column -->
       </div>

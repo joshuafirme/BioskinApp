@@ -109,6 +109,24 @@
                                 </select>
                               </div>
 
+                              
+                              @php
+                                  $pages_array = Utils::getPages();
+                                  $allowed_pages_array = $user->allowed_pages != null ? explode(",",$user->allowed_pages) : [];
+                              @endphp
+                              <div class="col-sm-12 col-md-6 mt-2">
+                                <label class="col-form-label" for="choices-multiple-remove-button">Allowed Pages</label>
+                                <select class="form-control" name="allowed_pages[]" id="choices-multiple-remove-button" placeholder="Select tab"
+                                multiple>
+                                @foreach ($pages_array as $item)
+                                    @php
+                                        $selected = $pages_array && in_array($item, $allowed_pages_array) ? "selected" : "";
+                                    @endphp
+                                  <option {{$selected}} value="{{$item}}">{{ $item }}</option>
+                                @endforeach
+                              </select>
+                              </div>
+
                               @php
                                   $modules_array = Utils::getModules();
                                   $allowed_modules_array = $user->allowed_modules != null ? explode(",",$user->allowed_modules) : [];

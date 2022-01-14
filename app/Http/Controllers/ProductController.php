@@ -11,11 +11,28 @@ use App\Models\Size;
 use App\Models\Variation;
 use DB;
 use Cache;
+use Auth;
 use App\Models\Closures;
 use App\Models\ProductPrice;
 
 class ProductController extends Controller
 {
+    private $page = "Maintenance";
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            
+            if (Auth::check()) {
+                $allowed_pages = explode(",",Auth::user()->allowed_pages);
+                if (!in_array($this->page, $allowed_pages)) {
+                    return redirect('/not-auth');
+                }
+            }
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      *

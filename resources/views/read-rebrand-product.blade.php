@@ -154,19 +154,18 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                 </div>
             @endif
                 <div class="m-2"> 
-                  <div id="qty-value" class="float-right">Qty: {{ $product->qty }}</div>
-                  <div id="size-value">{{ $product->size }}</div>
-                  <div id="price-value">₱{{ $product->price }}</div>
-                </div>
-            <div class="row product-buttons mt-2">
-                <div class="col-10">
-                    <button class="btn btn-success btn-block m-1">Buy now</button>
-                </div>
-                <div class="col-2">
-                    <input type="hidden" id="price_by_volume_hidden">
-                    <a class="btn btn-add-cart" data-sku="{{ $product->sku }}" data-price="{{ $product->price }}"
+                    <a class="btn btn-add-cart float-lg-right" data-sku="{{ $product->sku }}" data-price="{{ $product->price }}"
                         data-order-type="1"><img
                             src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png" /></a>
+                  
+                  <div id="size-value">{{ $product->size }}</div>
+                  <div id="price-value">₱{{ $product->price }}</div>
+                  <div id="qty-value">Qty: {{ $product->qty }}</div>
+                </div>
+            <div class="row product-buttons mt-2">
+        
+                <div class="col-2">
+                    <input type="hidden" id="price_by_volume_hidden">
                 </div>
             </div>
         </div>

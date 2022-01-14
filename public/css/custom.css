@@ -384,6 +384,10 @@ body{
     color: #FFF !important;
 }
 
+.breadcrumb > li + li::before {
+  content: ">" !important;
+}
+
 .nav-link.active{
   background-color:#00AD35 !important;
 }

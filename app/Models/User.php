@@ -31,7 +31,8 @@ class User extends Authenticatable
         'status',
         'image',
         'courier_id',
-        'allowed_modules'
+        'allowed_modules',
+        'allowed_pages' 
     ];
 
     /**
