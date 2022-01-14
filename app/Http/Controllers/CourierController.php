@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Courier;
 use Auth;
+use Cache;
 class CourierController extends Controller
 {
     private $page = "Maintenance";
@@ -56,7 +57,7 @@ class CourierController extends Controller
         ]);
 
         Courier::create($request->all());
-
+        Cache::forget('courier-cache');
         return redirect()->back()->with('success', 'Courier was added.');
     }
 
@@ -92,7 +93,7 @@ class CourierController extends Controller
     public function update(Request $request, $id)
     {
         Courier::where('id', $id)->update($request->except('_token','_method'));
-
+        Cache::forget('courier-cache');
         return redirect()->back()->with('success', 'Courier was updated.');
     }
 

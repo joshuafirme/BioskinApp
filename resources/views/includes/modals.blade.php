@@ -100,7 +100,7 @@
             <div class="modal-body text-center mt-3 mb-3">
                 <div><img src="https://img.icons8.com/pastel-glyph/64/26e07f/nft-checked.png"/></div>
                 <h2 class="mt-3">Order Placed</h2>
-                <p>You can now check your purchases <a href="#">here</a></p>
+                <p>You can now check your purchases <a href="{{ url('/my-purchases?status=1') }}">here</a></p>
                 <a href="{{ url('/shop') }}">Continue shopping</a>
             </div>
           </div>

@@ -70,6 +70,11 @@
                               <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed <span class="badge">{{$completed_count}}</span></a>
                             </li>
                             @endif
+                             @if(in_array("Cancelled", $allowed_modules_array))
+                            <li class="nav-item">
+                              <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled <span class="badge">{{$cancelled_count}}</span></a>
+                            </li>
+                            @endif
                           </ul>
 
 
@@ -150,6 +155,24 @@
                               <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                                 <div class="mt-4">
                                   <table class="table table-hover" id="tbl-completed-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
+                              </div>
+                              @endif
+                              @if(in_array("Cancelled", $allowed_modules_array))
+                              <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                                <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-cancelled-order">
                                     <thead>
                                         <tr>
                                             <th>Order #</th>

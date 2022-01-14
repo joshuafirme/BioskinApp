@@ -27,7 +27,7 @@ class Utils
 	}
 
     public static function getModules() {
-        return ["To pay", "Processing orders", "On the way", "To receive", "Completed"];
+        return ["To pay", "Processing orders", "On the way", "To receive", "Completed", "Cancelled"];
     }
     
     public static function getPages() {
@@ -95,6 +95,9 @@ class Utils
     public static function readPaymentMethodText($payment_method) {
         
         switch ($payment_method) {
+            case 'COD':
+                $text = "Cash on Delivery";
+                break;
             case 'cc':
                 $text = 'Credit/Debit Card';
                 break;

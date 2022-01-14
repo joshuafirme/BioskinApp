@@ -72,6 +72,9 @@ if (\Cache::get('categories-cache')) {
         background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
     }
 
+    .status-ui-container .badge {
+        position: absolute; border-radius:50px;
+    }
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -148,7 +151,42 @@ if (\Cache::get('categories-cache')) {
                     <div class="mt-2"><a href="#" class="text-muted">My Vouchers</a></div>
                 </div>
             </div>
+            @php
+                $to_pay_count = $order_mdl->countOrderByStatus(0);
+                $processing_count = $order_mdl->countOrderByStatus(1);
+                $otw_count = $order_mdl->countOrderByStatus(2);
+                $to_receive_count = $order_mdl->countOrderByStatus(3);
+                $completed_count = $order_mdl->countOrderByStatus(4);
+            @endphp 
             <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-12"><h4 class="float-left">My Account</h4>
+                        <div class="float-right"><a href="{{url('/my-purchases?status=all')}}"><small>View Purchase History ></small></a></div>
+                    </div>
+                    <div class=" m-0"><hr></div>
+                </div>
+                <div class="row border-top pt-3 mb-4 justify-content-center status-ui-container">
+                    <div class="col-3 just text-center">
+                        <a href="{{url('/my-purchases?status=0')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-wallet-hotel-dreamstale-lineal-dreamstale.png"/></a>
+                        <span class="badge badge-success">{{$to_pay_count}}</span>
+                        <div><small>To pay</small></div>
+                    </div>
+                    <div class="col-3 just text-center">
+                        <a href="{{url('/my-purchases?status=1')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-production-industry-dreamstale-lineal-dreamstale-2.png"/></a>
+                        <span class="badge badge-success">{{$processing_count}}</span>
+                        <div><small>Processing</small></div>
+                    </div>
+                    <div class="col-3 just text-center">
+                        <a href="{{url('/my-purchases?status=2')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-truck-transport-dreamstale-lineal-dreamstale-5.png"/></a>
+                        <span class="badge badge-success">{{$otw_count}}</span>
+                        <div><small>On the way</small></div>
+                    </div>
+                    <div class="col-3 just text-center">
+                        <a href="{{url('/my-purchases?status=3')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-truck-transport-dreamstale-lineal-dreamstale-5.png"/></a>
+                        <span class="badge badge-success">{{$to_receive_count}}</span>
+                        <div><small>To receive</small></div>
+                    </div>
+                </div>
                 <div class="card my-profile-container">
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserAddress;
 use App\Models\PhilippineArea;
+use App\Models\Order;
 use Auth;
 use Cache;
 use Utils;
@@ -15,8 +16,9 @@ class AccountController extends Controller
 {
     public function index(PhilippineArea $pa)
     {
+        $order_mdl = new Order;
         $user = User::where('id', Auth::id())->first();
-        return view('account', compact('user'));
+        return view('account', compact('user', 'order_mdl'));
     }
 
     public function getProvinces($region) {

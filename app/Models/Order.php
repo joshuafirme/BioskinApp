@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use DB;
+use Auth;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -61,6 +62,14 @@ class Order extends Model
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('O.order_id', $order_no)
             ->get();
+    }
+
+    public function countOrderByStatus() {
+        return Order::where('user_id', Auth::id())
+        ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+        ->distinct('orders.order_id')
+        ->where('OD.status', 0)
+        ->count('OD.id');
     }
 
     

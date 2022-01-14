@@ -156,7 +156,7 @@ $page_title = 'My Purchases | Bioskin';
                                 $status = isset($_GET['status']) ? $_GET['status'] : '';
 
                                 if (isset($_GET['key'])) {
-                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at', 'OD.status')
                                     ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                                     ->leftJoin('products as P', 'P.sku', '=', 'orders.sku')
                                     ->where('user_id', Auth::id())
@@ -167,7 +167,7 @@ $page_title = 'My Purchases | Bioskin';
                                     ->paginate(5);
                                 } 
                                 else {
-                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at', 'OD.status')
                                     ->where('user_id', Auth::id())
                                     ->where('OD.status', $status)
                                     ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
@@ -176,7 +176,7 @@ $page_title = 'My Purchases | Bioskin';
                                     ->paginate(5);
 
                                     if ($status == 'all' || !isset($_GET['status'])) {
-                                        $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+                                        $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at', 'OD.status')
                                             ->where('user_id', Auth::id())
                                             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                                             ->orderBy('orders.created_at', 'desc')
@@ -186,36 +186,12 @@ $page_title = 'My Purchases | Bioskin';
                                 }
                                  
                                 
-                                $to_pay_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 0)
-                                    ->count('OD.id');
-                                $processing_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 1)
-                                    ->count('OD.id');
-                                $otw_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 2)
-                                    ->count('OD.id');
-                                $to_receive_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 3)
-                                    ->count('OD.id');
-                                $completed_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 4)
-                                    ->count('OD.id');
-                                $cancelled_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                    ->distinct('orders.order_id')
-                                    ->where('OD.status', 5)
-                                    ->count('OD.id');
+                                $to_pay_count = $order_mdl->countOrderByStatus(0);
+                                $processing_count = $order_mdl->countOrderByStatus(1);
+                                $otw_count = $order_mdl->countOrderByStatus(2);
+                                $to_receive_count = $order_mdl->countOrderByStatus(3);
+                                $completed_count = $order_mdl->countOrderByStatus(4);
+                                $cancelled_count = $order_mdl->countOrderByStatus(5);
                                 $all_count = \App\Models\Order::where('user_id', Auth::id())
                                     ->distinct('orders.order_id')
                                     ->count('id');
@@ -293,7 +269,6 @@ $page_title = 'My Purchases | Bioskin';
                                     </thead>
                                     <tbody>
                                         @php
-                                            $order_mdl = new \App\Models\Order();
                                             $order_items = $order_mdl->readOrdersByOrderIDAndStatus($item->order_id);
                                             $total = 0;
                                         @endphp
@@ -360,7 +335,7 @@ $page_title = 'My Purchases | Bioskin';
                                             <td colspan="6"><a class="text-dark"
                                                     href="{{ url('/my-purchase/' . $item->order_id) }}"><b>Order ID:
                                                         {{ $item->order_id }}</b></a><span
-                                                    class="badge badge-success ml-3"> {{ $status }}</span> <br>
+                                                    class="badge badge-{{ $item->status == 5 ? "danger" : "success" }} ml-3"> {{ $status }}</span> <br>
                                                     Order placed: {{date('F d, Y h:i A', strtotime($item->created_at))}}
                                                 <br><span><a href="{{ url('/my-purchase/' . $item->order_id) }}">View
                                                         more details</a></span>

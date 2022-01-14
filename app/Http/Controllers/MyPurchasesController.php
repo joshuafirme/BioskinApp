@@ -15,7 +15,8 @@ class MyPurchasesController extends Controller
 {
     public function index(Product $product)
     {           
-        return view('my-purchases', compact('product'));
+        $order_mdl = new Order;
+        return view('my-purchases', compact('product', 'order_mdl'));
     }
 
     public function readOne($order_id)
