@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/change-password', 'AccountController@changePassword');
     Route::get('/account/read-addresses', 'AccountController@readAddresses');
     Route::post('/account/add-address', 'AccountController@addAddress');
+    Route::post('/account/update-address/{id}', 'AccountController@updateAddress');
     Route::post('/account/delete-address/{id}', 'AccountController@deleteAddress');
     Route::post('/account/address-set-default/{id}', 'AccountController@setAddressDefault');
     Route::get('/get-provinces/{region}', 'AccountController@getProvinces');

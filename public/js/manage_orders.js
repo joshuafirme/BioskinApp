@@ -36,6 +36,16 @@ async function fetchOrder(object = 'processing'){
      
 }
 
+async function readPackagingName(id, identifier, object) {
+    $.ajax({
+        url: '/read-packaging-name/'+id,
+        type: 'GET',
+        success:function(data){  console.log(data)
+            data = data ? data : "-";
+            $('.'+object+'-name-'+identifier).text(data)
+        }
+    });
+}
 
 async function readOneOrder(order_no) {
 
@@ -44,24 +54,27 @@ async function readOneOrder(order_no) {
     $.ajax({
         url: '/manage-order/read-one-order/'+order_no,
         type: 'GET',
-        success:function(data){
+        success:async function(data){
             let total = 0;
             $.each(data,function(i,v){
                 var html = "";
-                setTimeout(function() {
                     total = parseFloat(total) + parseFloat(data[i].amount);
-                    html += getItems(data[i]);
+                    html += getItems(data[i], i);
                     if (data.length-1 == i) {
                         html += getComputation(total);
                     }
                     $('#orders-container').append(html);
-                },(i)*100)
             });
+
+            for (var i = 0; i < data.length; i++) { 
+                await readPackagingName(data[i].packaging_sku, i, 'packaging');
+                await readPackagingName(data[i].cap_sku, i, 'cap');
+            }
         }
     });
 }
 
-function getItems (data) {
+function getItems (data, identifier) {
     var html = "";
     var packaging = data.packaging != null ? data.packaging : '-';
     var closure = data.closure != null ? data.closure : '-';
@@ -72,11 +85,11 @@ function getItems (data) {
         html += '<td>'+data.name+'</td>';
         html += '<td>'+variation+'</td>';
         html += '<td>'+size+'</td>';
-        html += '<td>'+packaging+'</td>';
-        html += '<td>'+closure+'</td>';
-        html += '<td>'+data.price+'</td>';
+        html += '<td class="packaging-name-'+identifier+'">-</td>';
+        html += '<td class="cap-name-'+identifier+'">-</td>';
+        html += '<td>₱'+formatNumber(data.price)+'</td>';
         html += '<td>'+data.qty+'</td>';
-        html += '<td>'+data.amount+'</td>';
+        html += '<td>₱'+formatNumber(data.amount)+'</td>';
     html += '</tr>';
     
     return html;
@@ -180,12 +193,15 @@ async function on_Click() {
             btn += '<button class="btn btn-sm btn-success" id="btn-change-status" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">'+btn_text+'</button>';
         }
            
-        let html = '<div class="col-sm-12 col-md-6">';
+        let html = '<div class="col-sm-12 col-md-4">';
             html += '<div>Customer name: <b>'+customer_name+'</b></div>';
             html += '<div>Contact #: <b>'+phone+'</b></div>';
             html += '<div>Email: <b>'+email+'</b></div>';
             html += '</div>';
-            html += '<div class="col-sm-12 col-md-6">';
+            
+            html += '<div id="shipping-info-container" class="col-sm-12 col-md-4"></div>';
+
+            html += '<div class="col-sm-12 col-md-4">';
             switch (payment_method) {
                 case 'cc':
                     payment_method = "Credit/Debit Card";
@@ -200,9 +216,8 @@ async function on_Click() {
                     payment_method = "BDO Online";
                     break;
             }
-            html += '<div class="float-right">Order #: <b>'+order_no+'</b><div>Payment method: <span class="badge badge-light">'+payment_method+'</span></div></div>';
+            html += '<div>Order #: <b>'+order_no+'</b><div>Payment method: <span class="badge badge-light">'+payment_method+'</span></div></div>';
             html += '</div>';
-
         $('#show-orders-modal').modal('show');
         $('#show-orders-modal').find('#user-info').html(html);
         $('#show-orders-modal').find('.modal-footer').html(btn);

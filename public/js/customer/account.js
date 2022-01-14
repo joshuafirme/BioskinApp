@@ -28,7 +28,11 @@ function getItems (data,identifier) {
     else {
         html += '<button class="btn btn-secondary m-1" data-id="'+data.id+'" id="btn-set-as-default">Set as default</button>';
     }
-    html += '<button class="btn btn-secondary m-1">Change</button>';
+    html += '<button class="btn btn-secondary m-1 btn-update-address" data-id="'+data.id+'" data-toggle="modal" data-target="#address-modal" ';
+    html += 'data-name="'+data.name+'" data-phone="'+data.phone_no+'" data-region="'+data.region+'" ';
+    html += 'data-province="'+data.province+'" data-municipality="'+data.municipality+'" data-brgy="'+data.brgy+'" ';
+    html += 'data-detailed-loc="'+data.detailed_loc+'" data-notes="'+data.notes+'">Change</button>';
+    
     html += '<button class="btn btn-secondary m-1" data-id="'+data.id+'" id="btn-delete-address">Delete</button>';
     html += '<hr></div>';
 
@@ -72,10 +76,19 @@ $(document).on('click','#btn-save-address', function(e){
     var detailed_loc = $('#detailed_loc').val();
     var notes = $('#notes').val();
 
+    var action = $('#address-modal').attr('data-action');
+    var id = $('#address-modal').attr('data-id');
+    console.log(id)
+    var url = '/account/add-address';
+
+    if (action == "update") {
+        url = '/account/update-address/'+id;
+    }
+
     if (fullname && phone_no && region && province && municipality && brgy && detailed_loc || notes) {
         btn.html('<i class="fas fa-spinner fa-pulse"></i>');
         $.ajax({
-            url: '/account/add-address',
+            url: url,
             type: 'POST',
             data: {
                 fullname     : fullname,
@@ -88,7 +101,7 @@ $(document).on('click','#btn-save-address', function(e){
                 notes        : notes
             },
             success: function(data){
-                $('#add-address-modal').modal('hide');
+                $('#address-modal').modal('hide');
                 btn.html('Add');
                 $.toast({
                     text: 'Address was successfully saved!',
@@ -113,16 +126,24 @@ $(document).on('click','#btn-save-address', function(e){
 
 $(document).on('click','#btn-delete-address', function(e){
     e.preventDefault();
-    var btn = $(this);
     var id = $(this).attr('data-id');
+    $('.modal-body').find('p').text("Are you sure you want to delete this address?");
+    $('#delete-record-modal').modal('show');
+    $('.btn-confirm-delete').attr('data-id', id);
+});
 
+$(document).on('click','.btn-confirm-delete', async function(){
+    let id = $(this).attr('data-id');
+    let btn = $(this);
+    let address_item = $('[data-id="'+id+'"]');
     btn.html('<i class="fas fa-spinner fa-pulse"></i>');
 
     $.ajax({
         url: '/account/delete-address/'+id,
         type: 'POST',
         success: function(data){
-            btn.parent().fadeOut();
+            $('#delete-record-modal').modal('hide');
+            address_item.parent().fadeOut();
             btn.html('Delete');
             $.toast({
                 text: 'Address was successfully deleted!',
@@ -132,8 +153,9 @@ $(document).on('click','#btn-delete-address', function(e){
         
         }
     });
-    
 });
+
+    
 
 $(document).on('click','#btn-set-as-default', function(e){
     e.preventDefault();
@@ -158,6 +180,31 @@ $(document).on('click','#btn-set-as-default', function(e){
     
 });
 
+$(document).on('click','.btn-update-address', function(e){
+    e.preventDefault();
+    let el = $(this);
+    let modal = $('#address-modal');
+    modal.attr("data-action", "update");
+    modal.attr("data-id", el.attr('data-id'));
+    modal.find('.modal-title').text("Update address");
+    $('#btn-save-address').text("Update");
+
+    $('#fullname').val(el.attr('data-name'));
+    $('#phone_no').val(el.attr('data-phone'));
+    $('#detailed_loc').val(el.attr('data-detailed-loc'));
+    $('#notes').val(el.attr('data-notes'));
+
+    let selected_region = el.attr('data-region');
+    let selected_province = el.attr('data-province');
+    let selected_municipality = el.attr('data-municipality');
+    let selected_brgy = el.attr('data-brgy');
+   
+    populateRegions(selected_region, selected_province, selected_municipality, selected_brgy)
+    
+});
+
+
+
 $(document).on('change','#region', function(e){
     e.preventDefault();
     var region = $(this).val();
@@ -181,6 +228,12 @@ $(document).on('change','#municipality', function(e){
 
 $(document).on('click','#btn-add-new-address', function(e){
 
+    let modal = $('#address-modal');
+
+    modal.attr("data-action", "add");
+    modal.find('.modal-title').text("Add new address");
+
+    $('#btn-save-address').text("Add");
     populateRegions();
     
 });
@@ -203,34 +256,46 @@ $('#confirm-password').on('blur', function() {
 $(document).on('click','#btn-update-password', function(e){
     let btn = $(this);
     let password = $('#password').val();
-    btn.html('<i class="fas fa-spinner fa-spin"></i>')
-    $.ajax({
-        url: '/account/change-password',
-        type: 'POST',
-        data: {
-            password : password
-        },
-        success:function(data){
-            btn.html("Save")
-            $.toast({
-                text: 'Password was updated successfully.',
-                showHideTransition: 'plain',
-                hideAfter: 3500, 
-            });
-        }
-      });
+    let confirm_password = $('#confirm-password').val();
+    
+    if (password && confirm_password) {
+        btn.html('<i class="fas fa-spinner fa-spin"></i>')
+        $.ajax({
+            url: '/account/change-password',
+            type: 'POST',
+            data: {
+                password : password
+            },
+            success:function(data){
+                btn.html("Save")
+                $.toast({
+                    text: 'Password was updated successfully.',
+                    showHideTransition: 'plain',
+                    hideAfter: 3500, 
+                });
+            }
+          });
+    }
+    else {
+        $.toast({
+            text: 'Please input your new password.',
+            showHideTransition: 'plain',
+            hideAfter: 3800, 
+        });
+    }
 });
 
 
-function populateRegions() {
+function populateRegions(selected_region = "", selected_province = "", selected_municipality = "", selected_brgy = "") {
     fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')
           .then(function(response) {
             response.json().then(function(data) { 
               Object.keys(data).forEach(function(key) {
-                $('select[name=region]').append('<option value="' + key + '">' + data[key].region_name + '</option>');
+                let selected = selected_region == key ? "selected" : "";
+                $('select[name=region]').append('<option '+selected+' value="' + key + '">' + data[key].region_name + '</option>');
               });
 
-              getProvinces($('#region').val());
+              getProvinces($('#region').val(), selected_province, selected_municipality, selected_brgy);
             });
           })
           .catch(function(error) {
@@ -238,22 +303,23 @@ function populateRegions() {
           }); 
 }
 
-function getProvinces(region) {
+function getProvinces(region, selected_province = "", selected_municipality = "", selected_brgy = "") {
     $.ajax({
         url: '/get-provinces/'+region,
         type: 'GET',
         success:function(data){ 
             $('select[name=province]').empty();
-            Object.keys(data).forEach(function(province) { console.log(province)
-                $('select[name=province]').append('<option value="' + province + '">' + province + '</option>');
+            Object.keys(data).forEach(function(province) { 
+                let selected = selected_province == province ? "selected" : "";
+                $('select[name=province]').append('<option '+selected+' value="' + province + '">' + province + '</option>');
             });
 
-            getMunicipalities($('select[name=province]').val())
+            getMunicipalities($('select[name=province]').val(), selected_municipality, selected_brgy)
         }
       });
 }
 
-function getMunicipalities(province) {
+function getMunicipalities(province, selected_municipality = "", selected_brgy = "") {
     var region = $('#region').val();
     $.ajax({
         url: '/get-municipalities',
@@ -266,16 +332,17 @@ function getMunicipalities(province) {
             
             $('select[name=municipality]').empty();
             Object.keys(data).forEach(function(municipality) {
-                $('select[name=municipality]').append('<option value="' + municipality + '">' + municipality + '</option>');
+                let selected = selected_municipality == municipality ? "selected" : "";
+                $('select[name=municipality]').append('<option '+selected+' value="' + municipality + '">' + municipality + '</option>');
             });
 
-            getBrgys($('select[name=municipality]').val());
+            getBrgys($('select[name=municipality]').val(), selected_brgy);
         }
       });
 }
 
-function getBrgys(municipality) {
-    var region = $('#region').val();
+function getBrgys(municipality, selected_brgy) {
+    var region = $('#region').val(); console.log(selected_brgy+" selected brgy")
     var province = $('#province').val();
     $.ajax({
         url: '/get-brgys',
@@ -289,7 +356,8 @@ function getBrgys(municipality) {
             
             $('select[name=brgy]').empty();
             data.forEach(function(brgy) {
-                $('select[name=brgy]').append('<option value="' + brgy + '">' + brgy + '</option>');
+                let selected = selected_brgy == brgy ? "selected" : "";
+                $('select[name=brgy]').append('<option '+selected+' value="' + brgy + '">' + brgy + '</option>');
             });
         }
       });

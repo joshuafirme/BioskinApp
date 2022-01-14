@@ -188,8 +188,8 @@ class ProductController extends Controller
 
         $request['category_id'] = implode(", ",$request->category_id);
         $request['sub_category_id'] = implode(", ",$request->sub_category_id);
-        $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
-        $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
+      //  $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
+      //  $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
         $images=array();
         if($files=$request->file('images')){
             foreach($files as $file){
@@ -312,8 +312,8 @@ class ProductController extends Controller
             $request['closures'] = [];
         }
 
-        $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
-        $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
+      //  $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
+      //  $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
         
         $product->update($request->all());
 

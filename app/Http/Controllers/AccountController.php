@@ -76,6 +76,27 @@ class AccountController extends Controller
         return 'address created';
     }
 
+    public function updateAddress($id)
+    {
+        Cache::forget('addresses-cache');
+        UserAddress::where('id', $id)
+        ->update([
+            'user_id' => Auth::id(),
+            'name' => request()->fullname,
+            'phone_no' => request()->phone_no,
+            'region' => request()->region,
+            'province' => request()->province,
+            'municipality' => request()->municipality,
+            'brgy' => request()->brgy,
+            'detailed_loc' => request()->detailed_loc,
+            'notes' => request()->notes,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
     public function readAddresses()
     {
         if (Cache::has('addresses-cache')) {

@@ -1,4 +1,4 @@
-<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="address-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,15 +113,16 @@
             <div class="modal-body text-center mt-3 mb-3">
                 <div><img src="https://img.icons8.com/external-ddara-lineal-ddara/64/000000/external-refund-delivery-services-ddara-lineal-ddara.png"/></div>
                 <h2 class="mt-3">Request Return/Refund</h2>
+                <p>Please email us at </p>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <!--<div class="col-sm-12">
                       <label class="col-form-label float-left">Reason for Return/Refund</label>
                       <input type="text" class="form-control" name="name"  id="name" required>
                   </div>
                   <div class="col-sm-12">
                     <label class="col-form-label float-left">Message</label>
                     <textarea type="text" rows="3" class="form-control" name="message"  id="message" placeholder="Message (Optional)"></textarea>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>

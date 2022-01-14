@@ -146,7 +146,6 @@ if (\Cache::get('categories-cache')) {
                     <div class="mt-2"><a href="{{ url('/my-purchases?status=all') }}"
                             class="text-muted">My Purchases</a></div>
                     <div class="mt-2"><a href="#" class="text-muted">My Vouchers</a></div>
-                    <div class="mt-2"><a href="#" class="text-muted">Notification</a></div>
                 </div>
             </div>
             <div class="col-sm-9">
@@ -226,7 +225,7 @@ if (\Cache::get('categories-cache')) {
                                     <h4>My addresses</h4>
                                 </span>
                                 <button class="btn btn-outline-secondary float-right" id="btn-add-new-address"
-                                    data-toggle="modal" data-target="#add-address-modal">
+                                    data-toggle="modal" data-target="#address-modal">
                                     <i class="fas fa-plus"></i>
                                     Add new address
                                 </button>

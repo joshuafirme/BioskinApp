@@ -173,6 +173,8 @@
       }
 
       var splide = new Splide( '#secondary-slider', {
+                autoplay:true,
+                autoplaySpeed:1500,
                 perPage    : column_count,
                 cover      : true,
                 gap: 20,

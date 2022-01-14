@@ -142,8 +142,8 @@ $page_title = 'My Purchases | Bioskin';
         <div class="container">
             <div class="row ">
                 <div class="col-sm-12">
-                    <form action="{{ action('MyPurchasesController@search') }}" method="post">
-                        <input class="form-control float-right w-50" id="input-search-product" type="search"
+                    <form id="form-search-order">
+                        <input class="form-control float-right w-50" id="search-order" type="search"
                             placeholder="Search by Order ID or Product Name" aria-label="Search">
                     </form>
                 </div>
@@ -154,13 +154,37 @@ $page_title = 'My Purchases | Bioskin';
                                 $user = \Auth::user();
                                 
                                 $status = isset($_GET['status']) ? $_GET['status'] : '';
-                                $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+
+                                if (isset($_GET['key'])) {
+                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                                    ->leftJoin('products as P', 'P.sku', '=', 'orders.sku')
+                                    ->where('user_id', Auth::id())
+                                    ->where('orders.order_id', 'LIKE', "%".$_GET['key']."%")
+                                    ->orWhere('P.name', 'LIKE', "%".$_GET['key']."%")
+                                    ->orderBy('orders.created_at', 'desc')
+                                    ->distinct('orders.order_id')
+                                    ->paginate(5);
+                                } 
+                                else {
+                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
                                     ->where('user_id', Auth::id())
                                     ->where('OD.status', $status)
                                     ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                                     ->orderBy('orders.created_at', 'desc')
                                     ->distinct('orders.order_id')
                                     ->paginate(5);
+
+                                    if ($status == 'all' || !isset($_GET['status'])) {
+                                        $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
+                                            ->where('user_id', Auth::id())
+                                            ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                                            ->orderBy('orders.created_at', 'desc')
+                                            ->distinct('orders.order_id')
+                                            ->paginate(3);
+                                    }  
+                                }
+                                 
                                 
                                 $to_pay_count = \App\Models\Order::where('user_id', Auth::id())
                                     ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
@@ -195,15 +219,6 @@ $page_title = 'My Purchases | Bioskin';
                                 $all_count = \App\Models\Order::where('user_id', Auth::id())
                                     ->distinct('orders.order_id')
                                     ->count('id');
-                                
-                                if ($status == 'all' || !isset($_GET['status'])) {
-                                    $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at')
-                                        ->where('user_id', Auth::id())
-                                        ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                        ->orderBy('orders.created_at', 'desc')
-                                        ->distinct('orders.order_id')
-                                        ->paginate(3);
-                                }
                                 
                             @endphp
                             @if ($user->image)
@@ -385,5 +400,14 @@ $page_title = 'My Purchases | Bioskin';
         $(document).ready(function() {
             let w = $('.responsive-img').width();
             $('.responsive-img').height(w);
+
+            $(document).on('submit','#form-search-order', function(e){
+                e.preventDefault();
+                let key = $('#search-order').val();
+               // let url = new URL(window.location);
+               // let status = url.searchParams.get("status");
+                window.location.href = "/my-purchases?key="+key;
+            });
+           
         });
     </script>

@@ -187,9 +187,8 @@
               </div>
               <div class="modal-body" id="printable-order-info">
                 <button class="btn btn-sm btn-outline-dark float-right" id="btn-print" type="button">Print</button><br>
-                  <div class="row mt-4" id="user-info">
+                  <div class="row mt-4 mb-4" id="user-info">
                   </div>
-                  <div class="mt-3 mb-3" id="shipping-info-container"></div>
                 <table class="table table-hover">
                     <thead>
                         <tr>

@@ -172,20 +172,6 @@
                             @endforeach
                           </select>
                           </div>
-
-                          <div class="col-sm-12 mt-3">
-                            <div class="form-check">
-                              <input type="checkbox" class="form-check-input" name="packaging_price_included">
-                              <label class="form-check-label" for="packaging_price_included">Packaging price included</label>
-                            </div>
-                          </div>
-
-                          <div class="col-sm-12 mt-3">
-                            <div class="form-check">
-                              <input type="checkbox" class="form-check-input" name="closure_price_included">
-                              <label class="form-check-label" for="closure_price_included">Closure price included</label>
-                            </div>
-                          </div>
                           
 
                           <div class="col-sm-12 mt-3">

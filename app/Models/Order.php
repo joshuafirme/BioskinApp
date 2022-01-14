@@ -28,6 +28,7 @@ class Order extends Model
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('OD.status', $status)
+           // ->where('OD.courier_id', $status)
             ->orderBy('O.id', 'asc')
             ->get();
 
@@ -52,12 +53,10 @@ class Order extends Model
     public function readOneOrder($order_no)
     {
         return DB::table($this->table . ' as O')
-            ->select('O.*', 'P.name', 'P.price', 'O.qty as qty', 'O.created_at as date_order', 'users.*',
-            'PG.name as packaging', 'C.name as closure','V.name as variation')
+            ->select('O.*', 'P.name', 'P.price', 'P.size', 'O.qty as qty', 'O.created_at as date_order', 'users.*',
+            'O.packaging_sku', 'O.cap_sku','V.name as variation')
             ->leftJoin('products as P', 'P.sku', '=', 'O.sku')
             ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
-            ->leftJoin('products as PG', 'PG.sku', '=', 'O.packaging_sku')
-            ->leftJoin('products as C', 'C.sku', '=', 'O.cap_sku')
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('O.order_id', $order_no)
