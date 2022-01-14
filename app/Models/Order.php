@@ -64,11 +64,11 @@ class Order extends Model
             ->get();
     }
 
-    public function countOrderByStatus() {
+    public function countOrderByStatus($status) {
         return Order::where('user_id', Auth::id())
         ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
         ->distinct('orders.order_id')
-        ->where('OD.status', 0)
+        ->where('OD.status', $status)
         ->count('OD.id');
     }
 

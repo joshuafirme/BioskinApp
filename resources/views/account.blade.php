@@ -168,22 +168,30 @@ if (\Cache::get('categories-cache')) {
                 <div class="row border-top pt-3 mb-4 justify-content-center status-ui-container">
                     <div class="col-3 just text-center">
                         <a href="{{url('/my-purchases?status=0')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-wallet-hotel-dreamstale-lineal-dreamstale.png"/></a>
+                        @if ($to_pay_count)
                         <span class="badge badge-success">{{$to_pay_count}}</span>
+                        @endif
                         <div><small>To pay</small></div>
                     </div>
                     <div class="col-3 just text-center">
                         <a href="{{url('/my-purchases?status=1')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-production-industry-dreamstale-lineal-dreamstale-2.png"/></a>
+                        @if ($processing_count)
                         <span class="badge badge-success">{{$processing_count}}</span>
+                        @endif
                         <div><small>Processing</small></div>
                     </div>
                     <div class="col-3 just text-center">
                         <a href="{{url('/my-purchases?status=2')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-truck-transport-dreamstale-lineal-dreamstale-5.png"/></a>
+                        @if ($otw_count)
                         <span class="badge badge-success">{{$otw_count}}</span>
+                        @endif
                         <div><small>On the way</small></div>
                     </div>
                     <div class="col-3 just text-center">
                         <a href="{{url('/my-purchases?status=3')}}"><img src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-truck-transport-dreamstale-lineal-dreamstale-5.png"/></a>
+                        @if ($to_receive_count)
                         <span class="badge badge-success">{{$to_receive_count}}</span>
+                        @endif
                         <div><small>To receive</small></div>
                     </div>
                 </div>
