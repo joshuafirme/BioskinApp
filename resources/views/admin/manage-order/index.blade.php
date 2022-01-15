@@ -212,7 +212,7 @@
                 <button class="btn btn-sm btn-outline-dark float-right" id="btn-print" type="button">Print</button><br>
                   <div class="row mt-4 mb-4" id="user-info">
                   </div>
-                <table class="table table-hover">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>SKU</th>
@@ -221,7 +221,6 @@
                             <th>Size</th>
                             <th>Packaging</th>
                             <th>Closure</th>
-                            <th>Price</th>
                             <th>Qty</th>
                             <th>Amount</th>
                         </tr>
@@ -233,6 +232,28 @@
               <div class="modal-footer">
               </div>
               <meta id="shipping-fee-value">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade bd-example-modal-lg" id="confirm-deny-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Confirmation</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body" id="printable-order-info">
+                <p>Are you sure do you want do deny this order?</p>
+                <label for="">Remarks</label>
+                <textarea id="remarks" rows="4" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-sm btn-outline-dark delete-record-btn" id="btn-confirm-deny" type="button">Yes</button>
+                <button class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</button>
+              </div>
           </div>
         </div>
       </div>

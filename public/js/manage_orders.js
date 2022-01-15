@@ -82,12 +82,11 @@ function getItems (data, identifier) {
     var size = data.size != null ? data.size : '-';
     html += '<tr>';
         html += '<td>'+data.sku+'</td>';
-        html += '<td>'+data.name+'</td>';
+        html += '<td>'+data.name+' <br> ₱'+formatNumber(data.price)+'</td>';
         html += '<td>'+variation+'</td>';
         html += '<td>'+size+'</td>';
         html += '<td class="packaging-name-'+identifier+'">-</td>';
         html += '<td class="cap-name-'+identifier+'">-</td>';
-        html += '<td>₱'+formatNumber(data.price)+'</td>';
         html += '<td>'+data.qty+'</td>';
         html += '<td>₱'+formatNumber(data.amount)+'</td>';
     html += '</tr>';
@@ -105,26 +104,26 @@ function getComputation(subtotal) {
     let active_tab = $('.nav-tabs .active').attr('aria-controls');
 
     html += '<tr>';
-        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+        html += '<td colspan="6"></td>';
         html += '<td>Subtotal:</td>';
         html += '<td>₱'+formatNumber(subtotal.toFixed(2))+'</td>';
     html += '</tr>';
 
     html += '<tr>';
-        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+        html += '<td colspan="6"></td>';
         html += '<td>Discount:</td>';
         html += '<td>₱'+formatNumber(discount)+'</td>';
     html += '</tr>';
 
     if (active_tab == 'to-receive') {
         html += '<tr>';
-            html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+            html += '<td colspan="6"></td>';    
             html += '<td>Shipping fee:</td>';
             html += '<td><input id="shipping-fee-value" class="form-control"></td>';
         html += '</tr>'; 
     }     
     html += '<tr>';
-        html += '<td></td><td></td><td></td><td></td><td></td><td></td><td></td>';
+        html += '<td colspan="6"></td>';
         html += '<td>Total:</td>';
     html += '<td>₱'+formatNumber(total_amount.toFixed(2))+'</td>';
 html += '</tr>';    
@@ -189,8 +188,12 @@ async function on_Click() {
  
         if ((active_tab!= 'completed' && active_tab!= 'cancelled') && (payment_method == 'cc' || payment_method == 'gc'
         || payment_method == 'bpionline' || payment_method == 'br_bdo_ph')) {
-            btn += '<button class="btn btn-sm btn-danger" id="btn-deny" data-active-tab="'+active_tab+'"  type="button">Deny</button>';
-            btn += '<button class="btn btn-sm btn-success" id="btn-change-status" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">'+btn_text+'</button>';
+            
+            btn += '<button class="btn btn-sm btn-danger" id="btn-deny" data-order-no="'+order_no+'" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">Deny</button>';
+            if (active_tab != "to-pay") {
+                btn += '<button class="btn btn-sm btn-success" id="btn-change-status" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">'+btn_text+'</button>';
+            }
+            
         }
            
         let html = '<div class="col-sm-12 col-md-4">';
@@ -264,6 +267,60 @@ async function on_Click() {
             }
         });
       });
+
+      $(document).on('click','#btn-deny', function(){
+        let order_no = $(this).attr('data-order-no');
+        let status = $(this).attr('data-status');
+        let active_tab= $(this).attr('data-active-tab');
+        console.log(active_tab)
+        $('#confirm-deny-modal').modal('show');
+        let remarks = "";
+        if (active_tab == "to-pay") {
+            remarks = "Unable to process payment. Please contact our customer service at bioskinmarketing@gmail.com or talk to us at 0956 582 8796.";
+        }
+        else if (active_tab == "processing") {
+            remarks = "Unable to process your order. Please contact our customer service at bioskinmarketing@gmail.com or talk to us at 0956 582 8796.";
+        }
+        else if (active_tab == "otw") {
+            remarks = "Unable to complete processing your order. Please contact our customer service at bioskinmarketing@gmail.com or talk to us at 0956 582 8796.";
+        }
+        else if (active_tab == "to-receive") {
+            remarks = "Unable to deliver your order. Please contact our customer service at bioskinmarketing@gmail.com or talk to us at 0956 582 8796.";
+        }
+
+        $('#remarks').val(remarks);
+        $('#btn-confirm-deny').attr('data-order-no', order_no);
+        $('#btn-confirm-deny').attr('data-remarks', remarks);
+      });
+
+      $(document).on('click','#btn-confirm-deny', function(){
+
+        let order_no = $(this).attr('data-order-no');
+        let remarks = $(this).attr('data-remarks');
+        let btn = $(this);
+        let active_tab= $(this).attr('data-active-tab');
+
+        $.ajax({
+            url: '/manage-order/deny/'+order_no,
+            type: 'POST',
+            data: {
+                remarks : remarks
+            },
+            beforeSend:function(){
+                btn.text('Please wait...');
+            },
+            success:function(){
+                $('#tbl-'+active_tab+'-order').DataTable().ajax.reload();
+                $('#show-orders-modal').modal('hide');
+                $('#confirm-deny-modal').modal('hide');
+                $.toast({
+                    text: 'Order was successfully denied.',
+                    showHideTransition: 'plain',
+                    hideAfter: 4500, 
+                })
+            }
+        });
+       });
 
       $(document).on('click','#btn-print', function(){
        // printElement(document.getElementById("printable-order-info"));

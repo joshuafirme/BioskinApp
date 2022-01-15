@@ -109,6 +109,20 @@ class ManageOrderController extends Controller
         ]);
     }
 
+    public function denyOrder($order_id) {
+
+        OrderDetail::where('order_id', $order_id)->update([
+            'status' => 5,
+            'remarks' => request()->remarks
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'order changed status success',
+            'req_params' => request()
+        ]);
+    }
+
     public function readOrderDetails($order_id) {
         $o = new OrderDetail();
         $data = $o->readOrderDetails($order_id);

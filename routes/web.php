@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/manage-order/read-orders', 'ManageOrderController@readOrders');
         Route::get('/manage-order/read-one-order/{order_id}', 'ManageOrderController@readOneOrder');
         Route::post('/manage-order/change-status/{order_id}', 'ManageOrderController@changeOrderStatus');
+        Route::post('/manage-order/deny/{order_id}', 'ManageOrderController@denyOrder');
         Route::resource('/users', 'UserController');
         Route::post('/users/archive/{id}', 'UserController@archive');
         Route::get('/read-users', 'UserController@readUsers');

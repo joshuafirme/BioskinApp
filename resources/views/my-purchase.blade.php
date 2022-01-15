@@ -178,8 +178,8 @@ $order_detail = DB::table('order_details as OD')
             @endif
             </div>
             </div>
-            <div>{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
-            @if ($order_detail->status == 5)
+            <div class="bg-gray p-3 mt-2 pr-5 pl-5">{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
+            @if ($order_detail->status == 5 && $order_detail->cancellation_reason)
                 <div>Cancellation reason: {{ $order_detail->cancellation_reason }}</div>
             @endif
             <div class="table-container mt-4 border mb-5">
