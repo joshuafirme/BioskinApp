@@ -26,6 +26,12 @@ class CartController extends Controller
         return  $p->readOnePriceBySKUAndVolume($sku, $volume);
     }
 
+    public function readPackagingPriceBySKUAndVolume($id, $volume) {
+        $p = new ProductPrice;
+        $sku = DB::table('products')->where('id', $id)->value('sku');
+        return  $p->readOnePriceBySKUAndVolume($sku, $volume);
+    }
+
     public function addToCart() {
 
        if (Auth::check()) {
@@ -56,11 +62,11 @@ class CartController extends Controller
     
             if (isset(request()->packaging_sku)) {
                 $packaging_id = request()->packaging_sku;
-                $packaging_price = $product->readPackagingPriceByID($packaging_id);
+                $packaging_price = $this->readPackagingPriceBySKUAndVolume($packaging_id, request()->volume);
             }
             if (isset(request()->closure_sku)) {
                 $cap_id = request()->closure_sku;
-                $cap_price = $product->readPackagingPriceByID($cap_id);
+                $cap_price = $this->readPackagingPriceBySKUAndVolume($cap_id, request()->volume);
             }
             if (isset(request()->volume) && request()->volume) {
 
@@ -94,36 +100,44 @@ class CartController extends Controller
                 ], 200);
             } 
             else {
-                if ($this->isProductExists($sku, $packaging_id, $cap_id, $user_id, $order_type) == true) {
-
-                    if ($order_type == 1) {
-
-                    }
-
-                    Cart::where([
-                        ['user_id', $user_id],
-                        ['sku', $sku]
-                    ])
-                        ->update([
-                            'amount' => DB::raw('amount + '. $total_amount .''),
-                            'qty' => DB::raw('qty + '. $qty)
-                        ]);
-                        
-                        return response()->json([
-                            'status' =>  'success',
-                            'data' => 'update existing product'
-                        ], 200);
+                if ($this->isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty, $order_type)) {
+                    return response()->json([
+                        'status' =>  'success',
+                        'data' => 'rebranding_exists'
+                    ], 200);
                 }
                 else {
-                    Cart::create([
-                        'user_id' => Auth::id(),
-                        'sku' => $sku,
-                        'packaging_sku' => $packaging_id,
-                        'cap_sku' => $cap_id,
-                        'qty' => $qty,
-                        'amount' => $total_amount,
-                        'order_type' => $order_type
-                    ]);
+                    if ($this->isProductExists($sku, $packaging_id, $cap_id, $user_id, $order_type) == true) {
+
+                        if ($order_type == 1) {
+    
+                        }
+    
+                        Cart::where([
+                            ['user_id', $user_id],
+                            ['sku', $sku]
+                        ])
+                            ->update([
+                                'amount' => DB::raw('amount + '. $total_amount .''),
+                                'qty' => DB::raw('qty + '. $qty)
+                            ]);
+                            
+                            return response()->json([
+                                'status' =>  'success',
+                                'data' => 'update existing product'
+                            ], 200);
+                    }
+                    else {
+                        Cart::create([
+                            'user_id' => Auth::id(),
+                            'sku' => $sku,
+                            'packaging_sku' => $packaging_id,
+                            'cap_sku' => $cap_id,
+                            'qty' => $qty,
+                            'amount' => $total_amount,
+                            'order_type' => $order_type
+                        ]);
+                    }
                 }
             }
         
@@ -140,6 +154,19 @@ class CartController extends Controller
                 ['sku', $sku],
                 ['packaging_sku', $packaging_id],
                 ['cap_sku', $cap_id],
+                ['order_type', $order_type]
+            ])->get();
+
+        return $cart->count() > 0 ? true : false;
+    }
+
+    public function isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty, $order_type){
+        $cart = Cart::where([
+                ['user_id', $user_id],
+                ['sku', $sku],
+                ['packaging_sku', $packaging_id],
+                ['cap_sku', $cap_id],
+                ['qty', $qty],
                 ['order_type', $order_type]
             ])->get();
 

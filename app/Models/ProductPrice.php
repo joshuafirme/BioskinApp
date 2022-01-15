@@ -19,6 +19,11 @@ class ProductPrice extends Model
         return $this->where('sku', $sku)->where('volume', $volume)->value('price');
     }
 
+    public function readOnePriceByIDAndVolume($id, $volume)
+    {
+        return $this->where('id', $id)->where('volume', $volume)->value('price');
+    }
+
     public function removePricePerVolume($sku, $volume) {
         $this->where('sku', $sku)
             ->where('volume', $volume)->delete();
@@ -27,6 +32,12 @@ class ProductPrice extends Model
                 'status' =>  'success',
                 'message' => 'Data was deleted.'
             ], 200);
+    }
+
+        
+    public function readPackagingPriceBySKUAndVolume($id, $volume) {
+        $sku = DB::table('products')->where('id', $id)->value('sku');
+        return  $this->readOnePriceBySKUAndVolume($sku, $volume);
     }
 
     public function readVolumes($sku) {

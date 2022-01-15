@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    async function readPackaging(ids, object) {
+    async function readPackaging(ids, object, volume) {
 
         var html = '';
         if (ids) {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data) {
                         for (var i = 0; i < data.length; i++) {
                             html += '<div class="col-sm-12 col-md-6">';
-                            html += '<button class="btn btn-light btn-' + object + ' btn-block m-1" data-sku="' + data[i].id + '" data-name="' + data[i].name + '" data-price="' + data[i].price + '">' + data[i].name + ' ' + data[i].size + '</button>';
+                            html += '<button class="btn btn-light btn-' + object + ' btn-block m-1" data-sku="' + data[i].id + '" data-price=' + data[i].price + ' data-name="' + data[i].name + '">' + data[i].name + ' ' + data[i].size + '</button>';
 
                             html += '<div class="m-1 rebrand-img" id="data-image-' + data[i].sku + '"></div>';
                             html += '</div>';
@@ -93,7 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     $('.' + object + '-container').html(html);
 
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {  console.log(data[i].id)
+                        readProductPriceByVolume(data[i].id, volume, object);
                         readImage(data[i].sku);
                     }
 
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     }
+
     async function readImage(sku) {
         $.ajax({
             url: '/read-image/' + sku,
@@ -146,16 +148,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    async function readProductPriceByVolume(sku, volume) {
+    async function readProductPriceByVolume(id, volume, object = 'packaging') {
         $.ajax({
             url: '/read-price-by-volume',
             type: 'GET',
             data: {
-                sku: sku,
+                id: id,
                 volume: volume
             },
-            success: function(data) {
-                $('#price_by_volume_hidden').val(data);
+            success: function(price) {
+                if (price) {
+                    $('.'+object+'-container [data-sku="' + id + '"]').attr('data-price', price);
+                }
+                else {
+                    // remove from list if no designated volume
+                    $('.'+object+'-container [data-sku="' + id + '"]').parent().remove();
+                }
             }
         });
     }
@@ -163,6 +171,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     async function on_Click() {
+
+        
+        $(document).on('click', '#pills-cap-tab', async function() {
+            $('.closure-container button').each(function() {
+                let id = $(this).attr('data-sku');
+                let volume = $('.custom-volume:eq(0)').text();
+                console.log(volume)
+                readProductPriceByVolume(id, volume, 'closure');
+            });
+        });
+
         $(document).on('click', '.btn-show-hide', async function() {
             var object = $(this).attr('object');
             var dots = document.getElementById("dots-btn-" + object);
@@ -197,6 +216,12 @@ document.addEventListener('DOMContentLoaded', function() {
             let volume = $this.attr('data-volume');
             $('#volume-price').text(price);
 
+            let packaging_ids = $('#pills-sizes').find('.active').attr('data-packaging-ids');
+            let closure_ids = $('#pills-sizes').find('.active').attr('data-closure-ids');
+
+            await readPackaging(packaging_ids, 'packaging', volume);
+            await readPackaging(closure_ids, 'closure', volume);
+
             setActive('btn-volume', $this);
 
             let total_packaging = parseInt(volume) * parseFloat($('#custom-packaging-price').text());
@@ -219,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let size = $this.attr('data-size');
             let packaging_ids = $this.attr('data-packaging-ids');
             let closure_ids = $this.attr('data-closure-ids');
+            let volume = $('.custom-volume:first').text()
 
             clearSelectedAttrbutes();
 
@@ -231,9 +257,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             await readProductInfo(sku, category_name);
             await readProductVolume(sku);
-
-            await readPackaging(packaging_ids, 'packaging');
-            await readPackaging(closure_ids, 'closure');
+            
+            await readPackaging(packaging_ids, 'packaging', volume);
+            await readPackaging(closure_ids, 'closure', volume );
 
 
             window.history.pushState(window.location.href, 'Title', '/rebrand/' + sku + "/" + category_name);
@@ -353,8 +379,15 @@ document.addEventListener('DOMContentLoaded', function() {
         await initSplide();
         await on_Click();
         makeResponvie();
-
         initSelectedAttr();
+
+        
+        $('.packaging-container button').each(function() {
+            let id = $(this).attr('data-sku');
+            let volume = $('.custom-volume:eq(0)').text();
+            console.log(volume)
+            readProductPriceByVolume(id, volume);
+        });
     }
 
     render();

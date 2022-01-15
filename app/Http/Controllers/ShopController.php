@@ -90,7 +90,13 @@ class ShopController extends Controller
     public function readVolumes($sku, ProductPrice $p) {
         return  $p->readPricePerVolume($sku);
     }
-    
+
+    public function readOnePriceBySKUAndVolume() {
+        $p = new ProductPrice;
+        $sku = DB::table('products')->where('id', request()->id)->value('sku');
+        return  $p->readOnePriceBySKUAndVolume($sku, request()->volume);
+    }
+
 
     public function readOneProduct($sku, $category_name, Product $__product)
     {

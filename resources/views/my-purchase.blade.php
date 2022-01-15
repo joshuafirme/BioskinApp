@@ -230,10 +230,10 @@ $order_detail = DB::table('order_details as OD')
                                 <td>{{ $data->variation ? $data->variation : '-' }}</td>
                                 <td>
                                     {{ $product->readPackagingNameByID($data->packaging_sku) }} <br>
-                                    <div class="text-muted">₱{{$product->readPackagingPriceByID($data->packaging_sku)}}</div> </td>
+                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->packaging_sku, $data->qty)}}</div> </td>
                                 <td>
                                     {{ $product->readPackagingNameByID($data->cap_sku) }} <br>
-                                    <div class="text-muted">₱{{$product->readPackagingPriceByID($data->cap_sku)}}</div></td>
+                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->cap_sku, $data->qty)}}</div></td>
                                 <td>{{ $data->qty }}</td>
                                 <td>₱{{ number_format($data->amount, 2, '.', ',') }}</td>
                             </tr>

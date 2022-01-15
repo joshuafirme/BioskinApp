@@ -24,8 +24,9 @@ class CheckoutController extends Controller
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
+        $product_price = new ProductPrice;
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price'));
     }
 
     public function paynamicsPayment() {
@@ -104,8 +105,8 @@ class CheckoutController extends Controller
                                 $item->price = $price_by_volume;
                             }
                        
-                            $packaging_price = $product->readPackagingPriceByID($item->packaging_sku);
-                            $cap_price = $product->readPackagingPriceByID($item->cap_sku);
+                            $packaging_price = $this->readPackagingPriceBySKUAndVolume($item->packaging_sku, $item->qty);
+                            $cap_price = $this->readPackagingPriceBySKUAndVolume($item->cap_sku, $item->qty);
                             $item->price = $item->price + $packaging_price + $cap_price;
                         }
                         if (request()->buy_now == 'true') {
@@ -171,6 +172,12 @@ class CheckoutController extends Controller
 
     public function readOnePriceBySKUAndVolume($sku, $volume) {
         $p = new ProductPrice;
+        return  $p->readOnePriceBySKUAndVolume($sku, $volume);
+    }
+
+    public function readPackagingPriceBySKUAndVolume($id, $volume) {
+        $p = new ProductPrice;
+        $sku = DB::table('products')->where('id', $id)->value('sku');
         return  $p->readOnePriceBySKUAndVolume($sku, $volume);
     }
 

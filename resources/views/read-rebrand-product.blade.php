@@ -256,17 +256,6 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                                         $packaging_image = \DB::table('product_images')
                                             ->where('sku', $pack->sku)
                                             ->value('image');
-                                        
-                                        if ($key == 0 && $product->packaging_price_included == 1) {
-                                            $selected_packaging_price = $pack->price;
-                                            $pack->price = '0.00';
-                                        } elseif ($key > 0 && $product->packaging_price_included == 1) {
-                                            if ($selected_packaging_price < $pack->price) {
-                                                $pack->price = (float) $pack->price - (float) $selected_packaging_price;
-                                            } else {
-                                                $pack->price = (float) $selected_packaging_price + (float) $pack->price;
-                                            }
-                                        }
                                     @endphp
                                     <div class="col-6 col-md-6">
                                         <button class="btn btn-light btn-packaging btn-block m-1"
@@ -302,9 +291,6 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                                         $closure_image = \DB::table('product_images')
                                             ->where('sku', $closure->sku)
                                             ->value('image');
-                                        if ($key == 0 && $product->closure_price_included == 1) {
-                                            $closure->price = '0.00';
-                                        }
                                     @endphp
                                     <div class="col-6">
                                         <button class="btn btn-light btn-closure btn-block m-1"

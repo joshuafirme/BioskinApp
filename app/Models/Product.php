@@ -141,7 +141,7 @@ class Product extends Model
         ->where('id', $packaging_id)->value('name');
         
     }
-
+    
     public function readDefaultCapBySKU($sku) {
 
         $cap_id = $this->readDefaultCapID($sku);

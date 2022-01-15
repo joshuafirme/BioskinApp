@@ -188,7 +188,6 @@ $page_title = 'Checkout | Bioskin';
                     <th>Packaging</th>
                     <th>Cap</th>
                     <th>Quantity</th>
-                    <th>Price</th>
                     <th>Order Subtotal</th>
                 </thead>
                 <tbody id="cart-item-container">
@@ -217,13 +216,12 @@ $page_title = 'Checkout | Bioskin';
                                     </div>
                                 @endif
                             </td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }} <br> {{ $item->price }}</td>
                             <td>{{ $item->size ? $item->size : '-' }}</td>
                             <td>{{ $item->variation ? $item->variation : '-' }}</td>
                             <td>{{ $product->readDefaultPackagingBySKU($item->sku) }}</td>
                             <td>{{ $product->readDefaultCapBySKU($item->sku) }}</td>
                             <td>1</td>
-                            <td>{{ $item->price  }}</td>
                             <td>₱{{ number_format($item->price, 2, '.', ',') }}</td>
                         </tr>
                         @endif
@@ -251,13 +249,37 @@ $page_title = 'Checkout | Bioskin';
                                         </div>
                                     @endif
                                 </td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->name }} <br>
+                                    @if($item->rebranding == 1)
+                                    ₱{{ $product_price->readOnePriceBySKUAndVolume($item->sku, $item->qty) }}
+                                    @else
+                                            ₱{{ $item->price }} <br>
+                                            <small>Packaging price included</small>
+                                    @endif
+                                </td>
                                 <td>{{ $item->size ? $item->size : '-' }}</td>
                                 <td>{{ $item->variation ? $item->variation : '-' }}</td>
-                                <td>{{ $product->readPackagingNameByID($item->packaging_sku) }}</td>
-                                <td>{{ $product->readPackagingNameByID($item->cap_sku) }}</td>
+                                <td>{{ $product->readPackagingNameByID($item->packaging_sku) }} <br>
+                                    @if($item->rebranding == 1)
+                                        @php
+                                            $packaging_price = $product_price->readPackagingPriceBySKUAndVolume($item->packaging_sku, $item->qty)
+                                        @endphp
+                                            {{ $packaging_price ? "₱" . $packaging_price : "-" }}
+                                        @else
+                                            {{ $item->price ? "₱" . $item->price : "-" }}
+                                        @endif
+                                </td>
+                                <td>{{ $product->readPackagingNameByID($item->cap_sku) }} <br> 
+                                    @if($item->rebranding == 1)
+                                    @php
+                                        $cap_price = $product_price->readPackagingPriceBySKUAndVolume($item->cap_sku, $item->qty)
+                                    @endphp
+                                        {{ $cap_price ? "₱" . $cap_price : "-" }}
+                                    @else
+                                        {{ $item->price ? "₱" . $item->price : "-" }}
+                                    @endif
+                                </td>
                                 <td>{{ $item->qty }}</td>
-                                <td>{{ $price  }}</td>
                                 <td>₱{{ number_format($item->amount, 2, '.', ',') }}</td>
                             </tr>
                         @endforeach

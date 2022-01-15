@@ -26,6 +26,14 @@
                 if (data.message == 'unauthorized') {
                     $('#loginModal').modal('toggle');
                 }
+                
+                else if (data.data == "rebranding_exists") {
+                    $.toast({
+                        text: 'Rebranding product is already exists in your cart.',
+                        showHideTransition: 'plain',
+                        hideAfter: 4500, 
+                    });
+                }
                 else if (data.data == "not enough stock") {
                     $.toast({
                         text: 'Not enough stock!',

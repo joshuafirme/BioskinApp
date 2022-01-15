@@ -114,6 +114,8 @@
                 <div><img src="https://img.icons8.com/external-ddara-lineal-ddara/64/000000/external-refund-delivery-services-ddara-lineal-ddara.png"/></div>
                 <h2 class="mt-3">Request Return/Refund</h2>
                 <p>Please email us at </p>
+                <a href="mailto: sales@bioskinphilippines.com" target="_blank"><span>sales@bioskinphilippines.com</span></a> /
+                <a href="mailto: bioskincsr@gmail.com" target="_blank"><span>bioskincsr@gmail.com</span></a> 
                 <div class="row">
                   <!--<div class="col-sm-12">
                       <label class="col-form-label float-left">Reason for Return/Refund</label>
