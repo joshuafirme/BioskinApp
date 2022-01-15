@@ -37,7 +37,7 @@ class MyPurchasesController extends Controller
     public function cancelOrder($order_id)
     {
         $date_order = strtotime(request()->date_order);
-        $five_minutes_ago = strtotime("-6 hour");
+        $five_minutes_ago = strtotime("-1 hour");
     
         if ($date_order >= $five_minutes_ago) {
             OrderDetail::where('order_id', $order_id)->update([
