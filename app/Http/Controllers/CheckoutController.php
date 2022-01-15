@@ -20,7 +20,7 @@ use DB;
 class CheckoutController extends Controller
 {
     public function index(Product $product)
-    {
+    { 
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
@@ -67,7 +67,7 @@ class CheckoutController extends Controller
         $_ipaddress = $ip;
         $_noturl = route('paynamicsNotification'); 
         $_resurl = route('paynamicsNotification');
-        $_cancelurl = url('/my-purchases?status=0'); 
+        $_cancelurl = route('paynamicsNotification'); 
         $_fname = $user->firstname; 
         $_mname = $user->middlename; 
         $_lname = $user->lastname; 
@@ -209,6 +209,13 @@ class CheckoutController extends Controller
                     $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
+                case 'GR053':
+                    $status = 0;
+                    $response_message = "Transaction cancelled";
+                    $response_advise = "";
+                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
+                    return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
+                    break;
                 case 'GR033':
                     $status = 0;
                     $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
@@ -229,6 +236,23 @@ class CheckoutController extends Controller
             'response_message' => $response_message,
             'status' => $status
         ]);
+
+        if ($status == 0) {
+
+            $orders = Order::where('order_id', session()->get('order_id'))->get();
+
+            foreach ($orders as $item) {
+                $this->addToInventory($item->sku, $item->qty);
+            }
+        }
+    }
+
+    public function addToInventory($sku, $qty){
+        
+        Product::where('sku', $sku)
+            ->update([
+                'qty' => DB::raw('qty + '. $qty .'')
+            ]);
     }
 
     public function getPaymentStatus($request_id, $response_id) {
@@ -299,7 +323,7 @@ class CheckoutController extends Controller
                     'rebranding' => $data->order_type,
                 ]);
     
-           //     $this->updateInventory($data->sku, $data->qty);
+                $this->updateInventory($data->sku, $data->qty);
             }
         }
         

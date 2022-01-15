@@ -174,7 +174,7 @@ $order_detail = DB::table('order_details as OD')
             <div class="ml-2">Order placed: {{date('F d, Y h:i A', strtotime($order_detail->created_at))}} <br>
                 
             @if ($order_detail->status == 0 || $order_detail->status == 1)
-                <div>*The order that was placed one hour ago is cannot be cancelled.</div>
+                <div>*The order that was placed and already processing one hour ago is cannot be cancelled.</div>
             @endif
             </div>
             </div>
@@ -263,7 +263,7 @@ $order_detail = DB::table('order_details as OD')
                                 @if ($order_detail->status == 0 || $order_detail->status == 1)
                                 <br>
                                     <a class="btn text-danger mt-2" id="cancel-order" 
-                                    data-order-id="{{ $order_id }}" data-date-order="{{ $order_detail->created_at }}">Cancel</a>
+                                    data-order-id="{{ $order_id }}" data-date-order="{{ $order_detail->created_at }}" data-status="{{ $order_detail->status }}">Cancel</a>
                                 @endif
                             </td>
                             <td><b>₱{{ number_format($total, 2, '.', ',') }}</b>

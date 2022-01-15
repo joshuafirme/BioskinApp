@@ -36,18 +36,23 @@ class MyPurchasesController extends Controller
 
     public function cancelOrder($order_id)
     {
+        $status = OrderDetail::where('order_id', $order_id)->value('status');
+
         $date_order = strtotime(request()->date_order);
         $five_minutes_ago = strtotime("-1 hour");
     
-        if ($date_order >= $five_minutes_ago) {
+        if ($date_order >= $five_minutes_ago || $status == 0) {
             OrderDetail::where('order_id', $order_id)->update([
                 'status' => 5,
                 'cancellation_reason' => request()->cancellation_reason
             ]);
+
+
             return 'status changed to cancel';
         }
         else {
             return 'more than 1 hr';
         }
     }
+
 }
