@@ -66,6 +66,11 @@
                                 <input type="text" class="form-control" name="minimum_purchase_amount"  value="{{ $voucher->minimum_purchase_amount }}"  placeholder="100.00" required>
                             </div>
 
+                            <div class="col-sm-12 col-md-6">
+                                <label class="col-form-label">Limit</label>
+                                <input type="number" class="form-control" name="limit"  value="{{ $voucher->limit }}"  placeholder="Number of limit to be use" required>
+                            </div>
+
                             <div class="col-sm-12 col-md-6 mt-2">    
                               <label class="col-form-label">Status</label>
                               <select class="form-control" name="status" id="status">

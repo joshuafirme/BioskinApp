@@ -12,6 +12,7 @@ class Voucher extends Model
         'voucher_code',
         'discount',
         'minimum_purchase_amount',
-        'status'
+        'status',
+        'limit'
     ];
 }

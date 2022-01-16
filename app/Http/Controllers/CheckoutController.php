@@ -293,13 +293,16 @@ class CheckoutController extends Controller
         $items = $this->readCartChecked();
         $order_id = $this->generateOrderID();
         $user_id = Auth::id();
-
         $product = new Product;
+        
+        $total = $this->cartCheckedTotalAmount();
        
         if (isset(request()->buy_now) && request()->buy_now == "true") {  
             $sku = request()->sku;
             $this->updateInventory($sku, 1);
-        
+
+            $total = $product->readPriceBySKU($sku);
+
             Order::create([
                 'order_id' => $order_id,
                 'user_id' => $user_id,
@@ -307,7 +310,7 @@ class CheckoutController extends Controller
                 'packaging_sku' => $product->readDefaultPackagingID($sku),
                 'cap_sku' => $product->readDefaultCapID($sku),
                 'qty' => 1,
-                'amount' => $product->readPriceBySKU($sku),
+                'amount' => $total,
             ]);
         } 
         else {
@@ -335,8 +338,47 @@ class CheckoutController extends Controller
             //if voucher valid
             $voucher_code = "";
             if (isset($voucher) && $voucher) {
+                
                 $voucher_code = request()->voucher_code;
+
+                if ($this->voucherMinimumAmount($voucher_code) > $total) {
+                    return response()->json([
+                        'status' => 'minimum_amount_exceeded',
+                    ]);
+                }
+                else {
+                    $used = DB::table('user_voucher')
+                    ->where('user_id', Auth::id())
+                    ->where('voucher_code', $voucher_code)
+                    ->value('used');
+
+                    if ($used >= $this->voucherLimit($voucher_code)) {
+                        return response()->json([
+                            'status' => 'voucher_limit_exceeded',
+                        ]);
+                    }
+                    else {
+                        if (isset($used) && $used) {
+                            DB::table('user_voucher')
+                            ->where('user_id', Auth::id())
+                            ->where('voucher_code', $voucher_code)
+                            ->update([
+                                'used' => DB::raw('used + 1')
+                            ]);
+                        }
+                        else {
+                            DB::table('user_voucher')->insert([
+                                'user_id' => Auth::id(),
+                                'voucher_code' => $voucher_code,
+                                'used' => 1
+                            ]);
+                        }
+                    }
+                }
+                
+
             }
+
 
            $pmethod = request()->opt_payment_method;
            $expiry_date = "";
@@ -368,6 +410,14 @@ class CheckoutController extends Controller
 
         session()->put('order_id', $order_id);
         return $order_id;
+    }
+
+    public function voucherLimit($voucher_code) {
+        return DB::table('voucher')->where('voucher_code', $voucher_code)->value('limit');
+    }
+
+    public function voucherMinimumAmount($voucher_code) {
+        return DB::table('voucher')->where('voucher_code', $voucher_code)->value('minimum_purchase_amount');
     }
 
     public function updateInventory($sku, $qty){

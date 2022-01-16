@@ -178,7 +178,9 @@ $order_detail = DB::table('order_details as OD')
             @endif
             </div>
             </div>
-            <div class="bg-gray p-3 mt-2 pr-5 pl-5">{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
+            @if ($order_detail->remarks)
+                <div class="bg-gray p-3 mt-2 pr-5 pl-5">{{ $order_detail->remarks ? "Remarks: " . $order_detail->remarks : "" }}</div>
+            @endif
             @if ($order_detail->status == 5 && $order_detail->cancellation_reason)
                 <div>Cancellation reason: {{ $order_detail->cancellation_reason }}</div>
             @endif

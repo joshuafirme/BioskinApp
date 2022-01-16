@@ -208,9 +208,20 @@ $(document).on('click', '#btn-place-order', async function(){
             buy_now : buy_now,
             sku : sku
         },
-        success:function(order_id){
+        success:function(data){
             btn.remove();
-           // if (result == '')
+            if (data.status == "minimum_amount_exceeded") {
+                html = '<small class="text-danger">Voucher minimum amount is invalid.</small>';
+                $('#input-validation').html(html);
+                return;
+            }
+            else if (data.status == "voucher_limit_exceeded") {
+                html = '<small class="text-danger">Voucher used exceeded.</small>';
+                $('#input-validation').html(html);
+                return;
+            }
+           
+            
             if (mode_of_payment == 'COD') {
                 $('#order-placed-modal').modal({
                     backdrop: 'static',
@@ -218,7 +229,6 @@ $(document).on('click', '#btn-place-order', async function(){
                 });
             }
             else {  
-                console.log(order_id)
                 paynamicsPayment(opt_payment_method, voucher_code, buy_now, sku);
             }
         }
