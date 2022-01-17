@@ -162,3 +162,41 @@
 </div>
 
 
+
+  <div class="modal fade" id="voucher-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">My Vouchers</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-hover table-borderless">
+            <thead>
+                <th>Voucher code</th>
+                <th>Discount</th>
+                <th>Minimun purchase amount</th>
+                <th>Voucher limit</th>
+                <th>Used</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                @foreach ($vouchers as $item)
+                <tr>
+                    <td>{{ $item->voucher_code }}</td>
+                    <td>{{ $item->discount }}</td>
+                    <td>{{ $item->minimum_purchase_amount }}</td>
+                    <td>{{ $item->limit }}</td>
+                    <td>{{ $item->used }}</td>
+                    <td><button class="btn btn-sm btn-success btn-apply" type="button">Apply</button></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+

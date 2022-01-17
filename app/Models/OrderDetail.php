@@ -34,5 +34,9 @@ class OrderDetail extends Model
             ->first();
     }
 
+    public function readVoucherCode($order_id) {
+        return DB::table('order_details')->where('order_id', $order_id)->value('voucher_code');
+    }
+
    
 }

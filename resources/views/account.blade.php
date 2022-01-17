@@ -130,7 +130,7 @@ if (\Cache::get('categories-cache')) {
                 <div class="text-center">File Extension JPEG, PNG</div>
                 <hr>
                 <div class="ml-2 text-muted">My Account</div>
-                <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <ul class="nav flex-column nav-pills account-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <li class="nav-item">
                         <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
                             aria-controls="profile" aria-selected="true">Profile</a>
@@ -145,11 +145,15 @@ if (\Cache::get('categories-cache')) {
                     </li>
                 </ul>
                 <hr>
-                <div class="ps-vs-n ml-2">
-                    <div class="mt-2"><a href="{{ url('/my-purchases?status=all') }}"
-                            class="text-muted">My Purchases</a></div>
-                    <div class="mt-2"><a href="#" class="text-muted">My Vouchers</a></div>
-                </div>
+                <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/my-purchases?status=all') }}">My Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="voucher-tab" data-toggle="tab" href="#voucher"
+                            role="tab" aria-controls="voucher">My Vouchers</a>
+                    </li>
+                </ul>
             </div>
             @php
                 $to_pay_count = $order_mdl->countOrderByStatus(0);
@@ -302,6 +306,28 @@ if (\Cache::get('categories-cache')) {
                                 </div>
                                 <button class="btn btn-success mt-3" id="btn-update-password">Save</button>
                             </div>
+                            <div class="tab-pane fade" id="voucher" role="tabpanel" aria-labelledby="voucher-tab">
+                                    <table class="table table-hover table-borderless">
+                                        <thead>
+                                            <th>Voucher code</th>
+                                            <th>Discount</th>
+                                            <th>Minimun purchase amount</th>
+                                            <th>Voucher limit</th>
+                                            <th>Used</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($vouchers as $item)
+                                            <tr>
+                                                <td>{{ $item->voucher_code }}</td>
+                                                <td>{{ $item->discount }}</td>
+                                                <td>{{ $item->minimum_purchase_amount }}</td>
+                                                <td>{{ $item->limit }}</td>
+                                                <td>{{ $item->used }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,3 +341,12 @@ if (\Cache::get('categories-cache')) {
     @include('footer')
 
     <script src="{{ asset('js/customer/account.js') }}"></script>
+
+    <script>
+        $(document).on('click', '#voucher-tab', function(){ 
+            $('.account-tabs .nav-link').removeClass('active');
+        });
+        $(document).on('click', '.account-tabs .nav-link', function(){ 
+            $('#voucher-tab').removeClass('active');
+        });
+    </script>

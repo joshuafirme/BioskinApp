@@ -19,20 +19,22 @@ use DB;
 
 class CheckoutController extends Controller
 {
-    public function index(Product $product)
+    public function index(Product $product, Voucher $voucher)
     { 
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
         $product_price = new ProductPrice;
+        $vouchers = $voucher->readVoucherByUserID();
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price', 'vouchers'));
     }
 
     public function paynamicsPayment() {
         $ip = $this->getIp();
         $user = Auth::user();
         $product = new Product;
+        $od = new OrderDetail;
         
         $address = $this->readDefaultAddress();
         $checkout_items = $this->readCartChecked();
@@ -40,17 +42,16 @@ class CheckoutController extends Controller
 
         $total = $this->cartCheckedTotalAmount();
         $discount = $this->getDiscount($voucher_code);
-
+   
         if (isset(request()->pay_now) && request()->pay_now == 'true') {
             $order_id = request()->order_id;
             session()->put('order_id', $order_id);
-            $od = new OrderDetail;
             $order = new Order;
             $address = $od->readOrderDetails($order_id);
 
             $checkout_items = $order->readMyOrders($order_id);
             $total = $order->readTotalAmount($order_id);
-            $discount = $od->discount == null ? 0 : $od->discount;
+        //    $discount = $od->discount == null ? 0 : $od->discount;
         }
 
         else if (isset(request()->buy_now) && request()->buy_now == 'true') {
@@ -123,13 +124,13 @@ class CheckoutController extends Controller
                         $strxml .= "</Items>";
                     } 
                     //return $debug_total;
-                    if ($discount > 0) {
+                    /*if ($discount > 0) {
                         $strxml .= "<Items>";
                             $strxml .= "<itemname>Discounted each item.</itemname>";
                             $strxml .= "<quantity>0</quantity>";
                             $strxml .= "<amount>".$discount ."</amount>";
                         $strxml .= "</Items>";
-                    }
+                    }*/
                    
                 $strxml .= "</items>";
             $strxml .= "</orders>";
@@ -294,6 +295,7 @@ class CheckoutController extends Controller
         $order_id = $this->generateOrderID();
         $user_id = Auth::id();
         $product = new Product;
+        $voucher_mdl = new Voucher;
         
         $total = $this->cartCheckedTotalAmount();
        
@@ -341,42 +343,24 @@ class CheckoutController extends Controller
                 
                 $voucher_code = request()->voucher_code;
 
-                if ($this->voucherMinimumAmount($voucher_code) > $total) {
+                $voucher_result = $voucher_mdl->initVoucher($voucher_code, $total);
+
+                if ($voucher_result == "minimum_amount_exceeded") {
                     return response()->json([
                         'status' => 'minimum_amount_exceeded',
                     ]);
                 }
-                else {
-                    $used = DB::table('user_voucher')
-                    ->where('user_id', Auth::id())
-                    ->where('voucher_code', $voucher_code)
-                    ->value('used');
-
-                    if ($used >= $this->voucherLimit($voucher_code)) {
-                        return response()->json([
-                            'status' => 'voucher_limit_exceeded',
-                        ]);
-                    }
-                    else {
-                        if (isset($used) && $used) {
-                            DB::table('user_voucher')
-                            ->where('user_id', Auth::id())
-                            ->where('voucher_code', $voucher_code)
-                            ->update([
-                                'used' => DB::raw('used + 1')
-                            ]);
-                        }
-                        else {
-                            DB::table('user_voucher')->insert([
-                                'user_id' => Auth::id(),
-                                'voucher_code' => $voucher_code,
-                                'used' => 1
-                            ]);
-                        }
-                    }
+                else if ($voucher_result == "voucher_limit_exceeded") {
+                    return response()->json([
+                        'status' => 'voucher_limit_exceeded',
+                    ]);
+                }
+                else if ($voucher_result == "not_valid") {
+                    return response()->json([
+                        'status' => 'not_valid',
+                    ]);
                 }
                 
-
             }
 
 
@@ -412,13 +396,6 @@ class CheckoutController extends Controller
         return $order_id;
     }
 
-    public function voucherLimit($voucher_code) {
-        return DB::table('voucher')->where('voucher_code', $voucher_code)->value('limit');
-    }
-
-    public function voucherMinimumAmount($voucher_code) {
-        return DB::table('voucher')->where('voucher_code', $voucher_code)->value('minimum_purchase_amount');
-    }
 
     public function updateInventory($sku, $qty){
         
@@ -500,8 +477,10 @@ class CheckoutController extends Controller
     }
 
     public function getDiscount($voucher_code) {
-        $voucher = Voucher::where('voucher_code', $voucher_code)->first();
-        return isset($voucher->discount) ? $voucher->discount : 0;
+        $discount = OrderDetail::where('order_details.voucher_code', $voucher_code)
+                    ->leftJoin('voucher as v', 'v.voucher_code', '=', 'order_details.voucher_code')
+                    ->value('discount');
+        return $discount ? $discount : 0;
     }
 
     public function getIp(){

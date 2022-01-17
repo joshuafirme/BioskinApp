@@ -318,14 +318,15 @@ $order_detail = DB::table('order_details as OD')
             let w = $('.responsive-img').width();
             $('.responsive-img').height(w);
 
-            function paynamicsPayment(order_id, pay_now, pmethod) {
+            function paynamicsPayment(order_id, pay_now, pmethod, voucher_code) {
                 $.ajax({
                     url: '/paynamics-payment',
                     type: 'POST',
                     data: {
                         order_id: order_id,
                         pay_now: pay_now,
-                        pmethod: pmethod
+                        pmethod: pmethod,
+                        voucher_code: voucher_code
                     },
                     success: function(data) {
                         console.log(data)
@@ -341,9 +342,10 @@ $order_detail = DB::table('order_details as OD')
                 var order_id = $(this).attr('data-order-id');
                 var pmethod = $(this).attr('data-pmethod');
                 var pay_now = $(this).attr('data-pay-now');
+                var voucher_code = $(this).attr('data-voucher-code');
                 btn.html('<i class="fas fa-spinner fa-pulse"></i>');
 
-                paynamicsPayment(order_id, pay_now, pmethod);
+                paynamicsPayment(order_id, pay_now, pmethod, voucher_code);
 
             });
 

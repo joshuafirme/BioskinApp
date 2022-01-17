@@ -558,6 +558,8 @@ $page_title = 'Checkout | Bioskin';
                         <div class="text-bold float-sm-right m-1">Total Payment</div>
                     </div>
                     <div class="col-sm-4">
+                        <span
+                                id="total_payment_text_hidden" class="d-none">{{ number_format($total, 2, '.', ',') }}</span>
                         <div class="text-left text-sm-right m-1">₱<span
                                 id="total_payment_text">{{ number_format($total, 2, '.', ',') }}</span></div>
                     </div>
