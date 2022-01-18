@@ -85,6 +85,7 @@ class PackagingController extends Controller
                 ]);
             }
         }
+        Cache::forget('packaging-cache');
         return redirect()->back()
             ->with('success', 'Packaging was created.'); 
     }
@@ -181,7 +182,7 @@ class PackagingController extends Controller
                 'image' => $data
             ]);
         }
-
+        Cache::forget('packaging-cache');
         return redirect()->back()
             ->with('success', 'Packaging was updated.');
     }

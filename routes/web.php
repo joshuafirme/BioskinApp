@@ -63,7 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/remove/{ids}', 'CartController@removeItem');
     Route::post('/cart/check-item/{id}', 'CartController@checkItem');
     Route::get('/cart/read-packaging/{sku}', 'CartController@readPackagingName');
-    
+    Route::post('/cart/change-qty', 'CartController@changeQty');
+
     Route::get('/checkout/validate-qty', 'CheckoutController@validateQty');
 
     Route::get('/checkout', 'CheckoutController@index');

@@ -235,7 +235,7 @@ class ProductController extends Controller
                 ]);
             }
         }
-
+        Cache::forget('products-cache');
         return redirect()->back()
         ->with('success', 'Product was created.'); 
     }
@@ -350,7 +350,7 @@ class ProductController extends Controller
 
             
         }
-
+        Cache::forget('products-cache');
         return redirect()->back()
         ->with('success', 'Product was updated.'); 
     }

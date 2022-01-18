@@ -176,11 +176,44 @@ class CartController extends Controller
         return Product::where('sku', $sku)->value('qty');
     }
 
+    public function changeQty(){
+        $id = request()->id;
+        $sku = request()->sku;
+        $action = request()->action;
+        $qty = (int)request()->qty;
+
+        $price = Product::where('sku', $sku)->value('price');
+  
+        if ($qty > 0 || $qty != null) {
+            if ($action == "increase") {
+                Cart::where('id', $id)
+                ->update([
+                    'qty' => DB::raw('qty + 1'),
+                    'amount' => DB::raw('amount + '. $price .''),
+                ]);
+            }
+            else {
+                Cart::where('id', $id)
+                ->update([
+                    'qty' => DB::raw('qty - 1'),
+                    'amount' => DB::raw('amount - '. $price .''),
+                ]);
+            }
+        }else {
+            Cart::where('id', $id)
+            ->delete();
+        }
+            
+        return response()->json([
+            'status' =>  'success',
+        ], 200);
+    }
+
 
     public function readCart() {
         return Cart::where('user_id', Auth::id())
                     ->select( 'P.*', 'P.name as name', 'P.qty as stock', 'cart.id as cart_id', 'cart.amount', 'cart.qty', 'cart.sku as sku', 'cart.is_checked',
-                    'PG.name as packaging', 'C.name as closure', 'cart.packaging_sku', 'cart.cap_sku',
+                    'PG.name as packaging', 'C.name as closure', 'cart.packaging_sku', 'cart.cap_sku', 'cart.order_type', 'P.price',
                     'V.name as variation', 'category.name as category')
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
                     ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')

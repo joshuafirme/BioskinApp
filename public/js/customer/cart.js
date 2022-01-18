@@ -18,10 +18,14 @@ $(document).ready(function () {
         html +=    '<td>'+variation+'</td>';
         html +=    '<td class="packaging-name-'+identifier+'">-</td>';
         html +=    '<td class="cap-name-'+identifier+'">-</td>';
-        html +=    '<td>';
+        html +=    '<td width="10%">';
         html +=        '<div class="row align-items-center">';
-     //   html +=        '<div class="col"> <button class="btn">-</button><span>'+data.qty+'</span><button class="btn" href="#">+</button> </div>';
-        html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
+        if (data.order_type == 0) {
+            html += '<div class="col"> <button class="btn btn-change-qty" data-qty="'+ data.qty +'" data-id="'+ data.cart_id +'" data-sku="'+ data.sku +'" data-action="decrease">-</button><span class="qty-text-'+data.cart_id+'">';
+            html +=     data.qty;
+            html += '</span><button class="btn btn-change-qty" data-qty="'+ data.qty +'" data-id="'+ data.cart_id +'" data-sku="'+ data.sku +'" data-action="increase">+</button> </div>';
+        }
+       // html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
         html +=    '</div>';
         html +=    '</td>';
         html +=    '<td>₱'+formatNumber(data.amount)+'</td>';
@@ -42,6 +46,7 @@ $(document).ready(function () {
     }
     
     async function readCart() {
+        $('.lds-ellipsis').show();
         var html = '';
         $.ajax({
             url: '/read-cart',
@@ -195,6 +200,40 @@ $(document).ready(function () {
             }
             await updateCartCheck(id, check_value);
         });
+
+        $(document).on('click','.btn-change-qty', async function(){
+            let id = $(this).attr('data-id');
+            let sku = $(this).attr('data-sku');
+            let action = $(this).attr('data-action');
+
+            let qty = $(".qty-text-"+id).text();
+      
+            if (action == "increase") {
+                qty = parseInt(qty) + 1;
+                $(".qty-text-"+id).text(qty);
+            }
+            else {
+                qty = parseInt(qty) - 1;
+                $(".qty-text-"+id).text(qty);
+            }
+            qty = parseInt($(".qty-text-"+id).text());
+       
+            $.ajax({
+                url: '/cart/change-qty',
+                type: 'POST',
+                data: {
+                    id : id,
+                    action : action,
+                    sku : sku,
+                    qty : qty
+                },
+                success:function(){ 
+                    readCart();
+                    countCart();
+                }
+            });
+        });
+        
 
         $(document).on('click','.btn-delete', async function(){
             let id = $(this).attr('data-id');
