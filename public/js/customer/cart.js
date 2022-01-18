@@ -271,6 +271,26 @@ $(document).ready(function () {
             
             
         });
+
+        $(document).on('click','#btn-checkout', async function(){
+            $.ajax({
+                url: '/checkout/validate-qty',
+                type: 'GET',
+                success:function(res){ 
+                    if (res) {
+                        $.toast({
+                            text: res + " - out of stock",
+                            showHideTransition: 'plain',
+                            hideAfter: 4500, 
+                        });
+                        return;
+                    }
+                    window.location.href = "/checkout";
+                 
+                }
+            });
+            
+        });
     
     async function render() {
         await readCart();

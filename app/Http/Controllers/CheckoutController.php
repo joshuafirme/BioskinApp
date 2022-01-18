@@ -462,7 +462,7 @@ class CheckoutController extends Controller
                     ->leftJoin('products as PG', 'PG.sku', '=', 'cart.packaging_sku')
                     ->leftJoin('products as C', 'C.sku', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
-                    ->where('P.qty','>', '0')
+                    ->where('P.qty','>', 0)
                     ->orderBy('cart.id', 'desc')
                     ->get();
     }
@@ -473,6 +473,20 @@ class CheckoutController extends Controller
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
                     ->where('P.qty','>', '0')
                     ->sum('amount');
+    }
+
+    public function validateQty() {
+        $items = $this->readCartChecked();
+        $out_of_stock_str = "";
+        foreach ($items as $data) {
+            $product = Product::select('name', 'qty')->where('sku', $data->sku)->first();
+            $qty_order = $data->qty;
+
+            if ($product->qty < $qty_order) {
+                $out_of_stock_str .= $product->name . " <br>  ";
+            }
+        }
+        return $out_of_stock_str;
     }
 
     public function getDiscount($voucher_code) {

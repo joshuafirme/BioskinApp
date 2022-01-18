@@ -103,8 +103,8 @@ $page_title = 'Cart | Bioskin';
                 class="ml-2">Select all</span>
             <button class="btn btn-danger ml-3" id="btn-delete-selected">Delete selected</button>
             <div class="float-right mr-3">Total Selected Item: ₱<span id="total-amount">0.00</span>
-                <span><a id="btn-checkout" href="{{ url('/checkout') }}"
-                        class="btn btn-success ml-3">Checkout</a></span>
+                <span><button id="btn-checkout"
+                        class="btn btn-success ml-3">Checkout</button></span>
             </div>
         </div>
     </div>

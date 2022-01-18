@@ -100,7 +100,7 @@ class CartController extends Controller
                 ], 200);
             } 
             else {
-                if ($this->isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty, $order_type)) {
+                if ($this->isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty) && $order_type == 1) {
                     return response()->json([
                         'status' =>  'success',
                         'data' => 'rebranding_exists'
@@ -160,14 +160,13 @@ class CartController extends Controller
         return $cart->count() > 0 ? true : false;
     }
 
-    public function isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty, $order_type){
+    public function isRebrandingProductExists($sku, $packaging_id, $cap_id, $user_id, $qty){
         $cart = Cart::where([
                 ['user_id', $user_id],
                 ['sku', $sku],
                 ['packaging_sku', $packaging_id],
                 ['cap_sku', $cap_id],
-                ['qty', $qty],
-                ['order_type', $order_type]
+                ['qty', $qty]
             ])->get();
 
         return $cart->count() > 0 ? true : false;
