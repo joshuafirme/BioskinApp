@@ -245,6 +245,9 @@ class CheckoutController extends Controller
                 $this->addToInventory($item->sku, $item->qty);
             }
         }
+        else if ($status == 1) {
+            $this->removeCartChecked();
+        }
     }
 
     public function addToInventory($sku, $qty){
@@ -462,7 +465,7 @@ class CheckoutController extends Controller
                     ->leftJoin('products as PG', 'PG.sku', '=', 'cart.packaging_sku')
                     ->leftJoin('products as C', 'C.sku', '=', 'cart.cap_sku')
                     ->leftJoin('category', 'category.id', '=', 'P.category_id')
-                    ->where('P.qty','>', 0)
+                   // ->where('P.qty','>', 0)
                     ->orderBy('cart.id', 'desc')
                     ->get();
     }
@@ -471,7 +474,7 @@ class CheckoutController extends Controller
         return Cart::where('user_id', Auth::id())
                     ->where('is_checked', 1)
                     ->leftJoin('products as P', 'P.sku', '=', 'cart.sku')
-                    ->where('P.qty','>', '0')
+                 //   ->where('P.qty','>', '0')
                     ->sum('amount');
     }
 
