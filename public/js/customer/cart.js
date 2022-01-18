@@ -12,7 +12,11 @@ $(document).ready(function () {
         html +=    '<td>';
         html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:100px;"  id="data-image-'+identifier+'"></div></a>';
         html +=    '</td>';
-        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+'<br>';
+        let rebranding_text = "";
+        if (data.order_type == 1) {
+            rebranding_text = "<span class='badge badge-light'>Rebranding</span>";
+        }
+        html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+' <br> '+rebranding_text+' <br> ';
         html +=    '<button class="btn btn-delete" data-id="'+data.cart_id+'"><i class="fa fa-trash-alt" aria-hidden="true" style="color:#444444;"></i></button></td>';
         html +=    '<td>'+size+'</td>';
         html +=    '<td>'+variation+'</td>';
@@ -21,11 +25,13 @@ $(document).ready(function () {
         html +=    '<td width="10%">';
         html +=        '<div class="row align-items-center">';
         if (data.order_type == 0) {
-            html += '<div class="col"> <button class="btn btn-change-qty" data-qty="'+ data.qty +'" data-id="'+ data.cart_id +'" data-sku="'+ data.sku +'" data-action="decrease">-</button><span class="qty-text-'+data.cart_id+'">';
+            html += '<div class="col text-center"> <button class="btn btn-change-qty" data-qty="'+ data.qty +'" data-id="'+ data.cart_id +'" data-sku="'+ data.sku +'" data-action="decrease">-</button><span class="qty-text-'+data.cart_id+'">';
             html +=     data.qty;
             html += '</span><button class="btn btn-change-qty" data-qty="'+ data.qty +'" data-id="'+ data.cart_id +'" data-sku="'+ data.sku +'" data-action="increase">+</button> </div>';
         }
-       // html +=        '<div class="col"><span>'+data.qty+'</span> </div>';
+        else {
+            html +=        '<div class="col text-center"><span>'+data.qty+'</span> </div>';
+        }
         html +=    '</div>';
         html +=    '</td>';
         html +=    '<td>₱'+formatNumber(data.amount)+'</td>';

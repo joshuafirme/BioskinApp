@@ -249,35 +249,38 @@ $page_title = 'Checkout | Bioskin';
                                         </div>
                                     @endif
                                 </td>
-                                <td>{{ $item->name }} <br>
-                                    @if($item->rebranding == 1)
+                                <td width="18%">{{ $item->name }} <br>
+                                    @if($item->order_type == 1)
                                     ₱{{ $product_price->readOnePriceBySKUAndVolume($item->sku, $item->qty) }}
                                     @else
                                             ₱{{ $item->price }} <br>
-                                            <small>Packaging price included</small>
+                                            <small>Packaging price included</small> <br>
+                                            <span class="badge badge-light">Rebranding</span>
                                     @endif
                                 </td>
                                 <td>{{ $item->size ? $item->size : '-' }}</td>
                                 <td>{{ $item->variation ? $item->variation : '-' }}</td>
                                 <td>{{ $product->readPackagingNameByID($item->packaging_sku) }} <br>
-                                    @if($item->rebranding == 1)
+                                    @php
+                                        $packaging_price = $product->readPackagingPriceByID($item->packaging_sku);
+                                    @endphp
+                                    @if($item->order_type == 1)
                                         @php
                                             $packaging_price = $product_price->readPackagingPriceBySKUAndVolume($item->packaging_sku, $item->qty)
                                         @endphp
-                                            {{ $packaging_price ? "₱" . $packaging_price : "-" }}
-                                        @else
-                                            {{ $item->price ? "₱" . $item->price : "-" }}
                                         @endif
+                                        {{ $packaging_price ? "₱" . $packaging_price : "-" }}
                                 </td>
                                 <td>{{ $product->readPackagingNameByID($item->cap_sku) }} <br> 
-                                    @if($item->rebranding == 1)
                                     @php
-                                        $cap_price = $product_price->readPackagingPriceBySKUAndVolume($item->cap_sku, $item->qty)
+                                        $cap_price = $product->readPackagingPriceByID($item->cap_sku);
                                     @endphp
+                                    @if($item->order_type == 1)
+                                        @php
+                                            $cap_price = $product_price->readPackagingPriceBySKUAndVolume($item->cap_sku, $item->qty)
+                                        @endphp
+                                        @endif
                                         {{ $cap_price ? "₱" . $cap_price : "-" }}
-                                    @else
-                                        {{ $item->price ? "₱" . $item->price : "-" }}
-                                    @endif
                                 </td>
                                 <td>{{ $item->qty }}</td>
                                 <td>₱{{ number_format($item->amount, 2, '.', ',') }}</td>
