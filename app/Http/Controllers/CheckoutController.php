@@ -19,15 +19,14 @@ use DB;
 
 class CheckoutController extends Controller
 {
-    public function index(Product $product, Voucher $voucher)
+    public function index(Product $product)
     { 
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
         $product_price = new ProductPrice;
-        $vouchers = $voucher->readVoucherByUserID();
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price', 'vouchers'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price'));
     }
 
     public function paynamicsPayment() {

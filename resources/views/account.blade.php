@@ -307,6 +307,7 @@ if (\Cache::get('categories-cache')) {
                                 <button class="btn btn-success mt-3" id="btn-update-password">Save</button>
                             </div>
                             <div class="tab-pane fade" id="voucher" role="tabpanel" aria-labelledby="voucher-tab">
+                                @if (count($vouchers) > 0)
                                     <table class="table table-hover table-borderless">
                                         <thead>
                                             <th>Voucher code</th>
@@ -327,6 +328,9 @@ if (\Cache::get('categories-cache')) {
                                             @endforeach
                                         </tbody>
                                     </table>
+                                @else
+                                    <div class="alert alert-light">No have no voucher.</div>
+                                @endif
                             </div>
                         </div>
                     </div>

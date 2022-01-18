@@ -173,6 +173,11 @@
           </button>
         </div>
         <div class="modal-body">
+          @php
+            $voucher = new App\Models\Voucher;
+            $vouchers = $voucher->readVoucherByUserID();
+          @endphp 
+          @if (count($vouchers) > 0)
           <table class="table table-hover table-borderless">
             <thead>
                 <th>Voucher code</th>
@@ -194,7 +199,10 @@
                 </tr>
                 @endforeach
             </tbody>
-        </table>
+          </table>
+          @else
+            <div class="alert alert-light">No have no voucher.</div>
+          @endif
         </div>
       </div>
     </div>
