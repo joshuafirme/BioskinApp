@@ -253,11 +253,16 @@ $order_detail = DB::table('order_details as OD')
                         </tr>
                         <tr>
                             <td colspan="6"></td>
+                            <td>Shipping fee</td>
+                            <td><b>₱{{ number_format($order_detail->shipping_fee, 2, '.', ',') }}</b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
                             <td>Voucher discount</td>
                             <td><b>₱{{ number_format($order_detail->discount, 2, '.', ',') }}</b></td>
                         </tr>
                         @php
-                            $total = $total - $order_detail->discount;
+                            $total = $total - $order_detail->discount + $order_detail->shipping_fee;
                         @endphp
                         <tr>
                             <td colspan="6"></td>   
@@ -298,9 +303,10 @@ $order_detail = DB::table('order_details as OD')
                         You have until {{ date('F d, Y H:i:s a', strtotime($expiry_date)) }} to make the payment.
                         <br>
                     @endif
-                    
+                    @if ($order_detail->shipping_fee == null)
                     *Shipping fee not included, please wait for our logistics team to contact you with regard to the
-                    cost
+                    cost 
+                    @endif
                 </small>
             </div>
             <div id="paynamics-form-container" class="mb-5"></div>

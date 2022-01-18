@@ -65,6 +65,11 @@
                               <a class="nav-link" id="to-receive-tab" data-toggle="tab" href="#to-receive" role="tab" aria-controls="to-receive" aria-selected="false">To receive <span class="badge">{{$to_receive_count}}</span></a>
                             </li>
                             @endif
+                            @if(in_array("Order received", $allowed_modules_array))
+                            <li class="nav-item">
+                              <a class="nav-link" id="order-received-tab" data-toggle="tab" href="#order-received" role="tab" aria-controls="order-received" aria-selected="false">Order received <span class="badge"></span></a>
+                            </li>
+                            @endif
                             @if(in_array("Completed", $allowed_modules_array))
                             <li class="nav-item">
                               <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed <span class="badge">{{$completed_count}}</span></a>
@@ -137,6 +142,24 @@
                               <div class="tab-pane fade" id="to-receive" role="tabpanel" aria-labelledby="to-receive-tab">
                                 <div class="mt-4">
                                   <table class="table table-hover" id="tbl-to-receive-order">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone number</th>
+                                            <th>Date Order</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                </div>
+                              </div>
+                              @endif
+                              @if(in_array("Order received", $allowed_modules_array))
+                              <div class="tab-pane fade" id="order-received" role="tabpanel" aria-labelledby="order-received-tab">
+                                <div class="mt-4">
+                                  <table class="table table-hover" id="tbl-order-received-order">
                                     <thead>
                                         <tr>
                                             <th>Order #</th>

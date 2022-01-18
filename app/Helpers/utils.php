@@ -27,7 +27,7 @@ class Utils
 	}
 
     public static function getModules() {
-        return ["To pay", "Processing orders", "On the way", "To receive", "Completed", "Cancelled"];
+        return ["To pay", "Processing orders", "On the way", "To receive", "Order received", "Completed", "Cancelled"];
     }
     
     public static function getPages() {
@@ -75,6 +75,7 @@ class Utils
                 $text = 'On the way';
                 break;
             case 3:
+            case 6:
                 $text = 'To receive';
                 break;
             case 4:

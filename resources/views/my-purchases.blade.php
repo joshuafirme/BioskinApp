@@ -167,9 +167,12 @@ $page_title = 'My Purchases | Bioskin';
                                     ->paginate(5);
                                 } 
                                 else {
+                                    // if status is to receive, display order received as well
+                                    $status_order_received = $status == 3 ? 6 : -1;
+                                    $status_arr = [$status, $status_order_received];
                                     $my_orders = \App\Models\Order::select('orders.order_id', 'orders.created_at', 'OD.status')
                                     ->where('user_id', Auth::id())
-                                    ->where('OD.status', $status)
+                                    ->whereIn('OD.status', $status_arr)
                                     ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
                                     ->orderBy('orders.created_at', 'desc')
                                     ->distinct('orders.order_id')
@@ -193,8 +196,9 @@ $page_title = 'My Purchases | Bioskin';
                                 $completed_count = $order_mdl->countOrderByStatus(4);
                                 $cancelled_count = $order_mdl->countOrderByStatus(5);
                                 $all_count = \App\Models\Order::where('user_id', Auth::id())
-                                    ->distinct('orders.order_id')
-                                    ->count('id');
+                                ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                                ->distinct('orders.order_id')
+                                ->count('OD.id');
                                 
                             @endphp
                             @if ($user->image)
@@ -281,30 +285,7 @@ $page_title = 'My Purchases | Bioskin';
                                                             ->value('image');
                                                         $total = $total + $data->amount;
                                                         
-                                                        switch ($data->status) {
-                                                            case 0:
-                                                                $status = 'To Pay';
-                                                                break;
-                                                            case 1:
-                                                                $status = 'Processing';
-                                                                break;
-                                                            case 2:
-                                                                $status = 'On the way';
-                                                                break;
-                                                            case 3:
-                                                                $status = 'To receive';
-                                                                break;
-                                                            case 4:
-                                                                $status = 'Completed';
-                                                                break;
-                                                            case 5:
-                                                                $status = 'Cancelled';
-                                                                break;
-                                                        
-                                                            default:
-                                                                # code...
-                                                                break;
-                                                        }
+                                                        $status = Utils::readStatusText($data->status);
                                                     @endphp
                                                     @if ($src)
                                                         <div class="responsive-img"

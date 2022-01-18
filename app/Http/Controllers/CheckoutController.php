@@ -245,9 +245,7 @@ class CheckoutController extends Controller
                 $this->addToInventory($item->sku, $item->qty);
             }
         }
-        else if ($status == 1) {
-            $this->removeCartChecked();
-        }
+        $this->removeCartChecked();
     }
 
     public function addToInventory($sku, $qty){

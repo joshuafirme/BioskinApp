@@ -47,7 +47,7 @@ async function readPackagingName(id, identifier, object) {
     });
 }
 
-async function readOneOrder(order_no) {
+async function readOneOrder(order_no, shipping_fee) {
 
     $('#orders-container').html('');
    // getShippingFee(order_no);
@@ -61,7 +61,7 @@ async function readOneOrder(order_no) {
                     total = parseFloat(total) + parseFloat(data[i].amount);
                     html += getItems(data[i], i);
                     if (data.length-1 == i) {
-                        html += getComputation(total);
+                        html += getComputation(total, shipping_fee);
                     }
                     $('#orders-container').append(html);
             });
@@ -94,13 +94,14 @@ function getItems (data, identifier) {
     return html;
 }
 
-function getComputation(subtotal) {
+function getComputation(subtotal, shipping_fee ) {
     let fee = $('#shipping-fee-value').attr('content');
     let total_amount = 0; //+ parseFloat(fee);
     let discount = parseFloat(localStorage.getItem('discount'));
-    total_amount = subtotal - discount;
+    shipping_fee = shipping_fee ? shipping_fee : 0;
+    total_amount = (subtotal + parseFloat(shipping_fee))  - discount;
     var html = "";
-
+   
     let active_tab = $('.nav-tabs .active').attr('aria-controls');
 
     html += '<tr>';
@@ -121,7 +122,15 @@ function getComputation(subtotal) {
             html += '<td>Shipping fee:</td>';
             html += '<td><input id="shipping-fee-value" class="form-control"></td>';
         html += '</tr>'; 
-    }     
+    } 
+    if (shipping_fee) {
+        html += '<tr>';
+            html += '<td colspan="6"></td>';    
+            html += '<td>Shipping fee:</td>';
+            html += '<td>₱'+shipping_fee +'</td>';
+        html += '</tr>'; 
+    } 
+       
     html += '<tr>';
         html += '<td colspan="6"></td>';
         html += '<td>Total:</td>';
@@ -170,6 +179,7 @@ async function on_Click() {
         let phone = $(this).attr('data-phone');
         let email = $(this).attr('data-email');
         let payment_method = $(this).attr('data-payment');
+        let shipping_fee = $(this).attr('data-shipping-fee');
 
         let active_tab= $('.nav-tabs .active').attr('aria-controls');
         let btn_text = 'Accept'
@@ -182,12 +192,15 @@ async function on_Click() {
             status = 3;
         }
         else if (active_tab== 'to-receive') {
+            status = 6;
+        }
+        else if (active_tab== 'order-received') {
             status = 4;
         }
         let btn = '';
  
         if ((active_tab!= 'completed' && active_tab!= 'cancelled') && (payment_method == 'cc' || payment_method == 'gc'
-        || payment_method == 'bpionline' || payment_method == 'br_bdo_ph')) {
+        || payment_method == 'bpionline' || payment_method == 'br_bdo_ph' || payment_method == 'COD')) {
             
             btn += '<button class="btn btn-sm btn-danger" id="btn-deny" data-order-no="'+order_no+'" data-active-tab="'+active_tab+'" data-status="'+status+'"  type="button">Deny</button>';
             if (active_tab != "to-pay") {
@@ -226,7 +239,7 @@ async function on_Click() {
         $('#show-orders-modal').find('.modal-footer').html(btn);
 
         await readOrderDetails(order_no);
-        await readOneOrder(order_no);
+        await readOneOrder(order_no, shipping_fee);
         
         
         
@@ -238,11 +251,11 @@ async function on_Click() {
         let order_no = $(this).attr('data-order-no');
         let data_status = $(this).attr('data-status');
         let active_tab= $(this).attr('data-active-tab');
-        let shipping_fee_value = $('#shipping-fee-value').val();
+        let shipping_fee = $('#shipping-fee-value').val();
         let btn = $(this);
 
         if (active_tab == 'to-receive') {
-            if (shipping_fee_value == "") {
+            if (shipping_fee == "") {
                 alert('Please input shipping fee.');
                 return;
             }
@@ -251,7 +264,8 @@ async function on_Click() {
             url: '/manage-order/change-status/'+order_no,
             type: 'POST',
             data: {
-                status : data_status
+                status : data_status,
+                shipping_fee : shipping_fee
             },
             beforeSend:function(){
                 btn.text('Please wait...');
@@ -344,6 +358,10 @@ async function on_Click() {
       $(document).on('click','#to-receive-tab', function(){ 
         $('#tbl-to-receive-order').DataTable().destroy();
         fetchOrder('to-receive');  
+      });
+      $(document).on('click','#order-received-tab', function(){ 
+        $('#tbl-order-received-order').DataTable().destroy();
+        fetchOrder('order-received');  
       });
 
       $(document).on('click','#completed-tab', function(){

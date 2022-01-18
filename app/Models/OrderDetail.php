@@ -21,7 +21,8 @@ class OrderDetail extends Model
         'expiry_date',
         'status',
         'remarks',
-        'cancellation_reason'
+        'cancellation_reason',
+        'shipping_fee'
     ];
 
     public function readOrderDetails($order_id) {

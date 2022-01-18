@@ -25,7 +25,7 @@ class Order extends Model
     public function readOrdersByStatus($status)
     {
         $data = DB::table($this->table . ' as O')
-            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status')
+            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee')
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('OD.status', $status)
@@ -65,10 +65,12 @@ class Order extends Model
     }
 
     public function countOrderByStatus($status) {
+        $status_order_received = $status == 3 ? 6 : -1;
+        $status_arr = [$status, $status_order_received];
         return Order::where('user_id', Auth::id())
         ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
         ->distinct('orders.order_id')
-        ->where('OD.status', $status)
+        ->whereIn('OD.status', $status_arr)
         ->count('OD.id');
     }
 

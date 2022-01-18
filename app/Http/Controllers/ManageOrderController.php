@@ -49,6 +49,9 @@ class ManageOrderController extends Controller
         }
         else if (request()->object == "to-receive") {
             $status = 3;
+        }   
+        else if (request()->object == "order-received") {
+            $status = 6;
         }
         else if (request()->object == "completed") {
             $status = 4;
@@ -63,7 +66,7 @@ class ManageOrderController extends Controller
                 ->addColumn('action', function($order)
                 {
                     $button = '<a class="btn btn-sm btn-show-order" data-name="'. $order->firstname .'" data-order-no="'. $order->order_id .'" ';
-                    $button .= 'data-user-id="'. $order->user_id .'" data-payment="'.$order->payment_method.'" data-delivery-date="" '; 
+                    $button .= 'data-user-id="'. $order->user_id .'" data-shipping-fee="'. $order->shipping_fee .'" data-payment="'.$order->payment_method.'" data-delivery-date="" '; 
                     $button .= 'data-phone="'. $order->phone_no .'" data-email="'. $order->email .'" style="color:#1970F1;">Show orders</a>';
                     return $button;
                 })
@@ -82,6 +85,7 @@ class ManageOrderController extends Controller
     
     public function changeOrderStatus($order_id) {
         $remarks = "";
+        $shipping_fee = isset(request()->shipping_fee) ? request()->shipping_fee : 0;
         if (request()->status == 1) { 
            $remarks = "We're Processing your order.";
         }
@@ -91,16 +95,26 @@ class ManageOrderController extends Controller
         else if (request()->status == 3) { 
             $remarks = "Your order is out for pick up or delivery.";
         }
+        else if (request()->status == 6) { 
+            $remarks = "Your order is out for pick up or delivery.";
+        }
         else if (request()->status == 4) { 
             $remarks = "Your order has been delivered.";
         } 
-        else if (request()->status == 5) { 
-            $cancellation_reason = "Your order has been delivered.";
-        } 
-        OrderDetail::where('order_id', $order_id)->update([
-            'status' => request()->status,
-            'remarks' => $remarks
-        ]);
+
+        if (isset(request()->shipping_fee)) {
+            OrderDetail::where('order_id', $order_id)->update([
+                'status' => request()->status,
+                'shipping_fee' => $shipping_fee,
+                'remarks' => $remarks
+            ]);
+        }
+        else {
+            OrderDetail::where('order_id', $order_id)->update([
+                'status' => request()->status,
+                'remarks' => $remarks
+            ]);
+        }
         
         return response()->json([
             'status' => 'success',
