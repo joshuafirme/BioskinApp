@@ -47,12 +47,10 @@
                     <table class="table table-hover tbl-user">
                         <thead>
                             <tr>
-                                <th>Last name</th>
-                                <th>First name</th>
-                                <th>Middle name</th>
-                                <th>Email</th>
+                                <th>Customer</th>
                                 <th>Username</th>
                                 <th>Access rights</th>
+                                <th>Date Registered</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

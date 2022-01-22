@@ -22,12 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
           order: [[0, 'desc']],
                
            columns:[       
-                {data: 'lastname', name: 'lastname'},
-                {data: 'firstname', name: 'firstname'},
-                {data: 'middlename', name: 'middlename'},
-                {data: 'email', name: 'email'},
+                {data: 'customer', name: 'customer'},
                 {data: 'username', name: 'username'},
                 {data: 'access_rights', name: 'access_rights'},
+                {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action',orderable: false},
            ]
           });

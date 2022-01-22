@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('/carousel', 'CarouselController');
         Route::resource('/courier', 'CourierController');
         Route::resource('/voucher', 'VoucherController');
+        Route::resource('/archive', 'ArchiveController');
+        Route::post('/archive/do-archive/{id}', 'ArchiveController@archive');
+        Route::post('/archive/restore/{id}', 'ArchiveController@restore');
 
         Route::get('/notification', 'AdminNotificationController@getNotifications');
     });

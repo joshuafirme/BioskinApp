@@ -40,6 +40,8 @@
           $allowed_modules_array = explode(",",Auth::user()->allowed_modules);
         @endphp 
 
+        <button class="btn btn-sm btn-success mb-2" id="btn-reload">Sync <i class="fa fa-refresh"></i></button>
+
         <div class="row">
             <div class="col-md-12 col-lg-12 mt-3">
                 <div class="card">

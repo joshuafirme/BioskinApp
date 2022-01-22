@@ -64,6 +64,7 @@ class ProductController extends Controller
                 ->addColumn('action', function($product)
                 {
                     $button = ' <a class="btn btn-sm" data-id="'. $product->id .'" href="'. route(request()->object.'.edit',$product->id) .'"><i class="fa fa-edit"></i></a>';
+                    $button .= ' <a class="btn btn-sm btn-archive" data-id="'. $product->id .'" data-toggle="modal" data-target="#confirmation-modal"><i class="fa fa-archive"></i></a>';
                     $button .= '&nbsp;&nbsp;';
                   //  $button .= '<a data-id="'. $product->id .'" class="btn btn-archive-product" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;

@@ -3,6 +3,7 @@ namespace App\Helpers;
 use DateTime;
 use Cache;
 use Auth;
+use DB;
 use App\Models\Category;
 use App\Models\ProductPrice;
 class Utils
@@ -144,6 +145,51 @@ class Utils
           }
 
         return $text;
+    }
+
+    public static function readCategoriesByIDs($ids) {
+        $ids = explode(', ', $ids);
+        $data = DB::table('category')
+                ->whereIn('id', $ids)->get('name');
+        $html = "";
+        foreach ($data as $data) {
+            $html .= '<span class="badge badge-primary m-1">'.$data->name.'</span>';
+        }
+        echo $html;
+    }
+    public static function readSubCategoriesByIDs($ids) {
+        $ids = explode(', ', $ids);
+        $data = DB::table('subcategory')
+                ->whereIn('id', $ids)->get('name');
+        $html = "";
+        foreach ($data as $data) {
+            $html .= '<span class="badge badge-primary m-1">'.$data->name.'</span>';
+        }
+        echo $html;
+    }
+    public static function readPackaging($packaging_ids) {
+        return DB::table('products')
+                ->select('name', 'size')
+                ->whereIn('id', $packaging_ids)->get();
+    }
+
+    public static function readClosures($closures_ids) {
+        return DB::table('closures')
+                ->select('name', 'size')
+                ->whereIn('id', $closures_ids)->get();
+    }
+
+    public static function readVolumes($sku) {
+        $volumes = DB::table('product_price')->where('sku',$sku)->get('volume');
+        $volume = "";
+        if ($volumes) {
+            $counter = count($volumes)-1;
+            foreach($volumes as $key => $data) {
+                $delimiter = $counter == $key ? '' : ',';
+                $volume .= $data->volume . $delimiter;
+            }
+        }
+        echo $volume;
     }
 }
 ?>

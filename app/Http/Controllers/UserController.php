@@ -48,6 +48,18 @@ class UserController extends Controller
                     $button .= '<a data-id="'. $user->id .'" class="btn btn-archive" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;
                 })
+                ->addColumn('created_at', function($user)
+                {
+                    return date('F d, Y h:i A', strtotime($user->created_at));
+                })
+                ->addColumn('customer', function($user)
+                {
+                    $customer_name = $user->firstname . " " . $user->middlename   . " " . $user->lastname;
+                    $html =  "<b>" . $customer_name . "</b><br>";
+                    $html .= '<a href="mailto: '. $user->email .'" target="_blank"><span>'. $user->email .'</span></a>';
+                    return $html;
+                })
+               
                 ->addColumn('access_rights', function($user){
                     $html = "";
                     if($user->access_rights == 1) {
@@ -76,7 +88,7 @@ class UserController extends Controller
                     }
                     return $html;
                 })
-                ->rawColumns(['action','access_rights'])
+                ->rawColumns(['action','access_rights', 'created_at', 'customer'])
                 ->make(true);
         }
     }

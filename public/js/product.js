@@ -273,9 +273,31 @@ $(document).on('click', '.btn-delete-image', function(){
   }); 
 
 
-  $(document).on('click', '#btn-generate-varation-code', function(){ 
+$(document).on('click', '#btn-generate-varation-code', function(){ 
     $('[name=variation_code]').val(generateRandom());
-  }); 
+}); 
+
+$(document).on('click', '.btn-archive', function(){
+    let id = $(this).attr('data-id');
+    $('#btn-confirm').attr('data-id', id);
+    $('.modal-title').text('Archive confirmation');
+    $('#confirmation-modal p').text('Are you sure do you want to archive this data?');
+});
+
+$(document).on('click', '#btn-confirm', function(){
+    let id = $(this).attr('data-id');
+    let btn = $(this);
+    btn.html('Please wait...')
+    $.ajax({
+        url: '/archive/do-archive/'+id,
+        type: 'POST',
+        success:function(){
+            btn.html("Yes");
+            $('#confirmation-modal').modal('hide');
+            $('.tbl-product').DataTable().ajax.reload();
+        }
+    });
+});
 
 
 function generateRandom() {

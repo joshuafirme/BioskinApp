@@ -47,7 +47,7 @@ class Order extends Model
 
         return $data->unique('order_id');
     }
-
+    //////// make archive works
     public function readOrdersByOrderIDAndStatus($order_id)
     {
         return DB::table($this->table . ' as O')

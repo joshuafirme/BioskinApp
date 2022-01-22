@@ -374,8 +374,14 @@ $(function(){
             $('#tbl-cancelled-order').DataTable().destroy();
             fetchOrder('cancelled');  
           });
-      
-      
+
+
+          $(document).on('click','#btn-reload', function(){
+            let active_table = $('.nav-link.active').attr('aria-controls');
+            $('#tbl-'+active_table+'-order').DataTable().destroy();
+            fetchOrder(active_table);  
+          });
+          
     }
     
     

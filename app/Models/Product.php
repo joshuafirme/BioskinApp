@@ -54,9 +54,21 @@ class Product extends Model
                         )
                 ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
                 ->whereNotIn('category_id', [10])
+                ->where('status', 1)
                 ->get();
         }
 
+    }
+
+    public function readArchiveProduct($per_page)
+    {
+        return DB::table('products as P')
+        ->select("P.*", 'P.id as id',
+                'V.name as variation',
+                )
+        ->leftJoin('variations as V', 'V.id', '=', 'P.variation_id')
+        ->where('status', 0)
+        ->paginate($per_page);
     }
 
     public function readAllPackaging()

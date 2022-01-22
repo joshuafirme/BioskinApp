@@ -166,6 +166,15 @@
               </li>
               @endif
 
+              <li class="nav-item">
+                <a href="{{ url('/archive') }}" class="nav-link">
+                    <i class="nav-icon fas fa-archive"></i>
+                    <p>
+                      Archive
+                    </p>
+                  </a>
+              </li>
+
 
         </ul>
       </nav>
