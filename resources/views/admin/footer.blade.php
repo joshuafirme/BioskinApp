@@ -32,7 +32,7 @@
 @if(strpos($page_title,"Login") != "")
   <script src="{{asset('js/login.js')}}"></script>
 @endif
-
+<script src="{{asset('js/trigger_notification.js')}}"></script>
 
 </body>
 </html>

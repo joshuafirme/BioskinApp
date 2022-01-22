@@ -2,9 +2,10 @@
 $page_title = 'My Purchases | Bioskin';
 // read order details query
 $order_detail = DB::table('order_details as OD')
-    ->select('OD.*', 'OD.status', 'V.discount')
+    ->select('OD.*', 'OD.status', 'V.discount', 'C.name as courier')
     ->where('order_id', $order_id)
     ->leftJoin('voucher as V', 'V.voucher_code', '=', 'OD.voucher_code')
+    ->leftJoin('couriers as C', 'C.id', '=', 'OD.courier_id')
     ->first();
 @endphp
 
@@ -169,7 +170,8 @@ $order_detail = DB::table('order_details as OD')
                 <div class="col-sm-12 col-md-2">
                     <b>Order ID: {{ $order_id }}</b>
                     <span class="badge badge-{{ $order_detail->status == 5 ? "danger" : "success" }}">{{ $status }}</span>
-                    <br><span class="badge badge-light">{{ $payment_method_text }}</span><br>
+                    <br><span class="badge badge-light">{{ $payment_method_text }}</span>
+                    <br><span class="badge badge-light">{{ $order_detail->courier }}</span>
                 </div>
             <div class="ml-2">Order placed: {{date('F d, Y h:i A', strtotime($order_detail->created_at))}} <br>
                 

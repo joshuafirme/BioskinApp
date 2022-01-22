@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     function getItems (data,identifier) {
         var html = '';
         var packaging = data.packaging != null ? data.packaging : '-';

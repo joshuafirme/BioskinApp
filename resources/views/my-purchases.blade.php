@@ -196,9 +196,9 @@ $page_title = 'My Purchases | Bioskin';
                                 $completed_count = $order_mdl->countOrderByStatus(4);
                                 $cancelled_count = $order_mdl->countOrderByStatus(5);
                                 $all_count = \App\Models\Order::where('user_id', Auth::id())
-                                ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
-                                ->distinct('orders.order_id')
-                                ->count('OD.id');
+                                    ->leftJoin('order_details as OD', 'OD.order_id', '=', 'orders.order_id')
+                                    ->distinct('orders.order_id')
+                                    ->count('OD.id');
                                 
                             @endphp
                             @if ($user->image)

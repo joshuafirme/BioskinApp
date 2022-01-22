@@ -10,6 +10,22 @@
       </li>
     </ul>
 
+    <ul class="navbar-nav ml-auto">
+   
+      @php
+        $allowed_modules_array = explode(",",\Auth::user()->allowed_modules);
+      @endphp 
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" id="notif-bell">
+          <i class="far fa-bell"></i>
+          <span class="badge badge-danger navbar-badge" id="total-notif"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notification-container">
+          <span class="dropdown-item dropdown-header">No notification</span>
+        </div>
+      </li>
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
@@ -106,44 +122,44 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ url('/product') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Product</p>
+                      
+                      <p class="ml-3">Product</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/category') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Category</p>
+                      
+                      <p class="ml-3">Category</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/subcategory') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Sub Category</p>
+                      
+                      <p class="ml-3">Sub Category</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/packaging') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Packaging</p>
+                      
+                      <p class="ml-3">Packaging</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/variation') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Variation</p>
+                      
+                      <p class="ml-3">Variation</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/courier') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Courier</p>
+                      
+                      <p class="ml-3">Courier</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/carousel') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Carousel</p>
+                      
+                      <p class="ml-3">Carousel</p>
                     </a>
                   </li>
                 </ul>

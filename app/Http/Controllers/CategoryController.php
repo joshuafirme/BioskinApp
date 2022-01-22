@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::paginate(10);
+        $category = Category::where('status', 1)->paginate(10);
 
         return view('admin.category.index', compact('category'));
     }
@@ -139,17 +139,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        if ($category->delete()) {
-            return response()->json([
-                'status' =>  'success',
-                'message' => 'Category was deleted.'
-            ], 200);
-        }
-
+        $category = Category::where('id',$id)->update(['status'=> 0]);
         return response()->json([
-            'status' =>  'error',
-            'message' => 'Deleting category failed.'
+            'status' =>  'success',
+            'message' => 'Category was archived.'
         ], 200);
     }
 }

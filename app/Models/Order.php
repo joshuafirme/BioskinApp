@@ -24,14 +24,26 @@ class Order extends Model
 
     public function readOrdersByStatus($status)
     {
-        $data = DB::table($this->table . ' as O')
+        $courier_id = Auth::user()->courier_id;
+        if ($courier_id != 0 || $courier_id != null) {
+            $data = DB::table($this->table . ' as O')
+            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee')
+            ->leftJoin('users', 'users.id', '=', 'O.user_id')
+            ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
+            ->where('OD.courier_id', Auth::user()->courier_id)
+            ->where('OD.status', $status)
+            ->orderBy('O.id', 'asc')
+            ->get();
+        }
+        else {
+            $data = DB::table($this->table . ' as O')
             ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee')
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('OD.status', $status)
-           // ->where('OD.courier_id', $status)
             ->orderBy('O.id', 'asc')
             ->get();
+        }
 
         return $data->unique('order_id');
     }
