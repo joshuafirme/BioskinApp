@@ -191,5 +191,51 @@ class Utils
         }
         echo $volume;
     }
+
+    public static function readImage($sku) {
+        $image = DB::table('product_images')->where('sku', $sku)->value('image');
+        return !empty($image) ? "images/".$image : "https://gmalcilk.sirv.com/243977931_6213185145420681_2932561991829971205_n.png";
+    }
+
+    public static function abbreviateMonthNumber($month_number) {
+        switch ($month_number) {
+        case 1:
+            return "JAN";
+            break;
+        case 2:
+            return "FEB";
+            break;
+        case 3:
+            return "MAR";
+            break;
+        case 4:
+            return "APR";
+            break;
+        case 5:
+            return "MAY";
+            break;
+        case 6:
+            return "JUN";
+            break;
+        case 7:
+            return "JUL";
+            break;               
+        case 8:
+            return "AUG";
+             break;                
+        case 9:
+            return "SEP";
+            break;
+        case 10:
+            return "OCT";
+            break;
+         case 11:
+            return "NOV";
+            break;
+        case 12:
+            return "DEC";
+            break;
+        }
+    }
 }
 ?>

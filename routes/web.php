@@ -32,6 +32,7 @@ Route::get('/read-packaging-name/{id}', 'ProductController@readPackagingNameByID
 Route::middleware('auth')->group(function () {
     Route::middleware('access_rights:1:3:4:5:6:7:8')->group(function () {
         Route::get('/dashboard', 'DashboardController@index');
+        Route::get('/dashboard/salesoverview', 'DashboardController@salesOverview');
         Route::get('/manage-order', 'ManageOrderController@index');
         Route::get('/manage-order/read-orders', 'ManageOrderController@readOrders');
         Route::get('/manage-order/read-one-order/{order_id}', 'ManageOrderController@readOneOrder');

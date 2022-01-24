@@ -181,6 +181,7 @@ $(function(){
             let email = $(this).attr('data-email');
             let payment_method = $(this).attr('data-payment');
             let shipping_fee = $(this).attr('data-shipping-fee');
+            let cancellation_reason = $(this).attr('data-cancellation-reason');
     
             let active_tab= $('.nav-tabs .active').attr('aria-controls');
             let btn_text = 'Accept'
@@ -233,7 +234,11 @@ $(function(){
                         payment_method = "BDO Online";
                         break;
                 }
-                html += '<div>Order #: <b>'+order_no+'</b><div>Payment method: <span class="badge badge-light">'+payment_method+'</span></div></div>';
+                html += '<div>Order #: <b>'+order_no+'</b><div>Payment method: <span class="badge badge-light">'+payment_method+'</span></div>';
+                if (cancellation_reason && active_tab == 'cancelled') {
+                    html += ' <div>Cancellation reason: '+cancellation_reason+'</div>';
+                }
+                html += '</div>';
                 html += '</div>';
             $('#show-orders-modal').modal('show');
             $('#show-orders-modal').find('#user-info').html(html);

@@ -27,7 +27,7 @@ class Order extends Model
         $courier_id = Auth::user()->courier_id;
         if ($courier_id != 0 || $courier_id != null) {
             $data = DB::table($this->table . ' as O')
-            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee')
+            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee', 'OD.cancellation_reason')
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('OD.courier_id', Auth::user()->courier_id)
@@ -37,7 +37,7 @@ class Order extends Model
         }
         else {
             $data = DB::table($this->table . ' as O')
-            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee')
+            ->select('O.*', 'O.created_at as date_order', 'users.*', 'OD.payment_method', 'OD.status', 'OD.shipping_fee', 'OD.cancellation_reason')
             ->leftJoin('users', 'users.id', '=', 'O.user_id')
             ->leftJoin('order_details as OD', 'OD.order_id', '=', 'O.order_id')
             ->where('OD.status', $status)
