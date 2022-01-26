@@ -295,16 +295,6 @@ class ProductController extends Controller
         $request['category_id'] = implode(", ",$request->category_id);
         $request['sub_category_id'] = implode(", ",$request->sub_category_id);
 
-        $images=array();
-
-        if($files=$request->file('images')){
-            foreach($files as $file){
-                $folder_to_save = 'product';
-                $image_name = uniqid() . "." . $file->extension();
-                $file->move(public_path('images/' . $folder_to_save), $image_name);
-                $images[] = $folder_to_save . "/" . $image_name;
-            }
-        }
         if (!$request->packaging) {
             $request['packaging'] = [];
         }
@@ -317,14 +307,6 @@ class ProductController extends Controller
       //  $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
         
         $product->update($request->all());
-
-        foreach ($images as $key => $data) {
-            DB::table('product_images')
-            ->insert([ 
-                'sku' => $product->sku,
-                'image' => $data
-            ]);
-        }
 
         if ($request['volumes'] != null) {
             $volumes = explode(",",$request['volumes']);
@@ -354,6 +336,29 @@ class ProductController extends Controller
         Cache::forget('products-cache');
         return redirect()->back()
         ->with('success', 'Product was updated.'); 
+    }
+
+    public function uploadImages() {
+
+        $images=array();
+
+        if($file=request()->file){
+            $folder_to_save = 'product';
+            $image_name = uniqid() . "." . $file->extension();
+            $file->move(public_path('images/' . $folder_to_save), $image_name);
+            $image_path = $folder_to_save . "/" . $image_name;
+
+            DB::table('product_images')
+            ->insert([ 
+                'sku' => request()->sku,
+                'image' => $image_path
+            ]);
+        }
+
+        return response()->json([
+            'status' =>  'success',
+            'message' => 'Uploaded was SUCCESS'
+        ], 200);
     }
 
     public function isVolumeExists($sku, $volume) {

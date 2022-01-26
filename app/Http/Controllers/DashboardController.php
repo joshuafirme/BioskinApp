@@ -27,11 +27,13 @@ class DashboardController extends Controller
     }
 
     public function index()
-    {       
+    {      
         $total_sales_today = Order::whereRaw('Date(created_at) = CURDATE()')->sum('amount');
         $users_count = User::count('id');
         $orders_today_count = Order::whereRaw('Date(created_at) = CURDATE()')->count('order_id');
-
+        $total_sales_this_year = Order::whereYear('created_at', date('Y'))->sum('amount');
+        $percentage_rate = $this->getSalesPercentageRate();
+        
         $best_selling = Order::select(DB::raw('SUM(orders.qty) as total_qty'), DB::raw('SUM(orders.amount) as total_sales'), 'P.size', 'P.name','P.price', 'P.sku')
         ->leftJoin('products as P', 'P.sku', '=', 'orders.sku')
         ->groupBy('orders.sku', 'P.name','P.price', 'P.size', 'P.sku')
@@ -40,7 +42,20 @@ class DashboardController extends Controller
         ->limit(6)
         ->get();
       
-        return view('admin.dashboard', compact('total_sales_today', 'users_count', 'orders_today_count', 'best_selling'));
+        return view('admin.dashboard', compact('total_sales_today', 'users_count', 'orders_today_count', 'best_selling', 'total_sales_this_year', 'percentage_rate'));
+    }
+
+    public function getSalesPercentageRate() {
+        $total_sales_this_month = Order::whereMonth('created_at', date('m'))->sum('amount');
+        $total_sales_last_month = Order::whereMonth('created_at', date('m', strtotime("-1 month")))->sum('amount');
+
+        if (($total_sales_last_month != 0) && ($total_sales_this_month  != 0)) {
+            $percentChange = (1 - $total_sales_last_month / $total_sales_this_month ) * 100;
+        }
+        else {
+            $percentChange = null;
+        }
+        return $percentChange;
     }
 
     public function phpInfo() {

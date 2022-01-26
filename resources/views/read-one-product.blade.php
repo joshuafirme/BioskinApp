@@ -88,7 +88,7 @@
                 </div>
                 @if ($product->rebranding == 1)
                 <div class="col-12">
-                    <a href="{{ url('/rebrand/'.$product->sku.'/'.$category_name) }}" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>
+                    <a href="{{ url('/rebrand/'.$product->sku.'/'.$category_name) }}" class="btn btn-outline-secondary btn-block m-1">Customize now!</a>
                 </div>
                 @endif
             </div>

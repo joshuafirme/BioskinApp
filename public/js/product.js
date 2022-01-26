@@ -144,6 +144,53 @@ document.addEventListener('DOMContentLoaded', function() {
               removeItemButton: true,
             }); 
         }
+
+        if ($('#images').length > 0) {
+            document.getElementById('images').addEventListener('change', (e) => {
+                const file = e.target.files;
+                console.log(file)
+                if (!file) {
+                  return;
+                }
+              
+                $.each(file, function(i, v){
+                
+                    new Compressor(e.target.files[i], {
+                        quality: 0.4,
+                        
+                        // The compression process is asynchronous,
+                        // which means you have to access the `result` in the `success` hook function.
+                        success(result) {
+                          const formData = new FormData();
+                          console.log(result)
+                   
+                      //    let images = e.target.files[i];
+                     //     let sku = $('[name="sku"]').val();
+                          formData.append('file', result, result.name);
+                          formData.append('sku', $('[name="sku"]').val());
+                          
+                          axios.post('/upload-images', formData).then(() => {
+                            console.log('Upload success');
+                          });
+
+                     
+      
+                       /*      $.ajax({
+                              url: '/upload-images',
+                              type: 'POST',
+                              data: formData,
+                              success:function(data){ console.log(data)
+                                  
+                              }
+                          });*/
+                        },
+                        error(err) {
+                          console.log(err.message);
+                        },
+                      });
+                })
+              });
+        }
     }
 
     $(document).on('change','[name="category_id"]', function(){ 

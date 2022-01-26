@@ -7,10 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ContactUs extends Mailable
+class Mailer extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $data;
     /**
      * Create a new message instance.
      *
@@ -28,6 +29,8 @@ class ContactUs extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->from('gracepearltesting@gmail.com')
+        ->subject('Contact us')
+        ->view('mail.mail_receiver')->with('data', $this->data);
     }
 }

@@ -110,7 +110,7 @@ $categories = Utils::readCategories();
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="submit" value="Send Message" class="btn btn-primary">
+                                                <input type="submit" value="Send Message" id="btn-send-mail" class="btn btn-primary">
                                                 <div class="submitting"></div>
                                             </div>
                                         </div>
@@ -131,3 +131,21 @@ $categories = Utils::readCategories();
 <!-- /.content-wrapper -->
 
 @include('footer')
+
+<script>
+    $(function() {
+        $(document).on('click', '#btn-send-mail', function(){
+            let btn = $(this);
+         //   btn.html('<i class="fas fa-spinner fa-spin"></i>');
+            btn.html("Please wait..");
+            btn.prop('disabled', true);
+            $.ajax({
+            url: '/contact-us/send-mail',
+            type: 'GET',
+            success:function(data){  
+                btn.html("Send Message");
+            }
+        });
+        });
+    })
+</script>

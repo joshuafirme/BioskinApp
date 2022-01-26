@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Utils;
+use Mail;
+use App\Mail\Mailer;
 
 class PagesController extends Controller
 {
@@ -21,5 +23,13 @@ class PagesController extends Controller
 
     public function notAuth() {
         return view('admin.pages.not-auth');
+    }
+
+    public function sendMail(){
+        $email = 'gracepearltesting@gmail.com';
+        Mail::to($email)
+        ->send(new Mailer('test'));
+
+        return json_encode(array("response" => "success"));
     }
 }

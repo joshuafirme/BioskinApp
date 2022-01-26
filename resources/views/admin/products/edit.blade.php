@@ -205,7 +205,7 @@
 
                           <div class="col-sm-12 col-md-12 mt-2">
                             <label class="col-form-label" for="choices-multiple-remove-button">Upload images</label>
-                            <input type="file" class="form-control-file" name="images[]" placeholder="address" multiple accept=".jpg,.jpeg,.png">
+                            <input type="file" class="form-control-file" name="images[]" id="images" placeholder="address" multiple accept=".jpg,.jpeg,.png">
                           </div>
 
                             @foreach ($images as $item)

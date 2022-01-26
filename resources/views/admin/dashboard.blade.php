@@ -81,12 +81,12 @@
               <div class="card-body">
                 <div class="d-flex">
                   <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">₱18,230.00</span>
+                    <span class="text-bold text-lg">₱{{number_format($total_sales_this_year, 2, '.', ',')}}</span>
                     <span>Sales Over Time</span>
                   </p>
                   <p class="ml-auto d-flex flex-column text-right">
                     <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
+                      <i class="fas fa-arrow-up"></i> {{number_format($percentage_rate, 2, '.', '')}}%
                     </span>
                     <span class="text-muted">Since last month</span>
                   </p>
@@ -203,11 +203,6 @@
                     borderColor: '#007bff',
                     data: data.total_sales
                   },
-                  {
-                    backgroundColor: '#ced4da',
-                    borderColor: '#ced4da',
-                    data: data.total_sales_last_yr
-                  }
                 ]
               },
               options: {

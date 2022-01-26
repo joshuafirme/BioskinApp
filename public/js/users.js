@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 url: "/read-users",
                 type:"GET",
             },
-          order: [[0, 'desc']],
+          order: [[3, 'desc']],
                
            columns:[       
                 {data: 'customer', name: 'customer'},

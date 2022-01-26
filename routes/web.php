@@ -18,13 +18,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function(){
     return view('index');
 });
-
+Route::get('/paynamics-test', 'CheckoutController@paynamicsTest');
 Route::get('/phpinfo', 'DashboardController@phpInfo');
 
 Route::get('/home', 'HomePageController@index');
 Route::get('/terms-and-conditions', 'PagesController@termsAndConditions');
 Route::get('/about-us', 'PagesController@aboutUs');
 Route::get('/contact-us', 'PagesController@contactUs');
+Route::get('/contact-us/send-mail', 'PagesController@sendMail');
 Route::get('/not-auth', 'PagesController@notAuth');
 
 Route::get('/read-packaging-name/{id}', 'ProductController@readPackagingNameByID');
@@ -44,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/product', 'ProductController');
         Route::get('/delete-product-cache', 'ProductController@deleteProductCache')->name('delete-product-cache');
         Route::post('/product/archive/{id}', 'ProductController@archive');
+        Route::post('/upload-images', 'ProductController@uploadImages');
         Route::get('/read-product', 'ProductController@readAllProduct');
         Route::post('/delete-image/{id}', 'ProductController@deleteImage');
         Route::resource('/packaging', 'PackagingController');

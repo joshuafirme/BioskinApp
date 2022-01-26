@@ -29,7 +29,7 @@ $(function(){
             html += '</div>';
             if (data.rebranding == 1) {
                 html += '<div class="col-12">';
-                html += '<a href="/rebrand/' + data.sku + '/' + category_name + '" class="btn btn-outline-secondary btn-block m-1">Rebrand now!</a>';
+                html += '<a href="/rebrand/' + data.sku + '/' + category_name + '" class="btn btn-outline-secondary btn-block m-1">Customize now!</a>';
                 html += '</div>';
             }
         }
