@@ -191,27 +191,10 @@ class ProductController extends Controller
         $request['sub_category_id'] = implode(", ",$request->sub_category_id);
       //  $request['packaging_price_included'] = $request->packaging_price_included == "on" ? 1 : 0;
       //  $request['closure_price_included'] = $request->closure_price_included == "on" ? 1 : 0;
-        $images=array();
-        if($files=$request->file('images')){
-            foreach($files as $file){
-                $folder_to_save = 'product';
-                $image_name = uniqid() . "." . $file->extension();
-                $file->move(public_path('images/' . $folder_to_save), $image_name);
-                $images[] = $folder_to_save . "/" . $image_name;
-            }
-        }
+
        // return $request->all();
         Product::create($request->all());
         
-        if ($images) {
-            foreach ($images as $key => $data) {
-                DB::table('product_images')
-                ->insert([ 
-                    'sku' => $request['sku'],
-                    'image' => $data
-                ]);
-            }
-        }
 
         if ($request->packaging) {
             foreach ($request->packaging as $data) {
