@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 $.each(file, function(i, v){
                 
                     new Compressor(e.target.files[i], {
-                        quality: 0.4,
+                        quality: 0.3,
                         
                         // The compression process is asynchronous,
                         // which means you have to access the `result` in the `success` hook function.
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      //     let sku = $('[name="sku"]').val();
                           formData.append('file', result, result.name);
                           formData.append('sku', $('[name="sku"]').val());
-                          
+
                           axios.post('/upload-images', formData).then(() => {
                             console.log('Upload success');
                           });
