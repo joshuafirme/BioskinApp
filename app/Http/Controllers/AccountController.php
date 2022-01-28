@@ -105,14 +105,7 @@ class AccountController extends Controller
 
     public function readAddresses()
     {
-        if (Cache::has('addresses-cache')) {
-            $data = Cache::get('addresses-cache');
-        }else {
-            $addresses = UserAddress::where('user_id', Auth::id())->get();
-            Cache::put('addresses-cache', $addresses);
-            $data = $addresses;
-        }
-        return $data;
+        return UserAddress::where('user_id', Auth::id())->get();
     }
 
     public function deleteAddress($id)
