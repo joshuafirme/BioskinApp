@@ -4,10 +4,41 @@ use DateTime;
 use Cache;
 use Auth;
 use DB;
+use Mail;
+use App\Mail\Mailer;
 use App\Models\Category;
 use App\Models\ProductPrice;
 class Utils
 {
+    public static function sendMail($email, $order_id, $status, $payment_method){
+        $payment_method = self::readPaymentMethodText($payment_method);
+        $html = "<br><h3>Thanks for shopping with us!</h3>";
+        $status_text = self::readStatusText($status);
+        if ($status == 1) {
+            $html .= "<p>We received your order <b>#".$order_id."</b> on 26 ".date('F d, Y H:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
+                    We’re getting your order ready and will let you know once it’s on the way.</p><br>";
+        }
+        if ($status == 2) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+        }
+        if ($status == 4) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+        }
+        if ($status == 5) {
+            $html .= "<p>Your order <b>#".$order_id."</b> was cancelled <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+        }
+
+        $subject = "Your order status is ".$status_text." #" . $order_id;
+
+        if ($email) {
+            Mail::to($email)->send(new Mailer($subject, $html));
+    
+            return json_encode(array("response" => "email was sent"));
+        }
+
+        return json_encode(array("response" => "field_required"));
+    }
+
     static function timeAgo($datetime, $full = false) {
         $now = new DateTime;
         $ago = new DateTime($datetime);

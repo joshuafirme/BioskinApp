@@ -25,7 +25,7 @@ Route::get('/home', 'HomePageController@index');
 Route::get('/terms-and-conditions', 'PagesController@termsAndConditions');
 Route::get('/about-us', 'PagesController@aboutUs');
 Route::get('/contact-us', 'PagesController@contactUs');
-Route::get('/contact-us/send-mail', 'PagesController@sendMail');
+Route::post('/contact-us/send-mail', 'PagesController@sendMail');
 Route::get('/not-auth', 'PagesController@notAuth');
 
 Route::get('/read-packaging-name/{id}', 'ProductController@readPackagingNameByID');

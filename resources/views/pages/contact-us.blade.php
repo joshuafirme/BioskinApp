@@ -5,7 +5,6 @@ $categories = Utils::readCategories();
 
 @include('header')
 
-
 <!-- Navbar -->
 @include('nav')
 <!-- /.navbar -->
@@ -78,7 +77,6 @@ $categories = Utils::readCategories();
                             <div class="contact-wrap w-100 p-md-5 p-4">
                                 <h3 class="mb-2">Contact Us</h3>
                                 <div id="form-message-warning" class="mb-4"></div>
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -88,7 +86,7 @@ $categories = Utils::readCategories();
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label class="label" for="email">Email Address</label>
                                                 <input type="email" class="form-control" name="email" id="email"
                                                     placeholder="Email">
@@ -102,7 +100,7 @@ $categories = Utils::readCategories();
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label class="label" for="#">Message</label>
                                                 <textarea name="message" class="form-control" id="message" cols="30"
                                                     rows="4" placeholder="Message"></textarea>
@@ -115,7 +113,6 @@ $categories = Utils::readCategories();
                                             </div>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex align-items-stretch">
@@ -136,14 +133,34 @@ $categories = Utils::readCategories();
     $(function() {
         $(document).on('click', '#btn-send-mail', function(){
             let btn = $(this);
-         //   btn.html('<i class="fas fa-spinner fa-spin"></i>');
-            btn.html("Please wait..");
+            btn.html("Please wait...");
             btn.prop('disabled', true);
+
+            let name = $('#name').val();
+            let email = $('#email').val();
+            let subject = $('#subject').val();
+            let message = $('#message').val();
+            
             $.ajax({
             url: '/contact-us/send-mail',
-            type: 'GET',
-            success:function(data){  
-                btn.html("Send Message");
+            type: 'POST',
+            data: {
+                name: name,
+                email: email,
+                subject: subject,
+                message: message
+            },
+            success:function(data){ 
+                data = JSON.parse(data);
+                setTimeout(() => { 
+                    if (data.response == "field_required") {
+                        btn.prop('disabled', false);
+                        $('#form-message-warning').html('<p class="text-danger">Please enter the required fields.</p>')
+                        return;
+                    }
+                    btn.remove();
+                    $('#form-message-warning').html('<p class="text-success">Your message was successfully sent!</p>')
+                }, 300);
             }
         });
         });

@@ -11,15 +11,17 @@ class Mailer extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $subject;
+    public $message;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($subject, $message)
     {
-        $this->data = $data;
+        $this->subject = $subject;
+        $this->message = $message;
     }
 
     /**
@@ -30,7 +32,7 @@ class Mailer extends Mailable
     public function build()
     {
         return $this->from('gracepearltesting@gmail.com')
-        ->subject('Contact us')
-        ->view('mail.mail_receiver')->with('data', $this->data);
+        ->subject($this->subject)
+        ->view('mail.mail_receiver')->with('data', $this->message);
     }
 }

@@ -86,6 +86,7 @@ class ManageOrderController extends Controller
     public function changeOrderStatus($order_id) {
         $remarks = "";
         $shipping_fee = isset(request()->shipping_fee) ? request()->shipping_fee : 0;
+
         if (request()->status == 1) { 
            $remarks = "We're Processing your order.";
         }
@@ -115,6 +116,9 @@ class ManageOrderController extends Controller
                 'remarks' => $remarks
             ]);
         }
+        
+        $order_detail = OrderDetail::where('order_id', $order_id)->first();
+        Utils::sendMail(Auth::user()->email, $order_id, $order_detail->status, $order_detail->payment_method);
         
         return response()->json([
             'status' => 'success',

@@ -26,10 +26,21 @@ class PagesController extends Controller
     }
 
     public function sendMail(){
-        $email = 'gracepearltesting@gmail.com';
-        Mail::to($email)
-        ->send(new Mailer('test'));
+        $email = isset(request()->email) ? request()->email : "";
+        $name = isset(request()->name) ? request()->name : "No name";
+        $subject = isset(request()->subject) ? request()->subject : "No subject";
+        $message = isset(request()->message) ? request()->message : "";
 
-        return json_encode(array("response" => "success"));
+        $html = "From: {$name} <br>";
+        $html .= "Email: {$email} <br>";
+        $html .= "Message: {$message} <br>";
+
+        if ($email && $message) {
+            Mail::to("info.bioskinph@gmail.com")->send(new Mailer($subject, $html));
+    
+            return json_encode(array("response" => "email was sent"));
+        }
+
+        return json_encode(array("response" => "field_required"));
     }
 }
