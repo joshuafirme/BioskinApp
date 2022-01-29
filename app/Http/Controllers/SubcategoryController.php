@@ -117,7 +117,8 @@ class SubcategoryController extends Controller
         Subcategory::where('id', $id)
         ->update([
             'name' => $request->input('name'),
-            'category_id' => $request->input('category_id')
+            'category_id' => $request->input('category_id'),
+            'status' => $request->input('status')
         ]);
 
         return redirect()->back()

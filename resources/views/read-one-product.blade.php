@@ -52,8 +52,13 @@
               <ul style="list-style-type: none;" class=" mt-3">
                 <li class="">Choose from shop</li>
                 <li aria-current="page">{{ $category_name }}</li>
+                <button type="button" class="navbar-toggler navbar-toggle x collapsed" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </button> 
               </ul>
-              <ul class="subcategory-container" style="list-style-type: none;">
+              <ul class="subcategory-container collapse" id="navbarToggleExternalContent" style="list-style-type: none;">
                 @foreach ($subcategories as $item)
                   <li class=""><a style="cursor:pointer;" href="{{ url('/shop/subcategory/'.$item->id) }}" class="subcategory-name">{{ $item->name }}</a></li>
                 @endforeach

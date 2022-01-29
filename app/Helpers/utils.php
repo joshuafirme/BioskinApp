@@ -199,7 +199,7 @@ class Utils
     public static function readSubCategoriesByIDs($ids) {
         $ids = explode(', ', $ids);
         $data = DB::table('subcategory')
-                ->whereIn('id', $ids)->get('name');
+                ->whereIn('id', $ids)->where('status', 1)->get('name');
         $html = "";
         foreach ($data as $data) {
             $html .= '<span class="badge badge-primary m-1">'.$data->name.'</span>';

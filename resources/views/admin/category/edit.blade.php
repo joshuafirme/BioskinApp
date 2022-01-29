@@ -70,6 +70,14 @@
                                 <img src="{{ asset('images/'.$category->image) }}" style="height: 300px;background-size:cover; background-position:center;'"  alt="product image">
                             </div>
 
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-form-label">Status</label>
+                                <select class="form-control" name="status">
+                                    <option {{ $category->status == 1 ? "selected" : "" }} value="1">Active</option>
+                                    <option {{ $category->status == 0 ? "selected" : "" }} value="0">Inactive</option>
+                                </select>
+                            </div>
+
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>
                                 <a href="{{ route('category.index') }}" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</a>

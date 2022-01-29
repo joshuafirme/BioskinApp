@@ -42,8 +42,13 @@ $page_title = 'Shop | Bioskin';
                 <ul style="list-style-type: none;" class=" mt-3">
                     <li class="">Choose from shop</li>
                     <li aria-current="page"></li>
+                    <button type="button" class="navbar-toggler navbar-toggle x collapsed" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button> 
                 </ul>
-                <ul class=" subcategory-container" style="list-style-type: none;">
+                <ul id="navbarToggleExternalContent" class=" subcategory-container collapse" style="list-style-type: none;">
                 </ul>
             </div>
         </div>

@@ -20,10 +20,17 @@ $page_title = 'Shop | Bioskin';
         </nav>
         <ul class="bg-white" style="list-style-type: none;">
             <li class="">Choose from shop</li>
-            @foreach ($categories as $item)
-                <li class=""><a href="{{ url('/shop/category/' . $item->id) }}">{{ $item->name }}</a>
-                </li>
-            @endforeach
+            <button type="button" class="navbar-toggler navbar-toggle x collapsed" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button> 
+            <div class="collapse" id="navbarToggleExternalContent">
+                @foreach ($categories as $item)
+                    <li class=""><a href="{{ url('/shop/category/' . $item->id) }}">{{ $item->name }}</a>
+                    </li>
+                @endforeach
+            </div>
         </ul>
     </div>
     <div class="col-sm-12 col-md-10">
@@ -64,3 +71,25 @@ $page_title = 'Shop | Bioskin';
 <!-- /.content-wrapper -->
 
 @include('footer')
+
+<script>
+$(function () {
+    $(document).on('click', '.btn-show-hide', async function() {
+        var object = $(this).attr('object');
+        var dots = document.getElementById("dots-btn-" + object);
+        var moreText = document.getElementById(object + "-text");
+        var btnText = $(this);
+        $('#detail-hide-' + object).css('height', 'auto');
+        if (dots.style.display === "none") {
+             dots.style.display = "inline";
+            btnText.text("+");
+            moreText.style.display = "none";
+            $('#detail-hide-' + object).css('height', '50px');
+        } else {
+            dots.style.display = "none";
+            btnText.text("-");
+            moreText.style.display = "inline";
+        }           
+    });      
+});        
+</script>

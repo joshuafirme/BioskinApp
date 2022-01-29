@@ -19,6 +19,7 @@ class Subcategory extends Model
     public function readSubcategoryByCategory($category_id) {
         return $this::select('subcategory.*', 'C.name as subcategory', 'C.id as cat_id')
             ->where('subcategory.category_id', $category_id)
+            ->where('subcategory.status', 1)
             ->leftJoin('category as C', 'C.id', '=', 'subcategory.category_id')
             ->get();
     }

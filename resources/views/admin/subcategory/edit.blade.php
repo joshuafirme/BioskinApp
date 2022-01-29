@@ -69,13 +69,13 @@
                                 <input type="text" class="form-control" name="name"  id="name" value="{{ $subcategory->name }}"  required>
                             </div>
 
-                        <!--    <div class="col-sm-12 col-md-6 mt-2">    
-                              <label class="col-form-label">Status</label>
-                              <select class="form-control" name="status" id="status">
-                                  <option selected value="1" // $category->status == 1 ? 'selected' : '' }}>Active</option>
-                                  <option value="0" // $category->status == 0 ? 'selected' : '' }}>Inactive</option>
-                              </select>
-                            </div>-->
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-form-label">Status</label>
+                                <select class="form-control" name="status">
+                                    <option {{ $subcategory->status == 1 ? "selected" : "" }} value="1">Active</option>
+                                    <option {{ $subcategory->status == 0 ? "selected" : "" }} value="0">Inactive</option>
+                                </select>
+                            </div>
     
                               <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2" id="btn-add-user">Save changes</button>

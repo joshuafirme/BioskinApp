@@ -129,7 +129,7 @@ class ProductController extends Controller
     public function readSubCategories($ids) {
         $ids = explode(', ', $ids);
         return DB::table('subcategory')
-                ->whereIn('id', $ids)->get('name');
+                ->whereIn('id', $ids)->where('status', 1)->get('name');
     }
     public function readPackaging($packaging_ids) {
         return DB::table('products')

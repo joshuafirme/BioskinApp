@@ -48,6 +48,7 @@
                         <tr>
                             <th class="py-2 text-left">Subategory Name</th>
                             <th class="py-2 text-left">Category</th>
+                            <th class="py-2 text-left">Status</th>
                             <th class="py-2 text-left">Action</th>
                         </tr>
                         @foreach ($subcategory as $data)
@@ -55,17 +56,15 @@
                             <tr id="record-id-{{ $data->id }}">
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->category_name }}</td>
-                                <td>
-                                    <form action="{{ route('category.destroy',$data->id) }}" method="POST">                      
-                                        <a class="btn" href="{{ route('subcategory.edit',$data->id) }}"><i class="fas fa-edit"></i></a>  
-                
-                                        @csrf
-                                        @method('DELETE')
-                
-                                        <a record-id="{{ $data->id }}" object="subcategory"
-                                            class="btn delete-record"><i class="fas fa-trash"></i></a>
-                                    </form>  
-                                </td>    
+                                <td>@php 
+                                    if ( $data->status == 1 ) {
+                                        echo '<span class="badge badge-success">Active</span>';
+                                    }
+                                    else {
+                                        echo '<span class="badge badge-danger">Inactive</span>';
+                                    }
+                                @endphp</td>
+                                <td><a class="btn" href="{{ route('subcategory.edit',$data->id) }}"><i class="fas fa-edit"></i></a>  </td>    
                             </tr>  
                         </tr>
                         @endforeach
