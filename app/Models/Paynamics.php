@@ -47,6 +47,8 @@ class Paynamics extends Model
             "org_trxid2" => $org_trxid2,
             "signature" => $sign);
 
+         //   return $params;
+
         return $client->query($params);   
     }
 }

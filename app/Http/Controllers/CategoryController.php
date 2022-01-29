@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Subategory;
 use Auth;
+use Cache;
 
 class CategoryController extends Controller
 {
@@ -74,7 +75,7 @@ class CategoryController extends Controller
 
         Category::create($input);
 
-        Cache::forget('products-cache');
+        Cache::forget('categories-cache');
 
         return redirect()->back()
             ->with('success', 'category was created.');
@@ -126,7 +127,7 @@ class CategoryController extends Controller
 
         Category::where('id', $id)->update($input);
 
-        Cache::forget('products-cache');
+        Cache::forget('categories-cache');
 
         return redirect()->back()
             ->with('success', 'Category was updated.');

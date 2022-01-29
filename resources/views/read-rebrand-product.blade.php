@@ -1,5 +1,5 @@
 @php
-$page_title = $product->name . ' | Rebranding | Bioskin';
+$page_title = $product->name . ' | Customize | Bioskin';
 @endphp
 
 @include('header')
@@ -109,7 +109,7 @@ $page_title = $product->name . ' | Rebranding | Bioskin';
                 <li class="breadcrumb-item"><a href="{{ url('/shop') }}">{{ $category_name }}</a></li>
                 <li class="breadcrumb-item"><a
                         href="{{ url('/shop/' . $product->sku . '/' . $category_name) }}">{{ $product->name }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Rebranding</li>
+                <li class="breadcrumb-item active" aria-current="page">Customize</li>
             </ol>
         </nav>
     </div>

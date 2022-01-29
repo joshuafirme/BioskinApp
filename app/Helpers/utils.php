@@ -16,19 +16,27 @@ class Utils
         $status_text = self::readStatusText($status);
         if ($status == 1) {
             $html .= "<p>We received your order <b>#".$order_id."</b> on 26 ".date('F d, Y H:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
-                    We’re getting your order ready and will let you know once it’s on the way.</p><br>";
+                    We’re getting your order ready and will let you know once it’s on the way.</p><br>
+                    You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
         }
         if ($status == 2) {
-            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+        if ($status == 3) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
         }
         if ($status == 4) {
-            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b>.</p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
         }
         if ($status == 5) {
-            $html .= "<p>Your order <b>#".$order_id."</b> was cancelled <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>";
+            $html .= "<p>Your order <b>#".$order_id."</b> was cancelled <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
         }
 
-        $subject = "Your order status is ".$status_text." #" . $order_id;
+        $subject = "Your order status is ".$status_text." now #" . $order_id;
 
         if ($email) {
             Mail::to($email)->send(new Mailer($subject, $html));
@@ -87,7 +95,7 @@ class Utils
     }
     
     public static function getPages() {
-        return ["Dashboard", "Maintenance", "Users", "Vouchers", "Manage Orders"];
+        return ["Dashboard", "Maintenance", "Users", "Vouchers", "Manage Orders", "Archive"];
     }
 
     public static function readCategories() {

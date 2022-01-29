@@ -16,6 +16,7 @@ use App\Models\ProductPrice;
 use Auth;
 use Cache;
 use DB;
+use Utils;
 
 class CheckoutController extends Controller
 {
@@ -181,6 +182,35 @@ class CheckoutController extends Controller
         return  $p->readOnePriceBySKUAndVolume($sku, $volume);
     }
 
+    public function paynamicsTest() {
+        $xml_data = "";
+        $xml_data .= "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+        $xml_data .= "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
+        $xml_data .= "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"";
+        $xml_data .= "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
+        $xml_data .= "<soap:Body>";
+        $xml_data .= "<query xmlns=\"https://testpti.payserv.net/pnxquery\">";
+         $xml_data .= "<merchantid>000000201221F7E57B0B</merchantid>";
+         $xml_data .= "<request_id>70541739</request_id>";
+         $xml_data .= "<org_trxid>27664683240068240902</org_trxid>";
+         $xml_data .= "<org_trxid2></org_trxid2>";
+         $xml_data .= "<signature>36ffa689ed002158ca4a07ae621166c197dbfe2db4f03645120cc282a4481cd12ddf1b4829d176bd5fe1ac491cfbf3af4767662daf82c2b8fcab87f42529e5f1</signature>";
+         $xml_data .= "</query>";
+         $xml_data .= "</soap:Body>";
+         $xml_data .= "</soap:Envelope>";
+
+        $ch = curl_init("https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        
+        
+        print_r($output);
+    }
+
     public function paynamicsNotification() { 
         if (!empty(request()->responseid) && !empty(request()->requestid)) {
             $request_id = base64_decode(request()->requestid);
@@ -188,7 +218,7 @@ class CheckoutController extends Controller
 
             $result = $this->getPaymentStatus($request_id, $response_id);
           //  return json_encode($result);
-
+          //  return $result;
             if (isset($result->queryResult->txns->ServiceResponse)) {
                 $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
                 $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
@@ -368,12 +398,15 @@ class CheckoutController extends Controller
            $expiry_date = "";
            $status = 0;
 
+        
             if ($pmethod == 'COD') {
                 $status = 1;
                 $this->removeCartChecked();
+
+                Utils::sendMail(Auth::user()->email, $order_id, $status, $pmethod);
             }
             else {
-             //   $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
+            //   $expiry_date = date('Y-m-d H:m:s', strtotime(date('Y-m-d H:m:s').' + 1 days'));
             }
 
             OrderDetail::create([
@@ -393,6 +426,8 @@ class CheckoutController extends Controller
         Cache::forget('packaging-cache');
 
         session()->put('order_id', $order_id);
+
+        
         return $order_id;
     }
 

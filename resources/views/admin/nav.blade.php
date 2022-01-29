@@ -165,7 +165,7 @@
                 </ul>
               </li>
               @endif
-
+              @if(in_array("Archive", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/archive') }}" class="nav-link">
                     <i class="nav-icon fas fa-archive"></i>
@@ -174,7 +174,7 @@
                     </p>
                   </a>
               </li>
-
+              @endif
 
         </ul>
       </nav>

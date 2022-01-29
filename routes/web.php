@@ -28,7 +28,7 @@ Route::get('/contact-us', 'PagesController@contactUs');
 Route::post('/contact-us/send-mail', 'PagesController@sendMail');
 Route::get('/not-auth', 'PagesController@notAuth');
 
-Route::get('/read-packaging-name/{id}', 'ProductController@readPackagingNameByID');
+Route::get('/read-packaging-name/{id}', 'ManageOrderController@readPackagingNameByID');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('access_rights:1:3:4:5:6:7:8')->group(function () {

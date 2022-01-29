@@ -9,6 +9,21 @@ use Utils;
 
 class ArchiveController extends Controller
 {
+    private $page = "Archive";
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            
+            if (Auth::check()) {
+                $allowed_pages = explode(",",Auth::user()->allowed_pages);
+                if (!in_array($this->page, $allowed_pages)) {
+                    return redirect('/not-auth');
+                }
+            }
+            return $next($request);
+        });
+    }
     public function index(Product $product) {
         $per_page = 10;
         $product = $product->readArchiveProduct($per_page);

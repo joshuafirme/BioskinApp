@@ -143,11 +143,6 @@ class ProductController extends Controller
                 ->whereIn('id', $closures_ids)->get();
     }
 
-    public function readPackagingNameByID($id) {
-        $product = new Product;
-        return $product->readPackagingNameByID($id);
-    }
-
 
     public function create()
     {

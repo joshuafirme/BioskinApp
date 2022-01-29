@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use Auth;
 use Utils;
 
@@ -156,5 +157,10 @@ class ManageOrderController extends Controller
         return DB::table('orders')
         ->where('order_no', $order_id)
         ->sum('amount');
+    }
+
+    public function readPackagingNameByID($id) {
+        $product = new Product;
+        return $product->readPackagingNameByID($id);
     }
 }

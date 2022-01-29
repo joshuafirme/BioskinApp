@@ -69,11 +69,11 @@ function validateAttr() {
             $('.attr-validation').text('Please select product volume.');
             return 'invalid';
         }   
-        if (!$('.btn-packaging').hasClass('active') && $('.packaging-container').text().indexOf("No available") == -1) {
+        if (!$('.btn-packaging').hasClass('active') && $('.btn-packaging').length != 0) {
             $('.attr-validation').text('Please select product packaging.');
             return 'invalid';
         }   
-        if (!$('.btn-closure').hasClass('active') && $('.closure-container').text().indexOf("No available") == -1) {
+        if (!$('.btn-closure').hasClass('active') && $('.btn-closure').length != 0) {
             $('.attr-validation').text('Please select product cap.');
             return 'invalid';
         }   
