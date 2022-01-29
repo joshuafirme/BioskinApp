@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use SoapClient;
+use nusoap_client;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +14,11 @@ class Paynamics extends Model
         if ($mode == 'Test') {
             $mid = "000000201221F7E57B0B";
             $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
-            $client = new SoapClient("https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL");
+            $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
         } elseif ($mode == 'Live') {
             $mid = $this->_paymentMethod->getMerchantConfig('live_mid');
             $mkey = $this->_paymentMethod->getMerchantConfig('live_mkey');
-            $client = new SoapClient("https://ptipaygate.paynamics.net/ccservice/ccservice.asmx?WSDL");
+            $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
         }
 
         $request_id = '';
@@ -41,14 +41,15 @@ class Paynamics extends Model
         // create signature
         $sign = hash("sha512", $data);
 
-        $params = array("merchantid" => $merchantid,
+        $params = array(
+            "merchantid" => $merchantid,
             "request_id" => $requestid,
             "org_trxid" => $org_trxid,
             "org_trxid2" => $org_trxid2,
-            "signature" => $sign);
+            "signature" => $sign
+        );
 
-         //   return $params;
-
-        return $client->query($params);   
+        $result = $client->call("query", $params);
+        return $result;
     }
 }

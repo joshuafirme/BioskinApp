@@ -163,26 +163,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         success(result) {
                           const formData = new FormData();
                           console.log(result)
-                   
-                      //    let images = e.target.files[i];
-                     //     let sku = $('[name="sku"]').val();
                           formData.append('file', result, result.name);
                           formData.append('sku', $('[name="sku"]').val());
 
                           axios.post('/upload-images', formData).then(() => {
                             console.log('Upload success');
                           });
-
-                     
-      
-                       /*      $.ajax({
-                              url: '/upload-images',
-                              type: 'POST',
-                              data: formData,
-                              success:function(data){ console.log(data)
-                                  
-                              }
-                          });*/
                         },
                         error(err) {
                           console.log(err.message);

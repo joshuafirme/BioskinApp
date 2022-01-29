@@ -17,6 +17,7 @@ use Auth;
 use Cache;
 use DB;
 use Utils;
+use nusoap_client;
 
 class CheckoutController extends Controller
 {
@@ -183,32 +184,22 @@ class CheckoutController extends Controller
     }
 
     public function paynamicsTest() {
-        $xml_data = "";
-        $xml_data .= "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-        $xml_data .= "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
-        $xml_data .= "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"";
-        $xml_data .= "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
-        $xml_data .= "<soap:Body>";
-        $xml_data .= "<query xmlns=\"https://testpti.payserv.net/pnxquery\">";
-         $xml_data .= "<merchantid>000000201221F7E57B0B</merchantid>";
-         $xml_data .= "<request_id>70541739</request_id>";
-         $xml_data .= "<org_trxid>27664683240068240902</org_trxid>";
-         $xml_data .= "<org_trxid2></org_trxid2>";
-         $xml_data .= "<signature>36ffa689ed002158ca4a07ae621166c197dbfe2db4f03645120cc282a4481cd12ddf1b4829d176bd5fe1ac491cfbf3af4767662daf82c2b8fcab87f42529e5f1</signature>";
-         $xml_data .= "</query>";
-         $xml_data .= "</soap:Body>";
-         $xml_data .= "</soap:Envelope>";
 
-        $ch = curl_init("https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);
-        
-        
-        print_r($output);
+        $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
+        $err = $client->getError();
+        if ($err) {
+            echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+        }
+        $params = array(
+            "merchantid" => "000000201221F7E57B0B",
+            "request_id" => "70541739",
+            "org_trxid" => "27664683240068240902",
+            "org_trxid2" => "",
+            "signature" => "36ffa689ed002158ca4a07ae621166c197dbfe2db4f03645120cc282a4481cd12ddf1b4829d176bd5fe1ac491cfbf3af4767662daf82c2b8fcab87f42529e5f1"
+        );
+
+        $result = $client->call("query", $params);
+        return $result;
     }
 
     public function paynamicsNotification() { 
@@ -217,19 +208,20 @@ class CheckoutController extends Controller
             $response_id = base64_decode(request()->responseid);
 
             $result = $this->getPaymentStatus($request_id, $response_id);
-          //  return json_encode($result);
-          //  return $result;
-            if (isset($result->queryResult->txns->ServiceResponse)) {
-                $response_code = $result->queryResult->txns->ServiceResponse->responseStatus->response_code;
-                $response_message = $result->queryResult->txns->ServiceResponse->responseStatus->response_message;
-                $response_advise = $result->queryResult->txns->ServiceResponse->responseStatus->response_advise;
-                $processor_response_id = $result->queryResult->txns->ServiceResponse->responseStatus->processor_response_id;
+   
+           // return $result['['queryResult']'];
+
+            if (isset($result['queryResult']['txns']['ServiceResponse'])) {
+                $response_code = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_code'];
+                $response_message = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_message'];
+                $response_advise = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_advise'];
+                $processor_response_id = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['processor_response_id'];
               }
               else {
-                $response_code = $result->queryResult->responseStatus->response_code;
-                $response_message = $result->queryResult->responseStatus->response_message;
-                $response_advise = $result->queryResult->responseStatus->response_advise;
-                $processor_response_id = $result->queryResult->responseStatus->processor_response_id;
+                $response_code = $result['queryResult']['responseStatus']['response_code'];
+                $response_message = $result['queryResult']['responseStatus']['response_message'];
+                $response_advise = $result['queryResult']['responseStatus']['response_advise'];
+                $processor_response_id = $result['queryResult']['responseStatus']['processor_response_id'];
               }
   
             switch ($response_code) {
