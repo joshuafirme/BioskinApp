@@ -36,7 +36,7 @@ class UserController extends Controller
                 return redirect('/not-auth');
             }
         }
-        $user = User::where('status', 1)->get();
+        $user = User::get();
         
         if(request()->ajax())
         { 
@@ -45,12 +45,20 @@ class UserController extends Controller
                 {
                     $button = '<a class="btn btn-sm" data-id="'. $user->id .'" href="'. route('users.edit',$user->id) .'"><i class="fa fa-edit"></i></a>';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<a data-id="'. $user->id .'" class="btn btn-archive" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-trash"></i></a>';
                     return $button;
                 })
                 ->addColumn('created_at', function($user)
                 {
                     return date('F d, Y h:i A', strtotime($user->created_at));
+                })
+                ->addColumn('status', function($user)
+                {
+                    if ( $user->status == 1 ) {
+                        return '<span class="badge badge-success">Active</span>';
+                    }
+                    else if ( $user->status == 0 ) {
+                        return '<span class="badge badge-danger">Blocked</span>';
+                    }
                 })
                 ->addColumn('customer', function($user)
                 {
@@ -88,7 +96,7 @@ class UserController extends Controller
                     }
                     return $html;
                 })
-                ->rawColumns(['action','access_rights', 'created_at', 'customer'])
+                ->rawColumns(['action','access_rights', 'created_at', 'customer','status'])
                 ->make(true);
         }
     }
@@ -96,7 +104,10 @@ class UserController extends Controller
     public function doLogin(Request $data) {
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) 
         {
-            return redirect()->intended('/shop');  
+            if (Auth::user()->status == 1) {
+                return redirect()->intended('/shop');  
+            }
+            return redirect()->back()->with('danger', 'Your account is blocked.');  
         }
         else {
             return redirect()->back()->with('danger', 'Invalid username or password.');  

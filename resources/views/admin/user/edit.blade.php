@@ -143,6 +143,14 @@
                                 @endforeach
                               </select>
                               </div>
+                              
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-form-label">Status</label>
+                                <select class="form-control" name="status">
+                                    <option {{ $user->status == 1 ? "selected" : "" }} value="1">Active</option>
+                                    <option {{ $user->status == 0 ? "selected" : "" }} value="0">Blocked</option>
+                                </select>
+                            </div>
 
 
                               <div class="col-sm-12 col-md-6 mt-2 new-password-container d-none">

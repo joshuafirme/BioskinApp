@@ -51,6 +51,7 @@
                                 <th>Username</th>
                                 <th>Access rights</th>
                                 <th>Date Registered</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

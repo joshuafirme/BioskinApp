@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {data: 'username', name: 'username'},
                 {data: 'access_rights', name: 'access_rights'},
                 {data: 'created_at', name: 'created_at'},
+                {data: 'status', name: 'status'},
                 {data: 'action', name: 'action',orderable: false},
            ]
           });
