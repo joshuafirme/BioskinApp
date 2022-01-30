@@ -31,7 +31,7 @@ class Mailer extends Mailable
      */
     public function build()
     {
-        return $this->from('gracepearltesting@gmail.com')
+        return $this->from('csr@bioskinphilippines.com')
         ->subject($this->subject)
         ->view('mail.mail_receiver')->with('data', $this->message);
     }

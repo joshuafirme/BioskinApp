@@ -36,7 +36,7 @@ class PagesController extends Controller
         $html .= "Message: {$message} <br>";
 
         if ($email && $message) {
-            Mail::to("info.bioskinph@gmail.com")->send(new Mailer($subject, $html));
+            Mail::to("joshuafirme1@gmail.com")->send(new Mailer($subject, $html));
     
             return json_encode(array("response" => "email was sent"));
         }

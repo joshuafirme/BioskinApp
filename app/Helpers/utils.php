@@ -10,32 +10,10 @@ use App\Models\Category;
 use App\Models\ProductPrice;
 class Utils
 {
-    public static function sendMail($email, $order_id, $status, $payment_method){
-        $payment_method = self::readPaymentMethodText($payment_method);
-        $html = "<br><h3>Thanks for shopping with us!</h3>";
+    public static function sendMail($email, $order_id, $status, $payment_method) {
+        
+        $html = self::getEmailStatusContent($order_id, $payment_method, $status);
         $status_text = self::readStatusText($status);
-        if ($status == 1) {
-            $html .= "<p>We received your order <b>#".$order_id."</b> on 26 ".date('F d, Y H:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
-                    We’re getting your order ready and will let you know once it’s on the way.</p><br>
-                    You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
-        }
-        if ($status == 2) {
-            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
-            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
-        }
-        if ($status == 3) {
-            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
-            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
-        }
-        if ($status == 4) {
-            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b>.</p><br>
-            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
-        }
-        if ($status == 5) {
-            $html .= "<p>Your order <b>#".$order_id."</b> was cancelled <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
-            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
-        }
-
         $subject = "Your order status is ".$status_text." now #" . $order_id;
 
         if ($email) {
@@ -74,6 +52,35 @@ class Utils
     
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
+    public static function getEmailStatusContent($order_id, $payment_method, $status) {
+        $payment_method = self::readPaymentMethodText($payment_method);
+        $html = "<br><h3>Thanks for shopping with us!</h3>";
+        $status_text = self::readStatusText($status);
+        if ($status == 1) {
+            $html .= "<p>We received your order <b>#".$order_id."</b> on 26 ".date('F d, Y H:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
+                    We’re getting your order ready and will let you know once it’s on the way.</p><br>
+                    You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+        if ($status == 2) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+        if ($status == 3) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+        if ($status == 4) {
+            $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b>.</p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+        if ($status == 5) {
+            $html .= "<p>Your order <b>#".$order_id."</b> was cancelled <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>
+            You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+        }
+
+        return $html;
     }
 
     public static function readOnePriceBySKUAndVolume($sku, $volume) {
