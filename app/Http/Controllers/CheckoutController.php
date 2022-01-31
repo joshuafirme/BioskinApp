@@ -32,7 +32,7 @@ class CheckoutController extends Controller
     }
 
     public function paynamicsPayment() {
-        $ip = $this->getIp();
+        $ip = '104.248.149.73';
         $user = Auth::user();
         $product = new Product;
         $od = new OrderDetail;
