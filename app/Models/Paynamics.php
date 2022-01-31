@@ -18,7 +18,7 @@ class Paynamics extends Model
         } elseif ($mode == 'Live') {
             $mid = "0000002501224EA32E89";
             $mkey = "811D678B1A737618AF072B8A05CD4CD3";
-            $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
+            $client = new nusoap_client('https://ptipaygate.paynamics.net/ccservice/ccservice.asmx?WSDL', 'wsdl');
         }
 
         $request_id = '';
