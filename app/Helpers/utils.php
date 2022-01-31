@@ -4,25 +4,45 @@ use DateTime;
 use Cache;
 use Auth;
 use DB;
-use Mail;
-use App\Mail\Mailer;
 use App\Models\Category;
 use App\Models\ProductPrice;
+use Postmark\PostmarkClient;
 class Utils
 {
-    public static function sendMail($email, $order_id, $status, $payment_method) {
+    public static function sendMail($toEmail, $order_id, $status, $payment_method) {
         
-        $html = self::getEmailStatusContent($order_id, $payment_method, $status);
+        $htmlBody = self::getEmailStatusContent($order_id, $payment_method, $status);
         $status_text = self::readStatusText($status);
         $subject = "Your order status is ".$status_text." now #" . $order_id;
 
-        if ($email) {
-            Mail::to($email)->send(new Mailer($subject, $html));
-    
+        if ($toEmail) {
+            self::posmarkMail($toEmail, $subject, $htmlBody);
             return json_encode(array("response" => "email was sent"));
         }
 
         return json_encode(array("response" => "field_required"));
+    }
+
+    static function posmarkMail($toEmail, $subject, $htmlBody) {
+        $client = new PostmarkClient("861ffb96-74fe-4d55-9dd5-e15c67831659");
+        $fromEmail = "csr@bioskinphilippines.com";
+        $textBody = "";
+        $tag = "example-email-tag";
+        $trackOpens = true;
+        $trackLinks = "None";
+        $messageStream = "outbound";
+
+        // Send an email:
+        $sendResult = $client->sendEmail($fromEmail, $toEmail, $subject, $htmlBody, $textBody, $tag, $trackOpens,
+            NULL, // Reply To 
+            NULL, // CC
+            NULL, // BCC
+            NULL, // Header array
+            NULL, // Attachment array
+            $trackLinks,
+            NULL, // Metadata array
+            $messageStream
+        );
     }
 
     static function timeAgo($datetime, $full = false) {

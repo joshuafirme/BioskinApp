@@ -64,7 +64,16 @@ class CheckoutController extends Controller
    
         $total = $total - $discount;
 
-        $_mid = "000000201221F7E57B0B"; 
+        $mode = 'Test';
+
+        if ($mode == 'Test') {
+            $_mid = "000000201221F7E57B0B";
+            $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+        } elseif ($mode == 'Live') {
+            $_mid = "0000002501224EA32E89";
+            $_mkey = "811D678B1A737618AF072B8A05CD4CD3";
+        }
+
         $_requestid = substr(uniqid(), 0, 13);
         $_ipaddress = $ip;
         $_noturl = route('paynamicsNotification'); 
@@ -86,7 +95,6 @@ class CheckoutController extends Controller
         $_amount = number_format((float)$total, 2, '.', '') ;
         $_currency = "PHP"; 
         $_sec3d = "try3d";  
-        $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
       
         $for_sign = $_mid . $_requestid . $_ipaddress . $_noturl . $_resurl . $_fname . $_lname . $_mname . $_addr1 . $_addr2 . $_city . $_state . $_country . 
         $_zip . $_email . $_phone . $_clientip . $_amount . $_currency . $_sec3d . $_mkey;
@@ -221,7 +229,7 @@ class CheckoutController extends Controller
                 $response_code = $result['queryResult']['responseStatus']['response_code'];
                 $response_message = $result['queryResult']['responseStatus']['response_message'];
                 $response_advise = $result['queryResult']['responseStatus']['response_advise'];
-                $processor_response_id = $result['queryResult']['responseStatus']['processor_response_id'];
+                $processor_response_id = $result['queryResult']['responseStatus'];
               }
   
             switch ($response_code) {
@@ -284,7 +292,14 @@ class CheckoutController extends Controller
     }
 
     public function getPaynamicsForm($b64string) {
-        return '<form action="https://testpti.payserv.net/webpayment/Default.aspx" method="post" id="paynamics_payment_form">
+        $mode = 'Test';
+
+        if ($mode == 'Test') {
+            $url = "https://testpti.payserv.net/webpayment/Default.aspx";
+        }else {
+            $url = "https://ptiapps.paynamics.net/webpayment/Default.aspx";
+        }
+        return '<form action="'.$url.'" method="post" id="paynamics_payment_form">
             <style type="text/css">
                 @import url(https://fonts.googleapis.com/css?family=Roboto);
                 .Absolute-Center {

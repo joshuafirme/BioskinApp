@@ -16,8 +16,8 @@ class Paynamics extends Model
             $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
             $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
         } elseif ($mode == 'Live') {
-            $mid = $this->_paymentMethod->getMerchantConfig('live_mid');
-            $mkey = $this->_paymentMethod->getMerchantConfig('live_mkey');
+            $mid = "0000002501224EA32E89";
+            $mkey = "811D678B1A737618AF072B8A05CD4CD3";
             $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
         }
 
