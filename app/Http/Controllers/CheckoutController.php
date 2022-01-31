@@ -64,7 +64,7 @@ class CheckoutController extends Controller
    
         $total = $total - $discount;
 
-        $mode = 'Test';
+        $mode = 'Live';
 
         if ($mode == 'Test') {
             $_mid = "000000201221F7E57B0B";
@@ -292,7 +292,7 @@ class CheckoutController extends Controller
     }
 
     public function getPaynamicsForm($b64string) {
-        $mode = 'Test';
+        $mode = 'Live';
 
         if ($mode == 'Test') {
             $url = "https://testpti.payserv.net/webpayment/Default.aspx";

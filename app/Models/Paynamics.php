@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Paynamics extends Model
 {
     public function getPaymentStatus($request_id, $response_id) {
-        $mode = 'Test';
+        $mode = 'Live';
 
         if ($mode == 'Test') {
             $mid = "000000201221F7E57B0B";
