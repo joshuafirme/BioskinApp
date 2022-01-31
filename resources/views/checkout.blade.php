@@ -1,5 +1,6 @@
 @php
 $page_title = 'Checkout | Bioskin';
+$has_rebranding = false;
 @endphp
 
 @include('header')
@@ -251,11 +252,11 @@ $page_title = 'Checkout | Bioskin';
                                 </td>
                                 <td width="18%">{{ $item->name }} <br>
                                     @if($item->order_type == 1)
-                                    ₱{{ $product_price->readOnePriceBySKUAndVolume($item->sku, $item->qty) }}
+                                    ₱{{ $product_price->readOnePriceBySKUAndVolume($item->sku, $item->qty) }} <br>
+                                    <span class="badge badge-light">Customized</span>
                                     @else
                                             ₱{{ $item->price }} <br>
-                                            <small>Packaging price included</small> <br>
-                                            <span class="badge badge-light">Rebranding</span>
+                                            <small>Packaging price included</small>
                                     @endif
                                 </td>
                                 <td>{{ $item->size ? $item->size : '-' }}</td>
@@ -266,6 +267,7 @@ $page_title = 'Checkout | Bioskin';
                                     @endphp
                                     @if($item->order_type == 1)
                                         @php
+                                            $has_rebranding = true;
                                             $packaging_price = $product_price->readPackagingPriceBySKUAndVolume($item->packaging_sku, $item->qty)
                                         @endphp
                                         @endif
@@ -332,8 +334,10 @@ $page_title = 'Checkout | Bioskin';
             <div class="row">
                 <div class="col-sm-3 text-center payment-method-container">
                     <p class="text-bold">Select Payment Method</p>
+                    @if ($has_rebranding == false)
                     <div><button class="btn active btn-block" data-value="COD">Cash on Delivery <i
                                 class="fas fa-check-circle float-right"></i></button></div>
+                    @endif
                     <div><button class="btn btn-block" data-value="online_payment">Online Payment <i
                                 class="far fa-circle float-right"></i></button></div>
                 </div>
