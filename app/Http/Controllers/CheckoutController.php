@@ -22,7 +22,7 @@ use nusoap_client;
 class CheckoutController extends Controller
 {
     public function index(Product $product)
-    {  return $this->getIp();
+    {  
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
