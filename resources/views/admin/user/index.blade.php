@@ -49,7 +49,7 @@
                             <tr>
                                 <th>Customer</th>
                                 <th>Username</th>
-                                <th>Access rights</th>
+                                <th>Department</th>
                                 <th>Date Registered</th>
                                 <th>Status</th>
                                 <th>Action</th>

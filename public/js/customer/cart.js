@@ -14,7 +14,7 @@ $(function () {
         html +=    '</td>';
         let rebranding_text = "";
         if (data.order_type == 1) {
-            rebranding_text = "<span class='badge badge-light'>Rebranding</span>";
+            rebranding_text = "<span class='badge badge-light'>Customized</span>";
         }
         html +=    '<td id="data-name-'+identifier+'">'+data.name+' <br> '+stock+' <br> '+rebranding_text+' <br> ';
         html +=    '<button class="btn btn-delete" data-id="'+data.cart_id+'"><i class="fa fa-trash-alt" aria-hidden="true" style="color:#444444;"></i></button></td>';

@@ -83,7 +83,7 @@
                               </div>
                 
                               <div class="col-sm-12 col-md-6 mt-2">    
-                                <label class="col-form-label">Access rights</label>
+                                <label class="col-form-label">Department</label>
                                 <select class="form-control" name="access_rights" id="access_rights">
                                     <option value="1">Sales Admin</option>
                                     <option value="2">Customer</option>

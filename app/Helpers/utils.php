@@ -16,17 +16,16 @@ class Utils
         $subject = "Your order status is ".$status_text." now #" . $order_id;
 
         if ($toEmail) {
-            self::posmarkMail($toEmail, $subject, $htmlBody);
+            self::postMarkMail($toEmail, $subject, $htmlBody);
             return json_encode(array("response" => "email was sent"));
         }
 
         return json_encode(array("response" => "field_required"));
     }
 
-    static function posmarkMail($toEmail, $subject, $htmlBody) {
+    static function postMarkMail($toEmail, $subject, $htmlBody, $textBody = null) {
         $client = new PostmarkClient("861ffb96-74fe-4d55-9dd5-e15c67831659");
         $fromEmail = "csr@bioskinphilippines.com";
-        $textBody = "";
         $tag = "example-email-tag";
         $trackOpens = true;
         $trackLinks = "None";
@@ -44,6 +43,56 @@ class Utils
             $messageStream
         );
     }
+
+    public static function welcomeMailTemplate($first_name) {
+        return `
+        <h1>Welcome, {$first_name}!</h1> <br>
+        <p>Thanks for trying signing up. We’re thrilled to have you on board.</p>
+        <p>If you have any questions, feel free to <a href="mailto:csr@bioskinphilippines.com">email us</a>.</p><br>
+        <p>Thanks,
+          <br>Customer Service Representative Team</p>
+        `;
+    }
+
+    public static function welcomeMailTemplateText($first_name) {
+        return "
+        Welcome, {$first_name}!
+        Thanks for signing up. We’re thrilled to have you on board.
+        If you have any questions, feel free to email us.
+        Thanks,
+        Customer Service Representative Team";
+    }
+
+    public static function resetPasswordMailTemplate($first_name, $reset_link) {
+        $csr_email = "csr@bioskinphilippines.com";
+        return "<h1>Hi {$first_name},</h1>
+        <p>You recently requested to reset your password for your bioskin account. Use the link below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
+        <!-- Action -->
+        <a href='{$reset_link}' class='button button--green' target='_blank'>Reset your password</a> <br><br>
+ 
+        <p>For security, if you did not request a password reset, please ignore this email or reply to this email if you have questions.</p>
+        <p>Thanks,
+        <br>The Bioskin Team</p>
+        ";
+    }
+
+    public static function resetPasswordMailTemplateText($first_name, $reset_link) {
+        $csr_email = "csr@bioskinphilippines.com";
+        return "
+        Hi {$first_name},
+        
+        You recently requested to reset your password for your Bioskin account. Use the link below to reset it. This password reset is only valid for the next 24 hours.
+        
+        Reset your password ( {$reset_link} )
+        
+        For security, if you did not request a password reset, please ignore this email or reply to this email if you have questions.
+        
+        Thanks,
+        The Bioskin Team
+        ";
+    }
+
+
 
     static function timeAgo($datetime, $full = false) {
         $now = new DateTime;

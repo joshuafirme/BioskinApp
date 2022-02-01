@@ -22,7 +22,8 @@ class OrderDetail extends Model
         'status',
         'remarks',
         'cancellation_reason',
-        'shipping_fee'
+        'shipping_fee',
+        'response_code'
     ];
 
     public function readOrderDetails($order_id) {

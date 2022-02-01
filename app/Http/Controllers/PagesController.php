@@ -39,7 +39,7 @@ class PagesController extends Controller
         $toEmail = "csr@bioskinphilippines.com";
 
         if ($email && $message) {
-            Utils::posmarkMail($toEmail, $subject, $html);
+            Utils::postMarkMail($toEmail, $subject, $html);
     
             return json_encode(array("response" => "email was sent"));
         }

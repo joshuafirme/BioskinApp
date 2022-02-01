@@ -50,7 +50,7 @@ $page_title = 'Login | Bioskin';
                             </div>
                             <button type="submit" class="btn btn-block login-btn mt-4 mb-4" type="button">Login</button>
                         </form>
-                        <!--  <a href="#!" class="forgot-password-link">Forgot password?</a> -->
+                          <a href="{{ url('/forgot-password') }}">Forgot password?</a> 
                         <p class="login-card-footer-text">Don't have an account? <a href="{{ url('/signup') }}"
                                 class="text-reset">Register here</a></p>
                         <a target="_blank" href="{{ url('/terms-and-conditions') }}">Terms and conditions</a>

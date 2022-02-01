@@ -142,3 +142,9 @@ Route::get('/signup', 'UserController@signup_view');
 Route::post('/do-login', 'UserController@doLogin');
 Route::post('/login-ajax', 'UserController@doLoginAjax');
 Route::post('/do-signup', 'UserController@doSignup');
+
+Route::get('/forgot-password', 'UserController@forgotPasswordView');
+Route::post('/send-reset-password-link', 'UserController@sendResetPasswordLink');
+
+Route::get('/reset-password', 'UserController@resetPasswordView');
+Route::post('/do-reset-password', 'UserController@resetPassword');

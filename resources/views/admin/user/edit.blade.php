@@ -80,7 +80,7 @@
                               </div>
                 
                               <div class="col-sm-12 col-md-6 mt-2">    
-                                <label class="col-form-label">Access rights</label>
+                                <label class="col-form-label">Department</label>
                                 @php
                                    // $disabled = $user->access_rights == 1 ? "disabled" : "";
                                 @endphp

@@ -153,11 +153,84 @@ class UserController extends Controller
         else {
             $request['password'] = Hash::make($request['password']);
             User::create($request->all());
+
+            $to_email = request()->email;
+            $first_name = request()->firstname;
+            $subject = "Welcome to Bioskin Philippines!";
+            $html_body = Utils::welcomeMailTemplate($first_name);
+            $text_body = Utils::welcomeMailTemplateText($first_name);
+            Utils::postMarkMail($to_email, $subject, $html_body, $text_body);
         }
 
         return redirect()->back()
             ->with($alert, $message);
     
+    }
+
+    public function forgotPasswordView()
+    {
+        return view('forgot-password');
+    }
+
+    public function resetPasswordView()
+    {
+        $_token = isset(request()->token) ? request()->token : "";
+
+        $result = User::where('reset_key', $_token)->value('id');
+        $is_token_valid = false;
+        if (isset($result) && strlen($result) > 0) {
+            $is_token_valid = true;
+        }
+        
+        return view('reset-password', compact('is_token_valid'));
+    }
+
+    public function sendResetPasswordLink()
+    {
+        $to_email = request()->email;
+        $_token = request()->_token;
+        $reset_link = url('/reset-password?token='.$_token);
+        $subject = "Reset Password";
+        $name = $this->readNameByEmail($to_email);
+
+        $this->updateRememberToken($to_email, $_token);
+
+        $html_body = Utils::resetPasswordMailTemplate($name, $reset_link);
+
+        $text_body = Utils::resetPasswordMailTemplateText($name, $reset_link);
+        
+        Utils::postMarkMail($to_email, $subject, $html_body, $text_body);
+
+        return redirect()->back()->with('success', 'Please check your email, we have sent a link to reset your password.');
+    }
+
+    public function updateRememberToken($email, $_token)
+    {
+       User::where('email', $email)->update(['reset_key' => $_token]);
+    }
+
+    public function resetPassword()
+    {
+        $_token = request()->_token;
+        $email = User::where('reset_key', $_token)->value('email');
+        $password = request()->password;
+
+        if (isset($email) && strlen($email) > 0 && $password) {
+            User::where('email', $email)
+            ->update([
+                'password' => Hash::make($password),
+                'reset_key' => ""
+            ]);
+
+            return redirect('/login')->with('success', "You have successfully reset your password.");
+        }
+
+        return redirect()->back()->with('success', "Unable to reset your password.");
+    }
+
+    public function readNameByEmail($email)
+    {
+       return User::where('email', $email)->value('firstname');
     }
 
     public function isEmailExists($email)

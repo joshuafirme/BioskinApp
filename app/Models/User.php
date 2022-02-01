@@ -32,7 +32,8 @@ class User extends Authenticatable
         'image',
         'courier_id',
         'allowed_modules',
-        'allowed_pages' 
+        'allowed_pages',
+        'reset_key'
     ];
 
     /**
