@@ -26,10 +26,7 @@ class UpdateColumnResetKeyUsersTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumn('reset_key')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->dropUnique('users_reset_key_unique');
-            });
-        }
+        Schema::table('users', function (Blueprint $table) {
+        });
     }
 }
