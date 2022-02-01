@@ -189,22 +189,27 @@ class UserController extends Controller
     {
         $to_email = request()->email;
         $_token = request()->_token;
-        $reset_link = url('/reset-password?token='.$_token);
-        $subject = "Reset Password";
-        $name = $this->readNameByEmail($to_email);
 
-        $this->updateRememberToken($to_email, $_token);
+        if (Utils::isEmailExists($to_email)) {
+            $reset_link = url('/reset-password?token='.$_token);
+            $subject = "Reset Password";
+            $name = $this->readNameByEmail($to_email);
+    
+            $this->updateResetKey($to_email, $_token);
+    
+            $html_body = Utils::resetPasswordMailTemplate($name, $reset_link);
+    
+            $text_body = Utils::resetPasswordMailTemplateText($name, $reset_link);
+            
+            Utils::postMarkMail($to_email, $subject, $html_body, $text_body);
+    
+            return redirect()->back()->with('success', 'Please check your email, we have sent a link to reset your password.');
+        }
 
-        $html_body = Utils::resetPasswordMailTemplate($name, $reset_link);
-
-        $text_body = Utils::resetPasswordMailTemplateText($name, $reset_link);
-        
-        Utils::postMarkMail($to_email, $subject, $html_body, $text_body);
-
-        return redirect()->back()->with('success', 'Please check your email, we have sent a link to reset your password.');
+        return redirect()->back()->with('danger', $to_email.' is not exists in our system.');
     }
 
-    public function updateRememberToken($email, $_token)
+    public function updateResetKey($email, $_token)
     {
        User::where('email', $email)->update(['reset_key' => $_token]);
     }

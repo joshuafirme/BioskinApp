@@ -86,7 +86,7 @@
             @endif
             <div class="row product-buttons mt-5">
                 <div class="col-10">
-                    <button class="btn btn-success btn-block m-1">Buy now</button>
+                    <a href="{{ url('/checkout?buy_now=true&sku='.$product->sku) }}" class="btn btn-success btn-block m-1">Buy now</a>
                 </div>
                 <div class="col-2">
                     <a data-sku="{{$product->sku}}" data-price="{{$product->price}}" data-order-type="0" class="btn btn-add-cart"><img src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/34/000000/external-shopping-cart-ecommerce-kiranshastry-lineal-kiranshastry.png"/></a>

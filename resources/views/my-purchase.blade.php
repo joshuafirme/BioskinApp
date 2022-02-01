@@ -234,10 +234,16 @@ $order_detail = DB::table('order_details as OD')
                                 <td>{{ $data->variation ? $data->variation : '-' }}</td>
                                 <td>
                                     {{ $product->readPackagingNameByID($data->packaging_sku) }} <br>
-                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->packaging_sku, $data->qty)}}</div> </td>
+                                    @if($data->rebranding == 1)
+                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->packaging_sku, $data->qty)}}</div>
+                                    @endif
+                                </td>
                                 <td>
                                     {{ $product->readPackagingNameByID($data->cap_sku) }} <br>
-                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->cap_sku, $data->qty)}}</div></td>
+                                    @if($data->rebranding == 1)
+                                    <div class="text-muted">₱{{$product_price->readPackagingPriceBySKUAndVolume($data->cap_sku, $data->qty)}}</div>
+                                    @endif
+                                </td>
                                 <td>{{ $data->qty }}</td>
                                 <td>₱{{ number_format($data->amount, 2, '.', ',') }}</td>
                             </tr>

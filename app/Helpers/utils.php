@@ -5,6 +5,7 @@ use Cache;
 use Auth;
 use DB;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\ProductPrice;
 use Postmark\PostmarkClient;
 class Utils
@@ -66,7 +67,7 @@ class Utils
     public static function resetPasswordMailTemplate($first_name, $reset_link) {
         $csr_email = "csr@bioskinphilippines.com";
         return "<h1>Hi {$first_name},</h1>
-        <p>You recently requested to reset your password for your bioskin account. Use the link below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
+        <p>You recently requested to reset your password for your Bioskin account. Use the link below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
         <!-- Action -->
         <a href='{$reset_link}' class='button button--green' target='_blank'>Reset your password</a> <br><br>
  
@@ -92,7 +93,10 @@ class Utils
         ";
     }
 
-
+    public static function isEmailExists($email) {
+        $res = User::where('email', $email)->value('email');
+        return isset($res) && $res ? true : false;
+    }
 
     static function timeAgo($datetime, $full = false) {
         $now = new DateTime;
@@ -128,7 +132,7 @@ class Utils
         $html = "<br><h3>Thanks for shopping with us!</h3>";
         $status_text = self::readStatusText($status);
         if ($status == 1) {
-            $html .= "<p>We received your order <b>#".$order_id."</b> on 26 ".date('F d, Y H:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
+            $html .= "<p>We received your order <b>#".$order_id."</b> on ".date('F d, Y h:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
                     We’re getting your order ready and will let you know once it’s on the way.</p><br>
                     You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
         }

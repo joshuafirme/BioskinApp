@@ -343,7 +343,7 @@ $(function(){
            });
     
           $(document).on('click','#btn-print', function(){
-           // printElement(document.getElementById("printable-order-info"));
+            printElement(document.getElementById("printable-order-info"));
           });
     
           $(document).on('click','#to-pay-tab', function(){
