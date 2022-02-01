@@ -14,7 +14,7 @@ class UpdateColumnResetKeyUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique('users_reset_key_unique');
+        //    $table->dropUnique('users_reset_key_unique');
             $table->string('reset_key')->unique()->nullable()->after('password');
         });
     }
