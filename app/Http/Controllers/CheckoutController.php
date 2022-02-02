@@ -23,7 +23,7 @@ class CheckoutController extends Controller
 {
     public function index(Product $product)
     {  
-        return env('PAYNAMICS_MODE');
+        //return env('PAYNAMICS_MODE');
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
