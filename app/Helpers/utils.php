@@ -51,7 +51,9 @@ class Utils
         <p>Thanks for trying signing up. We’re thrilled to have you on board.</p>
         <p>If you have any questions, feel free to <a href="mailto:csr@bioskinphilippines.com">email us</a>.</p><br>
         <p>Thanks,
-          <br>Customer Service Representative Team</p>
+          <br>Customer Service Representative Team</p>                    
+          <br><br>
+          <img width='80px' src='http://bioskinphilippines.com/images/logo.png'>
         `;
     }
 
@@ -65,7 +67,7 @@ class Utils
     }
 
     public static function resetPasswordMailTemplate($first_name, $reset_link) {
-        $csr_email = "csr@bioskinphilippines.com";
+     
         return "<h1>Hi {$first_name},</h1>
         <p>You recently requested to reset your password for your Bioskin account. Use the link below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
         <!-- Action -->
@@ -78,7 +80,7 @@ class Utils
     }
 
     public static function resetPasswordMailTemplateText($first_name, $reset_link) {
-        $csr_email = "csr@bioskinphilippines.com";
+
         return "
         Hi {$first_name},
         
@@ -134,7 +136,9 @@ class Utils
         if ($status == 1) {
             $html .= "<p>We received your order <b>#".$order_id."</b> on ".date('F d, Y h:i:s a')." and you’ll be paying for this via <b>".$payment_method."</b>. 
                     We’re getting your order ready and will let you know once it’s on the way.</p><br>
-                    You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>";
+                    You can view your order details <a target='_blank' href='".url('/my-purchase/'.$order_id)."'>here.</a>
+                    <br><br>
+                    <img width='80px' src='http://bioskinphilippines.com/images/logo.png'>";
         }
         if ($status == 2) {
             $html .= "<p>Your order <b>#".$order_id."</b> is <b>".$status_text."</b> now and you’ll be paying for this via <b>".$payment_method.".</b></p><br>

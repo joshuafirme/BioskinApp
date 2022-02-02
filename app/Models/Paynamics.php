@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 class Paynamics extends Model
 {
     public function getPaymentStatus($request_id, $response_id) {
-        $mode = 'Live';
+
+        $mode = env('PAYNAMICS_MODE');
 
         if ($mode == 'Test') {
-            $mid = "000000201221F7E57B0B";
-            $mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+            $mid = env('PAYNAMICS_TEST_MID');
+            $mkey = env('PAYNAMICS_TEST_MKEY');
             $client = new nusoap_client('https://testpti.payserv.net/Paygate/ccservice.asmx?WSDL', 'wsdl');
         } elseif ($mode == 'Live') {
-            $mid = "0000002501224EA32E89";
-            $mkey = "811D678B1A737618AF072B8A05CD4CD3";
+            $mid = env('PAYNAMICS_PROD_MID');
+            $mkey = env('PAYNAMICS_PROD_MKEY');
             $client = new nusoap_client('https://ptipaygate.paynamics.net/ccservice/ccservice.asmx?WSDL', 'wsdl');
         }
 

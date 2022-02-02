@@ -23,6 +23,7 @@ class CheckoutController extends Controller
 {
     public function index(Product $product)
     {  
+        //return env('PAYNAMICS_MODE');
         $ip = $this->getIp();
         $user = Auth::user();
         $address = $this->readDefaultAddress();
@@ -64,21 +65,21 @@ class CheckoutController extends Controller
    
         $total = $total - $discount;
 
-        $mode = 'Live';
-
+        $mode = env('PAYNAMICS_MODE');
+       
         if ($mode == 'Test') {
-            $_mid = "000000201221F7E57B0B";
-            $_mkey = "35440C9612BDA6F568EAA9A5BA7A6BEA";
+            $_mid = env('PAYNAMICS_TEST_MID');
+            $_mkey = env('PAYNAMICS_TEST_MKEY');
         } elseif ($mode == 'Live') {
-            $_mid = "0000002501224EA32E89";
-            $_mkey = "811D678B1A737618AF072B8A05CD4CD3";
+            $_mid = env('PAYNAMICS_PROD_MID');
+            $_mkey = env('PAYNAMICS_PROD_MKEY');
         }
 
         $_requestid = substr(uniqid(), 0, 13);
         $_ipaddress = $ip;
-        $_noturl = route('paynamicsNotification'); 
-        $_resurl = route('paynamicsNotification');
-        $_cancelurl = route('paynamicsNotification'); 
+        $_noturl = "http://bioskinphilippines.com/paynamics-notification";
+        $_resurl = "http://bioskinphilippines.com/paynamics-notification";
+        $_cancelurl = "http://bioskinphilippines.com/paynamics-notification";
         $_fname = $user->firstname; 
         $_mname = $user->middlename; 
         $_lname = $user->lastname; 
@@ -216,39 +217,37 @@ class CheckoutController extends Controller
             $response_id = base64_decode(request()->responseid);
 
             $result = $this->getPaymentStatus($request_id, $response_id);
-   
-           // return $result['['queryResult']'];
 
             if (isset($result['queryResult']['txns']['ServiceResponse'])) {
                 $response_code = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_code'];
                 $response_message = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_message'];
                 $response_advise = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_advise'];
                 $processor_response_id = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['processor_response_id'];
-              }
-              else {
-                $response_code = $result['queryResult']['responseStatus']['response_code'];
-                $response_message = $result['queryResult']['responseStatus']['response_message'];
-                $response_advise = $result['queryResult']['responseStatus']['response_advise'];
-                $processor_response_id = $result['queryResult']['responseStatus'];
-              }
+            }
+            else {
+                $response_code = "";
+                $response_message = "Something went wrong.";
+                $response_advise = "";
+                $processor_response_id = "";
+            }
   
             switch ($response_code) {
                 case 'GR001':
                 case 'GR002':
                     $status = 1;
-                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
+                    $this->updatePaymentDetails($response_code, $response_message, $response_advise, $processor_response_id,$status);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 case 'GR053':
                     $status = 0;
                     $response_message = "Transaction cancelled";
                     $response_advise = "";
-                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
+                    $this->updatePaymentDetails($response_code, $response_message, $response_advise, $processor_response_id,$status);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 case 'GR033':
                     $status = 0;
-                    $this->updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status);
+                    $this->updatePaymentDetails($response_code, $response_message, $response_advise, $processor_response_id,$status);
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 default:
@@ -258,9 +257,10 @@ class CheckoutController extends Controller
         }
     }
 
-    public function updatePaymentDetails($response_message, $response_advise, $processor_response_id,$status) {
+    public function updatePaymentDetails($response_code, $response_message, $response_advise, $processor_response_id,$status) {
         OrderDetail::where('order_id', session()->get('order_id'))
         ->update([
+            'response_code' => $response_code,  
             'request_id' => request()->responseid,
             'response_id' => request()->requestid,
             'response_message' => $response_message,
@@ -292,7 +292,7 @@ class CheckoutController extends Controller
     }
 
     public function getPaynamicsForm($b64string) {
-        $mode = 'Live';
+        $mode = env('PAYNAMICS_MODE');
 
         if ($mode == 'Test') {
             $url = "https://testpti.payserv.net/webpayment/Default.aspx";
