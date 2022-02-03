@@ -77,9 +77,9 @@ class CheckoutController extends Controller
 
         $_requestid = substr(uniqid(), 0, 13);
         $_ipaddress = $ip;
-        $_noturl = "http://bioskinphilippines.com/paynamics-notification";
-        $_resurl = "http://bioskinphilippines.com/paynamics-notification";
-        $_cancelurl = "http://bioskinphilippines.com/paynamics-notification";
+        $_noturl = env('APP_URL') . "paynamics-notification";
+        $_resurl = env('APP_URL') . "paynamics-notification";
+        $_cancelurl = env('APP_URL') . "paynamics-notification";
         $_fname = $user->firstname; 
         $_mname = $user->middlename; 
         $_lname = $user->lastname; 
@@ -99,7 +99,7 @@ class CheckoutController extends Controller
       
         $for_sign = $_mid . $_requestid . $_ipaddress . $_noturl . $_resurl . $_fname . $_lname . $_mname . $_addr1 . $_addr2 . $_city . $_state . $_country . 
         $_zip . $_email . $_phone . $_clientip . $_amount . $_currency . $_sec3d . $_mkey;
-         
+        return $for_sign;
         $_sign = hash("sha512", $for_sign);
 
         $strxml = "";
@@ -211,13 +211,14 @@ class CheckoutController extends Controller
         return $result;
     }
 
-    public function paynamicsNotification() { 
+    public function paynamicsNotification(Request $request) { 
+       
         if (!empty(request()->responseid) && !empty(request()->requestid)) {
             $request_id = base64_decode(request()->requestid);
             $response_id = base64_decode(request()->responseid);
 
             $result = $this->getPaymentStatus($request_id, $response_id);
-
+            return $result;
             if (isset($result['queryResult']['txns']['ServiceResponse'])) {
                 $response_code = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_code'];
                 $response_message = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_message'];
