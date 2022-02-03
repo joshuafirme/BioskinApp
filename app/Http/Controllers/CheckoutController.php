@@ -162,7 +162,7 @@ class CheckoutController extends Controller
             $strxml .= "<country>" . $_country . "</country>";
             $strxml .= "<zip>" . $_zip . "</zip>";
             $strxml .= "<secure3d>" . $_sec3d . "</secure3d>";
-            $strxml .= "<trxtype>authorized</trxtype>";
+            $strxml .= "<trxtype>sale</trxtype>";
             $strxml .= "<email>" . $_email . "</email>";
             $strxml .= "<phone>" . $_phone . "</phone>";
             $strxml .= "<mobile>" . $_mobile . "</mobile>";
