@@ -99,7 +99,7 @@ class CheckoutController extends Controller
       
         $for_sign = $_mid . $_requestid . $_ipaddress . $_noturl . $_resurl . $_fname . $_lname . $_mname . $_addr1 . $_addr2 . $_city . $_state . $_country . 
         $_zip . $_email . $_phone . $_clientip . $_amount . $_currency . $_sec3d . $_mkey;
-        return $for_sign;
+  
         $_sign = hash("sha512", $for_sign);
 
         $strxml = "";
