@@ -218,7 +218,7 @@ class CheckoutController extends Controller
             $response_id = base64_decode(request()->responseid);
 
             $result = $this->getPaymentStatus($request_id, $response_id);
-            return $result;
+         
             if (isset($result['queryResult']['txns']['ServiceResponse'])) {
                 $response_code = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_code'];
                 $response_message = $result['queryResult']['txns']['ServiceResponse']['responseStatus']['response_message'];
@@ -237,6 +237,12 @@ class CheckoutController extends Controller
                 case 'GR002':
                     $status = 1;
                     $this->updatePaymentDetails($response_code, $response_message, $response_advise, $processor_response_id,$status);
+
+                    $order_id = session()->get('order_id');
+                    $pmethod = OrderDetail::where('order_id', $order_id)->value('payment_method');
+                    // send mail 
+                    Utils::sendMail(Auth::user()->email, $order_id, $status, $pmethod);
+
                     return view('checkout-success', compact('response_message', 'response_advise', 'processor_response_id'));
                     break;
                 case 'GR053':

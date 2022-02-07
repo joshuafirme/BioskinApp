@@ -25,7 +25,7 @@ class Utils
     }
 
     static function postMarkMail($toEmail, $subject, $htmlBody, $textBody = null) {
-        return;
+
         $client = new PostmarkClient("861ffb96-74fe-4d55-9dd5-e15c67831659");
         $fromEmail = "csr@bioskinphilippines.com";
         $tag = "example-email-tag";
