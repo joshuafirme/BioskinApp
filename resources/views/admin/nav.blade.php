@@ -165,6 +165,7 @@
                 </ul>
               </li>
               @endif
+              @if(in_array("Payment Settings", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/payment-settings') }}" class="nav-link">
                     <i class="nav-icon fas fa-cog"></i>
@@ -173,6 +174,7 @@
                     </p>
                   </a>
               </li>
+              @endif
               @if(in_array("Archive", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/archive') }}" class="nav-link">

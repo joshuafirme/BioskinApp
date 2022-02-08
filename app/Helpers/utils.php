@@ -180,7 +180,7 @@ class Utils
     }
     
     public static function getPages() {
-        return ["Dashboard", "Maintenance", "Users", "Vouchers", "Manage Orders", "Archive"];
+        return ["Dashboard", "Maintenance", "Users", "Vouchers", "Manage Orders", "Archive", "Payment Settings"];
     }
 
     public static function readCategories() {
