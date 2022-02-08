@@ -2,8 +2,8 @@
 $page_title = 'Checkout | Bioskin';
 $has_rebranding = false;
 
-$cod_is_enable = $payment_setting::where('name', 'COD')->value('enable_on_retail');
-$paynamics_is_enable = $payment_setting::where('name', 'Paynamics')->value('enable_on_retail');
+$cod_setting = $payment_setting::where('name', 'COD')->first();
+$paynamics_setting = $payment_setting::where('name', 'Paynamics')->first();
 
 @endphp
 
@@ -243,7 +243,7 @@ $paynamics_is_enable = $payment_setting::where('name', 'Paynamics')->value('enab
                                     $price = $price_by_volume;
                                 }
                             @endphp
-                            <tr>
+                            <tr data-order-type="{{ $item->order_type }}">
                                 <td>
                                     @if ($src)
                                         <div class="responsive-img"
@@ -339,14 +339,29 @@ $paynamics_is_enable = $payment_setting::where('name', 'Paynamics')->value('enab
                 <div class="col-sm-3 text-center payment-method-container">
                     <p class="text-bold">Select Payment Method</p>
                     @php
-                        // $has_rebranding == false || 
+                        $show_cod = false;
+                        $show_paynamics = false;
+
+                        if ($cod_setting->enable_on_retail == 1 && $has_rebranding == false) {
+                            $show_cod = true;
+                        }
+                        else if ($cod_setting->enable_on_rebrand == 1 && $has_rebranding == true) {
+                            $show_cod = true;
+                        }
+
+                        if ($paynamics_setting->enable_on_retail == 1 && $has_rebranding == false) {
+                            $show_paynamics = true;
+                        }
+                        else if ($paynamics_setting->enable_on_rebrand == 1 && $has_rebranding == true) {
+                            $show_paynamics = true;
+                        }
+                        
                     @endphp
-                    @if ($cod_is_enable == 1)
+                    @if ($show_cod)
                     <div><button class="btn active btn-block" data-value="COD">Cash on Delivery <i
                                 class="fas fa-check-circle float-right"></i></button></div>
                     @endif
-
-                    @if ($paynamics_is_enable == 1)
+                    @if ($show_paynamics)
                     <div><button class="btn btn-block" data-value="online_payment">Online Payment <i
                                 class="far fa-circle float-right"></i></button></div>
                     @endif
@@ -613,5 +628,25 @@ $paynamics_is_enable = $payment_setting::where('name', 'Paynamics')->value('enab
         $(document).ready(function() {
             let w = $('.responsive-img').width();
             $('.responsive-img').height(w);
+
+            orderChecker();
+
+            function orderChecker() {
+                let retail_count = 0;
+                let rebrand_count = 0;
+                $('#cart-item-container').find('tr').each(function(i){
+                    let order_type = $(this).attr('data-order-type'); console.log(order_type)
+                    if (order_type == "1") {
+                        rebrand_count++;
+                    }
+                    else {
+                        retail_count++;
+                    }
+                });
+
+                if (retail_count > 0 && rebrand_count > 0) {
+                    window.location.href = "/cart"
+                }
+            }
         });
     </script>

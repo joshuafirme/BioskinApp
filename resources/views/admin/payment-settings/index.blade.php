@@ -43,15 +43,18 @@
                     <table class="table table-hover">
                         <tr>
                             <th>Mode of Payment</th>
-                            <th></th>
+                            <th>Enable on Retail</th>
+                            <th>Enable on Rebrand</th>
                         </tr>
                         @foreach ($payment_settings as $item)
                         <tr>
                             <td>{{ $item->name }}</td>
                             @php
                                 $enable_on_retail_check = $item->enable_on_retail == 1 ? "checked" : "";
+                                $enable_on_rebrand_check = $item->enable_on_rebrand == 1 ? "checked" : "";
                             @endphp
                             <td><input type="checkbox" {{$enable_on_retail_check}} class="enable_on_retail" data-id="{{ $item->id }}"></td>
+                            <td><input type="checkbox" {{$enable_on_rebrand_check}} class="enable_on_rebrand" data-id="{{ $item->id }}"></td>
                         </tr>      
                         @endforeach
                     </table>

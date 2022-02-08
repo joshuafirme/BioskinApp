@@ -8,7 +8,7 @@ $(function () {
 
         var stock = data.stock == 0 ? "<div class='text-danger'>Out of stock</div>" : 'Stock: '+data.stock+'';
         html += '<tr>';
-        html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-stock="'+data.stock+'" data-check-val="'+data.is_checked+'"></input></td>';
+        html +=    '<td><input type="checkbox" name="checkbox[]" value="'+ data.cart_id +'" data-amount="'+data.amount+'" data-stock="'+data.stock+'" data-check-val="'+data.is_checked+'" data-order-type="'+data.order_type+'"></input></td>';
         html +=    '<td>';
         html +=    '<a href="/shop/'+ data.sku +'/'+data.category+'"><div class="responsive-img" style="width:100px;"  id="data-image-'+identifier+'"></div></a>';
         html +=    '</td>';
@@ -318,6 +318,9 @@ $(function () {
         });
 
         $(document).on('click','#btn-checkout', async function(){
+            if (orderChecker() == 'invalid_order') {
+                return;
+            }
             $.ajax({
                 url: '/checkout/validate-qty',
                 type: 'GET',
@@ -330,12 +333,51 @@ $(function () {
                         });
                         return;
                     }
-                    window.location.href = "/checkout";
+                    var ids = [];
+    
+                    $('#cart-table tbody').find(':checkbox:checked').each(function(i){
+                        ids[i] = $(this).val();
+                    });
+
+                    if (ids.length > 0) {
+                        window.location.href = "/checkout";
+                    }
+                    else {
+                        $.toast({
+                            text: 'Please select an item.',
+                            showHideTransition: 'plain',
+                            hideAfter: 3500, 
+                        });
+                    }
                  
                 }
             });
             
         });
+
+    function orderChecker() {
+        let retail_count = 0;
+        let rebrand_count = 0;
+        $('#cart-table tbody').find(':checkbox:checked').each(function(i){
+            let order_type = $(this).attr('data-order-type');
+            if (order_type == 1) {
+                rebrand_count++;
+            }
+            else {
+                retail_count++;
+            }
+        });
+
+        if (retail_count > 0 && rebrand_count > 0) {
+            $.toast({
+                text: 'Can\'t checkout both retail and customize product.',
+                showHideTransition: 'plain',
+                hideAfter: 3500, 
+            });
+            return 'invalid_order';
+        }
+        return 'valid_order';
+    }
     
     async function render() {
         await readCart();
