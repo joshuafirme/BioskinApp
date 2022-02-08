@@ -13,6 +13,7 @@ use App\Models\OrderPayment;
 use App\Models\OrderDetail;
 use App\Models\Paynamics;
 use App\Models\ProductPrice;
+use App\Models\PaymentSetting;
 use Auth;
 use Cache;
 use DB;
@@ -28,8 +29,9 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $address = $this->readDefaultAddress();
         $product_price = new ProductPrice;
+        $payment_setting = new PaymentSetting;
         $cart = $this->readCartChecked();
-        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price'));
+        return view('checkout', compact('cart', 'user', 'address', 'ip', 'product', 'product_price', 'payment_setting'));
     }
 
     public function paynamicsPayment() {

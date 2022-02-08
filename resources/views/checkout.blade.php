@@ -1,6 +1,10 @@
 @php
 $page_title = 'Checkout | Bioskin';
 $has_rebranding = false;
+
+$cod_is_enable = $payment_setting::where('name', 'COD')->value('enable_on_retail');
+$paynamics_is_enable = $payment_setting::where('name', 'Paynamics')->value('enable_on_retail');
+
 @endphp
 
 @include('header')
@@ -334,18 +338,24 @@ $has_rebranding = false;
             <div class="row">
                 <div class="col-sm-3 text-center payment-method-container">
                     <p class="text-bold">Select Payment Method</p>
-                    @if ($has_rebranding == false)
+                    @php
+                        // $has_rebranding == false || 
+                    @endphp
+                    @if ($cod_is_enable == 1)
                     <div><button class="btn active btn-block" data-value="COD">Cash on Delivery <i
                                 class="fas fa-check-circle float-right"></i></button></div>
                     @endif
+
+                    @if ($paynamics_is_enable == 1)
                     <div><button class="btn btn-block" data-value="online_payment">Online Payment <i
                                 class="far fa-circle float-right"></i></button></div>
+                    @endif
                 </div>
                 <div class="col-sm-9 payment-methods-container d-none">
 
                     <div class="mb-4 border p-3">
                         <div class="row mb-3">
-                            <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
+                          <!--  <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
                                 <div class="custom-control custom-radio">
                                     <input value="cc" name="rad_pm" type="radio" id="rad_cc"
                                         class="custom-control-input" checked>
@@ -359,7 +369,7 @@ $has_rebranding = false;
                                             Card</span>
                                     </label>
                                 </div>
-                            </div>
+                            </div>-->
                             <div id="pm_cc" class="col-md-6 col-lg-4 col-xs-12 mt-3" style="display:block;">
                                 <div class="custom-control custom-radio">
                                     <input value="gc" name="rad_pm" type="radio" id="rad_gcash"

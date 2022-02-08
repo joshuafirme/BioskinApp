@@ -62,6 +62,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/archive/restore/{id}', 'ArchiveController@restore');
 
         Route::get('/notification', 'AdminNotificationController@getNotifications');
+
+        Route::get('/payment-settings', 'PaymentSettingsController@index');
+        Route::post('/payment-settings/update/{id}', 'PaymentSettingsController@update');
     });
 
     Route::get('/cart', 'CartController@index');
