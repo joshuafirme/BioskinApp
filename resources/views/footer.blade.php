@@ -135,7 +135,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    {{$footer_data['copyright']}}
+    {{isset($footer_data['copyright']) ? $footer_data['copyright'] : ""}}
   </div>
 
   </footer>
