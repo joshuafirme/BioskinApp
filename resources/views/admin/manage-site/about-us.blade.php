@@ -53,7 +53,7 @@
                                 <div class="col-sm-12 mt-3">
                                     <div class="form-check">
                                         @php
-                                            $checked = $data['display_image'] == 1 ? "checked" : "";
+                                            $checked = isset($data['display_image']) && $data['display_image'] == 1 ? "checked" : "";
                                         @endphp
                                         <input type="checkbox" {{$checked}} class="form-check-input" name="display_image" id="rebranding" value="1">
                                         <label class="form-check-label" for="exampleCheck1">Display Image</label>

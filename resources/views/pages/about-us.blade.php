@@ -38,7 +38,7 @@ $data = json_decode(Cache::get('cache_about_us'),true);
 
     <div class="container">
         <div class="mt-5 mb-5">
-            @if ($data['display_image'] == 1)
+            @if (isset($data['display_image']) && $data['display_image'] == 1)
                 <div style="height:150px; background-image: url('{{ asset('images/'.$data['image']) }}')"
                     class="img-header"></div>
             @endif
