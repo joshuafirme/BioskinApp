@@ -46,7 +46,7 @@ $data = json_decode(Cache::get('cache_contact_us'),true);
                                     <span class="fa fa-map-marker"></span>
                                 </div>
                                 <div class="text">
-                                    <p> {{$data['location']}}</p>
+                                    <p> {{isset($data['location']) ? $data['location'] : ""}}</p>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@ $data = json_decode(Cache::get('cache_contact_us'),true);
                                     <span class="fa fa-phone"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span> {{$data['phone_number']}}</p>
+                                    <p><span> {{isset($data['phone_number']) ? $data['phone_number'] : ""}}</p>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ $data = json_decode(Cache::get('cache_contact_us'),true);
                                     <span class="fa fa-paper-plane"></span>
                                 </div>
                                 <div class="text">
-                                    <p><a href="mailto: {{$data['email']}}" target="_blank"><span>{{$data['email']}}
+                                    <p><a href="mailto: {{isset($data['email']) ? $data['email'] : ""}}" target="_blank"><span>{{isset($data['email']) ? $data['email'] : ""}}
                                             </span></a></p>
                                 </div>
                             </div>

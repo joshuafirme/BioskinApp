@@ -29,22 +29,22 @@
 
       <!-- Right -->
       <div class="float-right">
-        @if ($footer_data['facebook'])
+        @if (isset($footer_data['facebook']) && $footer_data['facebook'])
           <a href="{{$footer_data['facebook']}}" class="m-4 text-reset" target="_blank">
             <i class="fab fa-facebook-f"></i>
           </a>
         @endif
-        @if ($footer_data['instagram'])
+        @if (isset($footer_data['instagram']) && $footer_data['instagram'])
           <a href="{{$footer_data['instagram']}}" class="m-4 text-reset" target="_blank">
             <i class="fab fa-instagram"></i>
           </a>
         @endif
-        @if ($footer_data['tiktok'])
+        @if (isset($footer_data['tiktok']) && $footer_data['tiktok'])
           <a href="{{$footer_data['tiktok']}}" class="m-4 text-reset" target="_blank">
             <i class="fab fa-tiktok"></i>
           </a>
         @endif
-        @if ($footer_data['store'])
+        @if (isset($footer_data['store']) && $footer_data['store'])
           <a href="{{$footer_data['store']}}" class="m-4 text-reset" target="_blank">
             <i class="fas fa-store"></i>
           </a>
@@ -118,13 +118,13 @@
           <h6 class="text-uppercase fw-bold mb-4">
             Contact
           </h6>
-          <p><i class="fas fa-home me-3"></i> {{$contact_data['location']}}</p>
+          <p><i class="fas fa-home me-3"></i> {{isset($contact_data['location']) ? $contact_data['location'] : ""}}</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            {{$contact_data['email']}}
+            {{isset($contact_data['email']) ? $contact_data['email'] : ""}}
           </p>
           <div class="mb-3"><i class="fas fa-phone me-3 mr-2"></i> 
-             {{$contact_data['phone_number']}}</div>
+             {{isset($contact_data['phone_number']) ? $contact_data['phone_number'] : ""}}</div>
         </div>
         <!-- Grid column -->
       </div>

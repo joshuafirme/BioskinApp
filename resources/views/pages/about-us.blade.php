@@ -43,7 +43,7 @@ $data = json_decode(Cache::get('cache_about_us'),true);
                     class="img-header"></div>
             @endif
             <div style="margin:90px;">
-                <p style="white-space: pre-line;">{{$data['about_text']}}</p>
+                <p style="white-space: pre-line;">{{isset($data['about_text']) ? $data['about_text'] : ""}}</p>
             </div>
         </div>
     </div>
