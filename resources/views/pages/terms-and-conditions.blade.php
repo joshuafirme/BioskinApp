@@ -39,7 +39,7 @@ $data = json_decode(Cache::get('cache_contact_us'),true);
     <div class="container">
         <div class="card mt-5 p-3">
             <b class="text-center">PRIVATE LABEL TERMS AND CONDITIONS</b>
-            {!!isset(Cache::get('cache_terms_and_cond')) ? Cache::get('cache_terms_and_cond') : "" !!}
+            {!!Cache::get('cache_terms_and_cond')!!}
         </div>
     </div>
     <!-- /.content-wrapper -->
