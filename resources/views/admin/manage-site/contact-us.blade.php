@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.isset($data['image']) ? $data['image'] : "") }}" alt="">
+                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.isset($data['image']) && $data['image'] ? $data['image'] : "") }}" alt="">
                                 </div>
 
         
