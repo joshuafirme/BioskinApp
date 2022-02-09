@@ -25,7 +25,7 @@ class ManageSiteController extends Controller
 
         $data = json_decode(Cache::get('cache_contact_us'),true);
 
-        if (!$img_path) {
+        if (strlen($img_path) > 0 && !$img_path ) {
             $img_path = $data['image'];
         }
 
@@ -80,7 +80,7 @@ class ManageSiteController extends Controller
 
         $data = json_decode(Cache::get('cache_about_us'),true);
 
-        if (!$img_path) {
+        if (strlen($img_path) > 0 && !$img_path ) {
             $img_path = $data['image'];
         }
 
