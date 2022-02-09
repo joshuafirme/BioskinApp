@@ -7,6 +7,7 @@ use Utils;
 use Mail;
 use App\Mail\Mailer;
 use Postmark\PostmarkClient;
+use Cache;
 
 class PagesController extends Controller
 {

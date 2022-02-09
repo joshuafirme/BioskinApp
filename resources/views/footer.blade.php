@@ -1,5 +1,9 @@
 
 
+@php
+    $contact_data = json_decode(Cache::get('cache_contact_us'),true);
+    $footer_data = json_decode(Cache::get('cache_footer'),true);
+@endphp
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -11,7 +15,7 @@
   </style>
   <!-- Main Footer -->
   <footer class="main-footer">
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <section class="d-flex justify-content-center justify-content-lg-between p-4">
     <!-- Left -->
     <div class="container">
       <div class="row">
@@ -25,18 +29,26 @@
 
       <!-- Right -->
       <div class="float-right">
-        <a href="https://www.facebook.com/BioskinTechLabInc" class="m-4 text-reset" target="_blank">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.instagram.com/bioskinphilippines/" class="m-4 text-reset" target="_blank">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.tiktok.com/@bioskinphilippines" class="m-4 text-reset" target="_blank">
-          <i class="fab fa-tiktok"></i>
-        </a>
-        <a href="https://shopee.ph/bioskinphilippines" class="m-4 text-reset" target="_blank">
-          <i class="fas fa-store"></i>
-        </a>
+        @if ($footer_data['facebook'])
+          <a href="{{$footer_data['facebook']}}" class="m-4 text-reset" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        @endif
+        @if ($footer_data['instagram'])
+          <a href="{{$footer_data['instagram']}}" class="m-4 text-reset" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+        @endif
+        @if ($footer_data['tiktok'])
+          <a href="{{$footer_data['tiktok']}}" class="m-4 text-reset" target="_blank">
+            <i class="fab fa-tiktok"></i>
+          </a>
+        @endif
+        @if ($footer_data['store'])
+          <a href="{{$footer_data['store']}}" class="m-4 text-reset" target="_blank">
+            <i class="fas fa-store"></i>
+          </a>
+        @endif
       </div>
         </div>
       </div>
@@ -50,7 +62,7 @@
     <div class="container text-center text-md-start mt-5">
       <!-- Grid row -->
       <div class="row mt-3">
-        <div class="col-sm-12 text-left">
+         <!--<div class="col-sm-12 text-left">
           <div class="mb-4">
             <div class="mb-1">Payment Methods</div>
             <img class="mr-2" width="32px"
@@ -66,7 +78,7 @@
                 src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/jcb.svg"
                 alt="Mastercard">
           </div>
-         </div>
+         </div> -->
         <!-- Grid column -->
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <!-- Content -->
@@ -106,15 +118,13 @@
           <h6 class="text-uppercase fw-bold mb-4">
             Contact
           </h6>
-          <p><i class="fas fa-home me-3"></i> Davao Bioskin Tech Laboratories Inc.
-            Block 4 Lot 11, Maya St., Ecoland, Davao City</p>
+          <p><i class="fas fa-home me-3"></i> {{$contact_data['location']}}</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            bioskin1a@yahoo.com
+            {{$contact_data['email']}}
           </p>
           <div class="mb-3"><i class="fas fa-phone me-3 mr-2"></i> 
-             Tel no. 082 282-0679
-            <div class="ml-4">Cel no. 09985997417 / 09399242105</div></div>
+             {{$contact_data['phone_number']}}</div>
         </div>
         <!-- Grid column -->
       </div>
@@ -125,7 +135,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    © {{ date('Y') }} Bioskin Philippines  | All Rights Reserved
+    {{$footer_data['copyright']}}
   </div>
 
   </footer>

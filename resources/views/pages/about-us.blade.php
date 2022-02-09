@@ -1,6 +1,7 @@
 @php
 $page_title = 'About Us | Bioskin';
 $categories = Utils::readCategories();
+$data = json_decode(Cache::get('cache_about_us'),true);
 @endphp
 
 @include('header')
@@ -37,24 +38,12 @@ $categories = Utils::readCategories();
 
     <div class="container">
         <div class="mt-5 mb-5">
-            <div style="height:150px; background-image: url('{{ asset('images/img-header.jpg') }}')"
-                class="img-header"></div>
+            @if ($data['display_image'] == 1)
+                <div style="height:150px; background-image: url('{{ asset('images/'.$data['image']) }}')"
+                    class="img-header"></div>
+            @endif
             <div style="margin:90px;">
-                <p>Davao Bioskin Tech Laboratories Inc., with its trade name, Bioskin, started as a subsidiary company
-                    on April 2002 and started as an independent company on January 2006.</p>
-                <p>We are an FDA-approved and ISO-certified toll manufacturer of skin care and beauty products which
-                    also offers a wide-range of packaging materials based in Davao City, Philippines. We provide custom
-                    formulation and contract manufacturing services. Technology transfer from lab to production,
-                    documentation, filling and assembling finished goods, production standards and quality control. We
-                    are full service manufacturer for retail, wholesalers, salons, fashion- and private label brands.
-                </p>
-                <p>We work with clients in the beauty business at every stage of their growth, including startups and
-                    small beauty brands. We develop, produce, and manufacture natural skincare products and
-                    formulations, and we do it exceptionally well. We implement quality control throughout the entire
-                    manufacturing process, from acquiring ingredients through production, to product distribution. The
-                    final product quality is tested in our own laboratories. We use production machines delivered by
-                    renowned global manufacturers. Our original, innovative formulas are based on the highest-quality
-                    ingredients from reliable providers.</p>
+                <p style="white-space: pre-line;">{{$data['about_text']}}</p>
             </div>
         </div>
     </div>

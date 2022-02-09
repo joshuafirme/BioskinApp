@@ -65,6 +65,18 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/payment-settings', 'PaymentSettingsController@index');
         Route::post('/payment-settings/update/{id}', 'PaymentSettingsController@update');
+
+        Route::get('/manage-site/contact', 'ManageSiteController@contact_us_view');
+        Route::post('/manage-site/update-contact', 'ManageSiteController@updateContactUs');
+
+        Route::get('/manage-site/footer', 'ManageSiteController@footer_view');
+        Route::post('/manage-site/update-footer', 'ManageSiteController@updateFooter');
+
+        Route::get('/manage-site/aboutus', 'ManageSiteController@about_us_view');
+        Route::post('/manage-site/update-aboutus', 'ManageSiteController@updateAboutUs');
+        
+        Route::get('/manage-site/terms-and-cond', 'ManageSiteController@terms_cond_view');
+        Route::post('/manage-site/update-terms-and-cond', 'ManageSiteController@updateTermsAndCond');
     });
 
     Route::get('/cart', 'CartController@index');

@@ -1,6 +1,7 @@
 @php
 $page_title = 'Contact Us | Bioskin';
 $categories = Utils::readCategories();
+$data = json_decode(Cache::get('cache_contact_us'),true);
 @endphp
 
 @include('header')
@@ -45,8 +46,7 @@ $categories = Utils::readCategories();
                                     <span class="fa fa-map-marker"></span>
                                 </div>
                                 <div class="text">
-                                    <p> Ecoland Subdivision Basketball Court, Block 4 Phase 2 Lot 11 Maya St, Matina
-                                        Pangi Rd, Davao City, 8000 Davao del Sur</p>
+                                    <p> {{$data['location']}}</p>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@ $categories = Utils::readCategories();
                                     <span class="fa fa-phone"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span> 0939 194 8404 / (082)282-0679</p>
+                                    <p><span> {{$data['phone_number']}}</p>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ $categories = Utils::readCategories();
                                     <span class="fa fa-paper-plane"></span>
                                 </div>
                                 <div class="text">
-                                    <p><a href="mailto: bioskin1a@yahoo.com" target="_blank"><span>bioskin1a@yahoo.com
+                                    <p><a href="mailto: {{$data['email']}}" target="_blank"><span>{{$data['email']}}
                                             </span></a></p>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@ $categories = Utils::readCategories();
                             </div>
                         </div>
                         <div class="col-md-6 d-flex align-items-stretch">
-                            <img src="{{ asset('/images/bs_dr_bgn.png') }}" alt=""
+                            <img src="{{ asset('images/'.$data['image']) }}" alt=""
                                 class="img-fluid mb-3 d-none d-md-block">
                         </div>
                     </div>

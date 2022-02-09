@@ -175,6 +175,41 @@
                   </a>
               </li>
               @endif
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-tasks"></i>
+                  <p>
+                    Manage Site
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ url('/manage-site/contact') }}" class="nav-link">
+                      
+                      <p class="ml-3">Contact Page</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/manage-site/footer') }}" class="nav-link">
+                      
+                      <p class="ml-3">Footer</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/manage-site/aboutus') }}" class="nav-link">
+                      
+                      <p class="ml-3">About Us Page</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/manage-site/terms-and-cond') }}" class="nav-link">
+                      
+                      <p class="ml-3">Terms and Conditions</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
               @if(in_array("Archive", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/archive') }}" class="nav-link">
