@@ -115,8 +115,11 @@ $data = json_decode(Cache::get('cache_contact_us'),true);
                                     </div>
                             </div>
                         </div>
+                        @php
+                            $img_path = isset($data['image']) && $data['image'] != null ? $data['image'] : ""
+                        @endphp
                         <div class="col-md-6 d-flex align-items-stretch">
-                            <img src="{{ asset('images/'.$data['image']) }}" alt=""
+                            <img src="{{ asset('images/'.$img_path) }}" alt=""
                                 class="img-fluid mb-3 d-none d-md-block">
                         </div>
                     </div>
