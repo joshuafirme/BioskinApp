@@ -46,7 +46,7 @@
                                             <i class="fab fa-facebook-f text-muted"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="facebook" value="{{ $data['facebook'] }}"
+                                    <input type="text" name="facebook" value="{{ isset($data['facebook']) ? $data['facebook'] : "" }}"
                                         class="form-control bg-white border-left-0 border-md">
                                 </div>
     
@@ -56,7 +56,7 @@
                                             <i class="fab fa-instagram text-muted"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="instagram" value="{{ $data['instagram'] }}"
+                                    <input type="text" name="instagram" value="{{ isset($data['instagram']) ? $data['instagram'] : "" }}"
                                         class="form-control bg-white border-left-0 border-md">
                                 </div>
 
@@ -66,7 +66,7 @@
                                             <i class="fab fa-tiktok text-muted"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="tiktok" value="{{ $data['tiktok'] }}"
+                                    <input type="text" name="tiktok" value="{{ isset($data['tiktok']) ? $data['tiktok'] : "" }}"
                                         class="form-control bg-white border-left-0 border-md">
                                 </div>
 
@@ -76,13 +76,13 @@
                                             <i class="fas fa-store text-muted"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="store" value="{{ $data['store'] }}"
+                                    <input type="text" name="store" value="{{ isset($data['store']) ? $data['store'] : "" }}"
                                         class="form-control bg-white border-left-0 border-md">
                                 </div>
 
                                 <div class="col-sm-12 mt-3">
                                     <label class="col-form-label">Copyright</label>
-                                    <textarea rows="3" type="text" class="form-control" required name="copyright">{{ $data['copyright'] }}</textarea>
+                                    <textarea rows="3" type="text" class="form-control" required name="copyright">{{ isset($data['copyright']) ? $data['copyright'] : "" }}</textarea>
                                 </div>
         
                                   <div class="col-12 mt-4">

@@ -39,17 +39,17 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="col-form-label">Location</label>
-                                    <textarea rows="3" type="text" class="form-control" name="location" required>{{ $data['location'] }}</textarea>
+                                    <textarea rows="3" type="text" class="form-control" name="location" required>{{ isset($data['location']) ? $data['location'] : "" }}</textarea>
                                 </div>
     
                                 <div class="col-sm-12 mt-2">
                                     <label class="col-form-label">Phone Number</label>
-                                    <input type="text" class="form-control" name="phone_number" value="{{ $data['phone_number'] }}" required>
+                                    <input type="text" class="form-control" name="phone_number" value="{{isset( $data['phone_number']) ?  $data['phone_number'] : "" }}" required>
                                 </div>
 
                                 <div class="col-sm-12 mt-2">
                                     <label class="col-form-label">Email</label>
-                                    <input type="text" class="form-control" name="email" value="{{ $data['email'] }}" required>
+                                    <input type="text" class="form-control" name="email" value="{{ isset($data['email']) ? $data['email'] : "" }}" required>
                                 </div>
     
                                 <div class="col-sm-12">
@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.$data['image']) }}" alt="">
+                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.isset($data['image']) ? $data['image'] : "") }}" alt="">
                                 </div>
 
         

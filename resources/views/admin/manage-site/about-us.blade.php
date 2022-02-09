@@ -38,7 +38,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="col-form-label">About Us Text</label>
-                                    <textarea rows="10" type="text" class="form-control" name="about_text" required>{{ $data['about_text'] }}</textarea>
+                                    <textarea rows="10" type="text" class="form-control" name="about_text" required>{{ isset($data['about_text']) ? $data['about_text'] : "" }}</textarea>
                                 </div>
     
                                 <div class="col-sm-12 mt-3">
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.$data['image']) }}" alt="">
+                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.isset($data['image']) ? $data['image'] : "") }}" alt="">
                                 </div>
 
                                 <div class="col-sm-12 mt-3">
