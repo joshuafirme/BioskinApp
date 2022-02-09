@@ -45,9 +45,11 @@
                                     <label class="col-form-label">Image</label>
                                     <input type="file" class="form-control-file" name="image" accept=".jpg,.jpeg,.png">
                                 </div>
-
+                                @php
+                                    $img_path = isset($data['image']) && $data['image'] != null ? $data['image'] : ""
+                                @endphp
                                 <div class="col-sm-12 col-md-6 mt-2">
-                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.isset($data['image']) ? $data['image'] : "") }}" alt="">
+                                    <img width="100%" class="img-thumbnail" src="{{ asset('images/'.$img_path) }}" alt="">
                                 </div>
 
                                 <div class="col-sm-12 mt-3">
