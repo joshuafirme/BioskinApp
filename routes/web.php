@@ -15,13 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
-    return view('index');
-});
+
 Route::get('/paynamics-test', 'CheckoutController@paynamicsTest');
 Route::get('/phpinfo', 'DashboardController@phpInfo');
 
-Route::get('/home', 'HomePageController@index');
+Route::get('/', 'HomePageController@index');
 Route::get('/terms-and-conditions', 'PagesController@termsAndConditions');
 Route::get('/about-us', 'PagesController@aboutUs');
 Route::get('/contact-us', 'PagesController@contactUs');
