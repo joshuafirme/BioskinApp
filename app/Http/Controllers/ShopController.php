@@ -76,7 +76,7 @@ class ShopController extends Controller
         if (strlen($data) > 0) {
             return  $data;
         }
-        $id = DB::table('product_images')->where('id',$sku)->value('id');
+        $id = DB::table('products')->where('sku',$sku)->value('id');
         return DB::table('product_images')->where('sku',$id)->value('image');
     }
 
