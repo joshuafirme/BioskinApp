@@ -72,7 +72,12 @@ class ShopController extends Controller
     }
 
     public function readImage($sku) {
-        return DB::table('product_images')->where('sku',$sku)->value('image');
+        $data = DB::table('product_images')->where('sku',$sku)->value('image');
+        if (strlen($data) > 0) {
+            return  $data;
+        }
+        $id = DB::table('product_images')->where('id',$sku)->value('id');
+        return DB::table('product_images')->where('sku',$id)->value('image');
     }
 
     public function readAllCategory() {
