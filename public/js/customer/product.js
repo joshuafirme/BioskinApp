@@ -271,8 +271,14 @@ $(function(){
                 $('.btn-load-more').hide();
                 
                 let current_url = window.location.href;
-                category_id = current_url.substring(current_url.length-1);
-    
+
+                if (object == "category") {
+                    category_id = current_url.substring(current_url.indexOf('category/')+9);
+                }
+                else {
+                    category_id = current_url.substring(current_url.indexOf('subcategory/')+12);
+                }
+                console.log(object)
                 console.log(category_id)
                 
                 var html = "";
@@ -386,7 +392,7 @@ $(function(){
     
         let category_id = url.substring(index + 9);
         if (url.indexOf('subcategory/') != -1) {
-            console.log(category_id + ' subcat id')
+            category_id = url.substring(url.indexOf('subcategory/')+12);
             await readCategoryID(category_id);
         } else {
             console.log(category_id + ' cat id')
