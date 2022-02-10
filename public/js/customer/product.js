@@ -261,15 +261,20 @@ $(function(){
     }
     
     
-    
+    var object;
+
     async function on_Click(category_id) {
     
         $(document).on('click', '.btn-load-more', async function() {
             $(this).html('<i class="fas fa-spinner fa-spin"></i>');
             setTimeout(async function() {
                 $('.btn-load-more').hide();
+                
+                let current_url = window.location.href;
+                category_id = current_url.substring(current_url.length-1);
     
-                var object = 'category';
+                console.log(category_id)
+                
                 var html = "";
                 var enable_button = false;
                 var old_last_key = last_key;
@@ -278,13 +283,13 @@ $(function(){
                     if (typeof data_storage[i] != 'undefined') {
                         let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
                         ids = ids.split(", ");
+                        console.log(ids)
                         if (ids.includes(category_id)) {
                             html += await getItems(data_storage[i]);
                         }
-    
                     }
                 }
-    
+         
                 if (data_storage.length > last_key) {
                     enable_button = true;
                 }
@@ -292,9 +297,9 @@ $(function(){
                     html += '<div class="col-12 load-more-container">';
                     html += '<button class="btn btn-sm btn-outline-success btn-load-more">Load more</button>';
                     html += '</div>';
-                }
+                } 
                 $('#product-container').append(html);
-    
+        
                 for (var i = old_last_key; i < last_key; i++) {
                     if (typeof data_storage[i] != 'undefined') {
                         let ids = object == 'category' ? data_storage[i].category_id : data_storage[i].sub_category_id;
@@ -316,7 +321,7 @@ $(function(){
         });
     
         $(document).on('click', '.subcategory-name', async function() {
-            let object = 'sub_category';
+            object = 'sub_category';
             var subcategory_id = $(this).attr('data-id');
             var subcategory_name = $(this).attr('data-name');
             $('#product-container').html("");
@@ -338,6 +343,7 @@ $(function(){
         });
     
         $(document).on('click', '.category-name', async function() {
+            object = "category";
             var category_id = $(this).attr('data-id');
             var category_name = $(this).attr('data-name');
             var wording = $(this).attr('data-wording');
@@ -374,6 +380,7 @@ $(function(){
     });
     
     async function renderConponents() {
+        object = "category";
         let url = window.location.href;
         let index = url.indexOf('category/');
     
