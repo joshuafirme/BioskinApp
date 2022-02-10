@@ -121,7 +121,10 @@ class ShopController extends Controller
             $variation = $variation ? $variation : [];
 
             $images = $this->readImages($sku);
-
+            if (count($images) == 0) {
+                $id = DB::table('products')->where('sku',$sku)->value('id');
+                $images = DB::table('product_images')->where('sku', $id)->get();
+            }
             
         }
         else {
@@ -186,7 +189,10 @@ class ShopController extends Controller
             }
     
             $images = DB::table('product_images')->where('sku', $sku)->get();
-
+            if (count($images) == 0) {
+                $id = DB::table('products')->where('sku',$sku)->value('id');
+                $images = DB::table('product_images')->where('sku', $id)->get();
+            }
             //$volumes = $p->readVolumes($sku); 
        
             $volumes = $p->readPricePerVolume($sku);  
