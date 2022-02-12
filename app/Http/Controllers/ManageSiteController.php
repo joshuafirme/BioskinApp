@@ -7,6 +7,22 @@ use Cache;
 
 class ManageSiteController extends Controller
 {
+    private $page = "Manage Site";
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            
+            if (Auth::check()) {
+                $allowed_pages = explode(",",Auth::user()->allowed_pages);
+                if (!in_array($this->page, $allowed_pages)) {
+                    return redirect('/not-auth');
+                }
+            }
+            return $next($request);
+        });
+    }
+
     public function contact_us_view() {
         $data = json_decode(Cache::get('cache_contact_us'),true);
      

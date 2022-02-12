@@ -175,6 +175,7 @@
                   </a>
               </li>
               @endif
+              @if(in_array("Manage Site", $allowed_pages))
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-tasks"></i>
@@ -210,6 +211,7 @@
                   </li>
                 </ul>
               </li>
+              @endif
               @if(in_array("Archive", $allowed_pages))
               <li class="nav-item">
                 <a href="{{ url('/archive') }}" class="nav-link">
