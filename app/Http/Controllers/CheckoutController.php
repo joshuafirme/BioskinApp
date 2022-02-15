@@ -41,6 +41,13 @@ class CheckoutController extends Controller
         $od = new OrderDetail;
         
         $address = $this->readDefaultAddress();
+
+        $province = isset($address->province) ? $address->province : "";
+        $municipality = isset($address->municipality) ? $address->municipality : "";
+        $brgy = isset($address->brgy) ? $address->brgy : "";
+        $detailed_loc = isset($address->detailed_loc) ? $address->detailed_loc : "";
+        $phone_no = isset($address->phone_no) ? $address->phone_no : "";
+
         $checkout_items = $this->readCartChecked();
         $voucher_code = request()->voucher_code;
 
@@ -85,15 +92,15 @@ class CheckoutController extends Controller
         $_fname = $user->firstname; 
         $_mname = $user->middlename; 
         $_lname = $user->lastname; 
-        $_addr1 = $address->province ." ".$address->municipality." ".$address->brgy ." ".$address->detailed_loc; 
+        $_addr1 = $province ." ".$municipality." ".$brgy ." ".$detailed_loc; 
         $_addr2 = "";
-        $_city = $address->municipality; 
+        $_city = $municipality; 
         $_state = ""; 
         $_country = "PH"; 
         $_zip = ""; 
         $_email = $user->email;
         $_phone = ""; 
-        $_mobile = $address->phone_no; 
+        $_mobile = $phone_no; 
         $_clientip = $_SERVER['REMOTE_ADDR'];
         $_amount = number_format((float)$total, 2, '.', '') ;
         $_currency = "PHP"; 

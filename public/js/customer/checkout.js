@@ -150,6 +150,14 @@ $(function(){
         $('#fullname').text(name);
         $('#address').text(address);
         $('#phone_no').text(phone);
+
+        $.ajax({
+            url: '/account/address-set-default/'+address_id,
+            type: 'POST',
+            success: function(data){
+                console.log(data)
+            }
+        });
     });
     
     $(document).on('blur', '#voucher', async function(){ 
