@@ -26,7 +26,8 @@ class UserController extends Controller
                 return redirect('/not-auth');
             }
         }
-        return view('admin.user.index');
+        $users = User::paginate(10);
+        return view('admin.user.index',compact('users'));
     }
 
     public function readUsers() {

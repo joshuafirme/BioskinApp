@@ -44,7 +44,7 @@
           <div class="col-md-12 col-lg-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-hover tbl-user">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Customer</th>
@@ -55,7 +55,58 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            @foreach ($users as $item)
+                                @php
+                                    $customer_name = $item->firstname . " " . $item->middlename   . " " . $item->lastname;
+                                    $customer =  "<b>" . $customer_name . "</b><br>";
+                                    $customer .= '<a href="mailto: '. $item->email .'" target="_blank"><span>'. $item->email .'</span></a>'; 
+
+                                    $dept = "";
+                                    if($item->access_rights == 1) {
+                                        $dept = "Sales Admin";
+                                    }
+                                    elseif($item->access_rights == 2) {
+                                        $dept = "Customer";
+                                    }
+                                    elseif($item->access_rights == 3) {
+                                        $dept = "Sales Department";
+                                    }
+                                    elseif($item->access_rights == 4) {
+                                        $dept = "Accounting";
+                                    }
+                                    elseif($item->access_rights == 5) {
+                                        $dept = "Production";
+                                    }
+                                    elseif($item->access_rights == 6) {
+                                        $dept = "Finish Goods";
+                                    }
+                                    elseif($item->access_rights == 7) {
+                                        $dept = "Logistics/Warehousing";
+                                    }
+                                    elseif($item->access_rights == 8) {
+                                        $dept = "CSR";
+                                    }
+                                    $status = "";
+                                    if ( $item->status == 1 ) {
+                                        $status = '<span class="badge badge-success">Active</span>';
+                                    }
+                                    else if ( $item->status == 0 ) {
+                                        $status = '<span class="badge badge-danger">Blocked</span>';
+                                    }
+                                @endphp
+                                <tr>
+                                    <td>{!! $customer !!}</td>
+                                    <td>{{ $item->username }}</td>
+                                    <td>{{ $dept }}</td>
+                                    <td>{{ date('F d, Y h:i A', strtotime($item->created_at)) }}</td>
+                                    <td>{!! $status !!}</td>
+                                    <td><a class="btn btn-sm" data-id="'. $user->id .'" href="{{ route('users.edit',$item->id) }}"><i class="fa fa-edit"></i></a></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
+                    {!! $users->links("pagination::bootstrap-4") !!}
                 </div>
             </div>
         </div>
