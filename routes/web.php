@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/users', 'UserController');
         Route::post('/users/archive/{id}', 'UserController@archive');
         Route::get('/read-users', 'UserController@readUsers');
+        Route::get('/search-user', 'UserController@search')->name('searchUser');
         Route::resource('/product', 'ProductController');
         Route::get('/delete-product-cache', 'ProductController@deleteProductCache')->name('delete-product-cache');
         Route::post('/product/archive/{id}', 'ProductController@archive');

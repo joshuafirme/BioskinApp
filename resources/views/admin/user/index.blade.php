@@ -39,8 +39,19 @@
 
         <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm"><span class='fa fa-plus'></span> Create User</a>
 
-        <div class="row">
+        <div class="w-25 float-right">
+            <form action="{{ route('searchUser')}}" method="get">
+                <div class="input-group">
+                    <input type="text" name="key" class="form-control" placeholder="Search by email or username">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+            </form>
+          </div>
 
+        <div class="row w-100">
+ 
           <div class="col-md-12 col-lg-12 mt-3">
             <div class="card">
                 <div class="card-body">

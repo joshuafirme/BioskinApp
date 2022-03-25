@@ -30,6 +30,14 @@ class UserController extends Controller
         return view('admin.user.index',compact('users'));
     }
 
+    public function search() {
+        $key = isset(request()->key) ? request()->key : "";
+        $users = User::where('email', 'LIKE', '%' . $key . '%')
+                    ->orWhere('username', 'LIKE', '%' . $key . '%')
+                    ->paginate(10);
+        return view('admin.user.index', compact('users'));
+    }
+
     public function readUsers() {
         if (Auth::check()) {
             $allowed_pages = explode(",",Auth::user()->allowed_pages);
