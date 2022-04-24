@@ -159,6 +159,10 @@ class UserController extends Controller
             $alert = 'danger';
             $message = 'Phone number is already exists.';
         }
+        else if (!filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
+            $alert = 'danger';
+            $message = 'Please enter a valid email.';
+        }
         else {
             $request['password'] = Hash::make($request['password']);
             User::create($request->all());
